@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,8 +20,11 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
         //Button btCheck = (Button) findViewById(btCheck);
+        Sentence sentence = new Sentence();
+        sentence.setMessage("I am so angry!");
         client = new AnalyzerClient();
-        client.getToneScores("I am so angry!");
+        client.getToneScores(sentence);
+        Log.i("Main", String.valueOf(sentence.getAngerLevel()));
     }
 
    /*
