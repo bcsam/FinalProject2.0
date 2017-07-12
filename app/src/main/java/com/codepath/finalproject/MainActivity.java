@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         tb.setMessage(message);
         client = new AnalyzerClient();
         client.getToneScores(tb);
-
         MainActivity.this.startActivity(intent);
     }
 }

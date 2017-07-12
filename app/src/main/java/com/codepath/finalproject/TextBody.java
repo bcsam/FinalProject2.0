@@ -11,12 +11,16 @@ public class TextBody implements Parcelable{
     private int[] toneLevels;
     private int[] styleLevels;
     private int[] socialLevels;
+    private String[] lightToneColors;
+    private String[] darkToneColors;
     private String message;
 
     public TextBody(){
         toneLevels = new int[5];
         styleLevels = new int[3];
         socialLevels = new int[5];
+        lightToneColors = new String[]{"#ff8080", "#cc99ff", "#8cd98c", "#ffdb4d", "#80bfff"};
+        darkToneColors = new String[]{"#b30000", "#5900b3", "#267326", "#e6b800", "#004d99"};
     }
 
     public int getToneLevel(int tone){
@@ -67,34 +71,9 @@ public class TextBody implements Parcelable{
 
     public String getToneColor(int tone){
         int level = toneLevels[tone];
-        switch (tone) {
-            case (1):
-                if (level > 50)
-                    return "#b30000";
-                else
-                    return "#ff8080";
-            case (2):
-                if (level > 50)
-                    return "#5900b3";
-                else
-                    return "#cc99ff";
-            case (3):
-                if (level > 50)
-                    return "#267326";
-                else
-                    return "#8cd98c";
-            case (4):
-                if (level > 50)
-                    return "#e6b800";
-                else
-                    return "#ffdb4d";
-            case (5):
-                if (level > 50)
-                    return "#004d99";
-                else
-                    return "#80bfff";
-        }
-        return "#737373";
+        if(level > 50)
+            return darkToneColors[tone];
+        return lightToneColors[tone];
     }
 
     public String getTextColor() {
@@ -108,34 +87,9 @@ public class TextBody implements Parcelable{
         }
         if(level < 50)
             return "#00000000";
-        switch (tone) {
-            case (1):
-                if (level > 75)
-                    return "#b30000";
-                else
-                    return "#ff8080";
-            case (2):
-                if (level > 75)
-                    return "#5900b3";
-                else
-                    return "#cc99ff";
-            case (3):
-                if (level > 75)
-                    return "#267326";
-                else
-                    return "#8cd98c";
-            case (4):
-                if (level > 75)
-                    return "#e6b800";
-                else
-                    return "#ffdb4d";
-            case (5):
-                if (level > 75)
-                    return "#004d99";
-                else
-                    return "#80bfff";
-        }
-        return "#00000000";
+        if(level > 75)
+            return darkToneColors[tone];
+        return lightToneColors[tone];
     }
 
 
