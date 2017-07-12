@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 public class PostCheckActivity extends AppCompatActivity {
 
-    TextView tvBody;
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -26,7 +24,4 @@ public class PostCheckActivity extends AppCompatActivity {
         textView.setText(text);
         textView.setTextColor(Color.parseColor(textBody.getColor()));
     }
-/*<<<<<<< HEAD
-=======
->>>>>>> c1758c713da873da684762c5fec31d3534a1d478*/
 }
