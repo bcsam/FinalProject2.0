@@ -52,8 +52,8 @@ public class PostCheckActivity extends AppCompatActivity {
         client.getToneScores(textBody);
 
 
-        TextView tvTextBody = (TextView) findViewById(R.id.tvTextBody);
-        tvTextBody.setText(text); //check on why this doesn't work // TODO: 7/12/17
+        tvTextBody = (TextView) findViewById(R.id.tvTextBody);
+        tvTextBody.setText("hello there"); //check on why this doesn't work // TODO: 7/12/17
         tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));
 
         //new code for tabs below

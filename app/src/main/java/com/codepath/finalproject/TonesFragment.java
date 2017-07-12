@@ -54,10 +54,9 @@ public class TonesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
     }
 
-    public void setTexts(){
+    public void setTexts() {
         tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
         tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
         tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
