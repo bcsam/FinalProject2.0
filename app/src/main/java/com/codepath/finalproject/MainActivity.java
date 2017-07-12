@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
         //Button btCheck = (Button) findViewById(btCheck);
-        Sentence sentence = new Sentence();
-        sentence.setMessage("I am so angry!");
+        TextBody tb = new TextBody();
+        tb.setMessage("I am so angry!");
         client = new AnalyzerClient();
-        client.getToneScores(sentence);
-        Log.i("Main", String.valueOf(sentence.getAngerLevel()));
+        client.getToneScores(tb);
+        Log.i("Main", String.valueOf(tb.getAngerLevel()));
     }
 
    /*
