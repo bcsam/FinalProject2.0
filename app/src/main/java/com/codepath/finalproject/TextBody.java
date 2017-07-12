@@ -51,11 +51,57 @@ public class TextBody implements Parcelable{
         this.message = message;
     }
 
-    public String getToneColor() {
+    public String getStyleColor(int level){
+        if(level < 50)
+            return "#80a6b3";
+        else
+            return "#00334d";
+    }
+
+    public String getSocialColor(int level){
+        if(level < 50)
+            return "#9cc9c9";
+        else
+            return "#2eb8b8";
+    }
+
+    public String getToneColor(int tone){
+        int level = toneLevels[tone];
+        switch (tone) {
+            case (1):
+                if (level > 50)
+                    return "#b30000";
+                else
+                    return "#ff8080";
+            case (2):
+                if (level > 50)
+                    return "#5900b3";
+                else
+                    return "#cc99ff";
+            case (3):
+                if (level > 50)
+                    return "#267326";
+                else
+                    return "#8cd98c";
+            case (4):
+                if (level > 50)
+                    return "#e6b800";
+                else
+                    return "#ffdb4d";
+            case (5):
+                if (level > 50)
+                    return "#004d99";
+                else
+                    return "#80bfff";
+        }
+        return "#737373";
+    }
+
+    public String getTextColor() {
         int tone = 6;
         int level = 0;
-        for(int i=0; i<5; i++){
-            if(toneLevels[i] > level) {
+        for(int i=0; i<5; i++) {
+            if (toneLevels[i] > level) {
                 level = toneLevels[i];
                 tone = i;
             }
