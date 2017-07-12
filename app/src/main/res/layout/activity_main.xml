@@ -64,7 +64,7 @@
         android:layout_below="@+id/etSubject"
         android:inputType=
             "textCapSentences|textAutoCorrect"
-        android:imeOptions="actionDone" />
+        android:imeOptions="actionSend" />
 
     <Button
         android:id="@+id/btCheck"
