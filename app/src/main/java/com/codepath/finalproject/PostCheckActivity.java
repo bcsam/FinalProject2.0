@@ -49,7 +49,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
         TextView tvTextBody = (TextView) findViewById(R.id.tvTextBody);
         tvTextBody.setText(text); //check on why this doesn't work // TODO: 7/12/17
-        tvTextBody.setTextColor(Color.parseColor(textBody.getColor()));
+        tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));
 
         //new code for tabs below
 
@@ -116,11 +116,11 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void setScoreTexts(){
-        tvAngerScore.setText(Double.toString(textBody.getAngerLevel()));
-        tvDisgustScore.setText(Double.toString(textBody.getDisgustLevel()));
-        tvFearScore.setText(Double.toString(textBody.getFearLevel()));
-        tvJoyScore.setText(Double.toString(textBody.getJoyLevel()));
-        tvSadnessScore.setText(Double.toString(textBody.getSadnessLevel()));
+        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
+        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
+        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
+        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
+        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {

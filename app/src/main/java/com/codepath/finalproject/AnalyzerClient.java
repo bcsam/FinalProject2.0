@@ -35,19 +35,19 @@ public class AnalyzerClient {
             for(ToneScore ts : tc.getTones()){
                 switch(ts.getName()){
                     case("Anger"):
-                        textBody.setAngerLevel(ts.getScore());
+                        textBody.setToneLevel(0, ts.getScore());
                         break;
                     case("Disgust"):
-                        textBody.setDisgustLevel(ts.getScore());
+                        textBody.setToneLevel(1, ts.getScore());
                         break;
                     case("Fear"):
-                        textBody.setFearLevel(ts.getScore());
+                        textBody.setToneLevel(2, ts.getScore());
                         break;
                     case("Joy"):
-                        textBody.setJoyLevel(ts.getScore());
+                        textBody.setToneLevel(3, ts.getScore());
                         break;
                     case("Sadness"):
-                        textBody.setSadnessLevel(ts.getScore());
+                        textBody.setToneLevel(4, ts.getScore());
                         break;
                 }
             }
