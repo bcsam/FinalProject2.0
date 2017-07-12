@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 /**
@@ -19,50 +20,48 @@ public class TonesFragment extends Fragment {
     TextView tvFearScore;
     TextView tvJoyScore;
     TextView tvSadnessScore;
+    ProgressBar pbAnger;
+    ProgressBar pbDisgust;
+    ProgressBar pbFear;
+    ProgressBar pbJoy;
+    ProgressBar pbSadness;
     TextBody textBody;
 
     public TonesFragment() {
         // Required empty public constructor
     }
 
-    /*_
-    public static TonesFragment newInstance(){
-        UserTimelineFragment userTimelineFragment = new UserTimelineFragment();
-        Bundle args = new Bundle();
-        args.putString("screen_name", screenName);
-        userTimelineFragment.setArguments(args);
-        return userTimelineFragment;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_tones, container, false);
+        textBody = getArguments().getParcelable("textBody");
+        tvAngerScore = (TextView) v.findViewById(R.id.tvAngerScore);
+        tvDisgustScore = (TextView) v.findViewById(R.id.tvDisgustScore);
+        tvFearScore = (TextView) v.findViewById(R.id.tvFearScore);
+        tvJoyScore = (TextView) v.findViewById(R.id.tvJoyScore);
+        tvSadnessScore = (TextView) v.findViewById(R.id.tvSadnessScore);
+        pbAnger = (ProgressBar) v.findViewById(R.id.pbAnger);
+        pbDisgust = (ProgressBar) v.findViewById(R.id.pbDisgust);
+        pbFear = (ProgressBar) v.findViewById(R.id.pbFear);
+        pbJoy = (ProgressBar) v.findViewById(R.id.pbJoy);
+        pbSadness = (ProgressBar) v.findViewById(R.id.pbSadness);
+        setTexts();
+        setProgressBars();
+        return v;
     }
-    */
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        /*textBody = getArguments().getParcelable("textBody");
-        tvAngerScore = (TextView) getView().findViewById(R.id.tvAngerScore);
-        tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
-        tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
-        tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
-        tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);
-
-        //setTexts();*/
     }
 
-    public void setTexts(){
+    public void setTexts() {
         tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
         tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
         tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
         tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
         tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tones, container, false);
     }
 
     /*
@@ -75,5 +74,17 @@ public class TonesFragment extends Fragment {
     }
     */
 
+    public void setProgressBars(){
+        pbAnger.setMax(100);
+        pbAnger.setProgress(textBody.getToneLevel(0));
+        pbDisgust.setMax(100);
+        pbDisgust.setProgress(textBody.getToneLevel(1));
+        pbFear.setMax(100);
+        pbFear.setProgress(textBody.getToneLevel(2));
+        pbJoy.setMax(100);
+        pbJoy.setProgress(textBody.getToneLevel(3));
+        pbSadness.setMax(100);
+        pbSadness.setProgress(textBody.getToneLevel(4));
+    }
 
 }
