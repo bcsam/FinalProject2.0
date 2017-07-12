@@ -25,16 +25,6 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        //Button btCheck = (Button) findViewById(btCheck);
-        //client = new AnalyzerClient();
-        /*Sentence s = new Sentence();
-        s.setMessage("I am so angry!");
-        client.getToneScores(s);
-        Log.i("Main", String.valueOf(s.getAngerLevel()));
-        TextBody tb = new TextBody();
-        TextBody.setMessage("I am so angry!");
-        client.getToneScores(tb);
-        Log.i("Main", String.valueOf(tb.getAngerLevel()));*/
 
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
