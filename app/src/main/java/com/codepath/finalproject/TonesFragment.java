@@ -20,44 +20,41 @@ public class TonesFragment extends Fragment {
     TextView tvFearScore;
     TextView tvJoyScore;
     TextView tvSadnessScore;
+    ProgressBar pbAnger;
+    ProgressBar pbDisgust;
+    ProgressBar pbFear;
+    ProgressBar pbJoy;
+    ProgressBar pbSadness;
     TextBody textBody;
 
     public TonesFragment() {
         // Required empty public constructor
     }
 
-    /*_
-    public static TonesFragment newInstance(){
-        UserTimelineFragment userTimelineFragment = new UserTimelineFragment();
-        Bundle args = new Bundle();
-        args.putString("screen_name", screenName);
-        userTimelineFragment.setArguments(args);
-        return userTimelineFragment;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_tones, container, false);
+        textBody = getArguments().getParcelable("textBody");
+        tvAngerScore = (TextView) v.findViewById(R.id.tvAngerScore);
+        tvDisgustScore = (TextView) v.findViewById(R.id.tvDisgustScore);
+        tvFearScore = (TextView) v.findViewById(R.id.tvFearScore);
+        tvJoyScore = (TextView) v.findViewById(R.id.tvJoyScore);
+        tvSadnessScore = (TextView) v.findViewById(R.id.tvSadnessScore);
+        pbAnger = (ProgressBar) v.findViewById(R.id.pbAnger);
+        pbDisgust = (ProgressBar) v.findViewById(R.id.pbDisgust);
+        pbFear = (ProgressBar) v.findViewById(R.id.pbFear);
+        pbJoy = (ProgressBar) v.findViewById(R.id.pbJoy);
+        pbSadness = (ProgressBar) v.findViewById(R.id.pbSadness);
+        setTexts();
+        setProgressBars();
+        return v;
     }
-    */
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-//<<<<<<< HEAD
-        /*TextBody textBody = getArguments().getParcelable("textBody");
-        tvAngerScore = textBody.getToneLevel();
-        tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
-        tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
-        tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
-        tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);*/
-//=======
-        textBody = getArguments().getParcelable("textBody");
-        tvAngerScore = (TextView) getView().findViewById(R.id.tvAngerScore);
-        tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
-        tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
-        tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
-        tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);
-
-        setTexts();
-        setProgressBars();
     }
 
     public void setTexts(){
@@ -66,14 +63,6 @@ public class TonesFragment extends Fragment {
         tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
         tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
         tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
-//>>>>>>> a43b6fbf2cadf35d520e0ebe06a4fca7ae06ff0e
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tones, container, false);
     }
 
     /*
@@ -87,9 +76,16 @@ public class TonesFragment extends Fragment {
     */
 
     public void setProgressBars(){
-        ProgressBar pbAnger = (ProgressBar) getView().findViewById(R.id.pbAnger);
         pbAnger.setMax(100);
         pbAnger.setProgress(textBody.getToneLevel(0));
+        pbDisgust.setMax(100);
+        pbDisgust.setProgress(textBody.getToneLevel(1));
+        pbFear.setMax(100);
+        pbFear.setProgress(textBody.getToneLevel(2));
+        pbJoy.setMax(100);
+        pbJoy.setProgress(textBody.getToneLevel(3));
+        pbSadness.setMax(100);
+        pbSadness.setProgress(textBody.getToneLevel(4));
     }
 
 }

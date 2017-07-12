@@ -51,8 +51,6 @@ public class PostCheckActivity extends AppCompatActivity {
         AnalyzerClient client = new AnalyzerClient();
         client.getToneScores(textBody);
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("textBody", textBody);
 
         TextView tvTextBody = (TextView) findViewById(R.id.tvTextBody);
         tvTextBody.setText(text); //check on why this doesn't work // TODO: 7/12/17
@@ -65,9 +63,9 @@ public class PostCheckActivity extends AppCompatActivity {
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TonesFragment(), "Tones");
-        adapter.addFrag(new StylesFragment(), "Styles");
-        adapter.addFrag(new SocialFragment(), "Social");//need to replace with fragments
+        adapter.addFrag(new TonesFragment(), "Tones", textBody);
+        adapter.addFrag(new StylesFragment(), "Styles", textBody);
+        adapter.addFrag(new SocialFragment(), "Social", textBody);
 
         viewPager.setAdapter(adapter);
 
@@ -134,7 +132,10 @@ public class PostCheckActivity extends AppCompatActivity {
                 return mFragmentList.size();
             }
 
-            public void addFrag(Fragment fragment, String title) {
+            public void addFrag(Fragment fragment, String title, TextBody textBody) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("textBody", textBody);
+                fragment.setArguments(bundle);
                 mFragmentList.add(fragment);
                 mFragmentTitleList.add(title);
             }
