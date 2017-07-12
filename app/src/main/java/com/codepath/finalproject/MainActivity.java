@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
 
     Button btCheck;
     EditText etBody;
+    EditText etName;
+    EditText etSubject;
     Context context;
     AnalyzerClient client;
     @Override
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
+        etName = (EditText) findViewById(R.id.etName);
+        etSubject = (EditText) findViewById(R.id.etSubject);
+
 
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +44,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSubmit(){
         String message = etBody.getText().toString();
+        String to = etName.getText().toString();
+        String subject = etSubject.getText().toString();
+
         Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
         intent.putExtra("message", message);
+        intent.putExtra("to", to);
+        intent.putExtra("subject", subject);
+
+        TextBody tb = new TextBody();
+        tb.setMessage(message);
+        client = new AnalyzerClient();
+        client.getToneScores(tb);
         MainActivity.this.startActivity(intent);
     }
 }

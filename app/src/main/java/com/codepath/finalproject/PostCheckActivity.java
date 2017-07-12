@@ -47,6 +47,9 @@ public class PostCheckActivity extends AppCompatActivity {
         AnalyzerClient client = new AnalyzerClient();
         client.getToneScores(textBody);
 
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("textBody", textBody);
+
         TextView tvTextBody = (TextView) findViewById(R.id.tvTextBody);
         tvTextBody.setText(text); //check on why this doesn't work // TODO: 7/12/17
         tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));

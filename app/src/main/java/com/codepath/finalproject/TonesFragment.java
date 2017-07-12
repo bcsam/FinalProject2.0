@@ -1,6 +1,7 @@
 package com.codepath.finalproject;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +19,33 @@ public class TonesFragment extends Fragment {
     TextView tvFearScore;
     TextView tvJoyScore;
     TextView tvSadnessScore;
+    TextBody textBody;
 
     public TonesFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        textBody = getArguments().getParcelable("textBody");
         tvAngerScore = (TextView) getView().findViewById(R.id.tvAngerScore);
         tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
         tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
         tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
         tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);
+
+        setTexts();
+    }
+
+    public void setTexts(){
+        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
+        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
+        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
+        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
+        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
     }
 
     @Override
