@@ -22,12 +22,13 @@ import java.util.List;
 public class PostCheckActivity extends AppCompatActivity {
 
     TextView tvBody;
+    String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_post_check);
-        String text = getIntent().getStringExtra("message");
+        text = getIntent().getStringExtra("message");
         TextBody textBody = new TextBody();
         textBody.setMessage(text);
         AnalyzerClient client = new AnalyzerClient();
@@ -57,7 +58,7 @@ public class PostCheckActivity extends AppCompatActivity {
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"andreadeoliveira123@gmail.com"});
         i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-        i.putExtra(Intent.EXTRA_TEXT, "body of email");
+        i.putExtra(Intent.EXTRA_TEXT, text);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
