@@ -8,62 +8,39 @@ import android.os.Parcelable;
  */
 
 public class TextBody implements Parcelable{
-    private double angerLevel;
-    private double disgustLevel;
-    private double fearLevel;
-    private double joyLevel;
-    private double sadnessLevel;
+    private int[] toneLevels;
+    private int[] styleLevels;
+    private int[] socialLevels;
     private String message;
 
-    protected TextBody(Parcel in) {
-        angerLevel = in.readDouble();
-        disgustLevel = in.readDouble();
-        fearLevel = in.readDouble();
-        joyLevel = in.readDouble();
-        sadnessLevel = in.readDouble();
-        message = in.readString();
+    public TextBody(){
+        toneLevels = new int[5];
+        styleLevels = new int[3];
+        socialLevels = new int[5];
     }
 
-    public TextBody(){}
-
-    public double getAngerLevel() {
-        return angerLevel;
+    public int getToneLevel(int tone){
+        return toneLevels[tone];
     }
 
-    public void setAngerLevel(double angerLevel) {
-        this.angerLevel = angerLevel;
+    public void setToneLevel(int tone, double level){
+        toneLevels[tone] = (int)(level*100);
     }
 
-    public double getDisgustLevel() {
-        return disgustLevel;
+    public int getStyleLevel(int style){
+        return styleLevels[style];
     }
 
-    public void setDisgustLevel(double digustLevel) {
-        this.disgustLevel = digustLevel;
+    public void setStyleLevel(int style, double level){
+        styleLevels[style] = (int)(level*100);
     }
 
-    public double getFearLevel() {
-        return fearLevel;
+    public int getSocialLevel(int social){
+        return socialLevels[social];
     }
 
-    public void setFearLevel(double fearLevel) {
-        this.fearLevel = fearLevel;
-    }
-
-    public double getJoyLevel() {
-        return joyLevel;
-    }
-
-    public void setJoyLevel(double joyLevel) {
-        this.joyLevel = joyLevel;
-    }
-
-    public double getSadnessLevel() {
-        return sadnessLevel;
-    }
-
-    public void setSadnessLevel(double sadnessLevel) {
-        this.sadnessLevel = sadnessLevel;
+    public void setSocialLevel(int social, double level){
+        socialLevels[social] = (int)(level*100);
     }
 
     public String getMessage() {
@@ -74,54 +51,40 @@ public class TextBody implements Parcelable{
         this.message = message;
     }
 
-    public String getColor() {
-        String tone = "";
-        Double level = 0.00;
-        if (angerLevel > level) {
-            level = angerLevel;
-            tone = "Anger";
+    public String getToneColor() {
+        int tone = 6;
+        int level = 0;
+        for(int i=0; i<5; i++){
+            if(toneLevels[i] > level) {
+                level = toneLevels[i];
+                tone = i;
+            }
         }
-        else if (disgustLevel > level) {
-            level = disgustLevel;
-            tone = "Disgust";
-        }
-        else if (fearLevel > level) {
-            level = fearLevel;
-            tone = "Fear";
-        }
-        else if (joyLevel > level) {
-            level = joyLevel;
-            tone = "Joy";
-        }
-        else if (sadnessLevel > level) {
-            level = sadnessLevel;
-            tone = "Sadness";
-        }
-        if(level < .5)
+        if(level < 50)
             return "#00000000";
         switch (tone) {
-            case ("Anger"):
-                if (level > .75)
+            case (1):
+                if (level > 75)
                     return "#b30000";
                 else
                     return "#ff8080";
-            case ("Disgust"):
-                if (level > .75)
+            case (2):
+                if (level > 75)
                     return "#5900b3";
                 else
                     return "#cc99ff";
-            case ("Fear"):
-                if (level > .75)
+            case (3):
+                if (level > 75)
                     return "#267326";
                 else
                     return "#8cd98c";
-            case ("Joy"):
-                if (level > .75)
+            case (4):
+                if (level > 75)
                     return "#e6b800";
                 else
                     return "#ffdb4d";
-            case ("Sadness"):
-                if (level > .75)
+            case (5):
+                if (level > 75)
                     return "#004d99";
                 else
                     return "#80bfff";
@@ -129,17 +92,6 @@ public class TextBody implements Parcelable{
         return "#00000000";
     }
 
-    public static final Creator<TextBody> CREATOR = new Creator<TextBody>() {
-        @Override
-        public TextBody createFromParcel(Parcel in) {
-            return new TextBody(in);
-        }
-
-        @Override
-        public TextBody[] newArray(int size) {
-            return new TextBody[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -147,12 +99,29 @@ public class TextBody implements Parcelable{
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeDouble(angerLevel);
-        parcel.writeDouble(disgustLevel);
-        parcel.writeDouble(fearLevel);
-        parcel.writeDouble(joyLevel);
-        parcel.writeDouble(sadnessLevel);
-        parcel.writeString(message);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeIntArray(this.toneLevels);
+        dest.writeIntArray(this.styleLevels);
+        dest.writeIntArray(this.socialLevels);
+        dest.writeString(this.message);
     }
+
+    protected TextBody(Parcel in) {
+        this.toneLevels = in.createIntArray();
+        this.styleLevels = in.createIntArray();
+        this.socialLevels = in.createIntArray();
+        this.message = in.readString();
+    }
+
+    public static final Creator<TextBody> CREATOR = new Creator<TextBody>() {
+        @Override
+        public TextBody createFromParcel(Parcel source) {
+            return new TextBody(source);
+        }
+
+        @Override
+        public TextBody[] newArray(int size) {
+            return new TextBody[size];
+        }
+    };
 }
