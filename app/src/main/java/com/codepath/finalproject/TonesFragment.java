@@ -19,6 +19,7 @@ public class TonesFragment extends Fragment {
     TextView tvFearScore;
     TextView tvJoyScore;
     TextView tvSadnessScore;
+    TextBody textBody;
 
     public TonesFragment() {
         // Required empty public constructor
@@ -29,12 +30,31 @@ public class TonesFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
 
+<<<<<<< HEAD
         /*TextBody textBody = getArguments().getParcelable("textBody");
         tvAngerScore = textBody.getToneLevel();
         tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
         tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
         tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
         tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);*/
+=======
+        textBody = getArguments().getParcelable("textBody");
+        tvAngerScore = (TextView) getView().findViewById(R.id.tvAngerScore);
+        tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
+        tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
+        tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
+        tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);
+
+        setTexts();
+    }
+
+    public void setTexts(){
+        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
+        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
+        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
+        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
+        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
+>>>>>>> a43b6fbf2cadf35d520e0ebe06a4fca7ae06ff0e
     }
 
     @Override
@@ -53,4 +73,6 @@ public class TonesFragment extends Fragment {
         tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
     }
     */
+
+
 }
