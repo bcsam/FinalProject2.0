@@ -123,6 +123,14 @@ public class PostCheckActivity extends AppCompatActivity {
         tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
     }
 
+    public void setProgressBars(){
+        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
+        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
+        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
+        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
+        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
+    }
+
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
             private final List<Fragment> mFragmentList = new ArrayList<>();
             private final List<String> mFragmentTitleList = new ArrayList<>();
