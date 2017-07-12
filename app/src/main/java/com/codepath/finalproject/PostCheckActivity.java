@@ -69,7 +69,6 @@ public class PostCheckActivity extends AppCompatActivity {
 
         initializeViews();
         setOnClickListeners();
-        setScoreTexts();
     }
 
     public void sendEmail(View view) {
@@ -106,29 +105,8 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void initializeViews(){
-        tvAngerScore = (TextView) findViewById(R.id.tvAngerScore);
-        tvDisgustScore = (TextView) findViewById(R.id.tvDisgustScore);
-        tvFearScore = (TextView) findViewById(R.id.tvFearScore);
-        tvJoyScore = (TextView) findViewById(R.id.tvJoyScore);
-        tvSadnessScore = (TextView) findViewById(R.id.tvSadnessScore);
         btSend = (Button) findViewById(R.id.btSend);
         btEdit = (Button) findViewById(R.id.btEdit);
-    }
-
-    public void setScoreTexts(){
-        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
-        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
-        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
-        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
-        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
-    }
-
-    public void setProgressBars(){
-        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
-        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
-        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
-        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
-        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
