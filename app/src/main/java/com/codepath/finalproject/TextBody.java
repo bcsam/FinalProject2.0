@@ -75,7 +75,7 @@ public class TextBody implements Parcelable{
     }
 
     public String getColor() {
-        String tone;
+        String tone = "";
         Double level = 0.00;
         if (angerLevel > level) {
             level = angerLevel;
@@ -97,7 +97,7 @@ public class TextBody implements Parcelable{
             level = sadnessLevel;
             tone = "Sadness";
         }
-        else
+        if(level < .5)
             return "#00000000";
         switch (tone) {
             case ("Anger"):
