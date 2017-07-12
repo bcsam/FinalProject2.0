@@ -11,7 +11,7 @@ import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
 /**
  * Created by vf608 on 7/11/17.
  */
-/*
+
 public class AnalyzerClient {
     //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
     public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
@@ -25,33 +25,31 @@ public class AnalyzerClient {
         service.setUsernameAndPassword(USERNAME, PASSWORD);
     }
 
-    public void getToneScores(Sentence sentence) {
+    public void getToneScores(TextBody textBody) {
         ToneOptions options = new ToneOptions.Builder()
                 .addTone(Tone.EMOTION).build();
-        options.includeSentences();
         ToneAnalysis tone =
-                service.getTone(sentence.getMessage(), options).execute();
-        for(ToneCategory tc : tone.getSentencesTone().get(0).getTones()){
+                service.getTone(textBody.getMessage(), options).execute();
+        for(ToneCategory tc : tone.getDocumentTone().getTones()){
             for(ToneScore ts : tc.getTones()){
                 switch(ts.getName()){
                     case("Anger"):
-                        sentence.setAngerLevel(ts.getScore());
+                        textBody.setAngerLevel(ts.getScore());
                         break;
                     case("Disgust"):
-                        sentence.setDigustLevel(ts.getScore());
+                        textBody.setDigustLevel(ts.getScore());
                         break;
                     case("Fear"):
-                        sentence.setFearLevel(ts.getScore());
+                        textBody.setFearLevel(ts.getScore());
                         break;
                     case("Joy"):
-                        sentence.setJoyLevel(ts.getScore());
+                        textBody.setJoyLevel(ts.getScore());
                         break;
                     case("Sadness"):
-                        sentence.setSadnessLevel(ts.getScore());
+                        textBody.setSadnessLevel(ts.getScore());
                         break;
                 }
             }
         }
     }
 }
-*/
