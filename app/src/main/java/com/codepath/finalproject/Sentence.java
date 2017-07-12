@@ -1,12 +1,9 @@
 package com.codepath.finalproject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * Created by bcsam on 7/11/17.
  */
-
+/*
 public class Sentence implements Parcelable {
     private double angerLevel;
     private double digustLevel;
@@ -65,7 +62,8 @@ public class Sentence implements Parcelable {
 
     public void setMessage(String message) {
         this.message = message;
-
+    }
+    /*
     protected Sentence(Parcel in) {
         angerLevel = in.readDouble();
         digustLevel = in.readDouble();
@@ -101,4 +99,6 @@ public class Sentence implements Parcelable {
         parcel.writeDouble(sadnessLevel);
         parcel.writeString(message);
     }
+
 }
+*/

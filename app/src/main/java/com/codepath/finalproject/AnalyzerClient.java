@@ -11,7 +11,7 @@ import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
 /**
  * Created by vf608 on 7/11/17.
  */
-
+/*
 public class AnalyzerClient {
     //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
     public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
@@ -54,3 +54,4 @@ public class AnalyzerClient {
         }
     }
 }
+*/
