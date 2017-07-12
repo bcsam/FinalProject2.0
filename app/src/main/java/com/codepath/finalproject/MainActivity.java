@@ -51,12 +51,6 @@ public class MainActivity extends AppCompatActivity {
         String message = etBody.getText().toString();
         Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
         intent.putExtra("message", message);
-
-        TextBody tb = new TextBody();
-        tb.setMessage(message);
-        client = new AnalyzerClient();
-        client.getToneScores(tb);
-
         MainActivity.this.startActivity(intent);
     }
 }
