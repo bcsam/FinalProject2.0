@@ -30,6 +30,7 @@ public class AnalyzerClient {
                 .addTone(Tone.EMOTION).build();
         ToneAnalysis tone =
                 service.getTone(textBody.getMessage(), options).execute();
+
         for(ToneCategory tc : tone.getDocumentTone().getTones()){
             for(ToneScore ts : tc.getTones()){
                 switch(ts.getName()){
