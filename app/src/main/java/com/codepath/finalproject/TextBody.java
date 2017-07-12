@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class TextBody implements Parcelable{
     private double angerLevel;
-    private double digustLevel;
+    private double disgustLevel;
     private double fearLevel;
     private double joyLevel;
     private double sadnessLevel;
@@ -17,7 +17,7 @@ public class TextBody implements Parcelable{
 
     protected TextBody(Parcel in) {
         angerLevel = in.readDouble();
-        digustLevel = in.readDouble();
+        disgustLevel = in.readDouble();
         fearLevel = in.readDouble();
         joyLevel = in.readDouble();
         sadnessLevel = in.readDouble();
@@ -34,12 +34,12 @@ public class TextBody implements Parcelable{
         this.angerLevel = angerLevel;
     }
 
-    public double getDigustLevel() {
-        return digustLevel;
+    public double getDisgustLevel() {
+        return disgustLevel;
     }
 
-    public void setDigustLevel(double digustLevel) {
-        this.digustLevel = digustLevel;
+    public void setDisgustLevel(double digustLevel) {
+        this.disgustLevel = digustLevel;
     }
 
     public double getFearLevel() {
@@ -74,6 +74,61 @@ public class TextBody implements Parcelable{
         this.message = message;
     }
 
+    public String getColor() {
+        String tone;
+        Double level = 0.00;
+        if (angerLevel > level) {
+            level = angerLevel;
+            tone = "Anger";
+        }
+        else if (disgustLevel > level) {
+            level = disgustLevel;
+            tone = "Disgust";
+        }
+        else if (fearLevel > level) {
+            level = fearLevel;
+            tone = "Fear";
+        }
+        else if (joyLevel > level) {
+            level = joyLevel;
+            tone = "Joy";
+        }
+        else if (sadnessLevel > level) {
+            level = sadnessLevel;
+            tone = "Sadness";
+        }
+        else
+            return "#00000000";
+        switch (tone) {
+            case ("Anger"):
+                if (level > .75)
+                    return "#b30000";
+                else
+                    return "#ff8080";
+            case ("Disgust"):
+                if (level > .75)
+                    return "#5900b3";
+                else
+                    return "#cc99ff";
+            case ("Fear"):
+                if (level > .75)
+                    return "#267326";
+                else
+                    return "#8cd98c";
+            case ("Joy"):
+                if (level > .75)
+                    return "#e6b800";
+                else
+                    return "#ffdb4d";
+            case ("Sadness"):
+                if (level > .75)
+                    return "#004d99";
+                else
+                    return "#80bfff";
+        }
+        return "#00000000";
+    }
+
     public static final Creator<TextBody> CREATOR = new Creator<TextBody>() {
         @Override
         public TextBody createFromParcel(Parcel in) {
@@ -94,7 +149,7 @@ public class TextBody implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeDouble(angerLevel);
-        parcel.writeDouble(digustLevel);
+        parcel.writeDouble(disgustLevel);
         parcel.writeDouble(fearLevel);
         parcel.writeDouble(joyLevel);
         parcel.writeDouble(sadnessLevel);

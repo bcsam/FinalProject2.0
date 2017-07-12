@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
         //Button btCheck = (Button) findViewById(btCheck);
+        //client = new AnalyzerClient();
         /*Sentence s = new Sentence();
         s.setMessage("I am so angry!");
-        client = new AnalyzerClient();
         client.getToneScores(s);
         Log.i("Main", String.valueOf(s.getAngerLevel()));
         TextBody tb = new TextBody();
@@ -42,15 +42,22 @@ public class MainActivity extends AppCompatActivity {
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
-                intent.putExtra("text", etBody.getText().toString());
-                MainActivity.this.startActivity(intent);
+                onSubmit();
             }
         });
     }
 
-        public void onSubmit(){
+    public void onSubmit(){
+        String message = etBody.getText().toString();
+        Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
+        intent.putExtra("message", message);
 
+        TextBody tb = new TextBody();
+        tb.setMessage(message);
+        client = new AnalyzerClient();
+        client.getToneScores(tb);
+
+        MainActivity.this.startActivity(intent);
     }
-    }
+}
 

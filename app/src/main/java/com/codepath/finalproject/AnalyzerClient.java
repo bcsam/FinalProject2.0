@@ -38,7 +38,7 @@ public class AnalyzerClient {
                         textBody.setAngerLevel(ts.getScore());
                         break;
                     case("Disgust"):
-                        textBody.setDigustLevel(ts.getScore());
+                        textBody.setDisgustLevel(ts.getScore());
                         break;
                     case("Fear"):
                         textBody.setFearLevel(ts.getScore());
