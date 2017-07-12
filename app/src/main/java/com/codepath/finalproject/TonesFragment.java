@@ -1,6 +1,7 @@
 package com.codepath.finalproject;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +25,12 @@ public class TonesFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        tvAngerScore = (TextView) getView().findViewById(R.id.tvAngerScore);
+
+        TextBody textBody = getArguments().getParcelable("textBody");
+        tvAngerScore = textBody.getToneLevel();
         tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
         tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
         tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
