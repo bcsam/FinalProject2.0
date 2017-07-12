@@ -25,19 +25,29 @@ public class TonesFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /*_
+    public static TonesFragment newInstance(){
+        UserTimelineFragment userTimelineFragment = new UserTimelineFragment();
+        Bundle args = new Bundle();
+        args.putString("screen_name", screenName);
+        userTimelineFragment.setArguments(args);
+        return userTimelineFragment;
+    }
+    */
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
         /*TextBody textBody = getArguments().getParcelable("textBody");
         tvAngerScore = textBody.getToneLevel();
         tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
         tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
         tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
         tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);*/
-=======
+//=======
         textBody = getArguments().getParcelable("textBody");
         tvAngerScore = (TextView) getView().findViewById(R.id.tvAngerScore);
         tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
@@ -54,7 +64,7 @@ public class TonesFragment extends Fragment {
         tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
         tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
         tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
->>>>>>> a43b6fbf2cadf35d520e0ebe06a4fca7ae06ff0e
+//>>>>>>> a43b6fbf2cadf35d520e0ebe06a4fca7ae06ff0e
     }
 
     @Override
