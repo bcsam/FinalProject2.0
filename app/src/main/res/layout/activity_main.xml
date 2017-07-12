@@ -16,6 +16,8 @@
         android:autoLink="all"
         android:background="@android:color/transparent"
         android:hint="To"
+        android:inputType=
+            "textCapSentences|textAutoCorrect"
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_editor_absoluteY="16dp" />
 
@@ -37,6 +39,8 @@
         android:background="@android:color/transparent"
         android:hint="Subject"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:inputType=
+            "textCapSentences|textAutoCorrect"
         tools:layout_editor_absoluteY="16dp" />
 
     <View
@@ -57,7 +61,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_editor_absoluteY="16dp"
         android:layout_above="@+id/btCheck"
-        android:layout_below="@+id/etSubject" />
+        android:layout_below="@+id/etSubject"
+        android:inputType=
+            "textCapSentences|textAutoCorrect"
+        android:imeOptions="actionDone" />
 
     <Button
         android:id="@+id/btCheck"
