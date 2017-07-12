@@ -3,17 +3,25 @@ package com.codepath.finalproject;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.codepath.finalproject.R.id.tvAngerScore;
+import static com.codepath.finalproject.R.id.tvDisgustScore;
+import static com.codepath.finalproject.R.id.tvFearScore;
+import static com.codepath.finalproject.R.id.tvJoyScore;
+import static com.codepath.finalproject.R.id.tvSadnessScore;
 
 /**
  * Created by bcsam on 7/11/17.
@@ -21,36 +29,53 @@ import java.util.List;
 
 public class PostCheckActivity extends AppCompatActivity {
 
-    TextView tvBody;
+    TextView tvTextBody;
+    TextBody textBody;
     String text;
+    Button btSend;
+    Button btEdit;
+    TextView tvAngerScore;
+    TextView tvDisgustScore;
+    TextView tvFearScore;
+    TextView tvJoyScore;
+    TextView tvSadnessScore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_post_check);
         text = getIntent().getStringExtra("message");
+
         TextBody textBody = new TextBody();
         textBody.setMessage(text);
+
         AnalyzerClient client = new AnalyzerClient();
         client.getToneScores(textBody);
-        TextView textView = (TextView) findViewById(R.id.tvTextBody);
-        textView.setText(text);
-        textView.setTextColor(Color.parseColor(textBody.getColor()));
 
-        //new code for tabs
+        TextView tvTextBody = (TextView) findViewById(R.id.tvTextBody);
+        tvTextBody.setText(text); //check on why this doesn't work // TODO: 7/12/17
+        tvTextBody.setTextColor(Color.parseColor(textBody.getColor()));
+
+        //new code for tabs below
 
         // Locate the viewpager in activity_main.xml
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        /*adapter.addFrag(new LeftFragment(), "Players");//need to replace with fragments
-        adapter.addFrag(new RightFragment(), "Prizes");
+        adapter.addFrag(new TonesFragment(), "Tones");
+        adapter.addFrag(new StylesFragment(), "Styles");
+        adapter.addFrag(new SocialFragment(), "Social");//need to replace with fragments
 
         viewPager.setAdapter(adapter);
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
-        mTabLayout.setupWithViewPager(viewPager);*/
+        mTabLayout.setupWithViewPager(viewPager);
+
+        setOnClickListeners();
+        initializeViews();
+        setScoreTexts();
     }
 
     public void sendEmail(View view) {
@@ -66,6 +91,42 @@ public class PostCheckActivity extends AppCompatActivity {
         }
     }
 
+    public void setOnClickListeners(){
+        btSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String message = tvTextBody.getText().toString(); 
+                Intent i = new Intent(PostCheckActivity.this, MainActivity.class);
+                PostCheckActivity.this.startActivity(i);
+            }
+
+        } );
+
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String message = tvTextBody.getText().toString(); 
+                Intent intent = new Intent(PostCheckActivity.this, MainActivity.class); // TODO: where after clicking edit
+                intent.putExtra("message", message); 
+            } 
+        });
+    }
+
+    public void initializeViews(){
+        tvAngerScore = (TextView) findViewById(R.id.tvAngerScore);
+        tvDisgustScore = (TextView) findViewById(R.id.tvDisgustScore);
+        tvFearScore = (TextView) findViewById(R.id.tvFearScore);
+        tvJoyScore = (TextView) findViewById(R.id.tvJoyScore);
+        tvSadnessScore = (TextView) findViewById(R.id.tvSadnessScore);
+    }
+
+    public void setScoreTexts(){
+        tvAngerScore.setText(Double.toString(textBody.getAngerLevel()));
+        tvDisgustScore.setText(Double.toString(textBody.getDisgustLevel()));
+        tvFearScore.setText(Double.toString(textBody.getFearLevel()));
+        tvJoyScore.setText(Double.toString(textBody.getJoyLevel()));
+        tvSadnessScore.setText(Double.toString(textBody.getSadnessLevel()));
+    }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
             private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -94,6 +155,6 @@ public class PostCheckActivity extends AppCompatActivity {
             public CharSequence getPageTitle(int position) {
                 return mFragmentTitleList.get(position);
             }
-        }
     }
+}
 
