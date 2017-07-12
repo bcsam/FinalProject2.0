@@ -97,35 +97,35 @@
 
 
         <TextView
-            android:id="@+id/tvAngerScore"
+            android:id="@+id/tvOpennessScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/tvDisgustScore"
+            android:id="@+id/tvConscientiousnessScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/tvFearScore"
+            android:id="@+id/tvExtraversionScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/tvJoyScore"
+            android:id="@+id/tvAgreeablenessScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/tvSadnessScore"
+            android:id="@+id/tvEmotionalRangeScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

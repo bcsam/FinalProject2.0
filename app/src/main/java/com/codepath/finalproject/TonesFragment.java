@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by bcsam on 7/12/17.
@@ -12,13 +13,25 @@ import android.view.ViewGroup;
 
 public class TonesFragment extends Fragment {
 
+    TextView tvAngerScore;
+    TextView tvDisgustScore;
+    TextView tvFearScore;
+    TextView tvJoyScore;
+    TextView tvSadnessScore;
+
     public TonesFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        tvAngerScore = (TextView) getView().findViewById(R.id.tvAngerScore);
+        tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
+        tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
+        tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
+        tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);
     }
 
     @Override
@@ -27,4 +40,14 @@ public class TonesFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tones, container, false);
     }
+
+    /*
+    public void setScoreTexts(){
+        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
+        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
+        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
+        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
+        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
+    }
+    */
 }

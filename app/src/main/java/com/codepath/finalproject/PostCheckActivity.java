@@ -49,7 +49,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
         TextView tvTextBody = (TextView) findViewById(R.id.tvTextBody);
         tvTextBody.setText(text); //check on why this doesn't work // TODO: 7/12/17
-        tvTextBody.setTextColor(Color.parseColor(textBody.getColor()));
+        tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));
 
         //new code for tabs below
 
@@ -69,7 +69,6 @@ public class PostCheckActivity extends AppCompatActivity {
 
         initializeViews();
         setOnClickListeners();
-        setScoreTexts();
     }
 
     public void sendEmail(View view) {
@@ -106,21 +105,8 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void initializeViews(){
-        tvAngerScore = (TextView) findViewById(R.id.tvAngerScore);
-        tvDisgustScore = (TextView) findViewById(R.id.tvDisgustScore);
-        tvFearScore = (TextView) findViewById(R.id.tvFearScore);
-        tvJoyScore = (TextView) findViewById(R.id.tvJoyScore);
-        tvSadnessScore = (TextView) findViewById(R.id.tvSadnessScore);
         btSend = (Button) findViewById(R.id.btSend);
         btEdit = (Button) findViewById(R.id.btEdit);
-    }
-
-    public void setScoreTexts(){
-        tvAngerScore.setText(Double.toString(textBody.getAngerLevel()));
-        tvDisgustScore.setText(Double.toString(textBody.getDisgustLevel()));
-        tvFearScore.setText(Double.toString(textBody.getFearLevel()));
-        tvJoyScore.setText(Double.toString(textBody.getJoyLevel()));
-        tvSadnessScore.setText(Double.toString(textBody.getSadnessLevel()));
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
