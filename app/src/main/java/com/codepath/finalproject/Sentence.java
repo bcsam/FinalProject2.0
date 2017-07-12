@@ -9,19 +9,20 @@ import android.os.Parcelable;
 
 public class Sentence implements Parcelable {
     private double angerLevel;
-    private double digustLevel;
+    private double disgustLevel;
     private double fearLevel;
     private double joyLevel;
     private double sadnessLevel;
     private String message;
+    private String color;
 
     public Sentence() {
-
+        color = "#00000000";
     }
 
     protected Sentence(Parcel in) {
         angerLevel = in.readDouble();
-        digustLevel = in.readDouble();
+        disgustLevel = in.readDouble();
         fearLevel = in.readDouble();
         joyLevel = in.readDouble();
         sadnessLevel = in.readDouble();
@@ -31,7 +32,7 @@ public class Sentence implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeDouble(angerLevel);
-        dest.writeDouble(digustLevel);
+        dest.writeDouble(disgustLevel);
         dest.writeDouble(fearLevel);
         dest.writeDouble(joyLevel);
         dest.writeDouble(sadnessLevel);
@@ -63,12 +64,12 @@ public class Sentence implements Parcelable {
         this.angerLevel = angerLevel;
     }
 
-    public double getDigustLevel() {
-        return digustLevel;
+    public double getDisgustLevel() {
+        return disgustLevel;
     }
 
-    public void setDigustLevel(double digustLevel) {
-        this.digustLevel = digustLevel;
+    public void setDisgustLevel(double digustLevel) {
+        this.disgustLevel = digustLevel;
     }
 
     public double getFearLevel() {

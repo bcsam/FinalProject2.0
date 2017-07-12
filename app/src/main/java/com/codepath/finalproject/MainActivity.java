@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,15 +26,15 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
         //Button btCheck = (Button) findViewById(btCheck);
-        Sentence s = new Sentence();
+        //client = new AnalyzerClient();
+        /*Sentence s = new Sentence();
         s.setMessage("I am so angry!");
-        client = new AnalyzerClient();
         client.getToneScores(s);
         Log.i("Main", String.valueOf(s.getAngerLevel()));
         TextBody tb = new TextBody();
         TextBody.setMessage("I am so angry!");
         client.getToneScores(tb);
-        Log.i("Main", String.valueOf(tb.getAngerLevel()));
+        Log.i("Main", String.valueOf(tb.getAngerLevel()));*/
 
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
