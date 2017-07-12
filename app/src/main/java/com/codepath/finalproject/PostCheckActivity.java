@@ -53,7 +53,7 @@ public class PostCheckActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(viewPager);*/
     }
 
-    public void hello(View view) {
+    public void sendEmail(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"andreadeoliveira123@gmail.com"});
