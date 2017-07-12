@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,35 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 onSubmit();
             }
         });
-
-        etBody.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    sendMessage();
-                    handled = true;
-                }
-                return handled;
-            }
-        });
-
     }
 
     public void onSubmit(){
-        String message = etBody.getText().toString();
-        Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
-        intent.putExtra("message", message);
-
-        TextBody tb = new TextBody();
-        tb.setMessage(message);
-        client = new AnalyzerClient();
-        client.getToneScores(tb);
-
-        MainActivity.this.startActivity(intent);
-    }
-
-    public void sendMessage () {
         String message = etBody.getText().toString();
         Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
         intent.putExtra("message", message);
