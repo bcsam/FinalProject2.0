@@ -3,6 +3,7 @@ package com.codepath.finalproject;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -44,13 +45,16 @@ public class PostCheckActivity extends AppCompatActivity {
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        /*adapter.addFrag(new LeftFragment(), "Players");//need to replace with fragments
-        adapter.addFrag(new RightFragment(), "Prizes");
+        adapter.addFrag(new TonesFragment(), "Tones");
+        adapter.addFrag(new StylesFragment(), "Styles");
+        adapter.addFrag(new SocialFragment(), "Social");//need to replace with fragments
+
+
 
         viewPager.setAdapter(adapter);
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
-        mTabLayout.setupWithViewPager(viewPager);*/
+        mTabLayout.setupWithViewPager(viewPager);
     }
 
     public void sendEmail(View view) {
