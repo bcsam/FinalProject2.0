@@ -29,12 +29,12 @@ public class TonesFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
 
-        TextBody textBody = getArguments().getParcelable("textBody");
+        /*TextBody textBody = getArguments().getParcelable("textBody");
         tvAngerScore = textBody.getToneLevel();
         tvDisgustScore = (TextView) getView().findViewById(R.id.tvDisgustScore);
         tvFearScore = (TextView) getView().findViewById(R.id.tvFearScore);
         tvJoyScore = (TextView) getView().findViewById(R.id.tvJoyScore);
-        tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);
+        tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);*/
     }
 
     @Override

@@ -26,6 +26,8 @@ public class PostCheckActivity extends AppCompatActivity {
     TextView tvTextBody;
     TextBody textBody;
     String text;
+    String subject;
+    String recipient;
     Button btSend;
     Button btEdit;
     TextView tvAngerScore;
@@ -40,6 +42,8 @@ public class PostCheckActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_post_check);
         text = getIntent().getStringExtra("message");
+        recipient = getIntent().getStringExtra("to");
+        subject = getIntent().getStringExtra("subject");
 
         textBody = new TextBody();
         textBody.setMessage(text);
@@ -77,8 +81,8 @@ public class PostCheckActivity extends AppCompatActivity {
     public void sendEmail(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"andreadeoliveira123@gmail.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
+        i.putExtra(Intent.EXTRA_SUBJECT, subject);
         i.putExtra(Intent.EXTRA_TEXT, text);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
@@ -88,13 +92,13 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void setOnClickListeners(){
-        btSend.setOnClickListener(new View.OnClickListener(){
+        /*btSend.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                String message = tvTextBody.getText().toString();
+                //String message = tvTextBody.getText().toString();
                 Intent i = new Intent(PostCheckActivity.this, MainActivity.class);
                 PostCheckActivity.this.startActivity(i);
-        }});
+        }});*/
 
         btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
