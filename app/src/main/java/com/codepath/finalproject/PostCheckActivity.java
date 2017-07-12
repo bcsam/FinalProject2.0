@@ -17,12 +17,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codepath.finalproject.R.id.tvAngerScore;
-import static com.codepath.finalproject.R.id.tvDisgustScore;
-import static com.codepath.finalproject.R.id.tvFearScore;
-import static com.codepath.finalproject.R.id.tvJoyScore;
-import static com.codepath.finalproject.R.id.tvSadnessScore;
-
 /**
  * Created by bcsam on 7/11/17.
  */
@@ -47,7 +41,7 @@ public class PostCheckActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_post_check);
         text = getIntent().getStringExtra("message");
 
-        TextBody textBody = new TextBody();
+        textBody = new TextBody();
         textBody.setMessage(text);
 
         AnalyzerClient client = new AnalyzerClient();
@@ -73,8 +67,8 @@ public class PostCheckActivity extends AppCompatActivity {
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
         mTabLayout.setupWithViewPager(viewPager);
 
-        setOnClickListeners();
         initializeViews();
+        setOnClickListeners();
         setScoreTexts();
     }
 
@@ -92,23 +86,22 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void setOnClickListeners(){
-        btSend.setOnClickListener(new View.OnClickListener() {
+        btSend.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                String message = tvTextBody.getText().toString(); 
+            public void onClick(View view){
+                String message = tvTextBody.getText().toString();
                 Intent i = new Intent(PostCheckActivity.this, MainActivity.class);
                 PostCheckActivity.this.startActivity(i);
-            }
+        }});
 
-        } );
-
-        btEdit.setOnClickListener(new View.OnClickListener() {
+        btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                String message = tvTextBody.getText().toString(); 
-                Intent intent = new Intent(PostCheckActivity.this, MainActivity.class); // TODO: where after clicking edit
-                intent.putExtra("message", message); 
-            } 
+            public void onClick(View view){
+                String message = tvTextBody.getText().toString();
+                Intent intent = new Intent(PostCheckActivity.this, MainActivity.class);
+                intent.putExtra("message", message);
+                PostCheckActivity.this.startActivity(intent);
+            }
         });
     }
 
@@ -118,6 +111,8 @@ public class PostCheckActivity extends AppCompatActivity {
         tvFearScore = (TextView) findViewById(R.id.tvFearScore);
         tvJoyScore = (TextView) findViewById(R.id.tvJoyScore);
         tvSadnessScore = (TextView) findViewById(R.id.tvSadnessScore);
+        btSend = (Button) findViewById(R.id.btSend);
+        btEdit = (Button) findViewById(R.id.btEdit);
     }
 
     public void setScoreTexts(){
