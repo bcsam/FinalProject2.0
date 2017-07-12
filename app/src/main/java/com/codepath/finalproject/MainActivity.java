@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways 
 
 
     Button btCheck;
