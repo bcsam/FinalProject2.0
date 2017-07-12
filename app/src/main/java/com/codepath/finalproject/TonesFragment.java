@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 /**
@@ -38,6 +39,7 @@ public class TonesFragment extends Fragment {
         tvSadnessScore = (TextView) getView().findViewById(R.id.tvSadnessScore);
 
         setTexts();
+        setProgressBars();
     }
 
     public void setTexts(){
@@ -65,5 +67,10 @@ public class TonesFragment extends Fragment {
     }
     */
 
+    public void setProgressBars(){
+        ProgressBar pbAnger = (ProgressBar) getView().findViewById(R.id.pbAnger);
+        pbAnger.setMax(100);
+        pbAnger.setProgress(textBody.getToneLevel(0));
+    }
 
 }
