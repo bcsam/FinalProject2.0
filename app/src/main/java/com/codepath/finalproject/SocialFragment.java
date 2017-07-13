@@ -83,5 +83,4 @@ public class SocialFragment extends Fragment{
         pbEmotionalRange.setProgress(textBody.getSocialLevel(4));
         pbEmotionalRange.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor(textBody.getSocialLevel(4))), PorterDuff.Mode.SRC_IN);
     }
-
 }

@@ -59,7 +59,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
         //Code for tabs below
 
-        // Locate the viewpager in activity_main.xml
+        // Locate the viewpager in activity_composeose.xml
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
         // Set the ViewPagerAdapter into ViewPager
