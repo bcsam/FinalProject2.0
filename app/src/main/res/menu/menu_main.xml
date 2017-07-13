@@ -11,11 +11,13 @@
     <item
         android:id="@+id/miProfile"
         android:icon="@drawable/ic_person_white"
-        android:title="Item"
+        android:onClick="launchProfileActivity"
+        android:title="Profile"
         app:showAsAction="always" />
     <item
         android:id="@+id/miCompose"
         android:icon="@drawable/ic_compose_white_24dp"
-        android:title="Item"
+        android:onClick="launchComposeActivity"
+        android:title="Compose"
         app:showAsAction="always" />
 </menu>
