@@ -53,7 +53,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
 
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
-        tvTextBody.setText("hello there"); //check on why this doesn't work // TODO: 7/12/17
+        tvTextBody.setText(text);
         tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));
 
         //new code for tabs below
