@@ -1,20 +1,9 @@
 package com.codepath.finalproject;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 /**
  * Created by bcsam on 7/12/17.
  */
-
+/*
 public class UtteranceFragment extends Fragment {
 
     TextView tvSadScore;
@@ -101,3 +90,4 @@ public class UtteranceFragment extends Fragment {
     }
 
 }
+*/

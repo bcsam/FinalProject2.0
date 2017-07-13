@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".PostCheckActivity" />
-        <activity android:name=".UtteranceFragment"></activity>
+        <activity android:name=".ComposeActivity"/>
+        <activity android:name=".ProfileActivity"/>
     </application>
 
 </manifest>
