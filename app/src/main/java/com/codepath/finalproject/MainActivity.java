@@ -30,14 +30,14 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
     public void launchProfileActivity(MenuItem item) {
         //launches the profile view
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
+        Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+        MainActivity.this.startActivity(i);
     }
 
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
-        Intent i = new Intent(this, ComposeActivity.class);
-        startActivity(i);
+        Intent i = new Intent(MainActivity.this, ComposeActivity.class);
+        MainActivity.this.startActivity(i);
     }
 }
 
