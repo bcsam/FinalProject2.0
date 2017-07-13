@@ -54,6 +54,42 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                 onSubmit();
             }
         });
+
+        /*
+        etBody.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //btCheck.setVisibility(View.VISIBLE);
+                //btCheck.setBackgroundColor(Color.parseColor("#D3D3D3")); // TODO: 7/12/17 abstract this
+                if(etBody.getText().toString().trim().length()>0 && etName.getText().toString().trim().length()>0) {
+                    btCheck.setBackgroundColor(Color.parseColor("#267326")); // TODO: 7/12/17 abstract this
+
+                }else if(etBody.getText().toString().trim().length()>0 || etName.getText().toString().trim().length()>0){
+                    btCheck.setBackgroundColor(Color.parseColor("#D3D3D3")); // TODO: 7/12/17 abstract this
+
+                }else{
+                    btCheck.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable str) {
+                if(etBody.getText().toString().trim().length()>0 && etName.getText().toString().trim().length()>0) {
+                    btCheck.setBackgroundColor(Color.parseColor("#267326")); // TODO: 7/12/17 abstract this
+
+                }else if(etBody.getText().toString().trim().length()>0 || etName.getText().toString().trim().length()>0){
+                    btCheck.setBackgroundColor(Color.parseColor("#D3D3D3")); // TODO: 7/12/17 abstract this
+
+                }else{
+                    btCheck.setVisibility(View.INVISIBLE);
+                }
+            }
+
+        });*/
     }
 
     public void onSubmit(){

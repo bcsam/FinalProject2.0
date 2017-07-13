@@ -73,15 +73,15 @@
         android:id="@+id/btCheck"
         android:layout_width="370dp"
         android:layout_height="48dp"
-        android:text="Check!"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="125dp"
-        android:background="@color/darkGreen"
-        android:textColor="@color/white"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/darkGreen"
+        android:text="Check!"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="125dp" />
 
 </RelativeLayout>
