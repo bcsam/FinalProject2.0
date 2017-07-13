@@ -75,6 +75,13 @@ public class TextBody implements Parcelable{
             return "#2eb8b8";
     }
 
+    public String getUtteranceColor(int level){
+        if(level < 50)
+            return "#b38bc1";
+        else
+            return "#600080";
+    }
+
     public String getToneColor(int tone){
         int level = toneLevels[tone];
         if(level > 50)

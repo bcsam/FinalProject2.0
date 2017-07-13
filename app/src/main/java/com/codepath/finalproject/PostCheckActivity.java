@@ -51,6 +51,7 @@ public class PostCheckActivity extends AppCompatActivity {
         client.getToneScores(textBody);
         client.getStyleScores(textBody);
         client.getSocialScores(textBody);
+        client.getUtteranceScores(textBody);
 
         //sets the message on the activity
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
@@ -67,6 +68,7 @@ public class PostCheckActivity extends AppCompatActivity {
         adapter.addFrag(new TonesFragment(), "Tones", textBody);
         adapter.addFrag(new StylesFragment(), "Styles", textBody);
         adapter.addFrag(new SocialFragment(), "Social", textBody);
+        adapter.addFrag(new UtteranceFragment(), "Utterance", textBody);
 
         viewPager.setAdapter(adapter);
 
