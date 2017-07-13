@@ -93,13 +93,6 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void setOnClickListeners(){
-        btSend.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //String message = tvTextBody.getText().toString();
-                Intent i = new Intent(PostCheckActivity.this, MainActivity.class);
-                PostCheckActivity.this.startActivity(i);
-        }});
 
         btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
