@@ -25,41 +25,39 @@ public class PostCheckActivity extends AppCompatActivity {
 
     TextView tvTextBody;
     TextBody textBody;
-    String text;
+    String message;
     String subject;
     String recipient;
     Button btSend;
     Button btEdit;
-    TextView tvAngerScore;
-    TextView tvDisgustScore;
-    TextView tvFearScore;
-    TextView tvJoyScore;
-    TextView tvSadnessScore;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //sets up the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_post_check);
-        text = getIntent().getStringExtra("message");
+
+        //stores info in intent for sending back to MainActivity
+        message = getIntent().getStringExtra("message");
         recipient = getIntent().getStringExtra("to");
         subject = getIntent().getStringExtra("subject");
 
+        //makes a Textbody with the user's message
         textBody = new TextBody();
-        textBody.setMessage(text);
+        textBody.setMessage(message);
 
+        //gets the textbody's score
         AnalyzerClient client = new AnalyzerClient();
         client.getToneScores(textBody);
         client.getStyleScores(textBody);
         client.getSocialScores(textBody);
 
-
+        //sets the message on the activity
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
-        tvTextBody.setText(text);
-        String colorString = textBody.getTextColor();
+        tvTextBody.setText(message);
         tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));
 
-        //new code for tabs below
+        //Code for tabs below
 
         // Locate the viewpager in activity_main.xml
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -81,10 +79,11 @@ public class PostCheckActivity extends AppCompatActivity {
 
     public void sendEmail(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
+        //for only emails
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
         i.putExtra(Intent.EXTRA_SUBJECT, subject);
-        i.putExtra(Intent.EXTRA_TEXT, text);
+        i.putExtra(Intent.EXTRA_TEXT, message);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
@@ -98,7 +97,7 @@ public class PostCheckActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(PostCheckActivity.this, MainActivity.class);
-                intent.putExtra("message", text);
+                intent.putExtra("message", message);
                 intent.putExtra("subject", subject);
                 intent.putExtra("recipient", recipient);
                 PostCheckActivity.this.startActivity(intent);
