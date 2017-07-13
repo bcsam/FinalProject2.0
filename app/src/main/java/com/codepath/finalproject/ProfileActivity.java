@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +38,6 @@ public class ProfileActivity extends AppCompatActivity {
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
         mTabLayout.setupWithViewPager(viewPager);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
