@@ -11,6 +11,7 @@ public class TextBody implements Parcelable{
     private int[] toneLevels;
     private int[] styleLevels;
     private int[] socialLevels;
+    private int[] utteranceLevels;
     private String[] lightToneColors;
     private String[] darkToneColors;
     private String message;
@@ -19,6 +20,7 @@ public class TextBody implements Parcelable{
         toneLevels = new int[5];
         styleLevels = new int[3];
         socialLevels = new int[5];
+        utteranceLevels = new int[7];
         lightToneColors = new String[]{"#ff8080", "#8cd98c", "#cc99ff", "#ffdb4d", "#80bfff"};
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
     }
@@ -43,9 +45,13 @@ public class TextBody implements Parcelable{
         return socialLevels[social];
     }
 
-    public void setSocialLevel(int social, double level){
-        socialLevels[social] = (int)(level*100);
+    public void setSocialLevel(int social, double level){ socialLevels[social] = (int)(level*100); }
+
+    public int getUtteranceLevel(int utterance){
+        return utteranceLevels[utterance];
     }
+
+    public void setUtteranceLevel(int utterance, double level){ utteranceLevels[utterance] = (int)(level*100); }
 
     public String getMessage() {
         return message;
@@ -104,6 +110,9 @@ public class TextBody implements Parcelable{
         dest.writeIntArray(this.toneLevels);
         dest.writeIntArray(this.styleLevels);
         dest.writeIntArray(this.socialLevels);
+        dest.writeIntArray(this.utteranceLevels);
+        dest.writeStringArray(this.lightToneColors);
+        dest.writeStringArray(this.darkToneColors);
         dest.writeString(this.message);
     }
 
@@ -111,6 +120,9 @@ public class TextBody implements Parcelable{
         this.toneLevels = in.createIntArray();
         this.styleLevels = in.createIntArray();
         this.socialLevels = in.createIntArray();
+        this.utteranceLevels = in.createIntArray();
+        this.lightToneColors = in.createStringArray();
+        this.darkToneColors = in.createStringArray();
         this.message = in.readString();
     }
 

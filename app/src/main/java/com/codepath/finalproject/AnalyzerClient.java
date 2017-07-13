@@ -1,14 +1,19 @@
 package com.codepath.finalproject;
 //adding Watson Developer Cloud SDK for Java:
 
-import android.util.Log;
-
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneCategory;
+import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneChatRequest;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneOptions;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
+import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Utterance;
+import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.UtteranceAnalysis;
+import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.UtterancesTone;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by vf608 on 7/11/17.
@@ -102,6 +107,44 @@ public class AnalyzerClient {
                         break;
                     case("Emotional Range"):
                         textBody.setSocialLevel(4, ts.getScore());
+                        break;
+                }
+            }
+        }
+    }
+
+    public void getUtteranceScores(TextBody textBody) {
+        List<Utterance> utterances = new ArrayList<>();
+        Utterance utterance = new Utterance.Builder()
+                .text(textBody.getMessage())
+                .build();
+        utterances.add(utterance);
+        ToneChatRequest options = new ToneChatRequest.Builder()
+                .utterances(utterances).build();
+        UtterancesTone tone = service.getChatTone(options).execute();
+        for(UtteranceAnalysis ua : tone.getUtterancesTone()){
+            for(ToneScore ts : ua.getTones()){
+                switch(ts.getName()){
+                    case("Sad"):
+                        textBody.setUtteranceLevel(0, ts.getScore());
+                        break;
+                    case("Frustrated"):
+                        textBody.setUtteranceLevel(1, ts.getScore());
+                        break;
+                    case("Satisfied"):
+                        textBody.setUtteranceLevel(2, ts.getScore());
+                        break;
+                    case("Excited"):
+                        textBody.setUtteranceLevel(3, ts.getScore());
+                        break;
+                    case("Polite"):
+                        textBody.setUtteranceLevel(4, ts.getScore());
+                        break;
+                    case("Impolite"):
+                        textBody.setUtteranceLevel(5, ts.getScore());
+                        break;
+                    case("Sympathetic"):
+                        textBody.setUtteranceLevel(6, ts.getScore());
                         break;
                 }
             }
