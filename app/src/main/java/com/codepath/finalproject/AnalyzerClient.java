@@ -1,6 +1,8 @@
 package com.codepath.finalproject;
 //adding Watson Developer Cloud SDK for Java:
 
+import android.util.Log;
+
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
@@ -48,6 +50,58 @@ public class AnalyzerClient {
                         break;
                     case("Sadness"):
                         textBody.setToneLevel(4, ts.getScore());
+                        break;
+                }
+            }
+        }
+    }
+
+    public void getStyleScores(TextBody textBody) {
+        ToneOptions options = new ToneOptions.Builder()
+                .addTone(Tone.LANGUAGE).build();
+        ToneAnalysis tone =
+                service.getTone(textBody.getMessage(), options).execute();
+
+        for(ToneCategory tc : tone.getDocumentTone().getTones()){
+            for(ToneScore ts : tc.getTones()){
+                switch(ts.getName()){
+                    case("Analytical"):
+                        textBody.setStyleLevel(0, ts.getScore());
+                        break;
+                    case("Confident"):
+                        textBody.setStyleLevel(1, ts.getScore());
+                        break;
+                    case("Tentative"):
+                        textBody.setStyleLevel(2, ts.getScore());
+                        break;
+                }
+            }
+        }
+    }
+
+    public void getSocialScores(TextBody textBody) {
+        ToneOptions options = new ToneOptions.Builder()
+                .addTone(Tone.SOCIAL).build();
+        ToneAnalysis tone =
+                service.getTone(textBody.getMessage(), options).execute();
+
+        for(ToneCategory tc : tone.getDocumentTone().getTones()){
+            for(ToneScore ts : tc.getTones()){
+                switch(ts.getName()){
+                    case("Openness"):
+                        textBody.setSocialLevel(0, ts.getScore());
+                        break;
+                    case("Conscientiousness"):
+                        textBody.setSocialLevel(1, ts.getScore());
+                        break;
+                    case("Extraversion"):
+                        textBody.setSocialLevel(2, ts.getScore());
+                        break;
+                    case("Agreeableness"):
+                        textBody.setSocialLevel(3, ts.getScore());
+                        break;
+                    case("Emotional Range"):
+                        textBody.setSocialLevel(4, ts.getScore());
                         break;
                 }
             }
