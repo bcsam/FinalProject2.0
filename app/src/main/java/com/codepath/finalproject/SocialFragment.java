@@ -92,4 +92,30 @@ public class SocialFragment extends Fragment{
         pbEmotionalRange.setProgress(textBody.getSocialLevel(4));
         pbEmotionalRange.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
     }
+
+    public void setProfileTexts() {
+        tvOpennessScore.setText(String.valueOf(user.getAverageSocialLevels(0)));
+        tvConscientiousnessScore.setText(String.valueOf(user.getAverageSocialLevels(1)));
+        tvExtraversionScore.setText(String.valueOf(user.getAverageSocialLevels(2)));
+        tvAgreeablenessScore.setText(String.valueOf(user.getAverageSocialLevels(3)));
+        tvEmotionalRangeScore.setText(String.valueOf(user.getAverageSocialLevels(4)));
+    }
+
+    public void setProfileProgressBars(){
+        pbOpenness.setMax(100);
+        pbOpenness.setProgress(user.getAverageSocialLevels(0));
+        pbOpenness.getProgressDrawable().setColorFilter(Color.parseColor(user.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbConscientiousness.setMax(100);
+        pbConscientiousness.setProgress(user.getAverageSocialLevels(1));
+        pbConscientiousness.getProgressDrawable().setColorFilter(Color.parseColor(user.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbExtraversion.setMax(100);
+        pbExtraversion.setProgress(user.getAverageSocialLevels(2));
+        pbExtraversion.getProgressDrawable().setColorFilter(Color.parseColor(user.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbAgreeableness.setMax(100);
+        pbAgreeableness.setProgress(user.getAverageSocialLevels(3));
+        pbAgreeableness.getProgressDrawable().setColorFilter(Color.parseColor(user.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbEmotionalRange.setMax(100);
+        pbEmotionalRange.setProgress(user.getAverageSocialLevels(4));
+        pbEmotionalRange.getProgressDrawable().setColorFilter(Color.parseColor(user.getSocialColor()), PorterDuff.Mode.SRC_IN);
+    }
 }
