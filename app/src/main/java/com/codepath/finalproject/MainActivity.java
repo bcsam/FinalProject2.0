@@ -1,6 +1,5 @@
 package com.codepath.finalproject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -16,24 +15,38 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
     EditText etBody;
     EditText etName;
     EditText etSubject;
-    Context context;
     AnalyzerClient client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
 
+        
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
         etName = (EditText) findViewById(R.id.etName);
         etSubject = (EditText) findViewById(R.id.etSubject);
 
-
+        String recipient = getIntent().getStringExtra("recipient");
+        if (recipient != null){
+            etName.setText(recipient);
+        }
+        
+        String subject = getIntent().getStringExtra("subject");
+        if (subject != null){
+            etSubject.setText(subject);
+        }
+        
+        String message = getIntent().getStringExtra("message");
+        if (message != null){
+            etBody.setText(message);
+        }
+        
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
