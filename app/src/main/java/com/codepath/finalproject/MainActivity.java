@@ -11,12 +11,12 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways 
 
-
     Button btCheck;
     EditText etBody;
     EditText etName;
     EditText etSubject;
     AnalyzerClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,33 +27,11 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
             StrictMode.setThreadPolicy(policy);
         }
 
-        
-        btCheck = (Button) findViewById(R.id.btCheck);
-        etBody = (EditText) findViewById(R.id.etBody);
-        etName = (EditText) findViewById(R.id.etName);
-        etSubject = (EditText) findViewById(R.id.etSubject);
+        InitializeViews();
+        unwrapIntent();
+        setListeners();
 
-        String recipient = getIntent().getStringExtra("recipient");
-        if (recipient != null){
-            etName.setText(recipient);
-        }
-        
-        String subject = getIntent().getStringExtra("subject");
-        if (subject != null){
-            etSubject.setText(subject);
-        }
-        
-        String message = getIntent().getStringExtra("message");
-        if (message != null){
-            etBody.setText(message);
-        }
-        
-        btCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSubmit();
-            }
-        });
+
 
         /*
         etBody.addTextChangedListener(new TextWatcher() {
@@ -92,6 +70,42 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         });*/
     }
 
+    private void setListeners() {
+        btCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSubmit();
+            }
+        });
+    }
+
+    public void InitializeViews(){
+        btCheck = (Button) findViewById(R.id.btCheck);
+        etBody = (EditText) findViewById(R.id.etBody);
+        etName = (EditText) findViewById(R.id.etName);
+        etSubject = (EditText) findViewById(R.id.etSubject);
+    }
+
+    public void unwrapIntent(){
+        String recipient = getIntent().getStringExtra("recipient");
+        if (recipient != null){
+            etName.setText(recipient);
+        }
+
+        String subject = getIntent().getStringExtra("subject");
+        if (subject != null){
+            etSubject.setText(subject);
+        }
+
+        String message = getIntent().getStringExtra("message");
+        if (message != null){
+            etBody.setText(message);
+        }
+    }
+
+    /**
+     *
+     */
     public void onSubmit(){
         String message = etBody.getText().toString();
         String to = etName.getText().toString();
@@ -108,10 +122,13 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
             client = new AnalyzerClient();
             client.getToneScores(tb);
             MainActivity.this.startActivity(intent);
-            
+
+        //makes the user enter a message before submitting
         }else if (message.equals("")){
             Toast.makeText(getApplicationContext(), "Please enter a message!",
                     Toast.LENGTH_LONG).show();
+
+        //makes the user enter a recipient before submitting
         }else{
             Toast.makeText(getApplicationContext(), "Please enter a recipient!",
                     Toast.LENGTH_LONG).show();
