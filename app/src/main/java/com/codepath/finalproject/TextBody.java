@@ -19,8 +19,8 @@ public class TextBody implements Parcelable{
         toneLevels = new int[5];
         styleLevels = new int[3];
         socialLevels = new int[5];
-        lightToneColors = new String[]{"#ff8080", "#cc99ff", "#8cd98c", "#ffdb4d", "#80bfff"};
-        darkToneColors = new String[]{"#b30000", "#5900b3", "#267326", "#e6b800", "#004d99"};
+        lightToneColors = new String[]{"#ff8080", "#8cd98c", "#cc99ff", "#ffdb4d", "#80bfff"};
+        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
     }
 
     public int getToneLevel(int tone){
