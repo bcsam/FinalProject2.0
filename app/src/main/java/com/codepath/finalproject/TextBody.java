@@ -86,7 +86,8 @@ public class TextBody implements Parcelable{
             }
         }
         if(level < 50)
-            return "#000000";
+            return "#000000"; // TODO: 7/12/17 abstract this 
+        
         if(level > 75)
             return darkToneColors[tone];
         return lightToneColors[tone];
