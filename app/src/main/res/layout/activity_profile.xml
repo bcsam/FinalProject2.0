@@ -16,10 +16,11 @@
 
         <ImageView
             android:id="@+id/ivProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_weight="1"
             android:tint="@color/lightGray"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_person_white" />
 
         <TextView
@@ -28,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".3"
             android:gravity="center"
+            android:textColor="@color/black"
             android:text="TextView" />
 
         <TextView
@@ -35,7 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
             android:text="TextView" />
     </LinearLayout>
 

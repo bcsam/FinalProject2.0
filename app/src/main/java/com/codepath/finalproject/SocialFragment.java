@@ -56,8 +56,8 @@ public class SocialFragment extends Fragment{
         }
         else if(activity.equals("ProfileActivity")){
             user = getArguments().getParcelable("user");
-            setTexts();
-            setProgressBars();
+            setProfileTexts();
+            setProfileProgressBars();
         }
         return v;
     }
