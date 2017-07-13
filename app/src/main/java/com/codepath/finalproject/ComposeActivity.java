@@ -9,8 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways 
+/**
+ * Created by bcsam on 7/13/17.
+ */
 
+public class ComposeActivity extends AppCompatActivity{
     Button btCheck;
     EditText etBody;
     EditText etName;
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         String subject = etSubject.getText().toString();
 
         if(!message.equals("") && !to.equals("")){
-            Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
+            Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
             intent.putExtra("message", message);
             intent.putExtra("to", to);
             intent.putExtra("subject", subject);
@@ -121,18 +124,17 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
             tb.setMessage(message);
             client = new AnalyzerClient();
             client.getToneScores(tb);
-            MainActivity.this.startActivity(intent);
+            ComposeActivity.this.startActivity(intent);
 
-        //makes the user enter a message before submitting
+            //makes the user enter a message before submitting
         }else if (message.equals("")){
             Toast.makeText(getApplicationContext(), "Please enter a message!",
                     Toast.LENGTH_LONG).show();
 
-        //makes the user enter a recipient before submitting
+            //makes the user enter a recipient before submitting
         }else {
             Toast.makeText(getApplicationContext(), "Please enter a recipient!",
                     Toast.LENGTH_LONG).show();
         }
     }
 }
-
