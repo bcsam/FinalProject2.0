@@ -50,6 +50,8 @@ public class PostCheckActivity extends AppCompatActivity {
 
         AnalyzerClient client = new AnalyzerClient();
         client.getToneScores(textBody);
+        client.getStyleScores(textBody);
+        client.getSocialScores(textBody);
 
 
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
