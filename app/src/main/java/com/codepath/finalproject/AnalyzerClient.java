@@ -126,9 +126,10 @@ public class AnalyzerClient {
         UtterancesTone tone = service.getChatTone(options).execute();
         for(UtteranceAnalysis ua : tone.getUtterancesTone()){
             for(ToneScore ts : ua.getTones()){
+                Log.i("UtteranceScore", "for loop 2");
                 switch(ts.getName()){
                     case("Sad"):
-                        Log.i("Sad", "got score");
+                        Log.i("UtteranceScore", "got score");
                         textBody.setUtteranceLevel(0, ts.getScore());
                         break;
                     case("Frustrated"):
