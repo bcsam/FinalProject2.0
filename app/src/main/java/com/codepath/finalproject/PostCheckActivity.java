@@ -56,6 +56,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
         tvTextBody.setText(text);
+        String colorString = textBody.getTextColor();
         tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));
 
         //new code for tabs below
