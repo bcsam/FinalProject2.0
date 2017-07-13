@@ -12,7 +12,6 @@ public class TextBody implements Parcelable{
     private int[] styleLevels;
     private int[] socialLevels;
     private int[] utteranceLevels;
-    private String[] lightToneColors;
     private String[] darkToneColors;
     private String message;
 
@@ -21,7 +20,6 @@ public class TextBody implements Parcelable{
         styleLevels = new int[3];
         socialLevels = new int[5];
         utteranceLevels = new int[7];
-        lightToneColors = new String[]{"#ff8080", "#8cd98c", "#cc99ff", "#ffdb4d", "#80bfff"};
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
     }
 
@@ -62,31 +60,19 @@ public class TextBody implements Parcelable{
     }
 
     public String getStyleColor(int level){
-        if(level < 50)
-            return "#80a6b3";
-        else
-            return "#00334d";
+        return "#00334d";
     }
 
     public String getSocialColor(int level){
-        if(level < 50)
-            return "#9cc9c9";
-        else
-            return "#2eb8b8";
+        return "#2eb8b8";
     }
 
     public String getUtteranceColor(int level){
-        if(level < 50)
-            return "#b38bc1";
-        else
-            return "#600080";
+        return "#600080";
     }
 
     public String getToneColor(int tone){
-        int level = toneLevels[tone];
-        if(level > 50)
-            return darkToneColors[tone];
-        return lightToneColors[tone];
+        return darkToneColors[tone];
     }
 
     public String getTextColor() {
@@ -98,12 +84,9 @@ public class TextBody implements Parcelable{
                 tone = i;
             }
         }
-        if(level < 50)
-            return "#000000"; // TODO: 7/12/17 abstract this 
-        
-        if(level > 75)
+        if(level > 50)
             return darkToneColors[tone];
-        return lightToneColors[tone];
+        return "#000000"; // TODO: 7/12/17 abstract this
     }
 
 
@@ -118,7 +101,6 @@ public class TextBody implements Parcelable{
         dest.writeIntArray(this.styleLevels);
         dest.writeIntArray(this.socialLevels);
         dest.writeIntArray(this.utteranceLevels);
-        dest.writeStringArray(this.lightToneColors);
         dest.writeStringArray(this.darkToneColors);
         dest.writeString(this.message);
     }
@@ -128,7 +110,6 @@ public class TextBody implements Parcelable{
         this.styleLevels = in.createIntArray();
         this.socialLevels = in.createIntArray();
         this.utteranceLevels = in.createIntArray();
-        this.lightToneColors = in.createStringArray();
         this.darkToneColors = in.createStringArray();
         this.message = in.readString();
     }

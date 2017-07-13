@@ -65,10 +65,10 @@ public class PostCheckActivity extends AppCompatActivity {
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TonesFragment(), "Tones", textBody);
-        adapter.addFrag(new StylesFragment(), "Styles", textBody);
-        adapter.addFrag(new SocialFragment(), "Social", textBody);
-        //adapter.addFrag(new UtteranceFragment(), "Utterance", textBody);
+        adapter.addFrag(new TonesFragment(), "Tones", textBody, "PostCheckActivity");
+        adapter.addFrag(new StylesFragment(), "Styles", textBody, "PostCheckActivity");
+        adapter.addFrag(new SocialFragment(), "Social", textBody, "PostCheckActivity");
+        //adapter.addFrag(new UtteranceFragment(), "Utterance", textBody, "PostCheckActivity");
 
         viewPager.setAdapter(adapter);
 
@@ -130,9 +130,10 @@ public class PostCheckActivity extends AppCompatActivity {
                 return mFragmentList.size();
             }
 
-            public void addFrag(Fragment fragment, String title, TextBody textBody) {
+            public void addFrag(Fragment fragment, String title, TextBody textBody, String activity) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("textBody", textBody);
+                bundle.putString("activity", activity);
                 fragment.setArguments(bundle);
                 mFragmentList.add(fragment);
                 mFragmentTitleList.add(title);
