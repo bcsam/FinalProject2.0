@@ -1,23 +1,69 @@
 package com.codepath.finalproject;
 
+import android.Manifest;
+import android.app.ListActivity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways 
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
 
     RecyclerView rvText;
+
+    private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rvText = (RecyclerView) findViewById(R.id.rvText);
+        //rvText = (RecyclerView) findViewById(R.id.rvText);
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_SMS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+
+        List<SMS> smsList = new ArrayList<SMS>();
+
+        Uri uri = Uri.parse("content://sms/inbox");
+        Cursor c = getContentResolver().query(uri, null, null, null, null);
+        startManagingCursor(c);
+
+        // Read the sms data and store it in the list
+        if (c.moveToFirst()) {
+            for (int i = 0; i < c.getCount(); i++) {
+                SMS sms = new SMS();
+                sms.setBody(c.getString(c.getColumnIndexOrThrow("body")).toString());
+                sms.setNumber(c.getString(c.getColumnIndexOrThrow("address")).toString());
+                smsList.add(sms);
+
+                c.moveToNext();
+            }
+        }
+        c.close();
+
+        // Set smsList in the ListAdapter
+        setListAdapter(new ListAdapter(this, smsList));
+
 
     }
 
@@ -38,6 +84,14 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         //launches the profile view
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         MainActivity.this.startActivity(i);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        SMS sms = (SMS) getListAdapter().getItem(position);
+
+        Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
+
     }
 }
 
