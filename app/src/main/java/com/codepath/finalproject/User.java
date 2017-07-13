@@ -15,6 +15,7 @@ public class User implements Parcelable{
     private int messageCount;
     private String name;
     private String number;
+    private String[] darkToneColors;
 
     public User(){
         averageToneLevels = new int[5];
@@ -24,6 +25,7 @@ public class User implements Parcelable{
         messageCount = 0;
         name = "";
         number = "";
+        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
     }
 
     public void updateScores(TextBody textBody){
@@ -58,6 +60,22 @@ public class User implements Parcelable{
     public String getName(){ return name; }
 
     public String getNumber(){ return number; }
+
+    public String getStyleColor(){
+        return "#00334d";
+    }
+
+    public String getSocialColor(){
+        return "#2eb8b8";
+    }
+
+    public String getUtteranceColor(){
+        return "#600080";
+    }
+
+    public String getToneColor(int tone){
+        return darkToneColors[tone];
+    }
 
     public void clear(){
         messageCount = 0;

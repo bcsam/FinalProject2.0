@@ -28,6 +28,7 @@ public class SocialFragment extends Fragment{
     ProgressBar pbAgreeableness;
     ProgressBar pbEmotionalRange;
     TextBody textBody;
+    User user;
 
     public SocialFragment() {
         // Required empty public constructor
@@ -37,7 +38,6 @@ public class SocialFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_social, container, false);
-        textBody = getArguments().getParcelable("textBody");
         tvOpennessScore = (TextView) v.findViewById(R.id.tvOpennessScore);
         tvConscientiousnessScore = (TextView) v.findViewById(R.id.tvConscientiousnessScore);
         tvExtraversionScore = (TextView) v.findViewById(R.id.tvExtraversionScore);
@@ -48,8 +48,17 @@ public class SocialFragment extends Fragment{
         pbExtraversion = (ProgressBar) v.findViewById(R.id.pbExtraversion);
         pbAgreeableness = (ProgressBar) v.findViewById(R.id.pbAgreeableness);
         pbEmotionalRange = (ProgressBar) v.findViewById(R.id.pbEmotionalRange);
-        setTexts();
-        setProgressBars();
+        String activity = getArguments().getString("activity");
+        if(activity.equals("PostCheckActivity")) {
+            textBody = getArguments().getParcelable("textBody");
+            setTexts();
+            setProgressBars();
+        }
+        else if(activity.equals("ProfileActivity")){
+            user = getArguments().getParcelable("user");
+            setProfileTexts();
+            setProfileProgressBars();
+        }
         return v;
     }
     @Override
@@ -69,18 +78,18 @@ public class SocialFragment extends Fragment{
     public void setProgressBars(){
         pbOpenness.setMax(100);
         pbOpenness.setProgress(textBody.getSocialLevel(0));
-        pbOpenness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor(textBody.getSocialLevel(0))), PorterDuff.Mode.SRC_IN);
+        pbOpenness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbConscientiousness.setMax(100);
         pbConscientiousness.setProgress(textBody.getSocialLevel(1));
-        pbConscientiousness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor(textBody.getSocialLevel(1))), PorterDuff.Mode.SRC_IN);
+        pbConscientiousness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbExtraversion.setMax(100);
         pbExtraversion.setProgress(textBody.getSocialLevel(2));
-        pbExtraversion.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor(textBody.getSocialLevel(2))), PorterDuff.Mode.SRC_IN);
+        pbExtraversion.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbAgreeableness.setMax(100);
         pbAgreeableness.setProgress(textBody.getSocialLevel(3));
-        pbAgreeableness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor(textBody.getSocialLevel(3))), PorterDuff.Mode.SRC_IN);
+        pbAgreeableness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbEmotionalRange.setMax(100);
         pbEmotionalRange.setProgress(textBody.getSocialLevel(4));
-        pbEmotionalRange.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor(textBody.getSocialLevel(4))), PorterDuff.Mode.SRC_IN);
+        pbEmotionalRange.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
     }
 }

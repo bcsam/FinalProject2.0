@@ -98,25 +98,25 @@ public class TonesFragment extends Fragment {
         tvDisgustScore.setText(String.valueOf(user.getAverageToneLevels(1)));
         tvFearScore.setText(String.valueOf(user.getAverageToneLevels(2)));
         tvJoyScore.setText(String.valueOf(user.getAverageToneLevels(3)));
-        tvSadnessScore.setText(String.valueOf(user.getAverageToneLevels(5)));
+        tvSadnessScore.setText(String.valueOf(user.getAverageToneLevels(4)));
     }
 
     public void setProfileProgressBars(){
         pbAnger.setMax(100);
         pbAnger.setProgress(user.getAverageToneLevels(0));
-        pbAnger.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(0)), PorterDuff.Mode.SRC_IN);
+        pbAnger.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(0)), PorterDuff.Mode.SRC_IN);
         pbDisgust.setMax(100);
         pbDisgust.setProgress(user.getAverageToneLevels(1));
-        pbDisgust.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(1)), PorterDuff.Mode.SRC_IN);
+        pbDisgust.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(1)), PorterDuff.Mode.SRC_IN);
         pbFear.setMax(100);
         pbFear.setProgress(user.getAverageToneLevels(2));
-        pbFear.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(2)), PorterDuff.Mode.SRC_IN);
+        pbFear.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(2)), PorterDuff.Mode.SRC_IN);
         pbJoy.setMax(100);
         pbJoy.setProgress(user.getAverageToneLevels(3));
-        pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(3)), PorterDuff.Mode.SRC_IN);
+        pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(3)), PorterDuff.Mode.SRC_IN);
         pbSadness.setMax(100);
         pbSadness.setProgress(user.getAverageToneLevels(4));
-        pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(4)), PorterDuff.Mode.SRC_IN);
+        pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(4)), PorterDuff.Mode.SRC_IN);
     }
 
 }

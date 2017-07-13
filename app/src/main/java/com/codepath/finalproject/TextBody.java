@@ -59,15 +59,13 @@ public class TextBody implements Parcelable{
         this.message = message;
     }
 
-    public String getStyleColor(int level){
-        return "#00334d";
-    }
+    public String getStyleColor(){ return "#00334d"; }
 
-    public String getSocialColor(int level){
+    public String getSocialColor(){
         return "#2eb8b8";
     }
 
-    public String getUtteranceColor(int level){
+    public String getUtteranceColor(){
         return "#600080";
     }
 
@@ -86,7 +84,7 @@ public class TextBody implements Parcelable{
         }
         if(level > 50)
             return darkToneColors[tone];
-        return "#000000"; // TODO: 7/12/17 abstract this
+        return "#000000";
     }
 
 

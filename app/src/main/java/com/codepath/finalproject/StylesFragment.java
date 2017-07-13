@@ -23,6 +23,7 @@ public class StylesFragment extends Fragment{
     ProgressBar pbConfident;
     ProgressBar pbTentative;
     TextBody textBody;
+    User user;
 
     public StylesFragment() {
         // Required empty public constructor
@@ -32,15 +33,23 @@ public class StylesFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_styles, container, false);
-        textBody = getArguments().getParcelable("textBody");
         tvAnalyticalScore = (TextView) v.findViewById(R.id.tvAnalyticalScore);
         tvConfidentScore = (TextView) v.findViewById(R.id.tvConfidentScore);
         tvTentativeScore = (TextView) v.findViewById(R.id.tvTentativeScore);
         pbAnalytical = (ProgressBar) v.findViewById(R.id.pbAnalytical);
         pbConfident = (ProgressBar) v.findViewById(R.id.pbConfident);
         pbTentative = (ProgressBar) v.findViewById(R.id.pbTentative);
-        setTexts();
-        setProgressBars();
+        String activity = getArguments().getString("activity");
+        if(activity.equals("PostCheckActivity")) {
+            textBody = getArguments().getParcelable("textBody");
+            setTexts();
+            setProgressBars();
+        }
+        else if(activity.equals("ProfileActivity")){
+            user = getArguments().getParcelable("user");
+            setProfileTexts();
+            setProfileProgressBars();
+        }
         return v;
     }
     @Override
@@ -58,13 +67,31 @@ public class StylesFragment extends Fragment{
     public void setProgressBars(){
         pbAnalytical.setMax(100);
         pbAnalytical.setProgress(textBody.getStyleLevel(0));
-        pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor(textBody.getStyleLevel(0))), PorterDuff.Mode.SRC_IN);
+        pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor()), PorterDuff.Mode.SRC_IN);
         pbConfident.setMax(100);
         pbConfident.setProgress(textBody.getStyleLevel(1));
-        pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor(textBody.getStyleLevel(1))), PorterDuff.Mode.SRC_IN);
+        pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor()), PorterDuff.Mode.SRC_IN);
         pbTentative.setMax(100);
         pbTentative.setProgress(textBody.getStyleLevel(2));
-        pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor(textBody.getStyleLevel(2))), PorterDuff.Mode.SRC_IN);
+        pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor()), PorterDuff.Mode.SRC_IN);
+    }
+
+    public void setProfileTexts() {
+        tvAnalyticalScore.setText(String.valueOf(user.getAverageStyleLevels(0)));
+        tvConfidentScore.setText(String.valueOf(user.getAverageStyleLevels(1)));
+        tvTentativeScore.setText(String.valueOf(user.getAverageStyleLevels(2)));
+    }
+
+    public void setProfileProgressBars(){
+        pbAnalytical.setMax(100);
+        pbAnalytical.setProgress(user.getAverageStyleLevels(0));
+        pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
+        pbConfident.setMax(100);
+        pbConfident.setProgress(user.getAverageStyleLevels(1));
+        pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
+        pbTentative.setMax(100);
+        pbTentative.setProgress(user.getAverageStyleLevels(2));
+        pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
     }
 
 }
