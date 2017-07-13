@@ -17,16 +17,20 @@ import android.widget.TextView;
 
 public class UtteranceFragment extends Fragment {
 
-    TextView tvAngerScore;
-    TextView tvDisgustScore;
-    TextView tvFearScore;
-    TextView tvJoyScore;
-    TextView tvSadnessScore;
-    ProgressBar pbAnger;
-    ProgressBar pbDisgust;
-    ProgressBar pbFear;
-    ProgressBar pbJoy;
-    ProgressBar pbSadness;
+    TextView tvSadScore;
+    TextView tvFrustratedScore;
+    TextView tvSatisfiedScore;
+    TextView tvExcitedScore;
+    TextView tvPoliteScore;
+    TextView tvImpoliteScore;
+    TextView tvSympatheticScore;
+    ProgressBar pbSad;
+    ProgressBar pbFrustrated;
+    ProgressBar pbSatisfied;
+    ProgressBar pbExcited;
+    ProgressBar pbPolite;
+    ProgressBar pbImpolite;
+    ProgressBar pbSympathetic;
     TextBody textBody;
 
     public UtteranceFragment() {
@@ -36,18 +40,22 @@ public class UtteranceFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tones, container, false);
+        View v = inflater.inflate(R.layout.fragment_utterance, container, false);
         textBody = getArguments().getParcelable("textBody");
-        tvAngerScore = (TextView) v.findViewById(R.id.tvAngerScore);
-        tvDisgustScore = (TextView) v.findViewById(R.id.tvDisgustScore);
-        tvFearScore = (TextView) v.findViewById(R.id.tvFearScore);
-        tvJoyScore = (TextView) v.findViewById(R.id.tvJoyScore);
-        tvSadnessScore = (TextView) v.findViewById(R.id.tvSadnessScore);
-        pbAnger = (ProgressBar) v.findViewById(R.id.pbAnger);
-        pbDisgust = (ProgressBar) v.findViewById(R.id.pbDisgust);
-        pbFear = (ProgressBar) v.findViewById(R.id.pbFear);
-        pbJoy = (ProgressBar) v.findViewById(R.id.pbJoy);
-        pbSadness = (ProgressBar) v.findViewById(R.id.pbSadness);
+        tvSadScore = (TextView) v.findViewById(R.id.tvSadScore);
+        tvFrustratedScore = (TextView) v.findViewById(R.id.tvFrustratedScore);
+        tvSatisfiedScore = (TextView) v.findViewById(R.id.tvSatisfiedScore);
+        tvExcitedScore = (TextView) v.findViewById(R.id.tvExcitedScore);
+        tvPoliteScore = (TextView) v.findViewById(R.id.tvPoliteScore);
+        tvImpoliteScore = (TextView) v.findViewById(R.id.tvImpoliteScore);
+        tvSympatheticScore = (TextView) v.findViewById(R.id.tvSympatheticScore);
+        pbSad = (ProgressBar) v.findViewById(R.id.pbSad);
+        pbFrustrated = (ProgressBar) v.findViewById(R.id.pbFrustrated);
+        pbSatisfied = (ProgressBar) v.findViewById(R.id.pbSatisfied);
+        pbExcited = (ProgressBar) v.findViewById(R.id.pbExcited);
+        pbPolite = (ProgressBar) v.findViewById(R.id.pbPolite);
+        pbImpolite = (ProgressBar) v.findViewById(R.id.pbImpolite);
+        pbSympathetic = (ProgressBar) v.findViewById(R.id.pbSympathetic);
         setTexts();
         setProgressBars();
         return v;
@@ -59,29 +67,37 @@ public class UtteranceFragment extends Fragment {
     }
 
     public void setTexts() {
-        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
-        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
-        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
-        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
-        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
+        tvSadScore.setText(String.valueOf(textBody.getUtteranceLevel(0)));
+        tvFrustratedScore.setText(String.valueOf(textBody.getUtteranceLevel(1)));
+        tvSatisfiedScore.setText(String.valueOf(textBody.getUtteranceLevel(2)));
+        tvExcitedScore.setText(String.valueOf(textBody.getUtteranceLevel(3)));
+        tvPoliteScore.setText(String.valueOf(textBody.getUtteranceLevel(4)));
+        tvImpoliteScore.setText(String.valueOf(textBody.getUtteranceLevel(5)));
+        tvSympatheticScore.setText(String.valueOf(textBody.getUtteranceLevel(6)));
     }
 
     public void setProgressBars(){
-        pbAnger.setMax(100);
-        pbAnger.setProgress(textBody.getToneLevel(0));
-        pbAnger.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(0)), PorterDuff.Mode.SRC_IN);
-        pbDisgust.setMax(100);
-        pbDisgust.setProgress(textBody.getToneLevel(1));
-        pbDisgust.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(1)), PorterDuff.Mode.SRC_IN);
-        pbFear.setMax(100);
-        pbFear.setProgress(textBody.getToneLevel(2));
-        pbFear.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(2)), PorterDuff.Mode.SRC_IN);
-        pbJoy.setMax(100);
-        pbJoy.setProgress(textBody.getToneLevel(3));
-        pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(3)), PorterDuff.Mode.SRC_IN);
-        pbSadness.setMax(100);
-        pbSadness.setProgress(textBody.getToneLevel(4));
-        pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(4)), PorterDuff.Mode.SRC_IN);
+        pbSad.setMax(100);
+        pbSad.setProgress(textBody.getUtteranceLevel(0));
+        pbSad.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getUtteranceColor(textBody.getUtteranceLevel(0))), PorterDuff.Mode.SRC_IN);
+        pbFrustrated.setMax(100);
+        pbFrustrated.setProgress(textBody.getUtteranceLevel(1));
+        pbFrustrated.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getUtteranceColor(textBody.getUtteranceLevel(1))), PorterDuff.Mode.SRC_IN);
+        pbSatisfied.setMax(100);
+        pbSatisfied.setProgress(textBody.getUtteranceLevel(2));
+        pbSatisfied.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getUtteranceColor(textBody.getUtteranceLevel(2))), PorterDuff.Mode.SRC_IN);
+        pbExcited.setMax(100);
+        pbExcited.setProgress(textBody.getUtteranceLevel(3));
+        pbExcited.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getUtteranceColor(textBody.getUtteranceLevel(3))), PorterDuff.Mode.SRC_IN);
+        pbPolite.setMax(100);
+        pbPolite.setProgress(textBody.getUtteranceLevel(4));
+        pbPolite.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getUtteranceColor(textBody.getUtteranceLevel(4))), PorterDuff.Mode.SRC_IN);
+        pbImpolite.setMax(100);
+        pbImpolite.setProgress(textBody.getUtteranceLevel(5));
+        pbImpolite.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getUtteranceColor(textBody.getUtteranceLevel(5))), PorterDuff.Mode.SRC_IN);
+        pbSympathetic.setMax(100);
+        pbSympathetic.setProgress(textBody.getUtteranceLevel(6));
+        pbSympathetic.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getUtteranceColor(textBody.getUtteranceLevel(6))), PorterDuff.Mode.SRC_IN);
     }
 
 }

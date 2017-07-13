@@ -1,6 +1,8 @@
 package com.codepath.finalproject;
 //adding Watson Developer Cloud SDK for Java:
 
+import android.util.Log;
+
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
@@ -126,6 +128,7 @@ public class AnalyzerClient {
             for(ToneScore ts : ua.getTones()){
                 switch(ts.getName()){
                     case("Sad"):
+                        Log.i("Sad", "got score");
                         textBody.setUtteranceLevel(0, ts.getScore());
                         break;
                     case("Frustrated"):
