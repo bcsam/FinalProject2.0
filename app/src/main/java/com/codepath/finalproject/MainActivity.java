@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways 
 
@@ -60,16 +61,26 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         String to = etName.getText().toString();
         String subject = etSubject.getText().toString();
 
-        Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
-        intent.putExtra("message", message);
-        intent.putExtra("to", to);
-        intent.putExtra("subject", subject);
+        if(!message.equals("") && !to.equals("")){
+            Intent intent = new Intent(MainActivity.this, PostCheckActivity.class);
+            intent.putExtra("message", message);
+            intent.putExtra("to", to);
+            intent.putExtra("subject", subject);
 
-        TextBody tb = new TextBody();
-        tb.setMessage(message);
-        client = new AnalyzerClient();
-        client.getToneScores(tb);
-        MainActivity.this.startActivity(intent);
+            TextBody tb = new TextBody();
+            tb.setMessage(message);
+            client = new AnalyzerClient();
+            client.getToneScores(tb);
+            MainActivity.this.startActivity(intent);
+            
+        }else if (message.equals("")){
+            Toast.makeText(getApplicationContext(), "Please enter a message!",
+                    Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getApplicationContext(), "Please enter a recipient!",
+                    Toast.LENGTH_LONG).show();
+        }
+            
     }
 }
 
