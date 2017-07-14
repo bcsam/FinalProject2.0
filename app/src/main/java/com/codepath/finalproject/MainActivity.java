@@ -1,31 +1,36 @@
 package com.codepath.finalproject;
 
 import android.Manifest;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
 
     RecyclerView rvText;
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        rvText = (RecyclerView) findViewById(R.id.rvText);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
 
-        /*List<SMS> smsList = new ArrayList<SMS>();
+        List<SMS> smsList = new ArrayList<SMS>();
 
         Uri uri = Uri.parse("content://sms/inbox");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
@@ -53,14 +58,14 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                 c.moveToNext();
             }
         }
-        c.close();*/
+        c.close();
 
         // Set smsList in the ListAdapter
-        //setListAdapter(new ListAdapter(this, smsList));
-
+        setListAdapter(new ListAdapter(this, smsList));
     }
 
-    @Override
+
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -85,12 +90,12 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         MainActivity.this.startActivity(i);
     }
 
-    /*@Override
+    @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         SMS sms = (SMS) getListAdapter().getItem(position);
 
         Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
 
-    }*/
+    }
 }
 
