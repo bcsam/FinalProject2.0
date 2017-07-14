@@ -47,7 +47,7 @@ public class PostCheckActivity extends AppCompatActivity {
         textBody = new TextBody();
         textBody.setMessage(message);
 
-        //gets the textbody's score
+        //gets the textbody's score and puts them in textBody
         AnalyzerClient client = new AnalyzerClient();
         client.getToneScores(textBody);
         client.getStyleScores(textBody);
