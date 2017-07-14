@@ -14,6 +14,8 @@ public class TextBody implements Parcelable{
     private int[] utteranceLevels;
     private String[] darkToneColors;
     private String message;
+    private String number;
+    private String name; //The author of the message
 
     public TextBody(){
         toneLevels = new int[5];
