@@ -33,7 +33,7 @@ public class ListAdapter extends ArrayAdapter<SMS> {
         View rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
 
         TextView senderNumber = (TextView) rowView.findViewById(R.id.tvUserName);
-        senderNumber.setText(smsList.get(position).getNumber());
+        senderNumber.setText(smsList.get(position).getContact());
 
         TextView body = (TextView) rowView.findViewById(R.id.tvBody);
         body.setText(smsList.get(position).getBody());

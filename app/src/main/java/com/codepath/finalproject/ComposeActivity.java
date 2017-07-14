@@ -95,6 +95,8 @@ public class ComposeActivity extends AppCompatActivity{
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
         etName = (EditText) findViewById(R.id.etName);
+
+        //etSubject = (EditText) findViewById(R.id.etSubject);
     }
 
     public void unwrapIntent(){
@@ -103,10 +105,10 @@ public class ComposeActivity extends AppCompatActivity{
             etName.setText(recipient);
         }
 
-        String subject = getIntent().getStringExtra("subject");
+        /*String subject = getIntent().getStringExtra("subject");
         if (subject != null){
             etSubject.setText(subject);
-        }
+        }*/
 
         String message = getIntent().getStringExtra("message");
         if (message != null){
@@ -120,13 +122,13 @@ public class ComposeActivity extends AppCompatActivity{
     public void onSubmit(){
         String message = etBody.getText().toString();
         String to = etName.getText().toString();
-        String subject = etSubject.getText().toString();
+        //String subject = etSubject.getText().toString();
 
         if(!message.equals("") && !to.equals("")){
             Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
             intent.putExtra("message", message);
             intent.putExtra("to", to);
-            intent.putExtra("subject", subject);
+            //intent.putExtra("subject", subject);
 
             TextBody tb = new TextBody();
             tb.setMessage(message);
