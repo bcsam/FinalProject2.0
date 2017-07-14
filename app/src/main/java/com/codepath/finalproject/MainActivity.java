@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
@@ -32,6 +34,8 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
     String recipientName;
     String recipientNumber;
+    String body;
+    String date;
     Boolean SMS;
     Boolean contact;
 
@@ -142,7 +146,9 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
             for (int i = 0; i < c.getCount(); i++) {
                 SMS sms = new SMS();
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
-                String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);
@@ -157,6 +163,15 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         c.close();
         // Set smsList in the ListAdapter
         setListAdapter(new ListAdapter(this, smsList));
-        }
+    }
+
+    public static String millisToDate(long currentTime) {
+        String finalDate;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime);
+        Date date = calendar.getTime();
+        finalDate = date.toString();
+        return finalDate;
+    }
 }
 
