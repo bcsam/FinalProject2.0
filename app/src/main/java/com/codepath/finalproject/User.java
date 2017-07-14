@@ -64,9 +64,10 @@ public class User implements Parcelable{
     public void setNumber(String number){ this.number = number; }
 
     public String toStringNumber(){
-        if(number.length() > 7)
-            number = "+" + number.charAt(0) + " (" + number.substring(1,4) + ") " + number.substring(4,7) + "-" + number.substring(7);
-        return number;
+        String newNumber = number;
+        if(newNumber.length() > 7)
+            newNumber = "+" + number.charAt(0) + " (" + number.substring(1,4) + ") " + number.substring(4,7) + "-" + number.substring(7);
+        return newNumber;
     }
 
     public String getName(){ return name; }
