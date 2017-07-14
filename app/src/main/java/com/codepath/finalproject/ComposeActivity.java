@@ -95,7 +95,6 @@ public class ComposeActivity extends AppCompatActivity{
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
         etName = (EditText) findViewById(R.id.etName);
-        etSubject = (EditText) findViewById(R.id.etSubject);
     }
 
     public void unwrapIntent(){

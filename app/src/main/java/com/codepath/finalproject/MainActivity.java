@@ -32,6 +32,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -95,7 +96,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         SMS sms = (SMS) getListAdapter().getItem(position);
 
         Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
-
+        //want to send over
     }
 }
 
