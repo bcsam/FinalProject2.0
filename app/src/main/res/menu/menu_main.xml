@@ -7,17 +7,20 @@
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_search_white"
         android:title="Search"
+        android:visible="true"
         app:showAsAction="always" />
     <item
         android:id="@+id/miProfile"
         android:icon="@drawable/ic_person_white"
         android:onClick="launchProfileActivity"
         android:title="Profile"
+        android:visible="true"
         app:showAsAction="always" />
     <item
         android:id="@+id/miCompose"
         android:icon="@drawable/ic_compose_white_24dp"
         android:onClick="launchComposeActivity"
         android:title="Compose"
+        android:visible="true"
         app:showAsAction="always" />
 </menu>
