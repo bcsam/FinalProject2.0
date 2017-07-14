@@ -66,19 +66,6 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                     new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
-        List<SMS> smsList = new ArrayList<SMS>();
-
-        Uri uri = Uri.parse("content://sms/inbox");
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
-        startManagingCursor(c);
-
-        // Read the sms data and store it in the list
-        if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                SMS sms = new SMS();
-                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString(); //think this is the name of who sent it
-                String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
 
         SMS = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -90,11 +77,6 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         if (SMS && contact) {
             text();
         }
-
-        c.close();
-        // Set smsList in the ListAdapter
-        setListAdapter(new ListAdapter(this, smsList));
-
         ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +89,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         });
     }
 
-
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -121,6 +102,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number();
         user.setNumber(mPhoneNumber);
+        user.setName("Me");
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
@@ -213,4 +195,22 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         return finalDate;
     }
 }
+/*
+    List<SMS> smsList = new ArrayList<SMS>();
 
+    Uri uri = Uri.parse("content://sms/inbox");
+    Cursor c = getContentResolver().query(uri, null, null, null, null);
+    startManagingCursor(c);
+
+// Read the sms data and store it in the list
+        if (c.moveToFirst()) {
+                for (int i = 0; i < c.getCount(); i++) {
+        SMS sms = new SMS();
+        recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString(); //think this is the name of who sent it
+        String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+        recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
+
+
+        c.close();
+        // Set smsList in the ListAdapter
+        setListAdapter(new ListAdapter(this, smsList));*/

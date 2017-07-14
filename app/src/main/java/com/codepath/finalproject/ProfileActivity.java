@@ -12,9 +12,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codepath.finalproject.R.id.tvName;
-import static com.codepath.finalproject.R.id.tvNumber;
-
 /**
  * Created by vf608 on 7/13/17.
  */
@@ -27,32 +24,10 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        User user = getIntent().getParcelableExtra("user");
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
-        String number = getIntent().getStringExtra("number");
 
-        if(!number.equals("")){
-
-            tvNumber.setText(number);
-            tvName.setText(getIntent().getStringExtra("name"));
-);
-            // Set the ViewPagerAdapter into ViewPager
-            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
-            adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
-            adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
-
-        }else {
-            User user = getIntent().getParcelableExtra("user");
-            tvName.setText(user.getName());
-            tvNumber.setText(user.toStringNumber());
-
-            // Set the ViewPagerAdapter into ViewPager
-            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
-            adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
-            adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
-            //adapter.addFrag(new UtteranceFragment(), "Utterance", user, "ProfileActivity");
         tvName.setText(user.getName());
         tvNumber.setText(user.toStringNumber());
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -64,9 +39,6 @@ public class ProfileActivity extends AppCompatActivity {
         adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
         //adapter.addFrag(new UtteranceFragment(), "Utterance", user, "ProfileActivity");
 
-
-        }
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
