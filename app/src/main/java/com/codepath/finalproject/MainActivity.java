@@ -29,7 +29,6 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_incoming_text);
 
         //rvText = (RecyclerView) findViewById(R.id.rvText);
 
