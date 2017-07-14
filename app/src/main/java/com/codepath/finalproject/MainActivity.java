@@ -81,9 +81,10 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
                 SMS sms = new SMS();
-                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString(); //think this is the name of who sent it
                 String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                recipientName = getContactName(recipientNumber, this);
+                recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
+
 
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);
