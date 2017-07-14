@@ -45,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         }else {
             User user = getIntent().getParcelableExtra("user");
             tvName.setText(user.getName());
-            tvNumber.setText(user.getNumber());
+            tvNumber.setText(user.toStringNumber());
 
             // Set the ViewPagerAdapter into ViewPager
             ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -53,6 +53,17 @@ public class ProfileActivity extends AppCompatActivity {
             adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
             adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
             //adapter.addFrag(new UtteranceFragment(), "Utterance", user, "ProfileActivity");
+        tvName.setText(user.getName());
+        tvNumber.setText(user.toStringNumber());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+
+        // Set the ViewPagerAdapter into ViewPager
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
+        adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
+        adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
+        //adapter.addFrag(new UtteranceFragment(), "Utterance", user, "ProfileActivity");
+
 
         }
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);

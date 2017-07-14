@@ -1,7 +1,6 @@
 package com.codepath.finalproject;
 
 import android.Manifest;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +21,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
+public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
 
     RecyclerView rvText;
     User user;
@@ -33,10 +37,17 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
     String recipientName;
     String recipientNumber;
+    String body;
+    String date;
+    Boolean SMS;
+    Boolean contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        users = new ArrayList<User>();
+
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -69,15 +80,17 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
                 String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
 
+        SMS = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_SMS)
+                == PackageManager.PERMISSION_GRANTED;
+        contact = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED;
 
-                sms.setBody(body);
-                sms.setNumber(recipientNumber);
-                sms.setContact(recipientName);
-
-                smsList.add(sms);
-                c.moveToNext();
-            }
+        if (SMS && contact) {
+            text();
         }
+
         c.close();
         // Set smsList in the ListAdapter
         setListAdapter(new ListAdapter(this, smsList));
@@ -104,6 +117,12 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
     public void launchProfileActivity(MenuItem item) {
         //launches the profile view
+        user = new User();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number();
+        user.setNumber(mPhoneNumber);
+        Log.i("profile", user.getNumber());
+        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
@@ -115,11 +134,11 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         MainActivity.this.startActivity(i);
     }
+        //this might be why we can't get to the messaging activity
+    //@Override
 
-    //this might be why we can't get to the messaging activity
-    @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        SMS sms = (SMS) getListAdapter().getItem(position);
+       // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
         intent.putExtra("recipientName", recipientName);
@@ -152,6 +171,46 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         cursor = null;
 
         return contactName;
+    }
+
+    private void text(){
+        List<SMS> smsList = new ArrayList<SMS>();
+
+        Uri uri = Uri.parse("content://sms/inbox");
+        Cursor c = getContentResolver().query(uri, null, null, null, null);
+        startManagingCursor(c);
+
+        // Read the sms data and store it in the list
+        if (c.moveToFirst()) {
+            for (int i = 0; i < c.getCount(); i++) {
+                SMS sms = new SMS();
+                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+
+                recipientName = getContactName(recipientNumber, this);
+
+                sms.setBody(body);
+                sms.setNumber(recipientNumber);
+                sms.setContact(recipientName);
+
+                smsList.add(sms);
+
+                c.moveToNext();
+            }
+        }
+        c.close();
+        // Set smsList in the ListAdapter
+       // setListAdapter(new ListAdapter(this, smsList));
+    }
+
+    public static String millisToDate(long currentTime) {
+        String finalDate;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime);
+        Date date = calendar.getTime();
+        finalDate = date.toString();
+        return finalDate;
     }
 }
 
