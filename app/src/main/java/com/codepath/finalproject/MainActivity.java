@@ -41,7 +41,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     FileOutputStream os;
     BufferedReader reader;
     BufferedWriter writer;
-    final File file = new File("/sdcard/users.txt");
+    final File file = new File("users.txt");
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -52,7 +52,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        users = new ArrayList<User>();
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -164,11 +164,10 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     }
 
     private void parseFile() throws IOException {
-        if (file.exists()) {
-            is = new FileInputStream(file);
+        is = new FileInputStream("users.txt");
+        if (is != null) {
             reader = new BufferedReader(new InputStreamReader(is));
             int numberUsers = Integer.parseInt(reader.readLine());
-            users = new ArrayList<User>(numberUsers);
             for (int i = 0; i < numberUsers; i++) {
                 String line = reader.readLine();
                 User newUser = new User();
@@ -211,39 +210,38 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     protected void onStop(){
         super.onStop();
-        if (file.exists()) {
-            try {
-                os = new FileOutputStream(file);
-                writer = new BufferedWriter(new OutputStreamWriter(os));
-                writer.write(users.size());
+        Log.i("onStop", "stopped");
+        try {
+            os = openFileOutput("users.txt", Context.MODE_PRIVATE);
+            writer = new BufferedWriter(new OutputStreamWriter(os));
+            writer.write(users.size());
+            writer.newLine();
+            for (int i = 0; i < users.size(); i++) {
+                User u = users.get(i);
+                writer.write(u.getNumber() + " " + u.getName());
                 writer.newLine();
-                for (int i = 0; i < users.size(); i++) {
-                    User u = users.get(i);
-                    writer.write(u.getNumber() + " " + u.getName());
-                    writer.newLine();
-                    for(int j = 0; j < 5; j++) {
-                        writer.write(u.getAverageToneLevels(j));
-                    }
-                    for(int j = 0; j < 3; j++) {
-                        writer.write(u.getAverageStyleLevels(j));
-                    }
-                    for(int j = 0; j < 5; j++) {
-                        writer.write(u.getAverageSocialLevels(j));
-                    }
-                    for(int j = 0; j < 7; j++) {
-                        writer.write(u.getAverageUtteranceLevels(j));
-                    }
+                for(int j = 0; j < 5; j++) {
+                    writer.write(u.getAverageToneLevels(j));
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                for(int j = 0; j < 3; j++) {
+                    writer.write(u.getAverageStyleLevels(j));
+                }
+                for(int j = 0; j < 5; j++) {
+                    writer.write(u.getAverageSocialLevels(j));
+                }
+                for(int j = 0; j < 7; j++) {
+                    writer.write(u.getAverageUtteranceLevels(j));
+                }
             }
+            Log.i("onStop", "written");
+        } catch (FileNotFoundException e) {
+            Log.e("Exception", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("Exception", "IO exception: " + e.toString());
         }
     }
 
     private void getUsers(){
-        users = new ArrayList<User>();
         TelephonyManager tMgr =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number();
         user = new User();
