@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
@@ -102,6 +103,16 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         }
         // Set smsList in the ListAdapter
         setListAdapter(new ListAdapter(this, smsList));
+
+        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                i.putExtra("name", recipientName);
+                i.putExtra("number", recipientNumber);
+            }
+        });
     }
 
 
@@ -125,6 +136,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         MainActivity.this.startActivity(i);
     }
 
+    //this might be why we can't get to the messaging activity
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         SMS sms = (SMS) getListAdapter().getItem(position);
