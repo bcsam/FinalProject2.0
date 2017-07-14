@@ -54,6 +54,7 @@ public class User implements Parcelable{
     }
 
     public void setNumber(String number){
+        number = "+" + number.charAt(0) + " (" + number.substring(1,4) + ") " + number.substring(4,7) + "-" + number.substring(7);
         this.number = number;
     }
 
