@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -136,7 +135,6 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
         startActivity(intent);
 
-        Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
         //want to send to MessageActivity
         //want to send name and number of whose text you clicked in intent
     }
