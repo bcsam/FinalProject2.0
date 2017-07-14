@@ -30,13 +30,16 @@ public class MessagingActivity extends AppCompatActivity{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_messaging);
 
+                //stores this info to know which messages to bring up
+            recipientName = getIntent().getStringExtra("recipientName");
+            recipientNumber = getIntent().getStringExtra("recipientNumber");
             initializeViews();
             setOnClickListeners();
         }
 
         public void initializeViews(){
                 btSend = (Button) findViewById(R.id.btSend);
-                btCheck = (Button) findViewById(R.id.btEdit);
+                btCheck = (Button) findViewById(R.id.btCheck);
                 etBody = (EditText) findViewById(R.id.etBody);
         }
 
