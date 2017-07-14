@@ -96,7 +96,8 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         SMS sms = (SMS) getListAdapter().getItem(position);
 
         Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
-        //want to send over
+        //want to send to MessageActivity
+        //
     }
 }
 
