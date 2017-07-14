@@ -61,11 +61,15 @@ public class User implements Parcelable{
         this.name = name;
     }
 
-    public void setNumber(String number){
-        if(number.length() > 7)
-            number = "+" + number.charAt(0) + " (" + number.substring(1,4) + ") " + number.substring(4,7) + "-" + number.substring(7);
-        this.number = number;
+    public void setNumber(String number){ this.number = number; }
+
+    public String toStringNumber(){
+        String newNumber = number;
+        if(newNumber.length() > 7)
+            newNumber = "+" + number.charAt(0) + " (" + number.substring(1,4) + ") " + number.substring(4,7) + "-" + number.substring(7);
+        return newNumber;
     }
+
     public String getName(){ return name; }
 
     public String getNumber(){ return number; }

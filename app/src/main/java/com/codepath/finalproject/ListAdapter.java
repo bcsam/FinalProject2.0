@@ -1,10 +1,10 @@
 package com.codepath.finalproject;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -13,42 +13,60 @@ import java.util.List;
  * Created by andreadeoli on 7/13/17.
  */
 
-public class ListAdapter extends ArrayAdapter<SMS> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     // List context
-    private final Context context;
+    private Context context;
     // List values
-    private final List<SMS> smsList;
+    private List<SMS> smsList;
+    View rowView;
 
     public ListAdapter(Context context, List<SMS> smsList) {
-        super(context, R.layout.item_incoming_text, smsList);
         this.context = context;
         this.smsList = smsList;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
         View rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
-
-        TextView senderNumber = (TextView) rowView.findViewById(R.id.tvUserName);
-
-        if (!smsList.get(position).getContact().equals("")) {
-            senderNumber.setText(smsList.get(position).getContact());
-        }
-        else {
-            senderNumber.setText(smsList.get(position).getNumber());
-        }
-
-        TextView body = (TextView) rowView.findViewById(R.id.tvBody);
-        body.setText(smsList.get(position).getBody());
-
-        TextView date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
-        date.setText(smsList.get(position).getDate());
-
-
-        return rowView;
+        ViewHolder viewHolder = new ViewHolder(rowView);
+        return viewHolder;
     }
 
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        if (!smsList.get(position).getContact().equals("")) {
+            holder.tvUserName.setText(smsList.get(position).getContact());
+        }
+        else {
+            holder.tvUserName.setText(smsList.get(position).getNumber());
+        }
+        holder.tvBody.setText(smsList.get(position).getBody());
+        holder.date.setText(smsList.get(position).getDate());
+    }
+
+    @Override
+    public int getItemCount() {
+        return smsList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        public TextView tvUserName;
+        public TextView tvBody;
+        public TextView tvTime;
+        public TextView date;
+
+        public ViewHolder(View itemView){
+            super(itemView);
+
+            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
+            tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
+            date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
+        }
+    }
 }

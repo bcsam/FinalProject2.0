@@ -1,7 +1,6 @@
 package com.codepath.finalproject;
 
 import android.Manifest;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
+public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
 
     RecyclerView rvText;
     User user;
@@ -87,6 +89,12 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
     public void launchProfileActivity(MenuItem item) {
         //launches the profile view
+        user = new User();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number();
+        user.setNumber(mPhoneNumber);
+        Log.i("profile", user.getNumber());
+        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
         i.putExtra("user", user);
         MainActivity.this.startActivity(i);
@@ -98,9 +106,9 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         MainActivity.this.startActivity(i);
     }
 
-    @Override
+    //@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        SMS sms = (SMS) getListAdapter().getItem(position);
+       // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
         intent.putExtra("recipientName", recipientName);
@@ -169,7 +177,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         }
         c.close();
         // Set smsList in the ListAdapter
-        setListAdapter(new ListAdapter(this, smsList));
+       // setListAdapter(new ListAdapter(this, smsList));
     }
 
     public static String millisToDate(long currentTime) {

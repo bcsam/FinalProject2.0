@@ -1,10 +1,12 @@
 package com.codepath.finalproject;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,5 +121,13 @@ public class TonesFragment extends Fragment {
         pbSadness.setProgress(user.getAverageToneLevels(4));
         pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(4)), PorterDuff.Mode.SRC_IN);
     }
+
+   public void getAverages(){
+       TelephonyManager tMgr = (TelephonyManager)this.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+       String mPhoneNumber = tMgr.getLine1Number();
+       if(user.getNumber().equals(mPhoneNumber)){
+
+       }
+   }
 
 }
