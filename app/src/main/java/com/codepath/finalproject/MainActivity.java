@@ -82,8 +82,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-                i.putExtra("name", recipientName);
-                i.putExtra("number", recipientNumber);
+                User OtherUser = new User();
+                OtherUser.setNumber(recipientNumber);
+                OtherUser.setName(recipientName);
                 MainActivity.this.startActivity(i);
             }
         });
