@@ -4,28 +4,19 @@ import android.Manifest;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +36,6 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
-        users = new ArrayList<User>();
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -84,16 +73,10 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
                 sms.setContact(recipientName);
 
                 smsList.add(sms);
-
                 c.moveToNext();
             }
         }
         c.close();
-        try {
-            getSharedUsers();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         // Set smsList in the ListAdapter
         setListAdapter(new ListAdapter(this, smsList));
     }
@@ -154,60 +137,6 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         cursor = null;
 
         return contactName;
-    }
-
-    private void getSharedUsers() throws IOException {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-            Gson gson = new Gson();
-            String json = sharedPrefs.getString("users", null);
-            Type type = new TypeToken<ArrayList<User>>() {}.getType();
-            ArrayList<User> users = gson.fromJson(json, type);
-            if(users != null) {
-                user = users.get(0);
-                Log.i("read", user.getName());
-                Log.i("read", user.getNumber());
-                Log.i("read", String.valueOf(user.getAverageToneLevels(0)));
-            }
-            else {
-                getUsers();
-                Log.i("get", user.getName());
-                Log.i("get", user.getNumber());
-                Log.i("get", String.valueOf(user.getAverageToneLevels(0)));
-            }
-
-    }
-    @Override
-    protected void onStop(){
-        super.onStop();
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        Gson gson = new Gson();
-
-        String json = gson.toJson(users);
-
-        editor.putString("users", json);
-        editor.commit();
-    }
-
-    private void getUsers(){
-        TelephonyManager tMgr =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
-        user = new User();
-        user.setNumber(mPhoneNumber);
-        user.setName("me");
-        for(int j = 0; j < 5; j++) {
-            user.setAverageToneLevels(j, j);
-        }
-        for(int j = 0; j < 3; j++) {
-            user.setAverageStyleLevels(j, j);
-        }
-        for(int j = 0; j < 5; j++) {
-            user.setAverageSocialLevels(j, j);
-        }
-        for(int j = 0; j < 7; j++) {
-            user.setAverageUtteranceLevels(j, j);
-        }
-        users.add(user);
     }
 }
 
