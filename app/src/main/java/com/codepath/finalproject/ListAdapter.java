@@ -1,10 +1,10 @@
 package com.codepath.finalproject;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by andreadeoli on 7/13/17.
  */
 
-public class ListAdapter extends ArrayAdapter<SMS> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter> {
 
     // List context
     private final Context context;
