@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,15 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +34,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     RecyclerView rvText;
     User user;
     ArrayList<User> users;
-    FileInputStream is;
-    FileOutputStream os;
-    BufferedReader reader;
-    BufferedWriter writer;
-    final File file = new File("users.txt");
+    Context context;
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -51,6 +45,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         users = new ArrayList<User>();
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
@@ -95,7 +90,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         }
         c.close();
         try {
-            parseFile();
+            getSharedUsers();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,82 +156,37 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         return contactName;
     }
 
-    private void parseFile() throws IOException {
-        is = new FileInputStream("users.txt");
-        if (is != null) {
-            reader = new BufferedReader(new InputStreamReader(is));
-            int numberUsers = Integer.parseInt(reader.readLine());
-            for (int i = 0; i < numberUsers; i++) {
-                String line = reader.readLine();
-                User newUser = new User();
-                newUser.setNumber(line.split(" ")[0]);
-                newUser.setName(line.split(" ")[1]);
-                line = reader.readLine();
-                String[] toneScores = line.split(" ");
-                for(int j = 0; j < 5; j++) {
-                    newUser.setAverageToneLevels(j, Integer.parseInt(toneScores[j]));
-                }
-                line = reader.readLine();
-                String[] styleScores = line.split(" ");
-                for(int j = 0; j < 3; j++) {
-                    newUser.setAverageStyleLevels(j, Integer.parseInt(styleScores[j]));
-                }
-                line = reader.readLine();
-                String[] socialScores = line.split(" ");
-                for(int j = 0; j < 5; j++) {
-                    newUser.setAverageSocialLevels(j, Integer.parseInt(socialScores[j]));
-                }
-                line = reader.readLine();
-                String[] utteranceScores = line.split(" ");
-                for(int j = 0; j < 7; j++) {
-                    newUser.setAverageUtteranceLevels(j, Integer.parseInt(utteranceScores[j]));
-                }
-                users.add(newUser);
+    private void getSharedUsers() throws IOException {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            Gson gson = new Gson();
+            String json = sharedPrefs.getString("users", null);
+            Type type = new TypeToken<ArrayList<User>>() {}.getType();
+            ArrayList<User> users = gson.fromJson(json, type);
+            if(users != null) {
+                user = users.get(0);
+                Log.i("read", user.getName());
+                Log.i("read", user.getNumber());
+                Log.i("read", String.valueOf(user.getAverageToneLevels(0)));
             }
-            Log.i("read", user.getName());
-            Log.i("read", user.getNumber());
-            Log.i("read", String.valueOf(user.getAverageToneLevels(0)));
-        }
-        else{
-            getUsers();
-            Log.i("get", user.getName());
-            Log.i("get", user.getNumber());
-            Log.i("get", String.valueOf(user.getAverageToneLevels(0)));
-        }
+            else {
+                getUsers();
+                Log.i("get", user.getName());
+                Log.i("get", user.getNumber());
+                Log.i("get", String.valueOf(user.getAverageToneLevels(0)));
+            }
 
     }
     @Override
     protected void onStop(){
         super.onStop();
-        Log.i("onStop", "stopped");
-        try {
-            os = openFileOutput("users.txt", Context.MODE_PRIVATE);
-            writer = new BufferedWriter(new OutputStreamWriter(os));
-            writer.write(users.size());
-            writer.newLine();
-            for (int i = 0; i < users.size(); i++) {
-                User u = users.get(i);
-                writer.write(u.getNumber() + " " + u.getName());
-                writer.newLine();
-                for(int j = 0; j < 5; j++) {
-                    writer.write(u.getAverageToneLevels(j));
-                }
-                for(int j = 0; j < 3; j++) {
-                    writer.write(u.getAverageStyleLevels(j));
-                }
-                for(int j = 0; j < 5; j++) {
-                    writer.write(u.getAverageSocialLevels(j));
-                }
-                for(int j = 0; j < 7; j++) {
-                    writer.write(u.getAverageUtteranceLevels(j));
-                }
-            }
-            Log.i("onStop", "written");
-        } catch (FileNotFoundException e) {
-            Log.e("Exception", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("Exception", "IO exception: " + e.toString());
-        }
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+
+        String json = gson.toJson(users);
+
+        editor.putString("users", json);
+        editor.commit();
     }
 
     private void getUsers(){
@@ -257,6 +207,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         for(int j = 0; j < 7; j++) {
             user.setAverageUtteranceLevels(j, j);
         }
+        users.add(user);
     }
 }
 
