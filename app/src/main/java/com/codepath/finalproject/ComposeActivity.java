@@ -121,13 +121,14 @@ public class ComposeActivity extends AppCompatActivity{
      */
     public void onSubmit(){
         String message = etBody.getText().toString();
-        String to = etName.getText().toString();
+        String recipientName = etName.getText().toString();
         //String subject = etSubject.getText().toString();
 
-        if(!message.equals("") && !to.equals("")){
+        if(!message.equals("") && !recipientName.equals("")){
             Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
             intent.putExtra("message", message);
-            intent.putExtra("to", to);
+            // TODO: 7/14/17 send the number and name of the recipient
+            intent.putExtra("recipientName", recipientName);
             //intent.putExtra("subject", subject);
 
             TextBody tb = new TextBody();

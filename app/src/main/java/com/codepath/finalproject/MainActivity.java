@@ -114,7 +114,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
         Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
         //want to send to MessageActivity
-        //
+        //want to send name and number of whose text you clicked in intent
     }
 
     public String getContactName(final String phoneNumber,Context context)

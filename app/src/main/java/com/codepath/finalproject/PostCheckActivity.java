@@ -40,7 +40,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
         //stores info in intent for sending back to MainActivity
         message = getIntent().getStringExtra("message");
-        recipient = getIntent().getStringExtra("to");
+        recipient = getIntent().getStringExtra("recipientName");
         subject = getIntent().getStringExtra("subject");
 
         //makes a Textbody with the user's message
