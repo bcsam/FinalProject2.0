@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -151,9 +152,15 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
                 recipientName = getContactName(recipientNumber, this);
 
+                String FormattedDate;
+
+                long dateLong = Long.parseLong(date);
+                String finalDate = millisToDate(dateLong);
+
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);
                 sms.setContact(recipientName);
+                sms.setDate(finalDate);
 
                 smsList.add(sms);
 
@@ -169,9 +176,43 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         String finalDate;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(currentTime);
-        Date date = calendar.getTime();
-        finalDate = date.toString();
-        return finalDate;
+
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String monthString;
+
+        switch (month) {
+            case 1:  monthString = "January";
+                break;
+            case 2:  monthString = "February";
+                break;
+            case 3:  monthString = "March";
+                break;
+            case 4:  monthString = "April";
+                break;
+            case 5:  monthString = "May";
+                break;
+            case 6:  monthString = "June";
+                break;
+            case 7:  monthString = "July";
+                break;
+            case 8:  monthString = "August";
+                break;
+            case 9:  monthString = "September";
+                break;
+            case 10: monthString = "October";
+                break;
+            case 11: monthString = "November";
+                break;
+            case 12: monthString = "December";
+                break;
+            default: monthString = "Invalid month";
+                break;
+        }
+
+        String dateMonth = monthString + " " + day;
+
+        return dateMonth;
     }
 }
 

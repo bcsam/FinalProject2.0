@@ -44,6 +44,9 @@ public class ListAdapter extends ArrayAdapter<SMS> {
         TextView body = (TextView) rowView.findViewById(R.id.tvBody);
         body.setText(smsList.get(position).getBody());
 
+        TextView date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
+        date.setText(smsList.get(position).getDate());
+
 
         return rowView;
     }
