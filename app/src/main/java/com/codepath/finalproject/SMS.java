@@ -10,6 +10,7 @@ public class SMS {
     // SMS text body
     private String body;
     private String contact;
+    private String date;
 
     public String getNumber() {
         return number;
@@ -33,5 +34,13 @@ public class SMS {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
