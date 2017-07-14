@@ -30,6 +30,9 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
 
+    String recipientName;
+    String recipientNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +66,13 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
                 SMS sms = new SMS();
-                String phoneNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                String contact = getContactName(phoneNumber, this);
+                recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);
-                sms.setNumber(phoneNumber);
-                sms.setContact(contact);
+                sms.setNumber(recipientNumber);
+                sms.setContact(recipientName);
 
                 smsList.add(sms);
 
@@ -111,6 +114,12 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         SMS sms = (SMS) getListAdapter().getItem(position);
+
+        Intent intent = new Intent(this, MessagingActivity.class);
+        intent.putExtra("recipientName", recipientName);
+        intent.putExtra("recipientNumber", recipientNumber);
+
+        startActivity(intent);
 
         Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
         //want to send to MessageActivity

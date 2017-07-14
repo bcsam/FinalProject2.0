@@ -36,7 +36,7 @@ public class MessagingActivity extends AppCompatActivity{
 
         public void initializeViews(){
                 btSend = (Button) findViewById(R.id.btSend);
-                btCheck = (Button) findViewById(R.id.btEdit);
+                btCheck = (Button) findViewById(R.id.btCheck);
                 etBody = (EditText) findViewById(R.id.etBody);
         }
 
