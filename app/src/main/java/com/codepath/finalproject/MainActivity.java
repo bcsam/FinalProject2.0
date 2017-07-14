@@ -1,28 +1,21 @@
 package com.codepath.finalproject;
 
 import android.Manifest;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
+public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
 
     RecyclerView rvText;
 
@@ -31,9 +24,9 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_incoming_text);
+        setContentView(R.layout.activity_main);
 
-        //rvText = (RecyclerView) findViewById(R.id.rvText);
+        rvText = (RecyclerView) findViewById(R.id.rvText);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -44,7 +37,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
 
-        List<SMS> smsList = new ArrayList<SMS>();
+        /*List<SMS> smsList = new ArrayList<SMS>();
 
         Uri uri = Uri.parse("content://sms/inbox");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
@@ -61,10 +54,10 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
                 c.moveToNext();
             }
         }
-        c.close();
+        c.close();*/
 
         // Set smsList in the ListAdapter
-        setListAdapter(new ListAdapter(this, smsList));
+        //setListAdapter(new ListAdapter(this, smsList));
 
     }
 
@@ -79,6 +72,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         //launches the profile view
         TelephonyManager tMgr =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number();
+        Log.i("phone number", mPhoneNumber);
         User user = new User();
         user.setNumber(mPhoneNumber);
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
@@ -92,12 +86,12 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         MainActivity.this.startActivity(i);
     }
 
-    @Override
+    /*@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         SMS sms = (SMS) getListAdapter().getItem(position);
 
         Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
 
-    }
+    }*/
 }
 

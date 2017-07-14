@@ -105,6 +105,7 @@ public class User implements Parcelable{
         dest.writeInt(this.messageCount);
         dest.writeString(this.name);
         dest.writeString(this.number);
+        dest.writeStringArray(this.darkToneColors);
     }
 
     protected User(Parcel in) {
@@ -115,6 +116,7 @@ public class User implements Parcelable{
         this.messageCount = in.readInt();
         this.name = in.readString();
         this.number = in.readString();
+        this.darkToneColors = in.createStringArray();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
