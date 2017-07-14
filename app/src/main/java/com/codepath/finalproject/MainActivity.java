@@ -47,10 +47,13 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
     String recipientName;
     String recipientNumber;
+    Boolean SMS;
+    Boolean contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         users = new ArrayList<User>();
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
@@ -70,37 +73,18 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
                     new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
-        List<SMS> smsList = new ArrayList<SMS>();
 
-        Uri uri = Uri.parse("content://sms/inbox");
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
-        startManagingCursor(c);
+        SMS = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_SMS)
+                == PackageManager.PERMISSION_GRANTED;
+        contact = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED;
 
-        // Read the sms data and store it in the list
-        if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                SMS sms = new SMS();
-                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
-                String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                recipientName = getContactName(recipientNumber, this);
-
-                sms.setBody(body);
-                sms.setNumber(recipientNumber);
-                sms.setContact(recipientName);
-
-                smsList.add(sms);
-
-                c.moveToNext();
-            }
+        if (SMS && contact) {
+            text();
         }
-        c.close();
-        try {
-            parseFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // Set smsList in the ListAdapter
-        setListAdapter(new ListAdapter(this, smsList));
+
     }
 
 
@@ -258,5 +242,39 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
             user.setAverageUtteranceLevels(j, j);
         }
     }
+
+    private void text(){
+        List<SMS> smsList = new ArrayList<SMS>();
+
+        Uri uri = Uri.parse("content://sms/inbox");
+        Cursor c = getContentResolver().query(uri, null, null, null, null);
+        startManagingCursor(c);
+
+        // Read the sms data and store it in the list
+        if (c.moveToFirst()) {
+            for (int i = 0; i < c.getCount(); i++) {
+                SMS sms = new SMS();
+                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                recipientName = getContactName(recipientNumber, this);
+
+                sms.setBody(body);
+                sms.setNumber(recipientNumber);
+                sms.setContact(recipientName);
+
+                smsList.add(sms);
+
+                c.moveToNext();
+            }
+        }
+        c.close();
+        try {
+            parseFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Set smsList in the ListAdapter
+        setListAdapter(new ListAdapter(this, smsList));
+        }
 }
 
