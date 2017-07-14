@@ -43,11 +43,19 @@ public class User implements Parcelable{
 
     public int getAverageToneLevels(int tone){ return averageToneLevels[tone]; }
 
+    public void setAverageToneLevels(int tone, int level){ averageToneLevels[tone] = level; }
+
     public int getAverageStyleLevels(int style){ return averageStyleLevels[style]; }
 
-    public int getAverageSocialLevels(int social){ return averageToneLevels[social]; }
+    public void setAverageStyleLevels(int style, int level){ averageStyleLevels[style] = level; }
+
+    public int getAverageSocialLevels(int social){ return averageSocialLevels[social]; }
+
+    public void setAverageSocialLevels(int social, int level){ averageSocialLevels[social] = level; }
 
     public int getAverageUtteranceLevels(int utterance){ return averageUtteranceLevels[utterance]; }
+
+    public void setAverageUtteranceLevels(int utterance, int level){ averageUtteranceLevels[utterance] = level; }
 
     public void setName(String name){
         this.name = name;
