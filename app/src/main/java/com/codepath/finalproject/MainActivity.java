@@ -12,23 +12,12 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +26,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     RecyclerView rvText;
     User user;
     ArrayList<User> users;
-    FileInputStream is;
-    FileOutputStream os;
-    BufferedReader reader;
-    BufferedWriter writer;
-    final File file = new File("users.txt");
+    Context context;
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -52,7 +37,6 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        users = new ArrayList<User>();
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -91,16 +75,10 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
                 sms.setContact(recipientName);
 
                 smsList.add(sms);
-
                 c.moveToNext();
             }
         }
         c.close();
-        try {
-            parseFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         // Set smsList in the ListAdapter
         setListAdapter(new ListAdapter(this, smsList));
 
@@ -172,104 +150,6 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         cursor = null;
 
         return contactName;
-    }
-
-    private void parseFile() throws IOException {
-        is = new FileInputStream("users.txt");
-        if (is != null) {
-            reader = new BufferedReader(new InputStreamReader(is));
-            int numberUsers = Integer.parseInt(reader.readLine());
-            for (int i = 0; i < numberUsers; i++) {
-                String line = reader.readLine();
-                User newUser = new User();
-                newUser.setNumber(line.split(" ")[0]);
-                newUser.setName(line.split(" ")[1]);
-                line = reader.readLine();
-                String[] toneScores = line.split(" ");
-                for(int j = 0; j < 5; j++) {
-                    newUser.setAverageToneLevels(j, Integer.parseInt(toneScores[j]));
-                }
-                line = reader.readLine();
-                String[] styleScores = line.split(" ");
-                for(int j = 0; j < 3; j++) {
-                    newUser.setAverageStyleLevels(j, Integer.parseInt(styleScores[j]));
-                }
-                line = reader.readLine();
-                String[] socialScores = line.split(" ");
-                for(int j = 0; j < 5; j++) {
-                    newUser.setAverageSocialLevels(j, Integer.parseInt(socialScores[j]));
-                }
-                line = reader.readLine();
-                String[] utteranceScores = line.split(" ");
-                for(int j = 0; j < 7; j++) {
-                    newUser.setAverageUtteranceLevels(j, Integer.parseInt(utteranceScores[j]));
-                }
-                users.add(newUser);
-            }
-            Log.i("read", user.getName());
-            Log.i("read", user.getNumber());
-            Log.i("read", String.valueOf(user.getAverageToneLevels(0)));
-        }
-        else{
-            getUsers();
-            Log.i("get", user.getName());
-            Log.i("get", user.getNumber());
-            Log.i("get", String.valueOf(user.getAverageToneLevels(0)));
-        }
-
-    }
-    @Override
-    protected void onStop(){
-        super.onStop();
-        Log.i("onStop", "stopped");
-        try {
-            os = openFileOutput("users.txt", Context.MODE_PRIVATE);
-            writer = new BufferedWriter(new OutputStreamWriter(os));
-            writer.write(users.size());
-            writer.newLine();
-            for (int i = 0; i < users.size(); i++) {
-                User u = users.get(i);
-                writer.write(u.getNumber() + " " + u.getName());
-                writer.newLine();
-                for(int j = 0; j < 5; j++) {
-                    writer.write(u.getAverageToneLevels(j));
-                }
-                for(int j = 0; j < 3; j++) {
-                    writer.write(u.getAverageStyleLevels(j));
-                }
-                for(int j = 0; j < 5; j++) {
-                    writer.write(u.getAverageSocialLevels(j));
-                }
-                for(int j = 0; j < 7; j++) {
-                    writer.write(u.getAverageUtteranceLevels(j));
-                }
-            }
-            Log.i("onStop", "written");
-        } catch (FileNotFoundException e) {
-            Log.e("Exception", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("Exception", "IO exception: " + e.toString());
-        }
-    }
-
-    private void getUsers(){
-        TelephonyManager tMgr =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
-        user = new User();
-        user.setNumber(mPhoneNumber);
-        user.setName("me");
-        for(int j = 0; j < 5; j++) {
-            user.setAverageToneLevels(j, j);
-        }
-        for(int j = 0; j < 3; j++) {
-            user.setAverageStyleLevels(j, j);
-        }
-        for(int j = 0; j < 5; j++) {
-            user.setAverageSocialLevels(j, j);
-        }
-        for(int j = 0; j < 7; j++) {
-            user.setAverageUtteranceLevels(j, j);
-        }
     }
 }
 
