@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
@@ -34,10 +36,17 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
     String recipientName;
     String recipientNumber;
+    String body;
+    String date;
+    Boolean SMS;
+    Boolean contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        users = new ArrayList<User>();
+
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -56,31 +65,17 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                     new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
-        List<SMS> smsList = new ArrayList<SMS>();
 
-        Uri uri = Uri.parse("content://sms/inbox");
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
-        startManagingCursor(c);
+        SMS = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_SMS)
+                == PackageManager.PERMISSION_GRANTED;
+        contact = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED;
 
-        // Read the sms data and store it in the list
-        if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                SMS sms = new SMS();
-                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
-                String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                recipientName = getContactName(recipientNumber, this);
-
-                sms.setBody(body);
-                sms.setNumber(recipientNumber);
-                sms.setContact(recipientName);
-
-                smsList.add(sms);
-                c.moveToNext();
-            }
+        if (SMS && contact) {
+            text();
         }
-        c.close();
-        // Set smsList in the ListAdapter
-        rvText.setAdapter(new ListAdapter(this, smsList));
     }
 
 
@@ -110,9 +105,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         MainActivity.this.startActivity(i);
     }
 
-    @Override
+    //@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        SMS sms = (SMS) getListAdapter().getItem(position);
+       // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
         intent.putExtra("recipientName", recipientName);
@@ -145,6 +140,46 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         cursor = null;
 
         return contactName;
+    }
+
+    private void text(){
+        List<SMS> smsList = new ArrayList<SMS>();
+
+        Uri uri = Uri.parse("content://sms/inbox");
+        Cursor c = getContentResolver().query(uri, null, null, null, null);
+        startManagingCursor(c);
+
+        // Read the sms data and store it in the list
+        if (c.moveToFirst()) {
+            for (int i = 0; i < c.getCount(); i++) {
+                SMS sms = new SMS();
+                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+
+                recipientName = getContactName(recipientNumber, this);
+
+                sms.setBody(body);
+                sms.setNumber(recipientNumber);
+                sms.setContact(recipientName);
+
+                smsList.add(sms);
+
+                c.moveToNext();
+            }
+        }
+        c.close();
+        // Set smsList in the ListAdapter
+       // setListAdapter(new ListAdapter(this, smsList));
+    }
+
+    public static String millisToDate(long currentTime) {
+        String finalDate;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime);
+        Date date = calendar.getTime();
+        finalDate = date.toString();
+        return finalDate;
     }
 }
 
