@@ -29,21 +29,6 @@
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/etName"/>
 
-    <EditText
-        android:id="@+id/etSubject"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/line1"
-        android:layout_marginLeft="5dp"
-        android:autoLink="all"
-        android:background="@android:color/transparent"
-        android:hint="Subject:"
-        android:inputType="textCapSentences|textAutoCorrect"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
-
     <View
         android:id="@+id/line2"
         android:layout_width="match_parent"
@@ -55,9 +40,6 @@
         android:id="@+id/etBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btCheck"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
         android:autoLink="all"
         android:background="@android:color/transparent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -65,23 +47,46 @@
         android:inputType=
             "textCapSentences|textAutoCorrect|textMultiLine"
         android:gravity="top"
-        android:layout_below="@+id/etSubject"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/btCheck"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/etName" />
 
-    <Button
-        android:id="@+id/btCheck"
-        android:layout_width="370dp"
-        android:layout_height="48dp"
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/darkGreen"
-        android:text="Check!"
-        android:textColor="@color/white"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="125dp" />
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/btCheck"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/darkGreen"
+            android:text="Check!"
+            android:textColor="@color/white"
+            tools:layout_editor_absoluteX="7dp"
+            tools:layout_editor_absoluteY="125dp" />
+
+        <Button
+            android:id="@+id/btSend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Send"
+            android:background="@color/darkBlue"
+            android:textColor="@color/white"
+            android:onClick="sendText"/>
+
+
+    </LinearLayout>
 
 </RelativeLayout>

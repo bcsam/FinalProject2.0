@@ -76,7 +76,9 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
     public void launchProfileActivity(MenuItem item) {
         //launches the profile view
+        User user = new User();
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+        i.putExtra("user", user);
         MainActivity.this.startActivity(i);
     }
 

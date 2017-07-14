@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -144,5 +145,17 @@ public class ComposeActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(), "Please enter a recipient!",
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void launchComposeActivity(MenuItem item) {
+        //launches the profile view
+        Intent i = new Intent(ComposeActivity.this, ComposeActivity.class);
+        ComposeActivity.this.startActivity(i);
+    }
+
+    public void launchProfileActivity(MenuItem item) {
+        //launches the profile view
+        Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
+        ComposeActivity.this.startActivity(i);
     }
 }
