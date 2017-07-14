@@ -89,6 +89,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
                 Intent i = new Intent(MainActivity.this, ProfileActivity.class);
                 i.putExtra("name", recipientName);
                 i.putExtra("number", recipientNumber);
+                MainActivity.this.startActivity(i);
             }
         });
     }
@@ -104,6 +105,7 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
     public void launchProfileActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+
         i.putExtra("user", user);
         MainActivity.this.startActivity(i);
     }
