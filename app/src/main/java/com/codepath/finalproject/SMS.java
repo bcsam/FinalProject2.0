@@ -9,6 +9,7 @@ public class SMS {
     private String number;
     // SMS text body
     private String body;
+    private String contact;
 
     public String getNumber() {
         return number;
@@ -24,5 +25,13 @@ public class SMS {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }

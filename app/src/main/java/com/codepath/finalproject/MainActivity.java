@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +27,8 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
     RecyclerView rvText;
 
-    private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
+    private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,15 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_SMS},
+                    MY_PERMISSIONS_REQUEST_READ_SMS);
+        }
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
 
@@ -51,8 +62,14 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
                 SMS sms = new SMS();
-                sms.setBody(c.getString(c.getColumnIndexOrThrow("body")).toString());
-                sms.setNumber(c.getString(c.getColumnIndexOrThrow("address")).toString());
+                String phoneNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                String contact = getContactName(phoneNumber, this);
+
+                sms.setBody(body);
+                sms.setNumber(phoneNumber);
+                sms.setContact(contact);
+
                 smsList.add(sms);
 
                 c.moveToNext();
@@ -96,6 +113,29 @@ public class MainActivity extends ListActivity { // TODO: 7/12/17 make the app w
 
         Toast.makeText(getApplicationContext(), sms.getBody(), Toast.LENGTH_LONG).show();
 
+    }
+
+    public String getContactName(final String phoneNumber,Context context)
+
+    {
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));
+
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
+
+        String contactName = "";
+        Cursor cursor = context.getContentResolver().query(uri,projection,null,null,null);
+
+        if(cursor.moveToFirst())
+        {
+
+            contactName=cursor.getString(0);
+
+        }
+        cursor.close();
+        cursor = null;
+
+        return contactName;
     }
 }
 
