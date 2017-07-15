@@ -15,11 +15,10 @@ import android.widget.Toast;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity{
+public class ComposeActivity extends AppCompatActivity{ // TODO: 7/14/17 get to the profile from here 
     Button btCheck;
     EditText etBody;
-    EditText etName;
-    EditText etSubject;
+    EditText etNumber;
     AnalyzerClient client;
 
     @Override
@@ -33,7 +32,9 @@ public class ComposeActivity extends AppCompatActivity{
         }
 
         InitializeViews();
-        unwrapIntent();
+        etBody.setText(getIntent().getStringExtra("message"));
+        etNumber.setText(getIntent().getStringExtra("recipient"));
+        //unwrapIntent();
         setListeners();
 
 
@@ -94,7 +95,7 @@ public class ComposeActivity extends AppCompatActivity{
     public void InitializeViews(){
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
-        etName = (EditText) findViewById(R.id.etName);
+        etNumber = (EditText) findViewById(R.id.etNumber);
 
         //etSubject = (EditText) findViewById(R.id.etSubject);
     }
@@ -102,13 +103,8 @@ public class ComposeActivity extends AppCompatActivity{
     public void unwrapIntent(){
         String recipient = getIntent().getStringExtra("recipient");
         if (recipient != null){
-            etName.setText(recipient);
+            etNumber.setText(recipient);
         }
-
-        /*String subject = getIntent().getStringExtra("subject");
-        if (subject != null){
-            etSubject.setText(subject);
-        }*/
 
         String message = getIntent().getStringExtra("message");
         if (message != null){
@@ -121,7 +117,7 @@ public class ComposeActivity extends AppCompatActivity{
      */
     public void onSubmit(){
         String message = etBody.getText().toString();
-        String recipientName = etName.getText().toString();
+        String recipientName = etNumber.getText().toString();
         //String subject = etSubject.getText().toString();
 
         if(!message.equals("") && !recipientName.equals("")){

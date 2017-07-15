@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true">
 
     <EditText
-        android:id="@+id/etName"
+        android:id="@+id/etNumber"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:layout_below="@+id/etName"/>
+        android:layout_below="@+id/etNumber"/>
 
     <View
         android:id="@+id/line2"
@@ -48,7 +48,7 @@
         android:gravity="top"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/etName"
+        android:layout_below="@+id/etNumber"
         android:layout_above="@+id/linearLayout2" />
 
 

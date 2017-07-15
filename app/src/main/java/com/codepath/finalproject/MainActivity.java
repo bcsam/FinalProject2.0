@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         //launches the profile view
         user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber 
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber(mPhoneNumber);
         user.setName("Me");
         Log.i("profile", user.getNumber());
