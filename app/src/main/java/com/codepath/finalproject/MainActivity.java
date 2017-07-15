@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -27,7 +28,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
 
     RecyclerView rvText;
-    User user;
     ArrayList<User> users;
     Context context;
 
@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
-
+        rvText = (RecyclerView) findViewById(R.id.rvText);
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
     public void launchProfileActivity(MenuItem item) {
         //launches the profile view
-        user = new User();
+        User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number();
         user.setNumber(mPhoneNumber);
@@ -105,8 +105,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         MainActivity.this.startActivity(i);
     }
 
-    //@Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void onItemClick(ListView l, View v, int position, long id) {
        // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
@@ -170,7 +169,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         }
         c.close();
         // Set smsList in the ListAdapter
-       // setListAdapter(new ListAdapter(this, smsList));
+        Log.i("setAdapter", "before");
+        rvText.setLayoutManager(new LinearLayoutManager(this));
+        rvText.setAdapter(new ListAdapter(this, smsList));
     }
 
     public static String millisToDate(long currentTime) {
