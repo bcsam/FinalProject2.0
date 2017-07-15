@@ -53,6 +53,7 @@ public class MessagingActivity extends AppCompatActivity{
                                         intent.putExtra("message", message);
                                         intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
                                         intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
+                                        MessagingActivity.this.startActivity(intent);
                                 }else {
                                         Toast.makeText(getApplicationContext(), "Please enter a message!",
                                                 Toast.LENGTH_LONG).show();

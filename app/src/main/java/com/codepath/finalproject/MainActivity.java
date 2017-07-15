@@ -18,8 +18,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,25 +78,39 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         if (SMS && contact) {
             text();
         }
+        /*
+        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                User OtherUser = new User();
+                OtherUser.setNumber(recipientNumber);
+                OtherUser.setName(recipientName);
+                MainActivity.this.startActivity(i);
+            }
+        });
+        */
     }
 
-
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    public void launchProfileActivity(MenuItem item) {
+    public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
         User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber 
         user.setNumber(mPhoneNumber);
+        user.setName("Me");
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+
         i.putExtra("user", user);
         MainActivity.this.startActivity(i);
     }
@@ -104,13 +120,16 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         MainActivity.this.startActivity(i);
     }
+        //this might be why we can't get to the messaging activity
+    //@Override
 
-    protected void onItemClick(ListView l, View v, int position, long id) {
+    protected void onListItemClick(ListView l, View v, int position, long id) {
        // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
         intent.putExtra("recipientName", recipientName);
         intent.putExtra("recipientNumber", recipientNumber);
+
 
         startActivity(intent);
 
@@ -158,9 +177,15 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
                 recipientName = getContactName(recipientNumber, this);
 
+                String FormattedDate;
+
+                long dateLong = Long.parseLong(date);
+                String finalDate = millisToDate(dateLong);
+
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);
                 sms.setContact(recipientName);
+                sms.setDate(finalDate);
 
                 smsList.add(sms);
 
@@ -178,9 +203,61 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         String finalDate;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(currentTime);
-        Date date = calendar.getTime();
-        finalDate = date.toString();
-        return finalDate;
+
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String monthString;
+
+        switch (month) {
+            case 1:  monthString = "January";
+                break;
+            case 2:  monthString = "February";
+                break;
+            case 3:  monthString = "March";
+                break;
+            case 4:  monthString = "April";
+                break;
+            case 5:  monthString = "May";
+                break;
+            case 6:  monthString = "June";
+                break;
+            case 7:  monthString = "July";
+                break;
+            case 8:  monthString = "August";
+                break;
+            case 9:  monthString = "September";
+                break;
+            case 10: monthString = "October";
+                break;
+            case 11: monthString = "November";
+                break;
+            case 12: monthString = "December";
+                break;
+            default: monthString = "Invalid month";
+                break;
+        }
+
+        String dateMonth = monthString + " " + day;
+
+        return dateMonth;
     }
 }
+/*
+    List<SMS> smsList = new ArrayList<SMS>();
 
+    Uri uri = Uri.parse("content://sms/inbox");
+    Cursor c = getContentResolver().query(uri, null, null, null, null);
+    startManagingCursor(c);
+
+// Read the sms data and store it in the list
+        if (c.moveToFirst()) {
+                for (int i = 0; i < c.getCount(); i++) {
+        SMS sms = new SMS();
+        recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString(); //think this is the name of who sent it
+        String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+        recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
+
+
+        c.close();
+        // Set smsList in the ListAdapter
+        setListAdapter(new ListAdapter(this, smsList));*/

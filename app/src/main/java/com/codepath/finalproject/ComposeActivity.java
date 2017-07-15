@@ -155,7 +155,7 @@ public class ComposeActivity extends AppCompatActivity{
         ComposeActivity.this.startActivity(i);
     }
 
-    public void launchProfileActivity(MenuItem item) {
+    public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
         ComposeActivity.this.startActivity(i);

@@ -49,6 +49,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             holder.tvUserName.setText(smsList.get(position).getNumber());
         }
         holder.tvBody.setText(smsList.get(position).getBody());
+        holder.date.setText(smsList.get(position).getDate());
     }
 
     @Override
@@ -60,6 +61,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvTime;
+        public TextView date;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -67,6 +69,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
+            date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
         }
     }
 }
