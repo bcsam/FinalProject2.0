@@ -18,11 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
@@ -160,10 +159,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
                 recipientName = getContactName(recipientNumber, this);
 
-                String FormattedDate;
-
                 long dateLong = Long.parseLong(date);
                 String finalDate = millisToDate(dateLong);
+                Toast.makeText(this, finalDate, Toast.LENGTH_LONG).show();
 
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);
@@ -187,6 +185,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        Calendar smsTime = Calendar.getInstance();
+
         String monthString;
 
         switch (month) {
@@ -220,7 +221,17 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
         String dateMonth = monthString + " " + day;
 
-        return dateMonth;
+        if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
+            int AMPM = calendar.get(Calendar.AM_PM);
+            if (AMPM == 0) {
+                return calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + " AM";
+            }
+            else {
+                return calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + " PM";
+            }
+        } else {
+            return dateMonth;
+        }
     }
 }
 
