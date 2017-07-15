@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -151,6 +152,18 @@ public class PostCheckActivity extends AppCompatActivity {
             public CharSequence getPageTitle(int position) {
                 return mFragmentTitleList.get(position);
             }
+    }
+
+    public void launchComposeActivity(MenuItem item) {
+        //launches the profile view
+        Intent i = new Intent(PostCheckActivity.this, ComposeActivity.class);
+        PostCheckActivity.this.startActivity(i);
+    }
+
+    public void launchMyProfileActivity(MenuItem item) {
+        //launches the profile view
+        Intent i = new Intent(PostCheckActivity.this, ProfileActivity.class);
+        PostCheckActivity.this.startActivity(i);
     }
 }
 

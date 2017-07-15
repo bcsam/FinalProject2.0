@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         if (SMS && contact) {
             text();
         }
+        /*
         ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                 MainActivity.this.startActivity(i);
             }
         });
+        */
     }
 
     @Override
@@ -98,11 +100,11 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         return true;
     }
 
-    public void launchProfileActivity(MenuItem item) {
+    public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
         user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber 
         user.setNumber(mPhoneNumber);
         user.setName("Me");
         Log.i("profile", user.getNumber());
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         Intent intent = new Intent(this, MessagingActivity.class);
         intent.putExtra("recipientName", recipientName);
         intent.putExtra("recipientNumber", recipientNumber);
+
 
         startActivity(intent);
 
