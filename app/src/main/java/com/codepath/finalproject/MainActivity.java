@@ -11,12 +11,14 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,7 +29,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
 
     RecyclerView rvText;
-    User user;
     ArrayList<User> users;
     Context context;
 
@@ -44,9 +45,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
-
+        rvText = (RecyclerView) findViewById(R.id.rvText);
         //if statement for requesting info
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -76,25 +77,39 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         if (SMS && contact) {
             text();
         }
+        /*
+        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                User OtherUser = new User();
+                OtherUser.setNumber(recipientNumber);
+                OtherUser.setName(recipientName);
+                MainActivity.this.startActivity(i);
+            }
+        });
+        */
     }
 
-
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    public void launchProfileActivity(MenuItem item) {
+    public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
-        user = new User();
+        User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber 
         user.setNumber(mPhoneNumber);
+        user.setName("Me");
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+
         i.putExtra("user", user);
         MainActivity.this.startActivity(i);
     }
@@ -104,14 +119,16 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         MainActivity.this.startActivity(i);
     }
-
+        //this might be why we can't get to the messaging activity
     //@Override
+
     protected void onListItemClick(ListView l, View v, int position, long id) {
        // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
         intent.putExtra("recipientName", recipientName);
         intent.putExtra("recipientNumber", recipientNumber);
+
 
         startActivity(intent);
 
@@ -175,7 +192,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         }
         c.close();
         // Set smsList in the ListAdapter
-       // setListAdapter(new ListAdapter(this, smsList));
+        Log.i("setAdapter", "before");
+        rvText.setLayoutManager(new LinearLayoutManager(this));
+        rvText.setAdapter(new ListAdapter(this, smsList));
     }
 
     public static String millisToDate(long currentTime) {
@@ -234,4 +253,22 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         }
     }
 }
+/*
+    List<SMS> smsList = new ArrayList<SMS>();
 
+    Uri uri = Uri.parse("content://sms/inbox");
+    Cursor c = getContentResolver().query(uri, null, null, null, null);
+    startManagingCursor(c);
+
+// Read the sms data and store it in the list
+        if (c.moveToFirst()) {
+                for (int i = 0; i < c.getCount(); i++) {
+        SMS sms = new SMS();
+        recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString(); //think this is the name of who sent it
+        String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+        recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
+
+
+        c.close();
+        // Set smsList in the ListAdapter
+        setListAdapter(new ListAdapter(this, smsList));*/

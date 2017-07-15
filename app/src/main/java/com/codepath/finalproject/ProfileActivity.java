@@ -27,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
         User user = getIntent().getParcelableExtra("user");
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
+
         tvName.setText(user.getName());
         tvNumber.setText(user.toStringNumber());
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
