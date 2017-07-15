@@ -17,15 +17,15 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     // List context
-    private Context context;
+    Context context;
     // List values
-    private List<SMS> smsList;
+    List<SMS> smsList;
     View rowView;
 
-    public ListAdapter(Context context, List<SMS> smsList) {
-        Log.i("Constructor", ""+smsList.size());
-        this.context = context;
-        this.smsList = smsList;
+    public ListAdapter(Context mContext, List<SMS> mSmsList) {
+        Log.i("Constructor", ""+mSmsList.size());
+        context = mContext;
+        smsList = mSmsList;
     }
 
     @Override
