@@ -2,6 +2,7 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,29 +17,31 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     // List context
-    private Context context;
+    Context context;
     // List values
-    private List<SMS> smsList;
+    List<SMS> smsList;
     View rowView;
 
-    public ListAdapter(Context context, List<SMS> smsList) {
-        this.context = context;
-        this.smsList = smsList;
+    public ListAdapter(Context mContext, List<SMS> mSmsList) {
+        Log.i("Constructor", ""+mSmsList.size());
+        context = mContext;
+        smsList = mSmsList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.i("onCreateViewHolder", "in method");
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
+        rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
         ViewHolder viewHolder = new ViewHolder(rowView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        Log.i("OnBindViewHoler", "in method");
         if (!smsList.get(position).getContact().equals("")) {
             holder.tvUserName.setText(smsList.get(position).getContact());
         }
