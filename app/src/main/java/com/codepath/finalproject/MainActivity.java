@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -252,22 +253,3 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         }
     }
 }
-/*
-    List<SMS> smsList = new ArrayList<SMS>();
-
-    Uri uri = Uri.parse("content://sms/inbox");
-    Cursor c = getContentResolver().query(uri, null, null, null, null);
-    startManagingCursor(c);
-
-// Read the sms data and store it in the list
-        if (c.moveToFirst()) {
-                for (int i = 0; i < c.getCount(); i++) {
-        SMS sms = new SMS();
-        recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString(); //think this is the name of who sent it
-        String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-        recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
-
-
-        c.close();
-        // Set smsList in the ListAdapter
-        setListAdapter(new ListAdapter(this, smsList));*/
