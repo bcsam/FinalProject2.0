@@ -18,13 +18,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
@@ -42,6 +41,8 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
     String date;
     Boolean SMS;
     Boolean contact;
+
+    TextView tvUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         //launches the profile view
         User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber 
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber(mPhoneNumber);
         user.setName("Me");
         Log.i("profile", user.getNumber());
@@ -177,10 +178,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
                 recipientName = getContactName(recipientNumber, this);
 
-                String FormattedDate;
-
                 long dateLong = Long.parseLong(date);
                 String finalDate = millisToDate(dateLong);
+                Toast.makeText(this, finalDate, Toast.LENGTH_LONG).show(); // TODO: 7/16/17 get rid of this 
 
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);
@@ -206,6 +206,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        Calendar smsTime = Calendar.getInstance();
+
         String monthString;
 
         switch (month) {
@@ -239,25 +242,16 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
         String dateMonth = monthString + " " + day;
 
-        return dateMonth;
+        if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
+            int AMPM = calendar.get(Calendar.AM_PM);
+            if (AMPM == 0) {
+                return calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + " AM";
+            }
+            else {
+                return calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + " PM";
+            }
+        } else {
+            return dateMonth;
+        }
     }
 }
-/*
-    List<SMS> smsList = new ArrayList<SMS>();
-
-    Uri uri = Uri.parse("content://sms/inbox");
-    Cursor c = getContentResolver().query(uri, null, null, null, null);
-    startManagingCursor(c);
-
-// Read the sms data and store it in the list
-        if (c.moveToFirst()) {
-                for (int i = 0; i < c.getCount(); i++) {
-        SMS sms = new SMS();
-        recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString(); //think this is the name of who sent it
-        String body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-        recipientName = getContactName(recipientNumber, this); //make sure that the body is written by who you think it is
-
-
-        c.close();
-        // Set smsList in the ListAdapter
-        setListAdapter(new ListAdapter(this, smsList));*/

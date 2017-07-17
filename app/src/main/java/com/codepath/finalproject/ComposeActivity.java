@@ -1,9 +1,12 @@
 package com.codepath.finalproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +18,10 @@ import android.widget.Toast;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity{
+public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make the check and send buttons go on top of the keyboard 
     Button btCheck;
     EditText etBody;
-    EditText etName;
-    EditText etSubject;
+    EditText etNumber;
     AnalyzerClient client;
 
     @Override
@@ -33,7 +35,9 @@ public class ComposeActivity extends AppCompatActivity{
         }
 
         InitializeViews();
-        unwrapIntent();
+        etBody.setText(getIntent().getStringExtra("message"));
+        etNumber.setText(getIntent().getStringExtra("recipient"));
+        //unwrapIntent();
         setListeners();
 
 
@@ -86,7 +90,7 @@ public class ComposeActivity extends AppCompatActivity{
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSubmit();
+                onCheck();
             }
         });
     }
@@ -94,7 +98,7 @@ public class ComposeActivity extends AppCompatActivity{
     public void InitializeViews(){
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
-        etName = (EditText) findViewById(R.id.etName);
+        etNumber = (EditText) findViewById(R.id.etNumber);
 
         //etSubject = (EditText) findViewById(R.id.etSubject);
     }
@@ -102,13 +106,8 @@ public class ComposeActivity extends AppCompatActivity{
     public void unwrapIntent(){
         String recipient = getIntent().getStringExtra("recipient");
         if (recipient != null){
-            etName.setText(recipient);
+            etNumber.setText(recipient);
         }
-
-        /*String subject = getIntent().getStringExtra("subject");
-        if (subject != null){
-            etSubject.setText(subject);
-        }*/
 
         String message = getIntent().getStringExtra("message");
         if (message != null){
@@ -119,9 +118,9 @@ public class ComposeActivity extends AppCompatActivity{
     /**
      *
      */
-    public void onSubmit(){
+    public void onCheck(){
         String message = etBody.getText().toString();
-        String recipientName = etName.getText().toString();
+        String recipientName = etNumber.getText().toString();
         //String subject = etSubject.getText().toString();
 
         if(!message.equals("") && !recipientName.equals("")){
@@ -149,6 +148,10 @@ public class ComposeActivity extends AppCompatActivity{
         }
     }
 
+    public void sendText(View view){
+        // TODO: 7/14/17 fill this out
+    }
+
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ComposeActivity.this, ComposeActivity.class);
@@ -157,7 +160,16 @@ public class ComposeActivity extends AppCompatActivity{
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
+        User user = new User();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        user.setNumber(mPhoneNumber);
+        user.setName("Me");
+        Log.i("profile", user.getNumber()); //delete afterwards
+        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
+
+        i.putExtra("user", user);
         ComposeActivity.this.startActivity(i);
     }
 }

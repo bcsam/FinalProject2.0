@@ -28,7 +28,6 @@ public class PostCheckActivity extends AppCompatActivity {
     TextView tvTextBody;
     TextBody textBody;
     String message;
-    String subject;
     String recipient;
     Button btSend;
     Button btEdit;
@@ -42,7 +41,6 @@ public class PostCheckActivity extends AppCompatActivity {
         //stores info in intent for sending back to MainActivity
         message = getIntent().getStringExtra("message");
         recipient = getIntent().getStringExtra("recipientName");
-        subject = getIntent().getStringExtra("subject");
 
         //makes a Textbody with the user's message
         textBody = new TextBody();
@@ -91,9 +89,8 @@ public class PostCheckActivity extends AppCompatActivity {
     public void sendEmail(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
         //for only emails
-        i.setType("message/rfc822");
+        i.setType("message/rfc822"); // TODO: 7/14/17 make this sending a text
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
-        i.putExtra(Intent.EXTRA_SUBJECT, subject);
         i.putExtra(Intent.EXTRA_TEXT, message);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
@@ -107,9 +104,8 @@ public class PostCheckActivity extends AppCompatActivity {
         btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(PostCheckActivity.this, MainActivity.class);
+                Intent intent = new Intent(PostCheckActivity.this, ComposeActivity.class);
                 intent.putExtra("message", message);
-                intent.putExtra("subject", subject);
                 intent.putExtra("recipient", recipient);
                 PostCheckActivity.this.startActivity(intent);
             }
