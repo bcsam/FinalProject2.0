@@ -1,6 +1,6 @@
 package com.codepath.finalproject;
 
-import android.telephony.gsm.SmsManager;
+import android.telephony.SmsManager;
 
 /**
  * Created by andreadeoli on 7/13/17.
