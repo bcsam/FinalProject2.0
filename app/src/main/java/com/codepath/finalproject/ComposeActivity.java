@@ -82,7 +82,7 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put pas
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_unsearchable, menu);
         return true;
     }
 
@@ -199,6 +199,11 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put pas
         Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
+        ComposeActivity.this.startActivity(i);
+    }
+
+    public void launchMainActivity(MenuItem item){
+        Intent i = new Intent(ComposeActivity.this, MainActivity.class);
         ComposeActivity.this.startActivity(i);
     }
 }

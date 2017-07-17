@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvText;
     ArrayList<User> users;
     Context context;
+    List<SMS> smsList;
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -109,14 +110,26 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getApplicationContext(), query,
-                        Toast.LENGTH_LONG).show();
                 searchView.clearFocus();
 
                 //insert query here
                 List<SMS> postQuerySmsList = new ArrayList<SMS>();
+                for (SMS text : smsList) {
+                    String number = text.getNumber();
+                    String body = text.getBody();
+                    String contact = text.getContact();
 
+                    if(number.toLowerCase().contains(query.toLowerCase()) ||
+                            body.toLowerCase().contains(query.toLowerCase()) ||
+                            contact.toLowerCase().contains(query.toLowerCase())){
 
+                        Toast.makeText(getApplicationContext(), query,
+                                Toast.LENGTH_LONG).show();
+                        postQuerySmsList.add(text);
+                    }
+                }
+
+                rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList));
                 return true;
             }
 
@@ -263,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void text(){ // TODO: 7/17/17 rename this method
-        List<SMS> smsList = new ArrayList<SMS>();
+        smsList = new ArrayList<SMS>();
 
         Uri uri = Uri.parse("content://sms/inbox");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
