@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
-
         getPermissionToRead();
         //if statement for requesting info
         /*if (ContextCompat.checkSelfPermission(this,

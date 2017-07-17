@@ -66,7 +66,7 @@ public class User implements Parcelable{
     public String toStringNumber(){
         String newNumber = number;
         if(newNumber.length() > 7)
-            newNumber = "+" + number.charAt(0) + " (" + number.substring(1,4) + ") " + number.substring(4,7) + "-" + number.substring(7);
+            newNumber = number.charAt(0) + " (" + number.substring(1,4) + ") " + number.substring(4,7) + "-" + number.substring(7);
         return newNumber;
     }
 
