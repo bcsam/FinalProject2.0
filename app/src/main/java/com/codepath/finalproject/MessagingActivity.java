@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,8 +41,9 @@ public class MessagingActivity extends AppCompatActivity{
             setContentView(R.layout.activity_messaging);
 
                 //stores this info to know which messages to bring up
-            recipientName = getIntent().getStringExtra("recipientName");
-            recipientNumber = getIntent().getStringExtra("recipientNumber");
+            recipientName = getIntent().getStringExtra("name");
+            recipientNumber = getIntent().getStringExtra("number");
+            Log.i("recipientNumber", recipientNumber);
             initializeViews();
             setOnClickListeners();
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
@@ -78,19 +80,20 @@ public class MessagingActivity extends AppCompatActivity{
         }
 
         public void getMessages(){
-            final String[] projection = new String[]{"*"};
-            Uri uri = Uri.parse("content://mms-sms/conversations/");
-            Cursor c = getContentResolver().query(uri, projection, "address='"+recipientNumber+"'", null, null);
-
+            Uri uri = Uri.parse("content://sms/conversations");
+            Cursor c = getContentResolver().query(uri, null, "address='"+recipientNumber+"'", null, null);
+            String thread = "";
+            if(c.moveToFirst())
+                thread = c.getString(c.getColumnIndexOrThrow("thread_id")).toString();
+            c = getContentResolver().query(Uri.parse("content://sms/"), null,  "thread_id=" + thread, null, null);
             if (c.moveToFirst()) {
                 for (int i = 0; i < c.getCount(); i++) {
                     String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                    String number = c.getString(c.getColumnIndexOrThrow("address")).toString();
                     SMS message = new SMS();
                     message.setBody(text);
-                    message.setNumber(number);
+                    message.setNumber(" ");
                     message.setContact(" ");
-                    messages.add(message);
+                    messages.add(0, message);
                     c.moveToNext();
                 }
             }
