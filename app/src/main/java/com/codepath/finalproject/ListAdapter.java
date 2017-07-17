@@ -25,6 +25,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     View rowView;
     String name;
     String number;
+    String body;
+    String date;
 
     public ListAdapter(Context mContext, List<SMS> mSmsList) {
         Log.i("Constructor", ""+mSmsList.size());
@@ -49,6 +51,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         name = smsList.get(position).getContact();
         number = smsList.get(position).getNumber();
+        body = smsList.get(position).getBody();
+        date = smsList.get(position).getDate();
 
         if (!name.equals("")) {
             holder.tvUserName.setText(name);
@@ -56,8 +60,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         else {
             holder.tvUserName.setText(number);
         }
-        holder.tvBody.setText(smsList.get(position).getBody());
-        holder.date.setText(smsList.get(position).getDate());
+        holder.tvBody.setText(body);
+        holder.date.setText(date);
     }
 
     @Override
