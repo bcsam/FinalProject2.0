@@ -263,7 +263,16 @@ public class MainActivity extends AppCompatActivity {
                 sms.setContact(recipientName);
                 sms.setDate(finalDate);
 
-                smsList.add(sms);
+                int count = 0;
+                for (SMS text : smsList) {
+                    if(!sms.getNumber().equals(text.getNumber())) {
+                        count++;
+                    }
+                }
+
+                if (count == smsList.size()) {
+                    smsList.add(sms);
+                }
 
                 c.moveToNext();
             }
