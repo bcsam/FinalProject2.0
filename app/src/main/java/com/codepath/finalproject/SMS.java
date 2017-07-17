@@ -1,11 +1,14 @@
 package com.codepath.finalproject;
 
+import android.telephony.gsm.SmsManager;
+
 /**
  * Created by andreadeoli on 7/13/17.
  */
 
 public class SMS {
-    // Number from witch the sms was send
+    // Number from which the sms was sent for incoming
+    //Number to which the sms should be sent for outgoing
     private String number;
     // SMS text body
     private String body;
@@ -42,5 +45,21 @@ public class SMS {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    //---sends an SMS message to another device---
+    public void sendSMS(String contact, String phoneNumber, String message)
+    {
+        //PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0); todo for success/failure feedback
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, null, null);
+    }
+
+    //---sends an SMS message to another device---
+    public void sendSMS()
+    {
+        //PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0); todo for success/failure feedback
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(number, null, body, null, null);
     }
 }
