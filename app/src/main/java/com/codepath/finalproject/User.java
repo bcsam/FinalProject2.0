@@ -31,9 +31,9 @@ public class User implements Parcelable{
     public void updateScores(TextBody textBody){
         messageCount++;
         for(int i=0; i<7; i++){
-            if(i<4)
+            if(i<3)
                 averageStyleLevels[i] = (averageStyleLevels[i] + textBody.getStyleLevel(i)) / messageCount;
-            if(i<6){
+            if(i<5){
                 averageToneLevels[i] = (averageToneLevels[i] + textBody.getToneLevel(i)) / messageCount;
                 averageSocialLevels[i] = (averageSocialLevels[i] + textBody.getSocialLevel(i)) / messageCount;
             }

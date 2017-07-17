@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
+    private static final int  MY_PERMISSIONS_REQUEST_READ_BOTH = 3;
 
     String recipientName;
     String recipientNumber;
@@ -50,8 +52,10 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
+
+        getPermissionToRead();
         //if statement for requesting info
-        if (ContextCompat.checkSelfPermission(this,
+        /*if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -138,6 +142,73 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         //want to send name and number of whose text you clicked in intent
     }
 
+    public void getPermissionToRead() {
+        boolean readSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
+                != PackageManager.PERMISSION_GRANTED;
+        boolean readContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED;
+
+        if (readSMS && readContacts) {
+            /*if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_SMS)) {
+                Toast.makeText(this, "Please allow permission!", Toast.LENGTH_SHORT).show();
+            }*/
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_BOTH);
+        } else
+        if (readSMS) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_SMS},
+                    MY_PERMISSIONS_REQUEST_READ_SMS);
+        } else
+        if (readContacts) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        // Make sure it's our original READ_CONTACTS request
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_BOTH) {
+            if (grantResults.length == 2 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                text();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+
+        } else
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_SMS) {
+            if (grantResults.length == 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "SMS permission granted", Toast.LENGTH_SHORT).show();
+                text();
+            } else {
+                Toast.makeText(this, "SMS permission denied", Toast.LENGTH_SHORT).show();
+            }
+
+        } else
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults.length == 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Contact permission granted", Toast.LENGTH_SHORT).show();
+                text();
+            } else {
+                Toast.makeText(this, "Contact permission denied", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     public String getContactName(final String phoneNumber,Context context)
 
     {
@@ -180,7 +251,6 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
                 long dateLong = Long.parseLong(date);
                 String finalDate = millisToDate(dateLong);
-                Toast.makeText(this, finalDate, Toast.LENGTH_LONG).show(); // TODO: 7/16/17 get rid of this 
 
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);
