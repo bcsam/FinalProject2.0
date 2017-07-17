@@ -18,7 +18,7 @@ import android.widget.Toast;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make the check and send buttons go on top of the keyboard 
+public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put past messages in a recycler view
     Button btCheck;
     Button btSend;
     EditText etBody;
@@ -100,9 +100,12 @@ public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "sent clicked", Toast.LENGTH_LONG).show();
+
                 if(!etBody.getText().toString().equals("") && !etNumber.getText().toString().equals("")){
                     sendText(view);
+                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
+                    etBody.setText("");
+                    etNumber.setText("");
 
                 }else if(etNumber.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "Please enter a recipient!",

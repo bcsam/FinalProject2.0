@@ -115,6 +115,9 @@ public class PostCheckActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                     sendText(view);
+                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(PostCheckActivity.this, MainActivity.class);
+                    startActivity(intent);
             }
         });
     }

@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         List<SMS> smsList = new ArrayList<SMS>();
 
         Uri uri = Uri.parse("content://sms/inbox");
+        //Uri uri = Uri.parse("content://sms/conversations?simple=true");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         startManagingCursor(c);
 
@@ -263,7 +264,16 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                 sms.setContact(recipientName);
                 sms.setDate(finalDate);
 
-                smsList.add(sms);
+                int count = 0;
+                for (SMS text : smsList) {
+                    if(!sms.getNumber().equals(text.getNumber())) {
+                        count++;
+                    }
+                }
+
+                if (count == smsList.size()) {
+                    smsList.add(sms);
+                }
 
                 c.moveToNext();
             }
