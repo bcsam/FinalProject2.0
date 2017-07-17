@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
-    private static final int  MY_PERMISSIONS_REQUEST_READ_BOTH = 3;
+    private static final int  MY_PERMISSIONS_REQUEST_READ_ALL = 3;
 
     String recipientName;
     String recipientNumber;
@@ -147,16 +147,21 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                 != PackageManager.PERMISSION_GRANTED;
         boolean readContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED;
+        boolean sendSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED;
 
-        if (readSMS && readContacts) {
+        if (readSMS || readContacts || sendSMS) {
             /*if (shouldShowRequestPermissionRationale(
                     Manifest.permission.READ_SMS)) {
                 Toast.makeText(this, "Please allow permission!", Toast.LENGTH_SHORT).show();
             }*/
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS},
-                    MY_PERMISSIONS_REQUEST_READ_BOTH);
-        } else
+                    new String[]{Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS},
+                    MY_PERMISSIONS_REQUEST_READ_ALL);
+        }
+        else {
+            text();
+        }/* else
         if (readSMS) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_SMS},
@@ -166,7 +171,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-        }
+        }*/
     }
 
     @Override
@@ -174,16 +179,18 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         // Make sure it's our original READ_CONTACTS request
-        if (requestCode == MY_PERMISSIONS_REQUEST_READ_BOTH) {
-            if (grantResults.length == 2 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_ALL) {
+            if (grantResults.length == 3 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
                 text();
             } else {
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
 
-        } else
+        } /*else
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_SMS) {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -203,7 +210,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                 Toast.makeText(this, "Contact permission denied", Toast.LENGTH_SHORT).show();
             }
 
-        }
+        }*/
         else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
