@@ -23,6 +23,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     // List values
     List<SMS> smsList;
     View rowView;
+    String name;
+    String number;
 
     public ListAdapter(Context mContext, List<SMS> mSmsList) {
         Log.i("Constructor", ""+mSmsList.size());
@@ -44,11 +46,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.i("OnBindViewHoler", "in method");
-        if (!smsList.get(position).getContact().equals("")) {
-            holder.tvUserName.setText(smsList.get(position).getContact());
+
+        name = smsList.get(position).getContact();
+        number = smsList.get(position).getNumber();
+
+        if (!name.equals("")) {
+            holder.tvUserName.setText(name);
         }
         else {
-            holder.tvUserName.setText(smsList.get(position).getNumber());
+            holder.tvUserName.setText(number);
         }
         holder.tvBody.setText(smsList.get(position).getBody());
         holder.date.setText(smsList.get(position).getDate());
@@ -80,7 +86,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
                     User user = new User();
-                    user.setName(tvUserName.getText().toString());
+                    user.setName(name);
+                    user.setNumber(number);
                     intent.putExtra("user", user);
                     context.startActivity(intent);
                 }
