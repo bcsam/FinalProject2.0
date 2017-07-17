@@ -199,6 +199,8 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         rvText.setAdapter(new ListAdapter(this, smsList));
     }
 
+
+
     public static String millisToDate(long currentTime) {
         String finalDate;
         Calendar calendar = Calendar.getInstance();

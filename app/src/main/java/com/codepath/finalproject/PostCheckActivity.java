@@ -110,6 +110,13 @@ public class PostCheckActivity extends AppCompatActivity {
                 PostCheckActivity.this.startActivity(intent);
             }
         });
+
+        btSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    sendText(view);
+            }
+        });
     }
 
     public void initializeViews(){
@@ -160,6 +167,13 @@ public class PostCheckActivity extends AppCompatActivity {
         //launches the profile view
         Intent i = new Intent(PostCheckActivity.this, ProfileActivity.class);
         PostCheckActivity.this.startActivity(i);
+    }
+
+    public void sendText(View view){
+        SMS text = new SMS();
+        text.setNumber(recipient);
+        text.setBody(message);
+        text.sendSMS();
     }
 }
 

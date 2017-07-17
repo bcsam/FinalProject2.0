@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make the check and send buttons go on top of the keyboard 
     Button btCheck;
+    Button btSend;
     EditText etBody;
     EditText etNumber;
     AnalyzerClient client;
@@ -40,8 +41,7 @@ public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make
         //unwrapIntent();
         setListeners();
 
-
-
+        //This is an attempt to make the buttons appear and disappear
         /*
         etBody.addTextChangedListener(new TextWatcher() {
             @Override
@@ -87,16 +87,45 @@ public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make
     }
 
     private void setListeners() {
+        final boolean messageEntered = !etBody.getText().toString().equals("");
+        final boolean recipientEntered = !etNumber.getText().toString().equals("");
+
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCheck();
+
+                if(messageEntered){
+                    onCheck();
+                }else{
+
+                }
+
             }
         });
+
+        btSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "sent clicked", Toast.LENGTH_LONG).show();
+                if(!etBody.getText().toString().equals("") && !etNumber.getText().toString().equals("")){
+                    sendText(view);
+
+                }else if(etNumber.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), "Please enter a recipient!",
+                            Toast.LENGTH_LONG).show();
+
+                }else if(etBody.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please enter a message!",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     public void InitializeViews(){
-        btCheck = (Button) findViewById(R.id.btCheck);
+        btCheck = (Button) findViewById(R.id.btCompCheck);
+        btSend = (Button) findViewById(R.id.btCompSend);
         etBody = (EditText) findViewById(R.id.etBody);
         etNumber = (EditText) findViewById(R.id.etNumber);
 
@@ -149,7 +178,10 @@ public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make
     }
 
     public void sendText(View view){
-        // TODO: 7/14/17 fill this out
+        SMS text = new SMS();
+        text.setNumber(etNumber.getText().toString());
+        text.setBody(etBody.getText().toString());
+        text.sendSMS();
     }
 
     public void launchComposeActivity(MenuItem item) {

@@ -22,6 +22,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_editor_absoluteY="16dp" />
 
+    <EditText
+        android:id="@+id/etBody"
+        android:layout_width="match_parent"
+        android:layout_height="425dp"
+        android:autoLink="all"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="Enter Message"
+        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+        android:layout_below="@+id/etNumber" />
+
     <View
         android:id="@+id/line1"
         android:layout_width="match_parent"
@@ -29,41 +40,20 @@
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/etNumber"/>
 
-    <View
-        android:id="@+id/line2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
-
-    <EditText
-        android:id="@+id/etBody"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:autoLink="all"
-        android:background="@android:color/transparent"
-        android:gravity="top"
-        android:hint="Enter Message"
-        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
-
-
-
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:weightSum="2"
         android:id="@+id/linearLayout2"
-        android:layout_above="@+id/etBody"
+        android:layout_below="@+id/etBody"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="125dp">
 
         <Button
-            android:id="@+id/btCheck"
+            android:id="@+id/btCompCheck"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,14 +64,14 @@
             tools:layout_editor_absoluteY="125dp" />
 
         <Button
-            android:id="@+id/btSend"
+            android:id="@+id/btCompSend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Send"
             android:background="@color/darkBlue"
-            android:textColor="@color/white"
-            android:onClick="sendText"/>
+            android:onClick="sendText"
+            android:text="Send"
+            android:textColor="@color/white" />
 
 
     </LinearLayout>
