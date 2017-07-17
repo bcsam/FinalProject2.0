@@ -89,7 +89,7 @@ public class PostCheckActivity extends AppCompatActivity {
     public void sendEmail(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
         //for only emails
-        i.setType("message/rfc822");
+        i.setType("message/rfc822"); // TODO: 7/14/17 make this sending a text
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
         i.putExtra(Intent.EXTRA_TEXT, message);
         try {

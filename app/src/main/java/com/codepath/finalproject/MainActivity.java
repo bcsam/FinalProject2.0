@@ -18,8 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
     String date;
     Boolean SMS;
     Boolean contact;
+
+    TextView tvUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
 
                 long dateLong = Long.parseLong(date);
                 String finalDate = millisToDate(dateLong);
-                Toast.makeText(this, finalDate, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, finalDate, Toast.LENGTH_LONG).show(); // TODO: 7/16/17 get rid of this 
 
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);

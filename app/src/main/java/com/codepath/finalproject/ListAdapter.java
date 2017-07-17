@@ -1,11 +1,13 @@
 package com.codepath.finalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -62,6 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         public TextView tvBody;
         public TextView tvTime;
         public TextView date;
+        public ImageView ivProfileImage;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -70,6 +73,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
+            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    User user = new User();
+                    user.setName(tvUserName.getText().toString());
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

@@ -38,18 +38,17 @@
     <EditText
         android:id="@+id/etBody"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:autoLink="all"
         android:background="@android:color/transparent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="16dp"
-        android:inputType=
-            "textCapSentences|textAutoCorrect|textMultiLine"
         android:gravity="top"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/etNumber"
-        android:layout_above="@+id/linearLayout2" />
+        android:hint="Enter Message"
+        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="16dp" />
 
 
 
@@ -58,12 +57,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:weightSum="2"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayout2"
+        android:layout_above="@+id/etBody"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout2">
+        android:layout_alignParentStart="true">
 
         <Button
             android:id="@+id/btCheck"

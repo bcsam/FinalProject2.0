@@ -1,9 +1,12 @@
 package com.codepath.finalproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +18,7 @@ import android.widget.Toast;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity{ // TODO: 7/14/17 get to the profile from here 
+public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make the check and send buttons go on top of the keyboard 
     Button btCheck;
     EditText etBody;
     EditText etNumber;
@@ -87,7 +90,7 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/14/17 get to 
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSubmit();
+                onCheck();
             }
         });
     }
@@ -115,7 +118,7 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/14/17 get to 
     /**
      *
      */
-    public void onSubmit(){
+    public void onCheck(){
         String message = etBody.getText().toString();
         String recipientName = etNumber.getText().toString();
         //String subject = etSubject.getText().toString();
@@ -145,6 +148,10 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/14/17 get to 
         }
     }
 
+    public void sendText(View view){
+        // TODO: 7/14/17 fill this out
+    }
+
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ComposeActivity.this, ComposeActivity.class);
@@ -153,7 +160,16 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/14/17 get to 
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
+        User user = new User();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        user.setNumber(mPhoneNumber);
+        user.setName("Me");
+        Log.i("profile", user.getNumber()); //delete afterwards
+        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
+
+        i.putExtra("user", user);
         ComposeActivity.this.startActivity(i);
     }
 }
