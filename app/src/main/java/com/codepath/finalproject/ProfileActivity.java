@@ -38,6 +38,8 @@ public class ProfileActivity extends AppCompatActivity {
         User user = getIntent().getParcelableExtra("user");
         if(user.getName().equals("Me"))
             getMyAverages(user);
+        else
+            getAverages(user);
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
 
@@ -61,6 +63,27 @@ public class ProfileActivity extends AppCompatActivity {
     public void getMyAverages(User user) {
         Uri uri = Uri.parse("content://sms/sent");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
+        startManagingCursor(c);
+        AnalyzerClient client = new AnalyzerClient();
+        // Read the sms data and store it in the listco
+        if (c.moveToFirst()) {
+            for (int i = 0; i < c.getCount(); i++) {
+                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                TextBody body = new TextBody();
+                body.setMessage(text);
+                client.getToneScores(body);
+                client.getStyleScores(body);
+                client.getSocialScores(body);
+                user.updateScores(body);
+                c.moveToNext();
+            }
+        }
+        c.close();
+    }
+
+    public void getAverages(User user) {
+        Uri uri = Uri.parse("content://sms/inbox");
+        Cursor c = getContentResolver().query(uri, null, "address='"+user.getNumber()+"'", null, null);
         startManagingCursor(c);
         AnalyzerClient client = new AnalyzerClient();
         // Read the sms data and store it in the listco
