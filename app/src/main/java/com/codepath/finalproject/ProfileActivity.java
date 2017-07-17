@@ -1,9 +1,9 @@
 package com.codepath.finalproject;
 
-import android.database.Cursor;
-import android.net.Uri;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
@@ -12,8 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -38,7 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         User user = getIntent().getParcelableExtra("user");
-        getAverages(user);
+        if(user.getName().equals("Me"))
+            getMyAverages(user);
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
 
@@ -59,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(viewPager);
 
     }
-    public void getAverages(User user) {
+    public void getMyAverages(User user) {
         Uri uri = Uri.parse("content://sms/sent");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         startManagingCursor(c);
