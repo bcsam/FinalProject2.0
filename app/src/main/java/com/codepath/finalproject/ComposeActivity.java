@@ -93,13 +93,7 @@ public class ComposeActivity extends AppCompatActivity{ // // TODO: 7/14/17 make
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(messageEntered){
-                    onCheck();
-                }else{
-
-                }
-
+                    onCheck(); //check for fields filled is in onCheck()
             }
         });
 
