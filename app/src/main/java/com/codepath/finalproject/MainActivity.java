@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.SearchView;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,7 +104,28 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.miSearch);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(getApplicationContext(), query,
+                        Toast.LENGTH_LONG).show();
+                searchView.clearFocus();
+
+                //insert query here
+                List<SMS> postQuerySmsList = new ArrayList<SMS>();
+
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void launchMyProfileActivity(MenuItem item) {
@@ -238,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
         return contactName;
     }
 
-    private void text(){
+    private void text(){ // TODO: 7/17/17 rename this method
         List<SMS> smsList = new ArrayList<SMS>();
 
         Uri uri = Uri.parse("content://sms/inbox");

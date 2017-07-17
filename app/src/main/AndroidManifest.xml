@@ -32,7 +32,9 @@
             android:windowSoftInputMode="adjustResize"
             android:name=".ComposeActivity"/>
         <activity android:name=".ProfileActivity"/>
-        <activity android:name=".MessagingActivity"/>
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name=".MessagingActivity"/>
         <activity android:name=".MessageDetailActivity"/>
     </application>
 
