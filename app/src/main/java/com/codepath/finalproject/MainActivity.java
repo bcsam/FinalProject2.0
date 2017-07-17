@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
+public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvText;
     ArrayList<User> users;

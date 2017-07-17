@@ -16,7 +16,7 @@ import java.util.List;
  * Created by andreadeoli on 7/13/17.
  */
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
     // List context
     Context context;
@@ -33,6 +33,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         context = mContext;
         smsList = mSmsList;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -69,7 +70,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return smsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvTime;
@@ -96,6 +99,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                     context.startActivity(intent);
                 }
             });
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            context = itemView.getContext();
+            int position = getAdapterPosition();
+            String name = smsList.get(position).getContact();
+            String number = smsList.get(position).getNumber();
+            Intent intent = new Intent(context, MessagingActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("number", number);
+            context.startActivity(intent);
         }
     }
 }
