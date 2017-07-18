@@ -1,13 +1,14 @@
 package com.codepath.finalproject;
 
-import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.app.FragmentManager;
+//import android.suppapp.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -17,11 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+;
+;
+
 /**
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends Activity { // TODO: 7/17/17 put past messages in a recycler view
+public class ComposeActivity extends FragmentActivity { // TODO: 7/17/17 put past messages in a recycler view
     Button btCheck;
     Button btSend;
     EditText etBody;
@@ -46,13 +50,13 @@ public class ComposeActivity extends Activity { // TODO: 7/17/17 put past messag
         setListeners();
 
 
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
 
         // Create the list fragment and add it as our sole content.
         if (fm.findFragmentById(android.R.id.content) == null) {
             ContactsFragment list = new ContactsFragment();
 
-            fm.beginTransaction().replace(android.R.id.content, list).commit(); //TODO fix this
+            fm.beginTransaction().add(android.R.id.content, list).commit();
         }
 
 

@@ -6,18 +6,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class ContactsFragment extends Fragment implements
+public class ContactsFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemClickListener {
 
@@ -68,6 +69,9 @@ public class ContactsFragment extends Fragment implements
         private SimpleCursorAdapter mCursorAdapter;
 
 
+        private SearchView mSearchView;
+
+
         public ContactsFragment() {
         }
 
@@ -82,7 +86,7 @@ public class ContactsFragment extends Fragment implements
             super.onActivityCreated(savedInstanceState);
 
             mContactsList =
-                    (ListView) getActivity().findViewById(R.layout.contacts_list_view);
+                    (ListView) getActivity().findViewById(android.R.id.list);
 
             mCursorAdapter = new SimpleCursorAdapter(
                     getActivity(),
