@@ -51,7 +51,7 @@ public class TonesFragment extends Fragment {
         pbJoy = (ProgressBar) v.findViewById(R.id.pbJoy);
         pbSadness = (ProgressBar) v.findViewById(R.id.pbSadness);
         String activity = getArguments().getString("activity");
-        if(activity.equals("PostCheckActivity")) {
+        if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
             textBody = getArguments().getParcelable("textBody");
             setTexts();
             setProgressBars();

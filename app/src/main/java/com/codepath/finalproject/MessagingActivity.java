@@ -68,7 +68,7 @@ public class MessagingActivity extends AppCompatActivity{
             messages = new ArrayList<SMS>();
             getMessages();
             rvText.setLayoutManager(new LinearLayoutManager(this));
-            rvText.setAdapter(new ListAdapter(this, messages));
+            rvText.setAdapter(new ConversationAdapter(this, messages));
 
             Log.i("MyNumber", myNumber);
         }

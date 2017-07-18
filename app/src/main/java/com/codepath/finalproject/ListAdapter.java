@@ -2,10 +2,8 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,10 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        if(viewType == 0)
-            rowView = inflater.inflate(R.layout.item_outgoing_text, parent, false);
-        else
-            rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
+        rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
         ViewHolder viewHolder = new ViewHolder(rowView);
         return viewHolder;
     }
@@ -66,9 +61,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         }
         TextBody textBody = new TextBody();
         textBody.setMessage(body);
-        client.getScores(textBody);
+        //client.getScores(textBody);
         holder.tvBody.setText(body);
-        holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
+        //holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,15 +85,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         return smsList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        if(smsList.get(position).getNumber().equals(myNumber)){
-            return 0;
-        }
-        return 1;
-    }
 
     public static String millisToDate(long currentTime) {
         String finalDate;

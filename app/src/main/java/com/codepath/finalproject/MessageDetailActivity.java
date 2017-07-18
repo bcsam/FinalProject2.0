@@ -26,6 +26,7 @@ public class MessageDetailActivity extends AppCompatActivity{
     String message;
     String number;
     TextBody textBody;
+    SMS sms;
     TextView tvName;
     TextView tvMessage;
 
@@ -36,22 +37,13 @@ public class MessageDetailActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
 
-        //stores info from the incoming intent
-        message = getIntent().getStringExtra("message");
-        name = getIntent().getStringExtra("name"); // TODO: 7/14/17 check that this is the right string
-        number = getIntent().getStringExtra("number");
 
         //makes a Textbody with the user's message
-        textBody = new TextBody();
-        textBody.setMessage(message);
+        textBody = getIntent().getParcelableExtra("textBody");
+        sms = getIntent().getParcelableExtra("sms");
 
-        //gets the textbody's score and puts them in textBody
-        AnalyzerClient client = new AnalyzerClient();
-        client.getScores(textBody);
-
-        //sets the message on the activity
         tvMessage = (TextView) findViewById(R.id.tvMessage);
-        tvMessage.setText(message);
+        tvMessage.setText(textBody.getMessage());
         tvMessage.setTextColor(Color.parseColor(textBody.getTextColor()));
 
         //Code for tabs below

@@ -1,12 +1,14 @@
 package com.codepath.finalproject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.telephony.SmsManager;
 
 /**
  * Created by andreadeoli on 7/13/17.
  */
 
-public class SMS {
+public class SMS implements Parcelable {
     // Number from which the sms was sent for incoming
     //Number to which the sms should be sent for outgoing
     private String number;
@@ -62,4 +64,39 @@ public class SMS {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(number, null, body, null, null);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.number);
+        dest.writeString(this.body);
+        dest.writeString(this.contact);
+        dest.writeString(this.date);
+    }
+
+    public SMS() {
+    }
+
+    protected SMS(Parcel in) {
+        this.number = in.readString();
+        this.body = in.readString();
+        this.contact = in.readString();
+        this.date = in.readString();
+    }
+
+    public static final Parcelable.Creator<SMS> CREATOR = new Parcelable.Creator<SMS>() {
+        @Override
+        public SMS createFromParcel(Parcel source) {
+            return new SMS(source);
+        }
+
+        @Override
+        public SMS[] newArray(int size) {
+            return new SMS[size];
+        }
+    };
 }
