@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +53,30 @@ public class MessagingActivity extends AppCompatActivity{
             getMessages();
             rvText.setLayoutManager(new LinearLayoutManager(this));
             rvText.setAdapter(new ListAdapter(this, messages));
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            return true;
+        }
+
+        public void launchComposeActivity(MenuItem item) {
+            //launches the compose activit
+            Intent i = new Intent(MessagingActivity.this, ComposeActivity.class);
+            MessagingActivity.this.startActivity(i);
+        }
+
+        public void launchMyProfileActivity(MenuItem item) {
+            //launches the profile view
+            Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
+            MessagingActivity.this.startActivity(i);
+        }
+
+        public void launchMainActivity(MenuItem item){
+            Intent i = new Intent(MessagingActivity.this, MainActivity.class);
+            MessagingActivity.this.startActivity(i);
         }
 
         public void initializeViews(){

@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -74,8 +76,25 @@ public class MessageDetailActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_unsearchable, menu);
         return true;
+    }
+
+    public void launchComposeActivity(MenuItem item) {
+        //launches the compose activit
+        Intent i = new Intent(MessageDetailActivity.this, ComposeActivity.class);
+        MessageDetailActivity.this.startActivity(i);
+    }
+
+    public void launchMyProfileActivity(MenuItem item) {
+        //launches the profile view
+        Intent i = new Intent(MessageDetailActivity.this, ProfileActivity.class);
+        MessageDetailActivity.this.startActivity(i);
+    }
+
+    public void launchMainActivity(MenuItem item){
+        Intent i = new Intent(MessageDetailActivity.this, MainActivity.class);
+        MessageDetailActivity.this.startActivity(i);
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {

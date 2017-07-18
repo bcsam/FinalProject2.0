@@ -82,7 +82,7 @@ public class PostCheckActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_unsearchable, menu);
         return true;
     }
 
@@ -161,7 +161,7 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void launchComposeActivity(MenuItem item) {
-        //launches the profile view
+        //launches the compose activit
         Intent i = new Intent(PostCheckActivity.this, ComposeActivity.class);
         PostCheckActivity.this.startActivity(i);
     }
@@ -169,6 +169,11 @@ public class PostCheckActivity extends AppCompatActivity {
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(PostCheckActivity.this, ProfileActivity.class);
+        PostCheckActivity.this.startActivity(i);
+    }
+
+    public void launchMainActivity(MenuItem item){
+        Intent i = new Intent(PostCheckActivity.this, MainActivity.class);
         PostCheckActivity.this.startActivity(i);
     }
 
