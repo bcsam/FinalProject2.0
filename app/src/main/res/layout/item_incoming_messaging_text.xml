@@ -5,6 +5,11 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout">
+
         <ImageView
             android:id="@+id/ivProfileImage"
             android:layout_width="45dp"
@@ -31,16 +36,13 @@
             android:id="@+id/tvBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvUserName"
-            android:layout_toLeftOf="@+id/tvTimeStamp"
-            android:layout_toRightOf="@+id/ivProfileImage"
             android:autoLink="all"
-            android:ellipsize="end"
             android:linksClickable="true"
-            android:maxLength="45"
-            android:maxLines="1"
             android:textSize="12dp"
-            tools:text="Message" />
+            tools:text="Message"
+            android:layout_below="@+id/tvUserName"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:layout_toRightOf="@+id/ivProfileImage" />
 
         <TextView
             android:id="@+id/tvTimeStamp"
@@ -48,29 +50,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/Read"
             android:layout_marginRight="5dp"
-            tools:text="Time" />
+            tools:text="Time"
+            android:layout_alignParentTop="true" />
 
-        <View
-            android:id="@+id/horizontalLine"
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_below="@+id/ivProfileImage"
-            android:layout_marginTop="5dp"
-            android:background="#D3D3D3"
-            android:ellipsize="end"
-            android:maxLines="2"/>
+    </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/Read"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/tvBody"
-            android:layout_alignEnd="@+id/tvTimeStamp"
-            android:layout_alignRight="@+id/tvTimeStamp"
-            android:layout_marginRight="5dp"
-            android:visibility="invisible"
-            app:srcCompat="@android:drawable/ic_notification_overlay" />
+    <View
+        android:id="@+id/horizontalLine"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="5dp"
+        android:background="#D3D3D3"
+        android:maxLines="2"/>
 
 </RelativeLayout>
