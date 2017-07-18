@@ -34,9 +34,11 @@ public class AnalyzerClient {
         service.setUsernameAndPassword(USERNAME, PASSWORD);
     }
 
-    public void getToneScores(TextBody textBody) {
+    public void getScores(TextBody textBody) {
         ToneOptions options = new ToneOptions.Builder()
-                .addTone(Tone.EMOTION).build();
+                .addTone(Tone.EMOTION)
+                .addTone(Tone.LANGUAGE)
+                .addTone(Tone.SOCIAL).build();
         ToneAnalysis tone =
                 service.getTone(textBody.getMessage(), options).execute();
 
@@ -58,20 +60,6 @@ public class AnalyzerClient {
                     case("Sadness"):
                         textBody.setToneLevel(4, ts.getScore());
                         break;
-                }
-            }
-        }
-    }
-
-    public void getStyleScores(TextBody textBody) {
-        ToneOptions options = new ToneOptions.Builder()
-                .addTone(Tone.LANGUAGE).build();
-        ToneAnalysis tone =
-                service.getTone(textBody.getMessage(), options).execute();
-
-        for(ToneCategory tc : tone.getDocumentTone().getTones()){
-            for(ToneScore ts : tc.getTones()){
-                switch(ts.getName()){
                     case("Analytical"):
                         textBody.setStyleLevel(0, ts.getScore());
                         break;
@@ -81,20 +69,6 @@ public class AnalyzerClient {
                     case("Tentative"):
                         textBody.setStyleLevel(2, ts.getScore());
                         break;
-                }
-            }
-        }
-    }
-
-    public void getSocialScores(TextBody textBody) {
-        ToneOptions options = new ToneOptions.Builder()
-                .addTone(Tone.SOCIAL).build();
-        ToneAnalysis tone =
-                service.getTone(textBody.getMessage(), options).execute();
-
-        for(ToneCategory tc : tone.getDocumentTone().getTones()){
-            for(ToneScore ts : tc.getTones()){
-                switch(ts.getName()){
                     case("Openness"):
                         textBody.setSocialLevel(0, ts.getScore());
                         break;

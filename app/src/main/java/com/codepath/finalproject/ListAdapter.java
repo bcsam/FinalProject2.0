@@ -66,7 +66,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         }
         TextBody textBody = new TextBody();
         textBody.setMessage(body);
-        client.getToneScores(textBody);
+        client.getScores(textBody);
         holder.tvBody.setText(body);
         holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);

@@ -179,7 +179,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
             TextBody tb = new TextBody();
             tb.setMessage(message);
             client = new AnalyzerClient();
-            client.getToneScores(tb);
+            client.getScores(tb);
             ComposeActivity.this.startActivity(intent);
 
             //makes the user enter a message before submitting
