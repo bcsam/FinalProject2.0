@@ -2,6 +2,8 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
     // List context
     Context context;
+    AnalyzerClient client;
     // List values
     List<SMS> smsList;
     View rowView;
@@ -32,6 +35,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         Log.i("Constructor", ""+mSmsList.size());
         context = mContext;
         smsList = mSmsList;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        client = new AnalyzerClient();
     }
 
 
@@ -61,7 +67,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         else {
             holder.tvUserName.setText(number);
         }
+        TextBody textBody = new TextBody();
+        textBody.setMessage(body);
+        client.getToneScores(textBody);
         holder.tvBody.setText(body);
+        holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);
     }
 

@@ -138,23 +138,48 @@ public class MessagingActivity extends AppCompatActivity{
         }
 
         public void getMessages(){
-            Uri uri = Uri.parse("content://sms/conversations");
-            Cursor c = getContentResolver().query(uri, null, "address='"+recipientNumber+"'", null, null);
-            String thread = "";
-            if(c.moveToFirst())
-                thread = c.getString(c.getColumnIndexOrThrow("thread_id")).toString();
-            c = getContentResolver().query(Uri.parse("content://sms/"), null,  "thread_id=" + thread, null, null);
-            if (c.moveToFirst()) {
+            Cursor c = getContentResolver().query(Uri.parse("content://sms"), null, "address='"+recipientNumber+"'", null, null);
+            while (c.moveToNext()) {
                 for (int i = 0; i < c.getCount(); i++) {
                     String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                    String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                     SMS message = new SMS();
                     message.setBody(text);
                     message.setNumber(" ");
                     message.setContact(" ");
+                    message.setDate(date);
                     messages.add(0, message);
+                    c.moveToNext();
+                }
+            }
+
+            c = getContentResolver().query(Uri.parse("content://sms/sent"), null, null, null, null);
+            while (c.moveToNext()) {
+                for (int i = 0; i < c.getCount(); i++) {
+                    String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                    String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                    SMS message = new SMS();
+                    message.setBody(text);
+                    message.setNumber(" ");
+                    message.setContact(" ");
+                    message.setDate(date);
+                    int index = messages.size()-1;
+                    for(SMS m: messages){
+                        if(Double.parseDouble(m.getDate())>Double.parseDouble(message.getDate())){
+                            index = messages.indexOf(m);
+                            break;
+                        }
+                    }
+                    messages.add(index, message);
                     c.moveToNext();
                 }
             }
             c.close();
         }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(MessagingActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 }

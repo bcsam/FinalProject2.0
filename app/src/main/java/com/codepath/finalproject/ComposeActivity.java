@@ -202,6 +202,12 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put pas
         ComposeActivity.this.startActivity(i);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ComposeActivity.this, MainActivity.class);
+        startActivity(i);
+    }
+
     public void launchMainActivity(MenuItem item){
         Intent i = new Intent(ComposeActivity.this, MainActivity.class);
         ComposeActivity.this.startActivity(i);

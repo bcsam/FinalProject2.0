@@ -166,4 +166,10 @@ public class ProfileActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 }
