@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +39,7 @@ public class MessagingActivity extends AppCompatActivity{
 
     String recipientName;
     String recipientNumber;
+    String myNumber;
 
     RecyclerView rvText;
 
@@ -51,11 +54,15 @@ public class MessagingActivity extends AppCompatActivity{
             Log.i("recipientNumber", recipientNumber);
             initializeViews();
             setOnClickListeners();
+            TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+            myNumber = tMgr.getLine1Number();
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
             messages = new ArrayList<SMS>();
             getMessages();
             rvText.setLayoutManager(new LinearLayoutManager(this));
             rvText.setAdapter(new ListAdapter(this, messages));
+
+            Log.i("MyNumber", myNumber);
         }
 
         @Override
@@ -145,7 +152,7 @@ public class MessagingActivity extends AppCompatActivity{
                     String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                     SMS message = new SMS();
                     message.setBody(text);
-                    message.setNumber(" ");
+                    message.setNumber(recipientNumber);
                     message.setContact(" ");
                     message.setDate(date);
                     messages.add(0, message);
@@ -160,9 +167,10 @@ public class MessagingActivity extends AppCompatActivity{
                     String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                     SMS message = new SMS();
                     message.setBody(text);
-                    message.setNumber(" ");
-                    message.setContact(" ");
+                    Log.i("MyNumber", myNumber);
+                    message.setNumber(myNumber);
                     message.setDate(date);
+                    message.setContact(" ");
                     int index = messages.size();
                     for(SMS m: messages){
                         if(Double.parseDouble(m.getDate())>Double.parseDouble(message.getDate())){
@@ -172,11 +180,11 @@ public class MessagingActivity extends AppCompatActivity{
                     }
                     messages.add(index, message);
                     c.moveToNext();
-                    Log.i("Sent loop", String.valueOf(i));
                 }
             }
             c.close();
         }
+
 
     @Override
     public void onBackPressed() {

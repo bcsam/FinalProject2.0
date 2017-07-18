@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,18 +44,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i("onCreateViewHolder", "in method");
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
-        rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
+        if(viewType == 0)
+            rowView = inflater.inflate(R.layout.item_outgoing_text, parent, false);
+        else
+            rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
         ViewHolder viewHolder = new ViewHolder(rowView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.i("OnBindViewHoler", "in method");
 
         name = smsList.get(position).getContact();
         number = smsList.get(position).getNumber();
@@ -78,6 +79,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     @Override
     public int getItemCount() {
         return smsList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        Log.i("myNumber", myNumber);
+        Log.i("getNumber", smsList.get(position).getNumber());
+        if(smsList.get(position).getNumber().equals(myNumber)){
+            Log.i("viewtype", "my number");
+            return 0;
+        }
+        return 1;
     }
 
     public static String millisToDate(long currentTime) {
