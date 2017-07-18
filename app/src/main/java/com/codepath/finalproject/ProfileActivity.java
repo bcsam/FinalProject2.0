@@ -104,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_unsearchable, menu);
         return true;
     }
 
@@ -128,6 +128,12 @@ public class ProfileActivity extends AppCompatActivity {
         i.putExtra("user", user);
         ProfileActivity.this.startActivity(i);
     }
+
+    public void launchMainActivity(MenuItem item){
+        Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+        ProfileActivity.this.startActivity(i);
+    }
+
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -159,5 +165,11 @@ public class ProfileActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+        startActivity(i);
     }
 }

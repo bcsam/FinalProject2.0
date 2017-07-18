@@ -11,27 +11,34 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the app work if the device is turned sideways
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
+
+public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvText;
     ArrayList<User> users;
     Context context;
+    List<SMS> smsList;
 
     private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -101,7 +108,63 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.miSearch);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+
+                //insert query here
+                List<SMS> postQuerySmsList = new ArrayList<SMS>();
+                for (SMS text : smsList) {
+                    String number = text.getNumber();
+                    String body = text.getBody();
+                    String contact = text.getContact();
+
+                    if(number.toLowerCase().contains(query.toLowerCase()) ||
+                            body.toLowerCase().contains(query.toLowerCase()) ||
+                            contact.toLowerCase().contains(query.toLowerCase())){
+
+                        makeText(getApplicationContext(), query,
+                                LENGTH_LONG).show();
+                        postQuerySmsList.add(text);
+                    }
+                }
+
+                rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+        searchView.onActionViewCollapsed();
+
+        class Search extends SearchView{
+
+            public Search(Context context) {
+                super(context);
+            }
+
+            public Search(Context context, AttributeSet attrs) {
+                super(context, attrs);
+            }
+
+            public Search(Context context, AttributeSet attrs, int defStyleAttr) {
+                super(context, attrs, defStyleAttr);
+            }
+
+            public void onActionViewCollapsed(){
+
+            }
+        }
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void launchMyProfileActivity(MenuItem item) {
@@ -183,10 +246,10 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
                     grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                makeText(this, "Permission granted", LENGTH_SHORT).show();
                 text();
             } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                makeText(this, "Permission denied", LENGTH_SHORT).show();
             }
 
         } /*else
@@ -238,8 +301,8 @@ public class MainActivity extends AppCompatActivity { // TODO: 7/12/17 make the 
         return contactName;
     }
 
-    private void text(){
-        List<SMS> smsList = new ArrayList<SMS>();
+    private void text(){ // TODO: 7/17/17 rename this method
+        smsList = new ArrayList<SMS>();
 
         Uri uri = Uri.parse("content://sms/inbox");
         Cursor c = getContentResolver().query(uri, null, null, null, null);

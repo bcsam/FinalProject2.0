@@ -5,15 +5,21 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bcsam on 7/14/17.
@@ -40,8 +46,9 @@ public class MessagingActivity extends AppCompatActivity{
             setContentView(R.layout.activity_messaging);
 
                 //stores this info to know which messages to bring up
-            recipientName = getIntent().getStringExtra("recipientName");
-            recipientNumber = getIntent().getStringExtra("recipientNumber");
+            recipientName = getIntent().getStringExtra("name");
+            recipientNumber = getIntent().getStringExtra("number");
+            Log.i("recipientNumber", recipientNumber);
             initializeViews();
             setOnClickListeners();
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
@@ -49,6 +56,59 @@ public class MessagingActivity extends AppCompatActivity{
             getMessages();
             rvText.setLayoutManager(new LinearLayoutManager(this));
             rvText.setAdapter(new ListAdapter(this, messages));
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            MenuItem searchItem = menu.findItem(R.id.miSearch);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    searchView.clearFocus();
+
+                    //insert query here
+                    //edit here down
+                    List<SMS> postQuerySmsList = new ArrayList<SMS>();
+                    for (SMS text : messages) {
+                        String body = text.getBody();
+
+                        if(body.toLowerCase().contains(query.toLowerCase())){
+                            Toast.makeText(getApplicationContext(), query,
+                                    Toast.LENGTH_LONG).show();
+                            postQuerySmsList.add(text);
+                        }
+                    }
+
+                    rvText.setAdapter(new ListAdapter(MessagingActivity.this, postQuerySmsList));
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+            return super.onCreateOptionsMenu(menu);
+        }
+
+        public void launchComposeActivity(MenuItem item) {
+            //launches the compose activit
+            Intent i = new Intent(MessagingActivity.this, ComposeActivity.class);
+            MessagingActivity.this.startActivity(i);
+        }
+
+        public void launchMyProfileActivity(MenuItem item) {
+            //launches the profile view
+            Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
+            MessagingActivity.this.startActivity(i);
+        }
+
+        public void launchMainActivity(MenuItem item){
+            Intent i = new Intent(MessagingActivity.this, MainActivity.class);
+            MessagingActivity.this.startActivity(i);
         }
 
         public void initializeViews(){
@@ -78,22 +138,48 @@ public class MessagingActivity extends AppCompatActivity{
         }
 
         public void getMessages(){
-            final String[] projection = new String[]{"*"};
-            Uri uri = Uri.parse("content://mms-sms/conversations/");
-            Cursor c = getContentResolver().query(uri, projection, "address='"+recipientNumber+"'", null, null);
-
-            if (c.moveToFirst()) {
+            Cursor c = getContentResolver().query(Uri.parse("content://sms"), null, "address='"+recipientNumber+"'", null, null);
+            while (c.moveToNext()) {
                 for (int i = 0; i < c.getCount(); i++) {
                     String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                    String number = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                    String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                     SMS message = new SMS();
                     message.setBody(text);
-                    message.setNumber(number);
+                    message.setNumber(" ");
                     message.setContact(" ");
-                    messages.add(message);
+                    message.setDate(date);
+                    messages.add(0, message);
+                    c.moveToNext();
+                }
+            }
+
+            c = getContentResolver().query(Uri.parse("content://sms/sent"), null, null, null, null);
+            while (c.moveToNext()) {
+                for (int i = 0; i < c.getCount(); i++) {
+                    String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                    String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                    SMS message = new SMS();
+                    message.setBody(text);
+                    message.setNumber(" ");
+                    message.setContact(" ");
+                    message.setDate(date);
+                    int index = messages.size()-1;
+                    for(SMS m: messages){
+                        if(Double.parseDouble(m.getDate())>Double.parseDouble(message.getDate())){
+                            index = messages.indexOf(m);
+                            break;
+                        }
+                    }
+                    messages.add(index, message);
                     c.moveToNext();
                 }
             }
             c.close();
         }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(MessagingActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 }
