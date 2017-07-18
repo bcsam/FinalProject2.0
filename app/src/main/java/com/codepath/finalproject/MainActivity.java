@@ -295,6 +295,9 @@ public class MainActivity extends AppCompatActivity {
 
     {
 
+        if (phoneNumber == null || phoneNumber.equals("")) {
+            return "Anonymous";
+        }
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));
 
         String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};

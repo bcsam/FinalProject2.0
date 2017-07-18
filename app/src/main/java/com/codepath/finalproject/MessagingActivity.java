@@ -51,6 +51,14 @@ public class MessagingActivity extends AppCompatActivity{
                 //stores this info to know which messages to bring up
             recipientName = getIntent().getStringExtra("name");
             recipientNumber = getIntent().getStringExtra("number");
+
+            if (!recipientName.equals("")) {
+                getSupportActionBar().setTitle(recipientName);
+            }
+            else {
+                getSupportActionBar().setTitle(recipientNumber);
+            }
+
             Log.i("recipientNumber", recipientNumber);
             initializeViews();
             setOnClickListeners();
