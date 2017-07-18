@@ -201,4 +201,10 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put pas
         i.putExtra("user", user);
         ComposeActivity.this.startActivity(i);
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ComposeActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 }

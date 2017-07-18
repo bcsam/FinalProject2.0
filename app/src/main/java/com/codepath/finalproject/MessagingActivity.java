@@ -80,13 +80,8 @@ public class MessagingActivity extends AppCompatActivity{
         }
 
         public void getMessages(){
-            Uri uri = Uri.parse("content://sms/conversations");
-            Cursor c = getContentResolver().query(uri, null, "address='"+recipientNumber+"'", null, null);
-            String thread = "";
-            if(c.moveToFirst())
-                thread = c.getString(c.getColumnIndexOrThrow("thread_id")).toString();
-            c = getContentResolver().query(Uri.parse("content://sms/"), null,  "thread_id=" + thread, null, null);
-            if (c.moveToFirst()) {
+            Cursor c = getContentResolver().query(Uri.parse("content://sms"), null, "address='"+recipientNumber+"'", null, null);
+            while (c.moveToNext()) {
                 for (int i = 0; i < c.getCount(); i++) {
                     String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
                     SMS message = new SMS();
@@ -99,4 +94,10 @@ public class MessagingActivity extends AppCompatActivity{
             }
             c.close();
         }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(MessagingActivity.this, MainActivity.class);
+        startActivity(i);
+    }
 }
