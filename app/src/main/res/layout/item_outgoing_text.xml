@@ -11,8 +11,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@drawable/ic_person_white"
-        android:tint="@color/lightGray"
-        android:onClick="" />
+        android:tint="@color/lightGray"/>
 
     <TextView
         android:id="@+id/tvUserName"
