@@ -2,13 +2,12 @@ package com.codepath.finalproject;
 
 //import android.suppapp.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +24,7 @@ import android.widget.Toast;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends FragmentActivity { // TODO: 7/17/17 put past messages in a recycler view
+public class ComposeActivity extends Activity { // TODO: 7/17/17 put past messages in a recycler view
     Button btCheck;
     Button btSend;
     EditText etBody;
@@ -50,14 +49,14 @@ public class ComposeActivity extends FragmentActivity { // TODO: 7/17/17 put pas
         setListeners();
 
 
-        FragmentManager fm = getSupportFragmentManager();
+        /*FragmentManager fm = getSupportFragmentManager();
 
         // Create the list fragment and add it as our sole content.
         if (fm.findFragmentById(android.R.id.content) == null) {
             ContactsFragment list = new ContactsFragment();
 
             fm.beginTransaction().add(android.R.id.content, list).commit();
-        }
+        }*/
 
 
 
@@ -122,7 +121,7 @@ public class ComposeActivity extends FragmentActivity { // TODO: 7/17/17 put pas
             @Override
             public void onClick(View view) {
 
-                if(!etBody.getText().toString().equals("") && !etNumber.getText().toString().equals("")){
+                if(messageEntered && recipientEntered){
                     sendText(view);
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
                     etBody.setText("");
