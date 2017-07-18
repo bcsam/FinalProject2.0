@@ -71,10 +71,10 @@ public class ProfileActivity extends AppCompatActivity {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 TextBody body = new TextBody();
                 body.setMessage(text);
-                client.getToneScores(body);
+                /*client.getToneScores(body);
                 client.getStyleScores(body);
                 client.getSocialScores(body);
-                user.updateScores(body);
+                user.updateScores(body);*/
                 c.moveToNext();
             }
         }
@@ -92,10 +92,10 @@ public class ProfileActivity extends AppCompatActivity {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 TextBody body = new TextBody();
                 body.setMessage(text);
-                client.getToneScores(body);
+                /*client.getToneScores(body);
                 client.getStyleScores(body);
                 client.getSocialScores(body);
-                user.updateScores(body);
+                user.updateScores(body);*/
                 c.moveToNext();
             }
         }

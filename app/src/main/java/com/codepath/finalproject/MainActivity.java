@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -318,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
 
-        Uri uri = Uri.parse("content://sms/inbox");
+        Uri uri = Uri.parse("content://sms");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         startManagingCursor(c);
 
@@ -332,13 +331,10 @@ public class MainActivity extends AppCompatActivity {
 
                 recipientName = getContactName(recipientNumber, this);
 
-                long dateLong = Long.parseLong(date);
-                String finalDate = millisToDate(dateLong);
-
                 sms.setBody(body);
                 sms.setNumber(recipientNumber);
                 sms.setContact(recipientName);
-                sms.setDate(finalDate);
+                sms.setDate(date);
 
                 int count = 0;
                 for (SMS text : smsList) {
@@ -359,62 +355,5 @@ public class MainActivity extends AppCompatActivity {
         Log.i("setAdapter", "before");
         rvText.setLayoutManager(new LinearLayoutManager(this));
         rvText.setAdapter(new ListAdapter(this, smsList));
-    }
-
-
-    public static String millisToDate(long currentTime) {
-        String finalDate;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(currentTime);
-
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        Calendar smsTime = Calendar.getInstance();
-
-        String monthString;
-
-        switch (month) {
-            case 1:  monthString = "January";
-                break;
-            case 2:  monthString = "February";
-                break;
-            case 3:  monthString = "March";
-                break;
-            case 4:  monthString = "April";
-                break;
-            case 5:  monthString = "May";
-                break;
-            case 6:  monthString = "June";
-                break;
-            case 7:  monthString = "July";
-                break;
-            case 8:  monthString = "August";
-                break;
-            case 9:  monthString = "September";
-                break;
-            case 10: monthString = "October";
-                break;
-            case 11: monthString = "November";
-                break;
-            case 12: monthString = "December";
-                break;
-            default: monthString = "Invalid month";
-                break;
-        }
-
-        String dateMonth = monthString + " " + day;
-
-        if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
-            int AMPM = calendar.get(Calendar.AM_PM);
-            if (AMPM == 0) {
-                return calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + " AM";
-            }
-            else {
-                return calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + " PM";
-            }
-        } else {
-            return dateMonth;
-        }
     }
 }
