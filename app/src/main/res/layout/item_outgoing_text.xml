@@ -5,8 +5,11 @@
 
     <ImageView
         android:id="@+id/ivProfileImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:tint="@color/lightGray"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_person_white"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@drawable/ic_person_white"
@@ -19,7 +22,9 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/tvBody" />
+        android:layout_alignRight="@+id/tvBody"
+        android:textColor="@color/black"
+        android:textSize="16dp"/>
 
     <TextView
         android:id="@+id/tvBody"
@@ -40,5 +45,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="TextView" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:layout_below="@+id/tvBody"
+        android:layout_marginTop="5dp"
+        android:background="#D3D3D3" />
 
 </RelativeLayout>
