@@ -7,14 +7,11 @@
         android:id="@+id/ivProfileImage"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:tint="@color/lightGray"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_person_white"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@drawable/ic_person_white"
-        android:tint="@color/lightGray"
-        android:onClick="" />
+        android:tint="@color/lightGray"/>
 
     <TextView
         android:id="@+id/tvUserName"
