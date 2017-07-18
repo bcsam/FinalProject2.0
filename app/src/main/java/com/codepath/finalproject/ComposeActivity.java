@@ -1,10 +1,13 @@
 package com.codepath.finalproject;
 
+import android.app.Activity;
+import android.support.v4.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -18,19 +21,20 @@ import android.widget.Toast;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put past messages in a recycler view
+public class ComposeActivity extends Activity { // TODO: 7/17/17 put past messages in a recycler view
     Button btCheck;
     Button btSend;
     EditText etBody;
     EditText etNumber;
     AnalyzerClient client;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
-        if (android.os.Build.VERSION.SDK_INT > 9) {
+        if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
@@ -40,6 +44,18 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put pas
         etNumber.setText(getIntent().getStringExtra("recipient"));
         //unwrapIntent();
         setListeners();
+
+
+        FragmentManager fm = getFragmentManager();
+
+        // Create the list fragment and add it as our sole content.
+        if (fm.findFragmentById(android.R.id.content) == null) {
+            ContactsFragment list = new ContactsFragment();
+
+            fm.beginTransaction().replace(android.R.id.content, list).commit(); //TODO fix this
+        }
+
+
 
         //This is an attempt to make the buttons appear and disappear
         /*
@@ -78,6 +94,7 @@ public class ComposeActivity extends AppCompatActivity{ // TODO: 7/17/17 put pas
 
         });*/
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
