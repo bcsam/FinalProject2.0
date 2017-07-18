@@ -138,7 +138,7 @@ public class MessagingActivity extends AppCompatActivity{
         }
 
         public void getMessages(){
-            Cursor c = getContentResolver().query(Uri.parse("content://sms"), null, "address='"+recipientNumber+"'", null, null);
+            Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='"+recipientNumber+"'", null, null);
             while (c.moveToNext()) {
                 for (int i = 0; i < c.getCount(); i++) {
                     String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
@@ -153,7 +153,7 @@ public class MessagingActivity extends AppCompatActivity{
                 }
             }
 
-            c = getContentResolver().query(Uri.parse("content://sms/sent"), null, null, null, null);
+            c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='"+recipientNumber+"'", null, null);
             while (c.moveToNext()) {
                 for (int i = 0; i < c.getCount(); i++) {
                     String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
@@ -163,7 +163,7 @@ public class MessagingActivity extends AppCompatActivity{
                     message.setNumber(" ");
                     message.setContact(" ");
                     message.setDate(date);
-                    int index = messages.size()-1;
+                    int index = messages.size();
                     for(SMS m: messages){
                         if(Double.parseDouble(m.getDate())>Double.parseDouble(message.getDate())){
                             index = messages.indexOf(m);
@@ -172,6 +172,7 @@ public class MessagingActivity extends AppCompatActivity{
                     }
                     messages.add(index, message);
                     c.moveToNext();
+                    Log.i("Sent loop", String.valueOf(i));
                 }
             }
             c.close();
