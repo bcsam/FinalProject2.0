@@ -2,12 +2,12 @@ package com.codepath.finalproject;
 
 //import android.suppapp.Activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -24,7 +24,7 @@ import android.widget.Toast;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends Activity { // TODO: 7/17/17 put past messages in a recycler view
+public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put past messages in a recycler view
     Button btCheck;
     Button btSend;
     EditText etBody;
