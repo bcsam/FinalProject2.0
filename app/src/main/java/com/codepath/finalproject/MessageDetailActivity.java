@@ -47,9 +47,7 @@ public class MessageDetailActivity extends AppCompatActivity{
 
         //gets the textbody's score and puts them in textBody
         AnalyzerClient client = new AnalyzerClient();
-        client.getToneScores(textBody);
-        client.getStyleScores(textBody);
-        client.getSocialScores(textBody);
+        client.getScores(textBody);
 
         //sets the message on the activity
         tvMessage = (TextView) findViewById(R.id.tvMessage);

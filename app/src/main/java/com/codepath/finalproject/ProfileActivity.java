@@ -65,18 +65,18 @@ public class ProfileActivity extends AppCompatActivity {
         Cursor c = getContentResolver().query(uri, null, null, null, null);
         startManagingCursor(c);
         AnalyzerClient client = new AnalyzerClient();
+        String fullText = "";
         // Read the sms data and store it in the listco
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                TextBody body = new TextBody();
-                body.setMessage(text);
-                client.getToneScores(body);
-                client.getStyleScores(body);
-                client.getSocialScores(body);
-                user.updateScores(body);
+                fullText += ". "+text;
                 c.moveToNext();
             }
+            TextBody body = new TextBody();
+            body.setMessage(fullText);
+            client.getScores(body);
+            user.updateScores(body);
         }
         c.close();
     }
@@ -86,18 +86,18 @@ public class ProfileActivity extends AppCompatActivity {
         Cursor c = getContentResolver().query(uri, null, "address='"+user.getNumber()+"'", null, null);
         startManagingCursor(c);
         AnalyzerClient client = new AnalyzerClient();
+        String fullText = "";
         // Read the sms data and store it in the listco
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                TextBody body = new TextBody();
-                body.setMessage(text);
-                client.getToneScores(body);
-                client.getStyleScores(body);
-                client.getSocialScores(body);
-                user.updateScores(body);
+                fullText += ". "+text;
                 c.moveToNext();
             }
+            TextBody body = new TextBody();
+            body.setMessage(fullText);
+            client.getScores(body);
+            user.updateScores(body);
         }
         c.close();
     }
