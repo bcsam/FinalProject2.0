@@ -27,13 +27,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     // List values
     List<SMS> smsList;
     View rowView;
-    String name;
-    String number;
-    String body;
-    String date;
 
     public ListAdapter(Context mContext, List<SMS> mSmsList) {
-        Log.i("Constructor", ""+mSmsList.size());
         context = mContext;
         smsList = mSmsList;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -57,10 +52,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        name = smsList.get(position).getContact();
-        number = smsList.get(position).getNumber();
-        body = smsList.get(position).getBody();
-        date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
+        final String name = smsList.get(position).getContact();
+        final String number = smsList.get(position).getNumber();
+        String body = smsList.get(position).getBody();
+        String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
 
         if (!name.equals("")) {
             holder.tvUserName.setText(name);
@@ -74,6 +69,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         holder.tvBody.setText(body);
         //holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);
+        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("adapter name", name);
+                Intent intent = new Intent(context, ProfileActivity.class);
+                User user = new User();
+                user.setName(name);
+                user.setNumber(number);
+                Log.i("adapter number", user.getNumber());
+                intent.putExtra("user", user);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -85,10 +93,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     public int getItemViewType(int position) {
         TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        Log.i("myNumber", myNumber);
-        Log.i("getNumber", smsList.get(position).getNumber());
         if(smsList.get(position).getNumber().equals(myNumber)){
-            Log.i("viewtype", "my number");
             return 0;
         }
         return 1;
@@ -166,17 +171,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
 
-            ivProfileImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, ProfileActivity.class);
-                    User user = new User();
-                    user.setName(name);
-                    user.setNumber(number);
-                    intent.putExtra("user", user);
-                    context.startActivity(intent);
-                }
-            });
+            itemView.setOnClickListener(this);
         }
 
         @Override
