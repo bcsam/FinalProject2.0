@@ -4,10 +4,11 @@
 
     <item
         android:id="@+id/miMain"
+        android:icon="@drawable/ic_home_white"
+        android:onClick="launchMainActivity"
         android:title="Main"
         android:visible="true"
-        app:showAsAction="always"
-        android:onClick="launchMainActivity"/>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/miProfile"
