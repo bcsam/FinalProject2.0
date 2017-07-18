@@ -17,13 +17,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     List<SMS> smsList;
 
-    private static final int  MY_PERMISSIONS_REQUEST_READ_SMS = 1;
-    private static final int  MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
-    private static final int  MY_PERMISSIONS_REQUEST_READ_ALL = 3;
+    private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
+    private static final int MY_PERMISSIONS_REQUEST_READ_ALL = 3;
 
     String recipientName;
     String recipientNumber;
@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
                     String body = text.getBody();
                     String contact = text.getContact();
 
-                    if(number.toLowerCase().contains(query.toLowerCase()) ||
+                    if (number.toLowerCase().contains(query.toLowerCase()) ||
                             body.toLowerCase().contains(query.toLowerCase()) ||
-                            contact.toLowerCase().contains(query.toLowerCase())){
+                            contact.toLowerCase().contains(query.toLowerCase())) {
 
                         makeText(getApplicationContext(), query,
                                 LENGTH_LONG).show();
@@ -142,30 +142,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        searchView.onActionViewCollapsed();
-
-        class Search extends SearchView{
-
-            public Search(Context context) {
-                super(context);
+/*
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return false;
             }
 
-            public Search(Context context, AttributeSet attrs) {
-                super(context, attrs);
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                rvText.setAdapter(new ListAdapter(MainActivity.this, smsList));
+                Toast.makeText(getApplicationContext(), "working",
+                        Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+        */
+        //ran on here up
+
+
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener(){
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
             }
 
-            public Search(Context context, AttributeSet attrs, int defStyleAttr) {
-                super(context, attrs, defStyleAttr);
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                rvText.setAdapter(new ListAdapter(MainActivity.this, smsList));
+                Toast.makeText(getApplicationContext(), "working",
+                        Toast.LENGTH_LONG).show();
+                return true;
             }
+        });
 
-            public void onActionViewCollapsed(){
-
-            }
-        }
-
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
+
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
@@ -346,7 +360,6 @@ public class MainActivity extends AppCompatActivity {
         rvText.setLayoutManager(new LinearLayoutManager(this));
         rvText.setAdapter(new ListAdapter(this, smsList));
     }
-
 
 
     public static String millisToDate(long currentTime) {
