@@ -15,20 +15,23 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v7.widget.SearchView;
-
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -123,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
                             body.toLowerCase().contains(query.toLowerCase()) ||
                             contact.toLowerCase().contains(query.toLowerCase())){
 
-                        Toast.makeText(getApplicationContext(), query,
-                                Toast.LENGTH_LONG).show();
+                        makeText(getApplicationContext(), query,
+                                LENGTH_LONG).show();
                         postQuerySmsList.add(text);
                     }
                 }
@@ -138,6 +141,29 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        searchView.onActionViewCollapsed();
+
+        class Search extends SearchView{
+
+            public Search(Context context) {
+                super(context);
+            }
+
+            public Search(Context context, AttributeSet attrs) {
+                super(context, attrs);
+            }
+
+            public Search(Context context, AttributeSet attrs, int defStyleAttr) {
+                super(context, attrs, defStyleAttr);
+            }
+
+            public void onActionViewCollapsed(){
+
+            }
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -220,10 +246,10 @@ public class MainActivity extends AppCompatActivity {
                     grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                makeText(this, "Permission granted", LENGTH_SHORT).show();
                 text();
             } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                makeText(this, "Permission denied", LENGTH_SHORT).show();
             }
 
         } /*else
