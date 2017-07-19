@@ -46,7 +46,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
             //instance.hello();
             //instance.updateInbox(smsBody, address, dateString);
             inst.updateInbox(smsMessageStr);
-
+            instance.updateInbox(smsMessageStr);
         }
     }
 }

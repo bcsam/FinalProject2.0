@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -27,13 +28,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     AnalyzerClient client;
     // List values
     List<SMS> smsList;
-    TextBody[] textBodyArray;
+    ArrayList<TextBody> textBodyArray;
     View rowView;
 
     public ConversationAdapter(Context mContext, List<SMS> mSmsList) {
         context = mContext;
         smsList = mSmsList;
-        textBodyArray = new TextBody[smsList.size()];
+        TextBody temp = new TextBody();
+        textBodyArray = new ArrayList<TextBody>();
+        for(int i = 0; i < getItemCount(); i++)
+            textBodyArray.add(temp);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         client = new AnalyzerClient();
@@ -86,7 +90,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
         });
         Log.i("position", String.valueOf(position));
-        textBodyArray[position] = textBody;
+        textBodyArray.set(position, textBody);
     }
 
     @Override
@@ -186,7 +190,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             context = itemView.getContext();
             int position = getAdapterPosition();
             Intent intent = new Intent(context, MessageDetailActivity.class);
-            intent.putExtra("textBody", textBodyArray[position]);
+            intent.putExtra("textBody", textBodyArray.get(position));
             intent.putExtra("sms", smsList.get(position));
             context.startActivity(intent);
         }
