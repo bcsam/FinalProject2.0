@@ -258,7 +258,6 @@ public class MessagingActivity extends AppCompatActivity {
         text.setBody(etBody.getText().toString());
         text.setDate(String.valueOf(System.currentTimeMillis()/1000));
         messages.add(messages.size(), text);
-        Log.i("send", messages.get(messages.size()-1).getBody());
         adapter.notifyItemInserted(messages.size());
         rvText.scrollToPosition(adapter.getItemCount());
         etBody.clearFocus();

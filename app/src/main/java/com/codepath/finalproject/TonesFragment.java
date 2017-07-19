@@ -29,7 +29,7 @@ public class TonesFragment extends Fragment {
     ProgressBar pbFear;
     ProgressBar pbJoy;
     ProgressBar pbSadness;
-    TextBody textBody;
+    SMS sms;
     User user;
 
     public TonesFragment() {
@@ -52,7 +52,7 @@ public class TonesFragment extends Fragment {
         pbSadness = (ProgressBar) v.findViewById(R.id.pbSadness);
         String activity = getArguments().getString("activity");
         if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
-            textBody = getArguments().getParcelable("textBody");
+            sms = getArguments().getParcelable("sms");
             setTexts();
             setProgressBars();
         }
@@ -71,29 +71,29 @@ public class TonesFragment extends Fragment {
     }
 
     public void setTexts() {
-        tvAngerScore.setText(String.valueOf(textBody.getToneLevel(0)));
-        tvDisgustScore.setText(String.valueOf(textBody.getToneLevel(1)));
-        tvFearScore.setText(String.valueOf(textBody.getToneLevel(2)));
-        tvJoyScore.setText(String.valueOf(textBody.getToneLevel(3)));
-        tvSadnessScore.setText(String.valueOf(textBody.getToneLevel(4)));
+        tvAngerScore.setText(String.valueOf(sms.getToneLevel(0)));
+        tvDisgustScore.setText(String.valueOf(sms.getToneLevel(1)));
+        tvFearScore.setText(String.valueOf(sms.getToneLevel(2)));
+        tvJoyScore.setText(String.valueOf(sms.getToneLevel(3)));
+        tvSadnessScore.setText(String.valueOf(sms.getToneLevel(4)));
     }
 
     public void setProgressBars(){
         pbAnger.setMax(100);
-        pbAnger.setProgress(textBody.getToneLevel(0));
-        pbAnger.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(0)), PorterDuff.Mode.SRC_IN);
+        pbAnger.setProgress(sms.getToneLevel(0));
+        pbAnger.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(0)), PorterDuff.Mode.SRC_IN);
         pbDisgust.setMax(100);
-        pbDisgust.setProgress(textBody.getToneLevel(1));
-        pbDisgust.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(1)), PorterDuff.Mode.SRC_IN);
+        pbDisgust.setProgress(sms.getToneLevel(1));
+        pbDisgust.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(1)), PorterDuff.Mode.SRC_IN);
         pbFear.setMax(100);
-        pbFear.setProgress(textBody.getToneLevel(2));
-        pbFear.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(2)), PorterDuff.Mode.SRC_IN);
+        pbFear.setProgress(sms.getToneLevel(2));
+        pbFear.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(2)), PorterDuff.Mode.SRC_IN);
         pbJoy.setMax(100);
-        pbJoy.setProgress(textBody.getToneLevel(3));
-        pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(3)), PorterDuff.Mode.SRC_IN);
+        pbJoy.setProgress(sms.getToneLevel(3));
+        pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(3)), PorterDuff.Mode.SRC_IN);
         pbSadness.setMax(100);
-        pbSadness.setProgress(textBody.getToneLevel(4));
-        pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getToneColor(4)), PorterDuff.Mode.SRC_IN);
+        pbSadness.setProgress(sms.getToneLevel(4));
+        pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(4)), PorterDuff.Mode.SRC_IN);
     }
 
     public void setProfileTexts() {

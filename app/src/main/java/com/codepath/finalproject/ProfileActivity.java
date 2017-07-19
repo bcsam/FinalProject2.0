@@ -73,10 +73,10 @@ public class ProfileActivity extends AppCompatActivity {
                 fullText += ". "+text;
                 c.moveToNext();
             }
-            TextBody body = new TextBody();
-            body.setMessage(fullText);
-            client.getScores(body);
-            user.updateScores(body);
+            SMS sms = new SMS();
+            sms.setBody(fullText);
+            client.getScores(sms);
+            user.updateScores(sms);
         }
         c.close();
     }
@@ -94,10 +94,10 @@ public class ProfileActivity extends AppCompatActivity {
                 fullText += ". "+text;
                 c.moveToNext();
             }
-            TextBody body = new TextBody();
-            body.setMessage(fullText);
-            client.getScores(body);
-            user.updateScores(body);
+            SMS sms = new SMS();
+            sms.setBody(fullText);
+            client.getScores(sms);
+            user.updateScores(sms);
         }
         c.close();
     }
