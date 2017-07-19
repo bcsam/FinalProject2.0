@@ -45,7 +45,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         if(viewType == 0)
-            rowView = inflater.inflate(R.layout.item_outgoing_text, parent, false);
+            rowView = inflater.inflate(R.layout.item_outgoing_messaging_text, parent, false);
         else
             rowView = inflater.inflate(R.layout.item_incoming_messaging_text, parent, false);
         ViewHolder viewHolder = new ViewHolder(rowView);

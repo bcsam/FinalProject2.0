@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:weightSum="4"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:layout_weight="1">
 
         <ImageView
             android:id="@+id/ivProfileImage"
@@ -33,41 +36,48 @@
             tools:text="Name"
             android:layout_toRightOf="@+id/ivProfileImage"
             android:layout_alignParentTop="true" />-->
-
         <TextView
             android:id="@+id/tvBody"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvUserName"
-            android:layout_marginRight="5dp"
-            android:layout_toEndOf="@+id/ivProfileImage"
-            android:layout_toLeftOf="@+id/tvTimeStamp"
-            android:layout_toRightOf="@+id/ivProfileImage"
             android:layout_toStartOf="@+id/tvTimeStamp"
             android:autoLink="all"
             android:linksClickable="true"
             android:textSize="14dp"
-            tools:text="Message" />
+            tools:text="Message"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:background="@drawable/turquoise"/>
 
         <TextView
             android:id="@+id/tvTimeStamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="5dp"
             tools:text="Time" />
+        </RelativeLayout>
 
-    </RelativeLayout>
+    <FrameLayout
+        android:layout_alignBottom="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_weight="3">
 
-    <View
+    </FrameLayout>
+
+
+    <!--<View
         android:id="@+id/horizontalLine"
         android:layout_width="fill_parent"
         android:layout_height="2dip"
         android:layout_below="@+id/relativeLayout"
         android:layout_marginTop="5dp"
         android:background="#D3D3D3"
-        android:maxLines="2"/>
+        android:maxLines="2"/>-->
 
-</RelativeLayout>
+</LinearLayout>
