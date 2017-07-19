@@ -36,10 +36,13 @@ public class MessagingActivity extends AppCompatActivity{
     Button btCheck;
     EditText etBody;
     ArrayList<SMS> messages;
+    Uri uri;
 
     String recipientName;
     String recipientNumber;
     String myNumber;
+    public static MessagingActivity inst;
+    ListAdapter adapter;
 
     RecyclerView rvText;
 
@@ -47,10 +50,12 @@ public class MessagingActivity extends AppCompatActivity{
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_messaging);
+            inst = this;
 
                 //stores this info to know which messages to bring up
             recipientName = getIntent().getStringExtra("name");
             recipientNumber = getIntent().getStringExtra("number");
+            adapter = new ListAdapter(this, messages);
 
             if (!recipientName.equals("")) {
                 getSupportActionBar().setTitle(recipientName);
@@ -71,6 +76,10 @@ public class MessagingActivity extends AppCompatActivity{
             rvText.setAdapter(new ListAdapter(this, messages));
 
             Log.i("MyNumber", myNumber);
+        }
+
+        public static MessagingActivity instance() {
+            return inst;
         }
 
         @Override
@@ -196,7 +205,59 @@ public class MessagingActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(MessagingActivity.this, MainActivity.class);
-        startActivity(i);
+
+    }
+
+    public void hello() {
+        /*Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='"+recipientNumber+"'", null, null);
+        if (c.moveToNext()) {
+            String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+            String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+            SMS message = new SMS();
+            message.setBody(text);
+            message.setNumber(recipientNumber);
+            message.setContact(" ");
+            message.setDate(date);
+            messages.add(0, message);
+            c.moveToNext();
+        }*/
+
+        messages = new ArrayList<SMS>();
+
+        uri = Uri.parse("content://sms/inbox");
+        Cursor c = getContentResolver().query(uri, null, "address='"+recipientNumber+"'", null, null);
+        startManagingCursor(c);
+
+        // Read the sms data and store it in the list
+        if (c.moveToNext()) {
+            for (int i = 0; i < c.getCount(); i++) {
+                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                SMS message = new SMS();
+                message.setBody(text);
+                message.setNumber(recipientNumber);
+                message.setContact(" ");
+                message.setDate(date);
+
+                messages.add(message);
+                c.moveToNext();
+            }
+        }
+        c.close();
+        // Set smsList in the ListAdapter
+        Log.i("setAdapter", "before");
+        rvText.setLayoutManager(new LinearLayoutManager(this));
+        rvText.setAdapter(adapter);
+    }
+
+    public void updateInbox(String body, String address, String date) {
+        SMS message = new SMS();
+        message.setBody(body);
+        message.setNumber(address);
+        message.setContact(" ");
+        message.setDate(date);
+
+        messages.add(message);
+        adapter.notifyDataSetChanged();
     }
 }

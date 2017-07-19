@@ -43,12 +43,16 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
     private static final int MY_PERMISSIONS_REQUEST_READ_ALL = 3;
 
+    private static MainActivity ins;
+
     String recipientName;
     String recipientNumber;
     String body;
     String date;
     Boolean SMS;
     Boolean contact;
+    Uri uri;
+    Cursor c;
 
     TextView tvUserName;
 
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
         getPermissionToRead();
+        ins = this;
         //if statement for requesting info
         /*if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -179,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public static MainActivity getInstace(){
+        return ins;
+    }
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
@@ -320,8 +328,8 @@ public class MainActivity extends AppCompatActivity {
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
 
-        Uri uri = Uri.parse("content://sms");
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
+        uri = Uri.parse("content://sms");
+        c = getContentResolver().query(uri, null, null, null, null);
         startManagingCursor(c);
 
         // Read the sms data and store it in the list
@@ -358,5 +366,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i("setAdapter", "before");
         rvText.setLayoutManager(new LinearLayoutManager(this));
         rvText.setAdapter(new ListAdapter(this, smsList));
+    }
+
+    public void updateInbox(String smsMessageStr) {
+        text();
     }
 }
