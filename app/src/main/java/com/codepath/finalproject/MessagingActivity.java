@@ -184,7 +184,9 @@ public class MessagingActivity extends AppCompatActivity {
                 String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                 String id = c.getString(c.getColumnIndexOrThrow("_id")).toString();
                 contentValues.put("read", true);
-                getContentResolver().update(Uri.parse("content://sms"), contentValues, "_id=" + id, null);
+                getContentResolver().update(Uri.parse("content://sms/inbox"), contentValues, "_id=" + id, null);
+                Log.i("check id", id);
+                Log.i("check value", c.getString(c.getColumnIndexOrThrow("read")).toString());
                 SMS message = new SMS();
                 message.setBody(text);
                 message.setNumber(recipientNumber);
@@ -225,5 +227,12 @@ public class MessagingActivity extends AppCompatActivity {
         messages.clear();
         getMessages();
         adapter.notifyDataSetChanged();
+    }
+
+    public void sendText(View view){
+        SMS text = new SMS();
+        text.setNumber(recipientNumber);
+        text.setBody(etBody.getText().toString());
+        text.sendSMS();
     }
 }
