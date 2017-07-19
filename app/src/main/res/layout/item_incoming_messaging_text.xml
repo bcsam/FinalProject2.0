@@ -45,8 +45,10 @@
             android:textSize="14dp"
             tools:text="Message"
             android:background="@drawable/turquoise"
+            android:inputType="textMultiLine"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/ivProfileImage"
+            android:backgroundTint="@color/lightGray"
             android:layout_toEndOf="@+id/ivProfileImage" />
 
         <TextView
@@ -57,7 +59,9 @@
             android:layout_marginTop="6dp"
             android:layout_toEndOf="@+id/tvBody"
             android:layout_toRightOf="@+id/tvBody"
-            tools:text="Time" />
+            android:maxLines="1"
+            tools:text="Time"
+            android:layout_weight="1"/>
         </RelativeLayout>
 
     <FrameLayout
