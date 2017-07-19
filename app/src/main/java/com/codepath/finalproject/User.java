@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -15,6 +16,7 @@ public class User implements Parcelable{
     private int messageCount;
     private String name;
     private String number;
+    private Uri profileImage;
     private String[] darkToneColors;
 
     public User(){
@@ -25,6 +27,7 @@ public class User implements Parcelable{
         messageCount = 0;
         name = "";
         number = "";
+        //May need to add Uri here
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
     }
 
@@ -63,6 +66,8 @@ public class User implements Parcelable{
 
     public void setNumber(String number){ this.number = number; }
 
+    public void setProfileImageUri(Uri profileImage){ this.profileImage = profileImage; }
+
     public String toStringNumber(){
         String newNumber = number;
         if(newNumber.length() > 7)
@@ -73,6 +78,8 @@ public class User implements Parcelable{
     public String getName(){ return name; }
 
     public String getNumber(){ return number; }
+
+    public Uri getProfileImageUri(){ return profileImage; }
 
     public String getStyleColor(){
         return "#00334d";

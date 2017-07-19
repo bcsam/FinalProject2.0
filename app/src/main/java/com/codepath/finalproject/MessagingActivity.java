@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -235,7 +236,7 @@ public class MessagingActivity extends AppCompatActivity {
                 SMS message = new SMS();
                 message.setBody(text);
                 Log.i("MyNumber", myNumber);
-                message.setNumber(myNumber);
+                message.setNumber(number);
                 message.setDate(date);
                 message.setContact(" ");
                 int index = messages.size();
@@ -255,6 +256,16 @@ public class MessagingActivity extends AppCompatActivity {
         SMS text = new SMS();
         text.setNumber(recipientNumber);
         text.setBody(etBody.getText().toString());
+        text.setDate(String.valueOf(System.currentTimeMillis()/1000));
+        messages.add(messages.size(), text);
+        Log.i("send", messages.get(messages.size()-1).getBody());
+        adapter.notifyItemInserted(messages.size());
+        rvText.scrollToPosition(adapter.getItemCount());
+        etBody.clearFocus();
+        etBody.setText("");
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         text.sendSMS();
     }
 }
+
