@@ -43,6 +43,8 @@ public class MessagingActivity extends AppCompatActivity {
     String recipientNumber;
     String myNumber;
     public static MessagingActivity inst;
+    //ListAdapter adapter;
+    Cursor c;
     ConversationAdapter adapter;
 
     RecyclerView rvText;
@@ -176,8 +178,25 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void getMessages() {
-        Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='" + recipientNumber + "'", null, null);
         ContentValues contentValues = new ContentValues();
+
+        if (recipientNumber.length() == 12) {
+            differentNumber(recipientNumber);
+            differentNumber(recipientNumber.substring(1, 12));
+            differentNumber(recipientNumber.substring(2, 12));
+        }
+        else if (recipientNumber.length() == 11) {
+            differentNumber(recipientNumber);
+            differentNumber(recipientNumber.substring(1, 11));
+            differentNumber("+" + recipientNumber);
+        }
+        else if (recipientNumber.length() == 10) {
+            differentNumber(recipientNumber);
+            differentNumber("1" + recipientNumber);
+            differentNumber("+1" + recipientNumber);
+        }
+
+        c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='" + recipientNumber + "'", null, null);
         while (c.moveToNext()) {
             for (int i = 0; i < c.getCount(); i++) {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
@@ -189,16 +208,26 @@ public class MessagingActivity extends AppCompatActivity {
                 Log.i("check value", c.getString(c.getColumnIndexOrThrow("read")).toString());
                 SMS message = new SMS();
                 message.setBody(text);
-                message.setNumber(recipientNumber);
-                message.setContact(" ");
+                Log.i("MyNumber", myNumber);
+                message.setNumber(myNumber);
                 message.setDate(date);
-                message.setRead("1");
-                messages.add(0, message);
+                message.setContact(" ");
+                int index = messages.size();
+                for (SMS m : messages) {
+                    if (Double.parseDouble(m.getDate()) > Double.parseDouble(message.getDate())) {
+                        index = messages.indexOf(m);
+                        break;
+                    }
+                }
+                messages.add(index, message);
                 c.moveToNext();
             }
         }
+        c.close();
+    }
 
-        c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='" + recipientNumber + "'", null, null);
+    public void differentNumber(String number) {
+        c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='" + number + "'", null, null);
         while (c.moveToNext()) {
             for (int i = 0; i < c.getCount(); i++) {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
@@ -220,13 +249,6 @@ public class MessagingActivity extends AppCompatActivity {
                 c.moveToNext();
             }
         }
-        c.close();
-    }
-
-    public void updateInbox(String smsMessageStr) {
-        messages.clear();
-        getMessages();
-        adapter.notifyDataSetChanged();
     }
 
     public void sendText(View view){
