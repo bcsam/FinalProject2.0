@@ -8,8 +8,10 @@
         android:id="@+id/rvMessaging"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/etBody"
-        android:gravity="top"></android.support.v7.widget.RecyclerView>
+        android:gravity="top"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"></android.support.v7.widget.RecyclerView>
 
     <EditText
         android:id="@+id/etBody"
