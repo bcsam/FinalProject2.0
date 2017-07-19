@@ -1,7 +1,12 @@
 package com.codepath.finalproject;
 
+import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 
 /**
@@ -17,6 +22,9 @@ public class SMS implements Parcelable {
     private String contact;
     private String date;
     private String read;
+    private Uri uri;
+    private String contactId;
+    private int imageResource;
 
     public String getNumber() {
         return number;
@@ -24,6 +32,44 @@ public class SMS implements Parcelable {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
+    }
+
+    public Uri getPhotoUri() {
+        try {
+            ContextHolder contextHolder = new ContextHolder();
+            Cursor cur = ContextHolder.getContext().getContentResolver().query(
+                    ContactsContract.Data.CONTENT_URI,
+                    null,
+                    ContactsContract.Data.CONTACT_ID + "=" + this.getContactId() + " AND "
+                            + ContactsContract.Data.MIMETYPE + "='"
+                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", null,
+                    null);
+            if (cur != null) {
+                if (!cur.moveToFirst()) {
+                    return null; // no photo
+                }
+            } else {
+                return null; // error in cursor process
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long
+                .parseLong(getNumber()));
+        return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     public String getBody() {
@@ -104,4 +150,25 @@ public class SMS implements Parcelable {
             return new SMS[size];
         }
     };
+
+    public int getImageResource() {
+        return imageResource;
+    }
+
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
+    }
+
+    private class ContextHolder {
+        public Context context = null;
+
+        public void setContext(Context context){
+            ContextHolder contextHolder = new ContextHolder();
+            contextHolder.context = context;
+        }
+
+        public Context getContext(){
+            return context;
+        }
+    }
 }

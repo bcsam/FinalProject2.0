@@ -2,6 +2,7 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -50,10 +51,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
+        Uri uri;
+        uri = smsList.get(position).getPhotoUri();
+
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         String read = smsList.get(position).getRead();
         Log.i("read adapter", read);
+
         if(read.equals("1"))
             holder.ivRead.setVisibility(View.GONE);
         if (!name.equals("")) {
@@ -62,6 +67,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         else {
             holder.tvUserName.setText(number);
         }
+
+        if (uri != null) {
+            holder.ivProfileImage.setImageURI(uri);
+        } else {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }
+
         TextBody textBody = new TextBody();
         textBody.setMessage(body);
         //client.getScores(textBody);
@@ -172,6 +184,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             int position = getAdapterPosition();
             String name = smsList.get(position).getContact();
             String number = smsList.get(position).getNumber();
+            Uri uri = smsList.get(position).getPhotoUri();
             smsList.get(position).setRead("1");
             notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);

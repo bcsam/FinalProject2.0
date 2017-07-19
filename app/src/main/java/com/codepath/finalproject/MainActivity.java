@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     String body;
     String date;
     String read;
+    String id;
     Boolean SMS;
     Boolean contact;
     Uri uri;
@@ -127,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     String body = text.getBody();
                     String contact = text.getContact();
 
+                    Uri profileImage = text.getPhotoUri();
+
                     if (number.toLowerCase().contains(query.toLowerCase()) ||
                             body.toLowerCase().contains(query.toLowerCase()) ||
                             contact.toLowerCase().contains(query.toLowerCase())) {
@@ -196,6 +199,18 @@ public class MainActivity extends AppCompatActivity {
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber(mPhoneNumber);
         user.setName("Me");
+
+        //user.setProfileImageUri();
+
+        /*Uri u = objItem.getPhotoUri();
+
+        if (u != null) {
+            user.setProfileImage(u);
+        } else {
+            user.setProfileImage(R.drawable.);
+        }*/
+
+
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
@@ -340,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                 read = c.getString(c.getColumnIndexOrThrow("read")).toString();
+                id = c.getString(c.getColumnIndexOrThrow("_id"));
 
                 recipientName = getContactName(recipientNumber, this);
 
@@ -348,6 +364,13 @@ public class MainActivity extends AppCompatActivity {
                 sms.setContact(recipientName);
                 sms.setDate(date);
                 sms.setRead(read);
+
+                Uri u = sms.getPhotoUri();
+                if (u != null) {
+                    sms.setUri(u);
+                } else {
+                    sms.setImageResource(R.drawable.ic_person_white);
+                }
 
                 int count = 0;
                 for (SMS text : smsList) {
