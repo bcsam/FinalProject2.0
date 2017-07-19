@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,7 +31,7 @@ import java.util.List;
 
 //***when sending to message detail it should just send the name, number, and message
 //****textBody will be created in message detail
-public class MessagingActivity extends AppCompatActivity{
+public class MessagingActivity extends AppCompatActivity {
 
     Button btSend;
     Button btCheck;
@@ -46,232 +47,177 @@ public class MessagingActivity extends AppCompatActivity{
 
     RecyclerView rvText;
 
-        @Override
-        protected void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_messaging);
-            inst = this;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_messaging);
+        inst = this;
 
-                //stores this info to know which messages to bring up
-            recipientName = getIntent().getStringExtra("name");
-            recipientNumber = getIntent().getStringExtra("number");
-            adapter = new ListAdapter(this, messages);
+        //stores this info to know which messages to bring up
+        recipientName = getIntent().getStringExtra("name");
+        recipientNumber = getIntent().getStringExtra("number");
+        adapter = new ListAdapter(this, messages);
 
-            if (!recipientName.equals("")) {
-                getSupportActionBar().setTitle(recipientName);
-            }
-            else {
-                getSupportActionBar().setTitle(recipientNumber);
-            }
-
-            Log.i("recipientNumber", recipientNumber);
-            initializeViews();
-            setOnClickListeners();
-            TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-            myNumber = tMgr.getLine1Number();
-            rvText = (RecyclerView) findViewById(R.id.rvMessaging);
-            messages = new ArrayList<SMS>();
-            getMessages();
-            rvText.setLayoutManager(new LinearLayoutManager(this));
-            rvText.setAdapter(new ConversationAdapter(this, messages));
-            rvText.scrollToPosition(messages.size()-1);
+        if (!recipientName.equals("")) {
+            getSupportActionBar().setTitle(recipientName);
+        } else {
+            getSupportActionBar().setTitle(recipientNumber);
         }
 
-        public static MessagingActivity instance() {
-            return inst;
-        }
+        Log.i("recipientNumber", recipientNumber);
+        initializeViews();
+        setOnClickListeners();
+        TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+        myNumber = tMgr.getLine1Number();
+        rvText = (RecyclerView) findViewById(R.id.rvMessaging);
+        messages = new ArrayList<SMS>();
+        getMessages();
+        rvText.setLayoutManager(new LinearLayoutManager(this));
+        rvText.setAdapter(new ConversationAdapter(this, messages));
+        rvText.scrollToPosition(messages.size() - 1);
+    }
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_main, menu);
-            MenuItem searchItem = menu.findItem(R.id.miSearch);
-            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    searchView.clearFocus();
-
-                    //insert query here
-                    //edit here down
-                    List<SMS> postQuerySmsList = new ArrayList<SMS>();
-                    for (SMS text : messages) {
-                        String body = text.getBody();
-
-                        if(body.toLowerCase().contains(query.toLowerCase())){
-                            Toast.makeText(getApplicationContext(), query,
-                                    Toast.LENGTH_LONG).show();
-                            postQuerySmsList.add(text);
-                        }
-                    }
-
-                    rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
-                }
-            });
-
-            MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener(){
-
-                @Override
-                public boolean onMenuItemActionExpand(MenuItem item) {
-                    return true;
-                }
-
-                @Override
-                public boolean onMenuItemActionCollapse(MenuItem item) {
-                    rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages));
-                    return true;
-                }
-            });
-            return super.onCreateOptionsMenu(menu);
-
-        }
-
-        public void launchComposeActivity(MenuItem item) {
-            //launches the compose activit
-            Intent i = new Intent(MessagingActivity.this, ComposeActivity.class);
-            MessagingActivity.this.startActivity(i);
-        }
-
-        public void launchMyProfileActivity(MenuItem item) {
-            //launches the profile view
-            Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
-            MessagingActivity.this.startActivity(i);
-        }
-
-        public void launchMainActivity(MenuItem item){
-            Intent i = new Intent(MessagingActivity.this, MainActivity.class);
-            MessagingActivity.this.startActivity(i);
-        }
-
-        public void initializeViews(){
-                btSend = (Button) findViewById(R.id.btSend);
-                btCheck = (Button) findViewById(R.id.btCheck);
-                etBody = (EditText) findViewById(R.id.etBody);
-        }
-
-        public void setOnClickListeners(){
-                btCheck.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                                Intent intent = new Intent(MessagingActivity.this, PostCheckActivity.class);
-                                String message = etBody.getText().toString();
-                                if(!message.equals("")) {
-                                        intent.putExtra("message", message);
-                                        intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
-                                        intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
-                                        MessagingActivity.this.startActivity(intent);
-                                }else {
-                                        Toast.makeText(getApplicationContext(), "Please enter a message!",
-                                                Toast.LENGTH_LONG).show();
-                                }
-                        }
-                });
-
-        }
-
-        public void getMessages(){
-            Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='"+recipientNumber+"'", null, null);
-            while (c.moveToNext()) {
-                for (int i = 0; i < c.getCount(); i++) {
-                    String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                    String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-                    SMS message = new SMS();
-                    message.setBody(text);
-                    message.setNumber(recipientNumber);
-                    message.setContact(" ");
-                    message.setDate(date);
-                    messages.add(0, message);
-                    c.moveToNext();
-                }
-            }
-
-            c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='"+recipientNumber+"'", null, null);
-            while (c.moveToNext()) {
-                for (int i = 0; i < c.getCount(); i++) {
-                    String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                    String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-                    SMS message = new SMS();
-                    message.setBody(text);
-                    Log.i("MyNumber", myNumber);
-                    message.setNumber(myNumber);
-                    message.setDate(date);
-                    message.setContact(" ");
-                    int index = messages.size();
-                    for(SMS m: messages){
-                        if(Double.parseDouble(m.getDate())>Double.parseDouble(message.getDate())){
-                            index = messages.indexOf(m);
-                            break;
-                        }
-                    }
-                    messages.add(index, message);
-                    c.moveToNext();
-                }
-            }
-            c.close();
-        }
-
+    public static MessagingActivity instance() {
+        return inst;
+    }
 
     @Override
-    public void onBackPressed() {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.miSearch);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+
+                //insert query here
+                //edit here down
+                List<SMS> postQuerySmsList = new ArrayList<SMS>();
+                for (SMS text : messages) {
+                    String body = text.getBody();
+
+                    if (body.toLowerCase().contains(query.toLowerCase())) {
+                        Toast.makeText(getApplicationContext(), query,
+                                Toast.LENGTH_LONG).show();
+                        postQuerySmsList.add(text);
+                    }
+                }
+
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages));
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
 
     }
 
-    public void hello() {
-        /*Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='"+recipientNumber+"'", null, null);
-        if (c.moveToNext()) {
-            String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-            String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-            SMS message = new SMS();
-            message.setBody(text);
-            message.setNumber(recipientNumber);
-            message.setContact(" ");
-            message.setDate(date);
-            messages.add(0, message);
-            c.moveToNext();
-        }*/
+    public void launchComposeActivity(MenuItem item) {
+        //launches the compose activit
+        Intent i = new Intent(MessagingActivity.this, ComposeActivity.class);
+        MessagingActivity.this.startActivity(i);
+    }
 
-        messages = new ArrayList<SMS>();
+    public void launchMyProfileActivity(MenuItem item) {
+        //launches the profile view
+        Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
+        MessagingActivity.this.startActivity(i);
+    }
 
-        uri = Uri.parse("content://sms/inbox");
-        Cursor c = getContentResolver().query(uri, null, "address='"+recipientNumber+"'", null, null);
-        startManagingCursor(c);
+    public void launchMainActivity(MenuItem item) {
+        Intent i = new Intent(MessagingActivity.this, MainActivity.class);
+        MessagingActivity.this.startActivity(i);
+    }
 
-        // Read the sms data and store it in the list
-        if (c.moveToNext()) {
+    public void initializeViews() {
+        btSend = (Button) findViewById(R.id.btSend);
+        btCheck = (Button) findViewById(R.id.btCheck);
+        etBody = (EditText) findViewById(R.id.etBody);
+    }
+
+    public void setOnClickListeners() {
+        btCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MessagingActivity.this, PostCheckActivity.class);
+                String message = etBody.getText().toString();
+                if (!message.equals("")) {
+                    intent.putExtra("message", message);
+                    intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
+                    intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
+                    MessagingActivity.this.startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please enter a message!",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+    }
+
+    public void getMessages() {
+        Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='" + recipientNumber + "'", null, null);
+        ContentValues contentValues = new ContentValues();
+        while (c.moveToNext()) {
             for (int i = 0; i < c.getCount(); i++) {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                String id = c.getString(c.getColumnIndexOrThrow("_id")).toString();
+                contentValues.put("read", true);
+                getContentResolver().update(Uri.parse("content://sms"), contentValues, "_id=" + id, null);
                 SMS message = new SMS();
                 message.setBody(text);
                 message.setNumber(recipientNumber);
                 message.setContact(" ");
                 message.setDate(date);
+                message.setRead("1");
+                messages.add(0, message);
+                c.moveToNext();
+            }
+        }
 
-                messages.add(message);
+        c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='" + recipientNumber + "'", null, null);
+        while (c.moveToNext()) {
+            for (int i = 0; i < c.getCount(); i++) {
+                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                SMS message = new SMS();
+                message.setBody(text);
+                Log.i("MyNumber", myNumber);
+                message.setNumber(myNumber);
+                message.setDate(date);
+                message.setContact(" ");
+                int index = messages.size();
+                for (SMS m : messages) {
+                    if (Double.parseDouble(m.getDate()) > Double.parseDouble(message.getDate())) {
+                        index = messages.indexOf(m);
+                        break;
+                    }
+                }
+                messages.add(index, message);
                 c.moveToNext();
             }
         }
         c.close();
-        // Set smsList in the ListAdapter
-        Log.i("setAdapter", "before");
-        rvText.setLayoutManager(new LinearLayoutManager(this));
-        rvText.setAdapter(adapter);
-    }
-
-    public void updateInbox(String body, String address, String date) {
-        SMS message = new SMS();
-        message.setBody(body);
-        message.setNumber(address);
-        message.setContact(" ");
-        message.setDate(date);
-
-        messages.add(message);
-        adapter.notifyDataSetChanged();
     }
 }

@@ -52,7 +52,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         final String number = smsList.get(position).getNumber();
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-
+        String read = smsList.get(position).getRead();
+        Log.i("read adapter", read);
+        if(read.equals("1"))
+            holder.ivRead.setVisibility(View.GONE);
         if (!name.equals("")) {
             holder.tvUserName.setText(name);
         }
@@ -68,12 +71,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("adapter name", name);
                 Intent intent = new Intent(context, ProfileActivity.class);
                 User user = new User();
                 user.setName(name);
                 user.setNumber(number);
-                Log.i("adapter number", user.getNumber());
                 intent.putExtra("user", user);
                 context.startActivity(intent);
             }
@@ -150,6 +151,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         public TextView tvTime;
         public TextView date;
         public ImageView ivProfileImage;
+        public ImageView ivRead;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -159,6 +161,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivRead = (ImageView) itemView.findViewById(R.id.Read);
 
             itemView.setOnClickListener(this);
         }
@@ -169,6 +172,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             int position = getAdapterPosition();
             String name = smsList.get(position).getContact();
             String number = smsList.get(position).getNumber();
+            smsList.get(position).setRead("1");
+            notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("name", name);
             intent.putExtra("number", number);
