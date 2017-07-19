@@ -40,22 +40,23 @@
             android:id="@+id/tvBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvUserName"
-            android:layout_toStartOf="@+id/tvTimeStamp"
             android:autoLink="all"
             android:linksClickable="true"
             android:textSize="14dp"
             tools:text="Message"
+            android:background="@drawable/turquoise"
+            android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/ivProfileImage"
-            android:background="@drawable/turquoise"/>
+            android:layout_toEndOf="@+id/ivProfileImage" />
 
         <TextView
             android:id="@+id/tvTimeStamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="6dp"
+            android:layout_toEndOf="@+id/tvBody"
+            android:layout_toRightOf="@+id/tvBody"
             tools:text="Time" />
         </RelativeLayout>
 
@@ -66,10 +67,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_weight="3">
-
-    </FrameLayout>
-
+        android:layout_weight="3"/>
 
     <!--<View
         android:id="@+id/horizontalLine"
