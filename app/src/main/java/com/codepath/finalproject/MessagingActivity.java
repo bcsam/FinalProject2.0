@@ -43,8 +43,9 @@ public class MessagingActivity extends AppCompatActivity {
     String recipientNumber;
     String myNumber;
     public static MessagingActivity inst;
-    ListAdapter adapter;
+    //ListAdapter adapter;
     Cursor c;
+    ConversationAdapter adapter;
 
     RecyclerView rvText;
 
@@ -57,7 +58,6 @@ public class MessagingActivity extends AppCompatActivity {
         //stores this info to know which messages to bring up
         recipientName = getIntent().getStringExtra("name");
         recipientNumber = getIntent().getStringExtra("number");
-        adapter = new ListAdapter(this, messages);
 
         if (!recipientName.equals("")) {
             getSupportActionBar().setTitle(recipientName);
@@ -73,8 +73,9 @@ public class MessagingActivity extends AppCompatActivity {
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
         messages = new ArrayList<SMS>();
         getMessages();
+        adapter = new ConversationAdapter(this, messages);
         rvText.setLayoutManager(new LinearLayoutManager(this));
-        rvText.setAdapter(new ConversationAdapter(this, messages));
+        rvText.setAdapter(adapter);
         rvText.scrollToPosition(messages.size() - 1);
     }
 
