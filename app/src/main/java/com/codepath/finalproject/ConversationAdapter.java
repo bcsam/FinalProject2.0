@@ -48,7 +48,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         if(viewType == 0)
             rowView = inflater.inflate(R.layout.item_outgoing_text, parent, false);
         else
-            rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
+            rowView = inflater.inflate(R.layout.item_incoming_messaging_text, parent, false);
         ViewHolder viewHolder = new ViewHolder(rowView);
         return viewHolder;
     }
@@ -61,12 +61,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
 
+        /*
         if (!name.equals("")) {
             holder.tvUserName.setText(name);
         }
         else {
             holder.tvUserName.setText(number);
         }
+        */
         TextBody textBody = new TextBody();
         textBody.setMessage(body);
         client.getScores(textBody);
