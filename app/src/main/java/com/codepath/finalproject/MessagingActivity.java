@@ -69,8 +69,7 @@ public class MessagingActivity extends AppCompatActivity{
             getMessages();
             rvText.setLayoutManager(new LinearLayoutManager(this));
             rvText.setAdapter(new ConversationAdapter(this, messages));
-
-            Log.i("MyNumber", myNumber);
+            rvText.scrollToPosition(messages.size()-1);
         }
 
         @Override

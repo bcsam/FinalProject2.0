@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,13 +27,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     AnalyzerClient client;
     // List values
     List<SMS> smsList;
-    ArrayList<TextBody> textBodyList;
+    TextBody[] textBodyArray;
     View rowView;
 
     public ConversationAdapter(Context mContext, List<SMS> mSmsList) {
         context = mContext;
         smsList = mSmsList;
-        textBodyList = new ArrayList<TextBody>();
+        textBodyArray = new TextBody[smsList.size()];
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         client = new AnalyzerClient();
@@ -71,24 +70,23 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         */
         TextBody textBody = new TextBody();
         textBody.setMessage(body);
-        client.getScores(textBody);
+        //client.getScores(textBody);
         holder.tvBody.setText(body);
         holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("adapter name", name);
                 Intent intent = new Intent(context, ProfileActivity.class);
                 User user = new User();
                 user.setName(name);
                 user.setNumber(number);
-                Log.i("adapter number", user.getNumber());
                 intent.putExtra("user", user);
                 context.startActivity(intent);
             }
         });
-        textBodyList.add(position, textBody);
+        Log.i("position", String.valueOf(position));
+        textBodyArray[position] = textBody;
     }
 
     @Override
@@ -187,11 +185,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         public void onClick(View view) {
             context = itemView.getContext();
             int position = getAdapterPosition();
-            String name = smsList.get(position).getContact();
-            String number = smsList.get(position).getNumber();
-            String body = smsList.get(position).getBody();
             Intent intent = new Intent(context, MessageDetailActivity.class);
-            intent.putExtra("textBody", textBodyList.get(position));
+            intent.putExtra("textBody", textBodyArray[position]);
             intent.putExtra("sms", smsList.get(position));
             context.startActivity(intent);
         }
