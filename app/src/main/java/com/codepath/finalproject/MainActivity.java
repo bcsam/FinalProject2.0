@@ -328,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
-
         uri = Uri.parse("content://sms");
         c = getContentResolver().query(uri, null, null, null, null);
         startManagingCursor(c);
