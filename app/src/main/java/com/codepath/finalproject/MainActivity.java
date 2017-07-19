@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     String recipientNumber;
     String body;
     String date;
+    String read;
     Boolean SMS;
     Boolean contact;
     Uri uri;
@@ -339,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                read = c.getString(c.getColumnIndexOrThrow("read")).toString();
 
                 recipientName = getContactName(recipientNumber, this);
 
@@ -346,6 +348,7 @@ public class MainActivity extends AppCompatActivity {
                 sms.setNumber(recipientNumber);
                 sms.setContact(recipientName);
                 sms.setDate(date);
+                sms.setRead(read);
 
                 int count = 0;
                 for (SMS text : smsList) {
@@ -362,14 +365,16 @@ public class MainActivity extends AppCompatActivity {
                 c.moveToNext();
             }
         }
-        c.close();
         // Set smsList in the ListAdapter
         Log.i("setAdapter", "before");
         rvText.setLayoutManager(new LinearLayoutManager(this));
         rvText.setAdapter(new ListAdapter(this, smsList));
     }
 
-    public void updateInbox(String smsMessageStr) {
-        text();
+    public void updateInbox(String smsMessageStr) {text();}
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        c.close();
     }
 }

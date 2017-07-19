@@ -5,6 +5,14 @@
     android:weightSum="4"
     android:orientation="horizontal">
 
+    <FrameLayout
+        android:layout_alignBottom="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_weight="3"/>
+
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
@@ -39,13 +47,10 @@
 
         <TextView
             android:id="@+id/tvBody"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@id/tvTimeStamp"
             android:layout_toLeftOf="@+id/ivProfileImage"
-            android:layout_toRightOf="@id/tvTimeStamp"
             android:layout_toStartOf="@+id/ivProfileImage"
             android:autoLink="all"
             android:linksClickable="true"
@@ -58,21 +63,15 @@
             android:id="@+id/tvTimeStamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@+id/tvBody"
+            android:layout_toStartOf="@+id/tvBody"
             android:text="Time" />
 
     </RelativeLayout>
 
-    <FrameLayout
-        android:layout_alignBottom="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_weight="3"/>
+
 
     <!--<View
         android:id="@+id/horizontalLine"

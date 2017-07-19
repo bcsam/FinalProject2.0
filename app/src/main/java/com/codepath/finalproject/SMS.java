@@ -16,6 +16,7 @@ public class SMS implements Parcelable {
     private String body;
     private String contact;
     private String date;
+    private String read;
 
     public String getNumber() {
         return number;
@@ -48,6 +49,10 @@ public class SMS implements Parcelable {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getRead() { return read; }
+
+    public void setRead(String read) { this.read = read; }
 
     //---sends an SMS message to another device---
     public void sendSMS(String contact, String phoneNumber, String message)
