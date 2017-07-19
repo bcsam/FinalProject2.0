@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int count = 0;
                 for (SMS text : smsList) {
-                    if(!sms.getNumber().equals(text.getNumber())) {
+                    if(!sms.getNumber().equals(text.getNumber()) && !("+1" + sms.getNumber()).equals(text.getNumber()) && !("1" + sms.getNumber()).equals(text.getNumber())) {
                         count++;
                     }
                 }
