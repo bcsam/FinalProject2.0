@@ -218,29 +218,6 @@ public class MessagingActivity extends AppCompatActivity {
                 c.moveToNext();
             }
         }
-
-        c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='" + recipientNumber + "'", null, null);
-        while (c.moveToNext()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-                SMS message = new SMS();
-                message.setBody(text);
-                Log.i("MyNumber", myNumber);
-                message.setNumber(myNumber);
-                message.setDate(date);
-                message.setContact(" ");
-                int index = messages.size();
-                for (SMS m : messages) {
-                    if (Double.parseDouble(m.getDate()) > Double.parseDouble(message.getDate())) {
-                        index = messages.indexOf(m);
-                        break;
-                    }
-                }
-                messages.add(index, message);
-                c.moveToNext();
-            }
-        }
         c.close();
     }
 
