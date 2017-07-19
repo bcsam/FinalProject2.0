@@ -69,7 +69,8 @@
             android:layout_toRightOf="@+id/tvBody"
             android:layout_toStartOf="@+id/tvBody"
             android:maxLines="1"
-            android:text="Time" />
+            android:text="Time"
+            android:visibility="visible" />
 
     </RelativeLayout>
 
