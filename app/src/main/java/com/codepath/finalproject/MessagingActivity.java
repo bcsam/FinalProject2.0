@@ -235,7 +235,7 @@ public class MessagingActivity extends AppCompatActivity {
                 SMS message = new SMS();
                 message.setBody(text);
                 Log.i("MyNumber", myNumber);
-                message.setNumber(myNumber);
+                message.setNumber(number);
                 message.setDate(date);
                 message.setContact(" ");
                 int index = messages.size();
