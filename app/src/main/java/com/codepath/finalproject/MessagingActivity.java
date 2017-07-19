@@ -201,6 +201,11 @@ public class MessagingActivity extends AppCompatActivity {
             for (int i = 0; i < c.getCount(); i++) {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                String id = c.getString(c.getColumnIndexOrThrow("_id")).toString();
+                contentValues.put("read", true);
+                getContentResolver().update(Uri.parse("content://sms/inbox"), contentValues, "_id=" + id, null);
+                Log.i("check id", id);
+                Log.i("check value", c.getString(c.getColumnIndexOrThrow("read")).toString());
                 SMS message = new SMS();
                 message.setBody(text);
                 Log.i("MyNumber", myNumber);
@@ -230,7 +235,7 @@ public class MessagingActivity extends AppCompatActivity {
                 SMS message = new SMS();
                 message.setBody(text);
                 Log.i("MyNumber", myNumber);
-                message.setNumber(myNumber);
+                message.setNumber(number);
                 message.setDate(date);
                 message.setContact(" ");
                 int index = messages.size();
@@ -244,5 +249,12 @@ public class MessagingActivity extends AppCompatActivity {
                 c.moveToNext();
             }
         }
+    }
+
+    public void sendText(View view){
+        SMS text = new SMS();
+        text.setNumber(recipientNumber);
+        text.setBody(etBody.getText().toString());
+        text.sendSMS();
     }
 }

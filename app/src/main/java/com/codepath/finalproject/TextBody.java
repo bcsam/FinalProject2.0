@@ -13,6 +13,7 @@ public class TextBody implements Parcelable{
     private int[] socialLevels;
     private int[] utteranceLevels;
     private String[] darkToneColors;
+    private String[] lightToneColors;
     private String message;
     private String number;
     private String name; //The author of the message
@@ -23,6 +24,7 @@ public class TextBody implements Parcelable{
         socialLevels = new int[5];
         utteranceLevels = new int[7];
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
     }
 
     public int getToneLevel(int tone){
@@ -104,7 +106,19 @@ public class TextBody implements Parcelable{
             return darkToneColors[tone];
         return "#000000";
     }
-
+    public String getBubbleColor() {
+        int tone = 6;
+        int level = 0;
+        for(int i=0; i<5; i++) {
+            if (toneLevels[i] > level) {
+                level = toneLevels[i];
+                tone = i;
+            }
+        }
+        if(level > 50)
+            return lightToneColors[tone];
+        return "#D3D3D3";
+    }
 
     @Override
     public int describeContents() {
@@ -118,7 +132,10 @@ public class TextBody implements Parcelable{
         dest.writeIntArray(this.socialLevels);
         dest.writeIntArray(this.utteranceLevels);
         dest.writeStringArray(this.darkToneColors);
+        dest.writeStringArray(this.lightToneColors);
         dest.writeString(this.message);
+        dest.writeString(this.number);
+        dest.writeString(this.name);
     }
 
     protected TextBody(Parcel in) {
@@ -127,7 +144,10 @@ public class TextBody implements Parcelable{
         this.socialLevels = in.createIntArray();
         this.utteranceLevels = in.createIntArray();
         this.darkToneColors = in.createStringArray();
+        this.lightToneColors = in.createStringArray();
         this.message = in.readString();
+        this.number = in.readString();
+        this.name = in.readString();
     }
 
     public static final Creator<TextBody> CREATOR = new Creator<TextBody>() {

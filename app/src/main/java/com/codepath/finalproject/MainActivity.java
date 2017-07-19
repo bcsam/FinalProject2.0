@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
-        uri = Uri.parse("content://sms");
+        uri = Uri.parse("content://sms/");
         c = getContentResolver().query(uri, null, null, null, null);
         startManagingCursor(c);
 
@@ -357,6 +357,8 @@ public class MainActivity extends AppCompatActivity {
                 read = c.getString(c.getColumnIndexOrThrow("read")).toString();
                 id = c.getString(c.getColumnIndexOrThrow("_id"));
 
+                Log.i("check id", c.getString(c.getColumnIndexOrThrow("_id")).toString());
+                Log.i("check value main", read);
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);

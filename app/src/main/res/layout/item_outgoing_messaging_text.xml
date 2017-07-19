@@ -56,6 +56,7 @@
             android:linksClickable="true"
             android:text="Message"
             android:textAlignment="textEnd"
+            android:backgroundTint="@color/lightYellow"
             android:textSize="14dp"
             android:background="@drawable/turquoise"/>
 
@@ -67,6 +68,7 @@
             android:layout_marginTop="7dp"
             android:layout_toRightOf="@+id/tvBody"
             android:layout_toStartOf="@+id/tvBody"
+            android:maxLines="1"
             android:text="Time" />
 
     </RelativeLayout>
