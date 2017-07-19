@@ -45,7 +45,7 @@ public class SMS implements Parcelable {
     public Uri getPhotoUri() {
         try {
             ContextHolder contextHolder = new ContextHolder();
-            Cursor cur = ContextHolder.getContext().getContentResolver().query(
+            Cursor cur = contextHolder.getContext().getContentResolver().query(
                     ContactsContract.Data.CONTENT_URI,
                     null,
                     ContactsContract.Data.CONTACT_ID + "=" + this.getContactId() + " AND "
