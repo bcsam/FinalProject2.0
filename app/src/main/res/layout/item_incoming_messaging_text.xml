@@ -59,9 +59,10 @@
             android:layout_marginTop="6dp"
             android:layout_toEndOf="@+id/tvBody"
             android:layout_toRightOf="@+id/tvBody"
+            android:layout_weight="1"
             android:maxLines="1"
-            tools:text="Time"
-            android:layout_weight="1"/>
+            android:visibility="visible"
+            tools:text="Time" />
         </RelativeLayout>
 
     <FrameLayout
