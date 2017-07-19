@@ -49,7 +49,7 @@ public class SocialFragment extends Fragment{
         pbAgreeableness = (ProgressBar) v.findViewById(R.id.pbAgreeableness);
         pbEmotionalRange = (ProgressBar) v.findViewById(R.id.pbEmotionalRange);
         String activity = getArguments().getString("activity");
-        if(activity.equals("PostCheckActivity")) {
+        if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
             textBody = getArguments().getParcelable("textBody");
             setTexts();
             setProgressBars();

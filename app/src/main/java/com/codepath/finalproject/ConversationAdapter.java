@@ -2,8 +2,10 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +20,20 @@ import java.util.List;
  * Created by andreadeoli on 7/13/17.
  */
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
+public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder>{
 
     // List context
     Context context;
     AnalyzerClient client;
     // List values
     List<SMS> smsList;
+    TextBody[] textBodyArray;
     View rowView;
 
-    public ListAdapter(Context mContext, List<SMS> mSmsList) {
+    public ConversationAdapter(Context mContext, List<SMS> mSmsList) {
         context = mContext;
         smsList = mSmsList;
+        textBodyArray = new TextBody[smsList.size()];
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         client = new AnalyzerClient();
@@ -40,7 +44,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        rowView = inflater.inflate(R.layout.item_incoming_text, parent, false);
+        if(viewType == 0)
+            rowView = inflater.inflate(R.layout.item_outgoing_text, parent, false);
+        else
+            rowView = inflater.inflate(R.layout.item_incoming_messaging_text, parent, false);
         ViewHolder viewHolder = new ViewHolder(rowView);
         return viewHolder;
     }
@@ -53,31 +60,33 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
 
+        /*
         if (!name.equals("")) {
             holder.tvUserName.setText(name);
         }
         else {
             holder.tvUserName.setText(number);
         }
+        */
         TextBody textBody = new TextBody();
         textBody.setMessage(body);
         //client.getScores(textBody);
         holder.tvBody.setText(body);
-        //holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
+        holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("adapter name", name);
                 Intent intent = new Intent(context, ProfileActivity.class);
                 User user = new User();
                 user.setName(name);
                 user.setNumber(number);
-                Log.i("adapter number", user.getNumber());
                 intent.putExtra("user", user);
                 context.startActivity(intent);
             }
         });
+        Log.i("position", String.valueOf(position));
+        textBodyArray[position] = textBody;
     }
 
     @Override
@@ -85,6 +94,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         return smsList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        if(smsList.get(position).getNumber().equals(myNumber)){
+            return 0;
+        }
+        return 1;
+    }
 
     public static String millisToDate(long currentTime) {
         String finalDate;
@@ -167,11 +185,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         public void onClick(View view) {
             context = itemView.getContext();
             int position = getAdapterPosition();
-            String name = smsList.get(position).getContact();
-            String number = smsList.get(position).getNumber();
-            Intent intent = new Intent(context, MessagingActivity.class);
-            intent.putExtra("name", name);
-            intent.putExtra("number", number);
+            Intent intent = new Intent(context, MessageDetailActivity.class);
+            intent.putExtra("textBody", textBodyArray[position]);
+            intent.putExtra("sms", smsList.get(position));
             context.startActivity(intent);
         }
     }

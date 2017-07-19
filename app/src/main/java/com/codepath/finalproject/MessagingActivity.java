@@ -73,9 +73,8 @@ public class MessagingActivity extends AppCompatActivity{
             messages = new ArrayList<SMS>();
             getMessages();
             rvText.setLayoutManager(new LinearLayoutManager(this));
-            rvText.setAdapter(new ListAdapter(this, messages));
-
-            Log.i("MyNumber", myNumber);
+            rvText.setAdapter(new ConversationAdapter(this, messages));
+            rvText.scrollToPosition(messages.size()-1);
         }
 
         public static MessagingActivity instance() {
@@ -106,7 +105,7 @@ public class MessagingActivity extends AppCompatActivity{
                         }
                     }
 
-                    rvText.setAdapter(new ListAdapter(MessagingActivity.this, postQuerySmsList));
+                    rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
                     return true;
                 }
 
@@ -115,7 +114,22 @@ public class MessagingActivity extends AppCompatActivity{
                     return false;
                 }
             });
+
+            MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener(){
+
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem item) {
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem item) {
+                    rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages));
+                    return true;
+                }
+            });
             return super.onCreateOptionsMenu(menu);
+
         }
 
         public void launchComposeActivity(MenuItem item) {

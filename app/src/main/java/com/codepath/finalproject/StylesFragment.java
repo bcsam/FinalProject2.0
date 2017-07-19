@@ -40,7 +40,7 @@ public class StylesFragment extends Fragment{
         pbConfident = (ProgressBar) v.findViewById(R.id.pbConfident);
         pbTentative = (ProgressBar) v.findViewById(R.id.pbTentative);
         String activity = getArguments().getString("activity");
-        if(activity.equals("PostCheckActivity")) {
+        if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
             textBody = getArguments().getParcelable("textBody");
             setTexts();
             setProgressBars();
