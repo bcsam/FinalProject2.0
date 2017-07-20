@@ -9,4 +9,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"></android.support.v7.widget.RecyclerView>
 
+     <!-- <ImageView
+        android:id="@+id/hello"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/darkGreen"
+        android:text="Check!"
+        android:textColor="@color/darkPurple" /> -->
+
 </RelativeLayout>

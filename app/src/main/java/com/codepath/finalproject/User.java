@@ -27,7 +27,7 @@ public class User implements Parcelable{
         messageCount = 0;
         name = "";
         number = "";
-        //May need to add Uri here
+        profileImage = null;
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
     }
 

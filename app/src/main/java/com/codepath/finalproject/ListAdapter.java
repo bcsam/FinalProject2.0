@@ -2,6 +2,8 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
@@ -51,8 +53,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
-        Uri uri;
-        uri = smsList.get(position).getPhotoUri();
+        final Uri uri = smsList.get(position).getPhotoUri();
+        final String contactId = smsList.get(position).getContactId();
 
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
@@ -68,11 +70,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             holder.tvUserName.setText(number);
         }
 
-        if (uri != null) {
-            holder.ivProfileImage.setImageURI(uri);
+        long contactIdLong = Long.parseLong(smsList.get(position).getContactId());
+        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+
+        /*
+        if (position %2 == 0 ) {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_home_white);
+        } else {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }*/
+        if (image != null) {
+            holder.ivProfileImage.setImageBitmap(null);
+            holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+            //holder.ivProfileImage.setImageResource(R.drawable.ic_home_white);
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }
+
+        /*if (uri != null) {
+            holder.ivProfileImage.setImageURI(uri);
+        } else {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }*/
 
         TextBody textBody = new TextBody();
         textBody.setMessage(body);
@@ -164,6 +183,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         public TextView date;
         public ImageView ivProfileImage;
         public ImageView ivRead;
+        //public ImageView hello;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -174,6 +194,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             ivRead = (ImageView) itemView.findViewById(R.id.Read);
+            //hello = (ImageView) itemView.findViewById(R.id.hello);
 
             itemView.setOnClickListener(this);
         }
@@ -184,7 +205,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             int position = getAdapterPosition();
             String name = smsList.get(position).getContact();
             String number = smsList.get(position).getNumber();
-            Uri uri = smsList.get(position).getPhotoUri();
             smsList.get(position).setRead("1");
             notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);
