@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 searchView.clearFocus();
 
                 //insert query here
-                List<SMS> postQuerySmsList = new ArrayList<SMS>();
+                List<SMS> postQuerySmsList = new ArrayList<>();
                 for (SMS text : smsList) {
                     String number = text.getNumber();
                     String body = text.getBody();
@@ -146,7 +146,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                List<SMS> onQuerySmsList = new ArrayList<>();
+                for (SMS text : smsList) {
+                    String number = text.getNumber();
+                    String body = text.getBody();
+                    String contact = text.getContact();
+
+                    Uri profileImage = text.getPhotoUri();
+
+                    if (number.toLowerCase().contains(newText.toLowerCase()) ||
+                            body.toLowerCase().contains(newText.toLowerCase()) ||
+                            contact.toLowerCase().contains(newText.toLowerCase())) {
+
+                        makeText(getApplicationContext(), newText,
+                                LENGTH_LONG).show();
+                        onQuerySmsList.add(text);
+                    }
+                }
+                return true;
             }
         });
 
