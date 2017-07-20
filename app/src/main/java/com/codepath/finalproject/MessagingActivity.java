@@ -68,7 +68,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         Log.i("recipientNumber", recipientNumber);
         initializeViews();
-        setOnClickListeners();
+        setListeners();
         TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         myNumber = tMgr.getLine1Number();
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
@@ -167,7 +167,7 @@ public class MessagingActivity extends AppCompatActivity {
         etBody = (EditText) findViewById(R.id.etBody);
     }
 
-    public void setOnClickListeners() {
+    public void setListeners() {
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,6 +185,14 @@ public class MessagingActivity extends AppCompatActivity {
             }
         });
 
+        etBody.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+
+                }
+            }
+        });
     }
 
     public void getMessages() {

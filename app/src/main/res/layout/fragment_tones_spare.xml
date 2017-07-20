@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout android:layout_width="fill_parent"
-        android:id="@+id/layout_1"
+        android:id="@+id/left_layout"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
 
         <TextView
@@ -18,12 +18,91 @@
             android:text="Anger"
             android:textColor="@android:color/black" />
 
+        <TextView
+            android:id="@+id/tvDisgust"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Disgust"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tvFear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fear"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tvJoy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Joy"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tvSadness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sadness"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/middle_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
+
         <ProgressBar
             android:id="@+id/pbAnger"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="0.20"/>
+
+        <ProgressBar
+            android:id="@+id/pbDisgust"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2" />
+
+        <ProgressBar
+            android:id="@+id/pbFear"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2" />
+
+        <ProgressBar
+            android:id="@+id/pbJoy"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2" />
+
+        <ProgressBar
+            android:id="@+id/pbSadness"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2" />
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+        android:id="@+id/right_layout"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
 
         <TextView
             android:id="@+id/tvAngerScore"
@@ -33,29 +112,6 @@
             android:text="TextView"
             android:textAlignment="center"
             android:textColor="@android:color/black" />
-    </LinearLayout>
-
-
-    <LinearLayout android:layout_width="fill_parent"
-        android:id="@+id/layout_2"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvDisgust"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Disgust"
-            android:textColor="@android:color/black" />
-
-        <ProgressBar
-            android:id="@+id/pbDisgust"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tvDisgustScore"
@@ -66,29 +122,6 @@
             android:textAlignment="center"
             android:textColor="@android:color/black" />
 
-    </LinearLayout>
-
-    <LinearLayout android:layout_width="fill_parent"
-        android:id="@+id/layout_3"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvFear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Fear"
-            android:textColor="@android:color/black" />
-
-        <ProgressBar
-            android:id="@+id/pbFear"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
         <TextView
             android:id="@+id/tvFearScore"
             android:layout_width="match_parent"
@@ -97,29 +130,6 @@
             android:text="TextView"
             android:textAlignment="center"
             android:textColor="@android:color/black" />
-
-    </LinearLayout>
-
-    <LinearLayout android:layout_width="fill_parent"
-        android:id="@+id/layout_4"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvJoy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Joy"
-            android:textColor="@android:color/black" />
-
-        <ProgressBar
-            android:id="@+id/pbJoy"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tvJoyScore"
@@ -130,29 +140,6 @@
             android:textAlignment="center"
             android:textColor="@android:color/black" />
 
-    </LinearLayout>
-
-    <LinearLayout android:layout_width="fill_parent"
-        android:id="@+id/layout_5"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvSadness"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Sadness"
-            android:textColor="@android:color/black" />
-
-        <ProgressBar
-            android:id="@+id/pbSadness"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
         <TextView
             android:id="@+id/tvSadnessScore"
             android:layout_width="match_parent"
@@ -162,4 +149,5 @@
             android:textAlignment="center"
             android:textColor="@android:color/black" />
     </LinearLayout>
+
 </LinearLayout>
