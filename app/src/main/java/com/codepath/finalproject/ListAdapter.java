@@ -73,12 +73,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }
-
-        TextBody textBody = new TextBody();
-        textBody.setMessage(body);
-        //client.getScores(textBody);
         holder.tvBody.setText(body);
-        //holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

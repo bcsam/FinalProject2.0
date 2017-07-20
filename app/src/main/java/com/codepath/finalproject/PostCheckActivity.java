@@ -26,7 +26,7 @@ import java.util.List;
 public class PostCheckActivity extends AppCompatActivity {
 
     TextView tvTextBody;
-    TextBody textBody;
+    SMS sms;
     String message;
     String recipient;
     Button btSend;
@@ -43,18 +43,18 @@ public class PostCheckActivity extends AppCompatActivity {
         recipient = getIntent().getStringExtra("recipientName");
 
         //makes a Textbody with the user's message
-        textBody = new TextBody();
-        textBody.setMessage(message);
+        sms = new SMS();
+        sms.setBody(message);
 
         //gets the textbody's score and puts them in textBody
         AnalyzerClient client = new AnalyzerClient();
-        client.getScores(textBody);
+        client.getScores(sms);
         //client.getUtteranceScores(textBody);
 
         //sets the message on the activity
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
         tvTextBody.setText(message);
-        tvTextBody.setTextColor(Color.parseColor(textBody.getTextColor()));
+        tvTextBody.setTextColor(Color.parseColor(sms.getTextColor()));
 
         //Code for tabs below
 
@@ -63,9 +63,9 @@ public class PostCheckActivity extends AppCompatActivity {
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TonesFragment(), "Tones", textBody, "PostCheckActivity");
-        adapter.addFrag(new StylesFragment(), "Styles", textBody, "PostCheckActivity");
-        adapter.addFrag(new SocialFragment(), "Social", textBody, "PostCheckActivity");
+        adapter.addFrag(new TonesFragment(), "Tones", sms, "PostCheckActivity");
+        adapter.addFrag(new StylesFragment(), "Styles", sms, "PostCheckActivity");
+        adapter.addFrag(new SocialFragment(), "Social", sms, "PostCheckActivity");
         //adapter.addFrag(new UtteranceFragment(), "Utterance", textBody, "PostCheckActivity");
 
         viewPager.setAdapter(adapter);
@@ -143,9 +143,9 @@ public class PostCheckActivity extends AppCompatActivity {
                 return mFragmentList.size();
             }
 
-            public void addFrag(Fragment fragment, String title, TextBody textBody, String activity) {
+            public void addFrag(Fragment fragment, String title, SMS sms, String activity) {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("textBody", textBody);
+                bundle.putParcelable("sms", sms);
                 bundle.putString("activity", activity);
                 fragment.setArguments(bundle);
                 mFragmentList.add(fragment);

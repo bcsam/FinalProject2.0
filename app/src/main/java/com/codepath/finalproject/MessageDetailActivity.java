@@ -25,7 +25,6 @@ public class MessageDetailActivity extends AppCompatActivity{
     String name;
     String message;
     String number;
-    TextBody textBody;
     SMS sms;
     TextView tvName;
     TextView tvMessage;
@@ -37,14 +36,11 @@ public class MessageDetailActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
 
-
-        //makes a Textbody with the user's message
-        textBody = getIntent().getParcelableExtra("textBody");
         sms = getIntent().getParcelableExtra("sms");
 
         tvMessage = (TextView) findViewById(R.id.tvMessage);
-        tvMessage.setText(textBody.getMessage());
-        tvMessage.setTextColor(Color.parseColor(textBody.getTextColor()));
+        tvMessage.setText(sms.getBody());
+        tvMessage.setTextColor(Color.parseColor(sms.getTextColor()));
 
         //Code for tabs below
 
@@ -52,9 +48,9 @@ public class MessageDetailActivity extends AppCompatActivity{
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TonesFragment(), "Tones", textBody, "MessageDetailActivity");
-        adapter.addFrag(new StylesFragment(), "Styles", textBody, "MessageDetailActivity");
-        adapter.addFrag(new SocialFragment(), "Social", textBody, "MessageDetailActivity");
+        adapter.addFrag(new TonesFragment(), "Tones", sms, "MessageDetailActivity");
+        adapter.addFrag(new StylesFragment(), "Styles", sms, "MessageDetailActivity");
+        adapter.addFrag(new SocialFragment(), "Social", sms, "MessageDetailActivity");
         //adapter.addFrag(new UtteranceFragment(), "Utterance", textBody, "PostCheckActivity");
 
         viewPager.setAdapter(adapter);
@@ -105,9 +101,9 @@ public class MessageDetailActivity extends AppCompatActivity{
             return mFragmentList.size();
         }
 
-        public void addFrag(Fragment fragment, String title, TextBody textBody, String activity) {
+        public void addFrag(Fragment fragment, String title, SMS sms, String activity) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable("textBody", textBody);
+            bundle.putParcelable("sms", sms);
             bundle.putString("activity", activity);
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);

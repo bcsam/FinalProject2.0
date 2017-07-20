@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber(mPhoneNumber);
+        user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
 
         //user.setProfileImageUri();
@@ -414,6 +414,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateInbox(String smsMessageStr) {text();}
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        text();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

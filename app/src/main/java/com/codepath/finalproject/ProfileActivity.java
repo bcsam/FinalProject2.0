@@ -73,10 +73,10 @@ public class ProfileActivity extends AppCompatActivity {
                 fullText += ". "+text;
                 c.moveToNext();
             }
-            TextBody body = new TextBody();
-            body.setMessage(fullText);
-            client.getScores(body);
-            user.updateScores(body);
+            SMS sms = new SMS();
+            sms.setBody(fullText);
+            client.getScores(sms);
+            user.updateScores(sms);
         }
         c.close();
     }
@@ -94,10 +94,10 @@ public class ProfileActivity extends AppCompatActivity {
                 fullText += ". "+text;
                 c.moveToNext();
             }
-            TextBody body = new TextBody();
-            body.setMessage(fullText);
-            client.getScores(body);
-            user.updateScores(body);
+            SMS sms = new SMS();
+            sms.setBody(fullText);
+            client.getScores(sms);
+            user.updateScores(sms);
         }
         c.close();
     }
@@ -119,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
         User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber(mPhoneNumber);
+        user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
