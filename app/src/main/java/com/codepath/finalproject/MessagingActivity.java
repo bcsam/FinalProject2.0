@@ -143,7 +143,16 @@ public class MessagingActivity extends AppCompatActivity {
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
+        User user = new User();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        user.setNumber("+"+mPhoneNumber);
+        user.setName("Me");
+        Log.i("profile", user.getNumber());
+        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
+
+        i.putExtra("user", user);
         MessagingActivity.this.startActivity(i);
     }
 

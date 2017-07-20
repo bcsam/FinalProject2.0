@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber(mPhoneNumber);
+        user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
 
         //user.setProfileImageUri();
