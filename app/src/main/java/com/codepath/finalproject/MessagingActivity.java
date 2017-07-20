@@ -256,15 +256,18 @@ public class MessagingActivity extends AppCompatActivity {
         SMS text = new SMS();
         text.setNumber(recipientNumber);
         text.setBody(etBody.getText().toString());
-        text.setDate(String.valueOf(System.currentTimeMillis()/1000));
-        messages.add(messages.size(), text);
-        adapter.notifyItemInserted(messages.size());
-        rvText.scrollToPosition(adapter.getItemCount());
+        text.setDate(String.valueOf(System.currentTimeMillis()));
         etBody.clearFocus();
         etBody.setText("");
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         text.sendSMS();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String myNumber = tMgr.getLine1Number();
+        text.setNumber(myNumber);
+        messages.add(messages.size(), text);
+        adapter.notifyItemInserted(messages.size());
+        rvText.scrollToPosition(messages.size());
     }
 }
 

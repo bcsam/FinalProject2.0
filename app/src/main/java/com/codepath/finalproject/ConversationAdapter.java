@@ -58,7 +58,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         final String number = smsList.get(position).getNumber();
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-        client.getScores(smsList.get(position));
+        //client.getScores(smsList.get(position));
         holder.tvBody.setText(body);
         holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);

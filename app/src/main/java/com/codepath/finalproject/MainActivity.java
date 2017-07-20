@@ -397,6 +397,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateInbox(String smsMessageStr) {text();}
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        text();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
