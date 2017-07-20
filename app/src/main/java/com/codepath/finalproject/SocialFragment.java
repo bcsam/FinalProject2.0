@@ -37,7 +37,7 @@ public class SocialFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_social, container, false);
+        View v = inflater.inflate(R.layout.fragment_styles, container, false);
         tvOpennessScore = (TextView) v.findViewById(R.id.tvOpennessScore);
         tvConscientiousnessScore = (TextView) v.findViewById(R.id.tvConscientiousnessScore);
         tvExtraversionScore = (TextView) v.findViewById(R.id.tvExtraversionScore);

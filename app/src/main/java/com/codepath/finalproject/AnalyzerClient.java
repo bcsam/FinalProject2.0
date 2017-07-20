@@ -15,8 +15,8 @@ import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
 public class AnalyzerClient {
     //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
     public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-    public static final String USERNAME = "c6b490cd-ac76-4d2b-b14b-33b1dd9171f3";
-    public static final String PASSWORD = "VrKRnKuXRhcs";
+    public static final String USERNAME = "16d48b36-2e71-452c-bd1f-b5419a3ae48a";
+    public static final String PASSWORD = "dXaJBi3c2Joj";
     ToneAnalyzer service;
 
     public AnalyzerClient(){

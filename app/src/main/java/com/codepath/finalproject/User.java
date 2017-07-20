@@ -33,14 +33,27 @@ public class User implements Parcelable{
 
     public void updateScores(SMS sms){
         messageCount++;
-        for(int i=0; i<7; i++){
-            if(i<3)
-                averageStyleLevels[i] = (averageStyleLevels[i]*(messageCount-1) + sms.getStyleLevel(i)) / messageCount;
-            if(i<5){
-                averageToneLevels[i] = (averageToneLevels[i]*(messageCount-1) + sms.getToneLevel(i)) / messageCount;
-                averageSocialLevels[i] = (averageSocialLevels[i]*(messageCount-1) + sms.getSocialLevel(i)) / messageCount;
+        if(messageCount>1) {
+            for (int i = 0; i < 7; i++) {
+                if (i < 3)
+                    averageStyleLevels[i] = (averageStyleLevels[i] * (messageCount - 1) + sms.getStyleLevel(i)) / messageCount;
+                if (i < 5) {
+                    averageToneLevels[i] = (averageToneLevels[i] * (messageCount - 1) + sms.getToneLevel(i)) / messageCount;
+                    averageSocialLevels[i] = (averageSocialLevels[i] * (messageCount - 1) + sms.getSocialLevel(i)) / messageCount;
+                }
+                averageUtteranceLevels[i] = (averageUtteranceLevels[i] * (messageCount - 1) + sms.getUtteranceLevel(i)) / messageCount;
             }
-            averageUtteranceLevels[i] = (averageUtteranceLevels[i]*(messageCount-1) + sms.getUtteranceLevel(i)) / messageCount;
+        }
+        else{
+            for (int i = 0; i < 7; i++) {
+                if (i < 3)
+                    averageStyleLevels[i] = sms.getStyleLevel(i);
+                if (i < 5) {
+                    averageToneLevels[i] = sms.getToneLevel(i);
+                    averageSocialLevels[i] = sms.getSocialLevel(i);
+                }
+                averageUtteranceLevels[i] = sms.getUtteranceLevel(i);
+            }
         }
     }
 
