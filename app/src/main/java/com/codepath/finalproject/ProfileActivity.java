@@ -4,8 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -20,9 +18,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,21 +44,17 @@ public class ProfileActivity extends AppCompatActivity {
         else
             getAverages(user);
 
-        TextView tvName = (TextView) findViewById(R.id.tvName);
-        TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
-        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfile);
 
+        /*long contactIdLong = Long.parseLong(id);
 
-        long contactIdLong = Long.parseLong(id);
-
-        Bitmap image = BitmapFactory.decodeStream(user.openPhoto(contactIdLong));
+        Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
         if (image != null) {
             ivProfileImage.setImageBitmap(null);
             ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
         } else {
             ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }
+        }*/
 
         ViewPager viewPagerTop = (ViewPager) findViewById(R.id.upper_pager);
 
@@ -81,9 +72,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
+        /*adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
         adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
-        adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
+        adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");*/
         //adapter.addFrag(new UtteranceFragment(), "Utterance", user, "ProfileActivity");
 
         viewPager.setAdapter(adapter);
@@ -92,6 +83,8 @@ public class ProfileActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(viewPager);
 
     }
+
+
     public void getMyAverages(User user) {
         Uri uri = Uri.parse("content://sms/sent");
         Cursor c = getContentResolver().query(uri, null, null, null, null);

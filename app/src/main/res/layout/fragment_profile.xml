@@ -13,7 +13,6 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_weight="1"
-        android:tint="@color/lightGray"
         android:layout_gravity="center"
         app:srcCompat="@drawable/ic_person_white" />
 

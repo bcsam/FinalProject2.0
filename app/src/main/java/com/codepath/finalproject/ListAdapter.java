@@ -74,9 +74,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         long contactIdLong = Long.parseLong(contactId);
         Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
-        if (image != null) {
-            //long contactIdLong = Long.parseLong(smsList.get(position).getContactId());
-            // Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+        //if (image != null) {
+        //    Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
         /*
         if (position %2 == 0 ) {
@@ -84,13 +83,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }*/
-        /*if (image != null) {
->>>>>>> fa98472d8f38ed8abd51fd3b6fc9a52133fee815
+        if (image != null) {
             holder.ivProfileImage.setImageBitmap(null);
             holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }*/
+        }
 
             holder.tvBody.setText(body);
             holder.date.setText(date);
@@ -118,7 +116,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 }
             });
         }
-    }
 
 
     public int getItemCount() {

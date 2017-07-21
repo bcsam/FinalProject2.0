@@ -27,14 +27,6 @@ public class User implements Parcelable{
     private String[] darkToneColors;
     private Context context;
 
-    public boolean isOther() {
-        return other;
-    }
-
-    public void setOther(boolean other) {
-        this.other = other;
-    }
-
     private boolean other;
 
     private String contactId;
@@ -63,6 +55,22 @@ public class User implements Parcelable{
         contactId = "";
         profileImage = null;
         this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public boolean isOther() {
+        return other;
+    }
+
+    public void setOther(boolean other) {
+        this.other = other;
     }
 
     public void updateScores(SMS sms){
@@ -202,6 +210,7 @@ public class User implements Parcelable{
         dest.writeString(this.name);
         dest.writeString(this.number);
         dest.writeStringArray(this.darkToneColors);
+        dest.writeString(this.contactId);
     }
 
     protected User(Parcel in) {
@@ -213,6 +222,7 @@ public class User implements Parcelable{
         this.name = in.readString();
         this.number = in.readString();
         this.darkToneColors = in.createStringArray();
+        this.contactId = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
