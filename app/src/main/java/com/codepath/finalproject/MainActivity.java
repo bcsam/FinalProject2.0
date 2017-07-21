@@ -75,12 +75,13 @@ public class MainActivity extends AppCompatActivity {
         rvText = (RecyclerView) findViewById(R.id.rvText);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         Gson gson = new Gson();
-        String json = sharedPrefs.getString("smsList", null);
+        String json = sharedPrefs.getString("incomingList", null);
         Type type = new TypeToken<ArrayList<SMS>>() {}.getType();
-        ArrayList<SMS> smsList = gson.fromJson(json, type);
-        incomingList = new ArrayList<SMS>();
-        outgoingList = new ArrayList<SMS>();
-        if(smsList == null)
+        incomingList = gson.fromJson(json, type);
+        json = sharedPrefs.getString("outgoingList", null);
+        type = new TypeToken<ArrayList<SMS>>() {}.getType();
+        outgoingList = gson.fromJson(json, type);
+        if(incomingList == null && outgoingList == null)
             getPermissionToRead();
         else
             Log.i("sharedPreferences", String.valueOf(smsList.size()));
@@ -382,6 +383,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
+        incomingList = new ArrayList<SMS>();
+        outgoingList = new ArrayList<SMS>();
         //ContentResolver contentResolver = context.getContentResolver();
 
         //Uri uriContact = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
@@ -509,14 +512,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("sharedPreferences", String.valueOf(smsList.size()));
-        super.onDestroy();
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(smsList);
-        editor.putString("smsList", json);
+        String iJson = gson.toJson(incomingList);
+        String oJson = gson.toJson(outgoingList);
+        editor.putString("incomingList", iJson);
+        editor.putString("outgoingList", oJson);
         editor.commit();
         c.close();
+        super.onDestroy();
     }
 }
