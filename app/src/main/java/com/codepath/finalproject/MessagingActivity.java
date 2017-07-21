@@ -38,6 +38,8 @@ public class MessagingActivity extends AppCompatActivity {
     Button btCheck;
     EditText etBody;
     ArrayList<SMS> messages;
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
     Uri uri;
 
     String recipientName;
@@ -73,9 +75,14 @@ public class MessagingActivity extends AppCompatActivity {
         myNumber = tMgr.getLine1Number();
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
         messages = new ArrayList<SMS>();
+        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         getMessages();
         adapter = new ConversationAdapter(this, messages);
-        rvText.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvText.setLayoutManager(layoutManager);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         rvText.setAdapter(adapter);
         rvText.scrollToPosition(messages.size() - 1);
     }
@@ -199,22 +206,40 @@ public class MessagingActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
 
         if (recipientNumber.length() == 12) {
-            differentNumber(recipientNumber);
+           /* differentNumber(recipientNumber);
             differentNumber(recipientNumber.substring(1, 12));
-            differentNumber(recipientNumber.substring(2, 12));
+            differentNumber(recipientNumber.substring(2, 12));*/
         }
         else if (recipientNumber.length() == 11) {
-            differentNumber(recipientNumber);
+            /*differentNumber(recipientNumber);
             differentNumber(recipientNumber.substring(1, 11));
-            differentNumber("+" + recipientNumber);
+            differentNumber("+" + recipientNumber);*/
         }
         else if (recipientNumber.length() == 10) {
-            differentNumber(recipientNumber);
+            /*differentNumber(recipientNumber);
             differentNumber("1" + recipientNumber);
-            differentNumber("+1" + recipientNumber);
+            differentNumber("+1" + recipientNumber);*/
         }
 
-        c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='" + recipientNumber + "'", null, null);
+        for(SMS s: incomingList){
+            if(s.getNumber().equals(recipientNumber))
+                messages.add(s);
+        }
+        for(SMS s: outgoingList){
+            if(s.getNumber().equals(recipientNumber)) {
+                int index = 0;
+                Log.i("MessagingActivity body", s.getBody());
+                for (SMS m : messages) {
+                    if (Double.parseDouble(m.getDate()) < Double.parseDouble(s.getDate())) {
+                        Log.i("MessagingActivity index", String.valueOf(index));
+                        index = messages.indexOf(m);
+                        break;
+                    }
+                }
+                messages.add(index, s);
+            }
+        }
+        /*c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='" + recipientNumber + "'", null, null);
         while (c.moveToNext()) {
             for (int i = 0; i < c.getCount(); i++) {
                 String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
@@ -241,10 +266,11 @@ public class MessagingActivity extends AppCompatActivity {
                 c.moveToNext();
             }
         }
-        c.close();
+        c.close();*/
+
     }
 
-    public void differentNumber(String number) {
+   /* public void differentNumber(String number) {
         c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='" + number + "'", null, null);
         while (c.moveToNext()) {
             for (int i = 0; i < c.getCount(); i++) {
@@ -267,7 +293,7 @@ public class MessagingActivity extends AppCompatActivity {
                 c.moveToNext();
             }
         }
-    }
+    }*/
 
     public void sendText(View view){
         SMS text = new SMS();

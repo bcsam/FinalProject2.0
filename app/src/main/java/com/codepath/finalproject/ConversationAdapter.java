@@ -2,11 +2,8 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +57,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         //client.getScores(smsList.get(position));
         holder.tvBody.setText(body);
-        holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        //holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +80,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public int getItemViewType(int position) {
-        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        Log.i("myNumber", myNumber);
-        Log.i("getNumber", smsList.get(position).getNumber());
-        if(smsList.get(position).getNumber().equals(myNumber)){
+        if(smsList.get(position).getType() == 2){
             return 0;
         }
         return 1;

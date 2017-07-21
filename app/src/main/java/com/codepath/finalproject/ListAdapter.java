@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by andreadeoli on 7/13/17.
@@ -27,12 +27,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     Context context;
     AnalyzerClient client;
     // List values
-    List<SMS> smsList;
+    ArrayList<SMS> smsList;
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
     View rowView;
 
-    public ListAdapter(Context mContext, List<SMS> mSmsList) {
+    public ListAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList) {
         context = mContext;
         smsList = mSmsList;
+        incomingList = mIncomingList;
+        outgoingList = mOutgoingList;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         client = new AnalyzerClient();
@@ -215,6 +219,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("name", name);
             intent.putExtra("number", number);
+            intent.putParcelableArrayListExtra("incomingList", incomingList);
+            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             context.startActivity(intent);
         }
     }
