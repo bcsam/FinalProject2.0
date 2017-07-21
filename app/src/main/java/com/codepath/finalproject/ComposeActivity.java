@@ -209,7 +209,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
-        User user = new User();
+        User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber(mPhoneNumber);

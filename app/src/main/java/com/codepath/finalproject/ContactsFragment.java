@@ -68,7 +68,6 @@ public class ContactsFragment extends ListFragment implements
 
         private SimpleCursorAdapter mCursorAdapter;
 
-
         private SearchView mSearchView;
 
 

@@ -2,6 +2,8 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.StrictMode;
@@ -56,19 +58,34 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
+        final String id = smsList.get(position).getContactId();
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         //client.getScores(smsList.get(position));
         holder.tvBody.setText(body);
         holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);
+
+
+        long contactIdLong = Long.parseLong(id);
+
+        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+
+        if (image != null) {
+            holder.ivProfileImage.setImageBitmap(null);
+            holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+        } else {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }
+
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfileActivity.class);
-                User user = new User();
+                User user = new User(context);
                 user.setName(name);
                 user.setNumber(number);
+                user.setContactId(id);
                 intent.putExtra("user", user);
                 context.startActivity(intent);
             }
@@ -85,8 +102,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public int getItemViewType(int position) {
         TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        Log.i("myNumber", myNumber);
-        Log.i("getNumber", smsList.get(position).getNumber());
         if(smsList.get(position).getNumber().equals(myNumber)){
             return 0;
         }

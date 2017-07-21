@@ -1,11 +1,15 @@
 package com.codepath.finalproject;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +20,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,12 +41,27 @@ public class ProfileActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         User user = getIntent().getParcelableExtra("user");
+        String id = getIntent().getStringExtra("id");
+
         if(user.getName().equals("Me"))
             getMyAverages(user);
         else
             getAverages(user);
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
+        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfile);
+
+
+        long contactIdLong = Long.parseLong(id);
+
+        Bitmap image = BitmapFactory.decodeStream(user.openPhoto(contactIdLong));
+
+        if (image != null) {
+            ivProfileImage.setImageBitmap(null);
+            ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+        } else {
+            ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }
 
         tvName.setText(user.getName());
         tvNumber.setText(user.toStringNumber());
@@ -116,11 +136,35 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
-        User user = new User();
+        User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
+
+        String id = null;
+        ContentResolver contentResolver = this.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(mPhoneNumber));
+
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        Cursor cursor =
+                contentResolver.query(
+                        uri,
+                        projection,
+                        null,
+                        null,
+                        null);
+
+        if(cursor != null) {
+            while(cursor.moveToNext()){
+                id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            }
+            cursor.close();
+        }
+        user.setContactId(id);
+
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);

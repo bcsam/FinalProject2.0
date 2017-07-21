@@ -42,7 +42,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="top"
-            android:tint="@color/lightGray"
             app:srcCompat="@drawable/ic_person_white" />
 
         <TextView
