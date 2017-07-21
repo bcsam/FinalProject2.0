@@ -68,7 +68,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         Log.i("recipientNumber", recipientNumber);
         initializeViews();
-        setOnClickListeners();
+        setListeners();
         TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         myNumber = tMgr.getLine1Number();
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
@@ -143,7 +143,16 @@ public class MessagingActivity extends AppCompatActivity {
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
+        User user = new User();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        user.setNumber("+"+mPhoneNumber);
+        user.setName("Me");
+        Log.i("profile", user.getNumber());
+        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
+
+        i.putExtra("user", user);
         MessagingActivity.this.startActivity(i);
     }
 
@@ -158,7 +167,7 @@ public class MessagingActivity extends AppCompatActivity {
         etBody = (EditText) findViewById(R.id.etBody);
     }
 
-    public void setOnClickListeners() {
+    public void setListeners() {
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,6 +185,14 @@ public class MessagingActivity extends AppCompatActivity {
             }
         });
 
+        etBody.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+
+                }
+            }
+        });
     }
 
     public void getMessages() {
@@ -256,16 +273,18 @@ public class MessagingActivity extends AppCompatActivity {
         SMS text = new SMS();
         text.setNumber(recipientNumber);
         text.setBody(etBody.getText().toString());
-        text.setDate(String.valueOf(System.currentTimeMillis()/1000));
-        messages.add(messages.size(), text);
-        Log.i("send", messages.get(messages.size()-1).getBody());
-        adapter.notifyItemInserted(messages.size());
-        rvText.scrollToPosition(adapter.getItemCount());
+        text.setDate(String.valueOf(System.currentTimeMillis()));
         etBody.clearFocus();
         etBody.setText("");
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         text.sendSMS();
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String myNumber = tMgr.getLine1Number();
+        text.setNumber(myNumber);
+        messages.add(messages.size(), text);
+        adapter.notifyItemInserted(messages.size());
+        rvText.scrollToPosition(messages.size());
     }
 }
 

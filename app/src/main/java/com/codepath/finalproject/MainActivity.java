@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -26,6 +28,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvText;
     ArrayList<User> users;
     Context context;
-    List<SMS> smsList;
+    ArrayList<SMS> smsList;
 
     private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -65,8 +71,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
-        getPermissionToRead();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("smsList", null);
+        Type type = new TypeToken<ArrayList<SMS>>() {}.getType();
+        ArrayList<SMS> smsList = gson.fromJson(json, type);
+        if(smsList == null)
+            getPermissionToRead();
+        else
+            Log.i("sharedPreferences", String.valueOf(smsList.size()));
         ins = this;
+
+
         //if statement for requesting info
         /*if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_SMS)
@@ -123,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 searchView.clearFocus();
 
                 //insert query here
-                List<SMS> postQuerySmsList = new ArrayList<SMS>();
+                List<SMS> postQuerySmsList = new ArrayList<>();
                 for (SMS text : smsList) {
                     String number = text.getNumber();
                     String body = text.getBody();
@@ -145,7 +161,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                List<SMS> onQuerySmsList = new ArrayList<>();
+                for (SMS text : smsList) {
+                    String number = text.getNumber();
+                    String body = text.getBody();
+                    String contact = text.getContact();
+
+                    Uri profileImage = text.getPhotoUri();
+
+                    if (number.toLowerCase().contains(newText.toLowerCase()) ||
+                            body.toLowerCase().contains(newText.toLowerCase()) ||
+                            contact.toLowerCase().contains(newText.toLowerCase())) {
+
+                        makeText(getApplicationContext(), newText,
+                                LENGTH_LONG).show();
+                        onQuerySmsList.add(text);
+                    }
+                }
+                return true;
             }
         });
 
@@ -196,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber(mPhoneNumber);
+        user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
 
         //user.setProfileImageUri();
@@ -241,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getPermissionToRead() {
+        Log.i("sharedPreferences", "getPermissionToRead");
         boolean readSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED;
         boolean readContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
@@ -444,15 +478,28 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         // Set smsList in the ListAdapter
-        Log.i("setAdapter", "before");
         rvText.setLayoutManager(new LinearLayoutManager(this));
         rvText.setAdapter(new ListAdapter(this, smsList));
     }
 
     public void updateInbox(String smsMessageStr) {text();}
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        text();
+    }
+
     @Override
     protected void onDestroy() {
+        Log.i("sharedPreferences", String.valueOf(smsList.size()));
         super.onDestroy();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(smsList);
+        editor.putString("smsList", json);
+        editor.commit();
         c.close();
     }
 }

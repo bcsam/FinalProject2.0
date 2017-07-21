@@ -12,7 +12,8 @@
         android:layout_above="@+id/etBody"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:background="@color/veryLightGray" />
 
     <EditText
         android:id="@+id/etBody"

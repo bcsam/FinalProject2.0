@@ -15,6 +15,8 @@
     <color name="lightGreen">#8cd98c</color>
     <color name="darkYellow">#e6b800</color>
     <color name="lightYellow">#ffdb4d</color>
+    <color name="paleOrange">#ffd394</color>
     <color name="white">#ffffff</color>
     <color name="lightGray">#D3D3D3</color>
+    <color name="veryLightGray">#F5F5F5</color>
 </resources>

@@ -49,8 +49,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        //final ViewHolder holder1 = holder;
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
         final Uri uri = smsList.get(position).getPhotoUri();
@@ -93,11 +93,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }*/
 
-        TextBody textBody = new TextBody();
-        textBody.setMessage(body);
-        //client.getScores(textBody);
         holder.tvBody.setText(body);
-        //holder.tvBody.setTextColor(Color.parseColor(textBody.getTextColor()));
         holder.date.setText(date);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +104,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 user.setNumber(number);
                 intent.putExtra("user", user);
                 context.startActivity(intent);
+            }
+        });
+
+        holder.tvBody.setOnLongClickListener(new View.OnLongClickListener(){
+
+            @Override
+            public boolean onLongClick(View v) {
+                holder.tvTime.setVisibility(View.VISIBLE);
+                return true;
             }
         });
     }

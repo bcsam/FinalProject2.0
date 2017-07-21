@@ -1,21 +1,12 @@
 package com.codepath.finalproject;
 //adding Watson Developer Cloud SDK for Java:
 
-import android.util.Log;
-
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneCategory;
-import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneChatRequest;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneOptions;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
-import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Utterance;
-import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.UtteranceAnalysis;
-import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.UtterancesTone;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vf608 on 7/11/17.
@@ -24,8 +15,8 @@ import java.util.List;
 public class AnalyzerClient {
     //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
     public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-    public static final String USERNAME = "c6b490cd-ac76-4d2b-b14b-33b1dd9171f3";
-    public static final String PASSWORD = "VrKRnKuXRhcs";
+    public static final String USERNAME = "16d48b36-2e71-452c-bd1f-b5419a3ae48a";
+    public static final String PASSWORD = "dXaJBi3c2Joj";
     ToneAnalyzer service;
 
     public AnalyzerClient(){
@@ -34,62 +25,62 @@ public class AnalyzerClient {
         service.setUsernameAndPassword(USERNAME, PASSWORD);
     }
 
-    public void getScores(TextBody textBody) {
+    public void getScores(SMS sms) {
         ToneOptions options = new ToneOptions.Builder()
                 .addTone(Tone.EMOTION)
                 .addTone(Tone.LANGUAGE)
                 .addTone(Tone.SOCIAL).build();
         ToneAnalysis tone =
-                service.getTone(textBody.getMessage(), options).execute();
+                service.getTone(sms.getBody(), options).execute();
 
         for(ToneCategory tc : tone.getDocumentTone().getTones()){
             for(ToneScore ts : tc.getTones()){
                 switch(ts.getName()){
                     case("Anger"):
-                        textBody.setToneLevel(0, ts.getScore());
+                        sms.setToneLevel(0, ts.getScore());
                         break;
                     case("Disgust"):
-                        textBody.setToneLevel(1, ts.getScore());
+                        sms.setToneLevel(1, ts.getScore());
                         break;
                     case("Fear"):
-                        textBody.setToneLevel(2, ts.getScore());
+                        sms.setToneLevel(2, ts.getScore());
                         break;
                     case("Joy"):
-                        textBody.setToneLevel(3, ts.getScore());
+                        sms.setToneLevel(3, ts.getScore());
                         break;
                     case("Sadness"):
-                        textBody.setToneLevel(4, ts.getScore());
+                        sms.setToneLevel(4, ts.getScore());
                         break;
                     case("Analytical"):
-                        textBody.setStyleLevel(0, ts.getScore());
+                        sms.setStyleLevel(0, ts.getScore());
                         break;
                     case("Confident"):
-                        textBody.setStyleLevel(1, ts.getScore());
+                        sms.setStyleLevel(1, ts.getScore());
                         break;
                     case("Tentative"):
-                        textBody.setStyleLevel(2, ts.getScore());
+                        sms.setStyleLevel(2, ts.getScore());
                         break;
                     case("Openness"):
-                        textBody.setSocialLevel(0, ts.getScore());
+                        sms.setSocialLevel(0, ts.getScore());
                         break;
                     case("Conscientiousness"):
-                        textBody.setSocialLevel(1, ts.getScore());
+                        sms.setSocialLevel(1, ts.getScore());
                         break;
                     case("Extraversion"):
-                        textBody.setSocialLevel(2, ts.getScore());
+                        sms.setSocialLevel(2, ts.getScore());
                         break;
                     case("Agreeableness"):
-                        textBody.setSocialLevel(3, ts.getScore());
+                        sms.setSocialLevel(3, ts.getScore());
                         break;
                     case("Emotional Range"):
-                        textBody.setSocialLevel(4, ts.getScore());
+                        sms.setSocialLevel(4, ts.getScore());
                         break;
                 }
             }
         }
     }
 
-    public void getUtteranceScores(TextBody textBody) {
+   /* public void getUtteranceScores(TextBody textBody) {
         List<Utterance> utterances = new ArrayList<>();
         Utterance utterance = new Utterance.Builder()
                 .text(textBody.getMessage())
@@ -127,5 +118,5 @@ public class AnalyzerClient {
                 }
             }
         }
-    }
+    }*/
 }

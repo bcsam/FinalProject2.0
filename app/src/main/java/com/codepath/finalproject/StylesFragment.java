@@ -22,7 +22,7 @@ public class StylesFragment extends Fragment{
     ProgressBar pbAnalytical;
     ProgressBar pbConfident;
     ProgressBar pbTentative;
-    TextBody textBody;
+    SMS sms;
     User user;
 
     public StylesFragment() {
@@ -32,7 +32,7 @@ public class StylesFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_styles, container, false);
+        View v = inflater.inflate(R.layout.fragment_social, container, false);
         tvAnalyticalScore = (TextView) v.findViewById(R.id.tvAnalyticalScore);
         tvConfidentScore = (TextView) v.findViewById(R.id.tvConfidentScore);
         tvTentativeScore = (TextView) v.findViewById(R.id.tvTentativeScore);
@@ -41,7 +41,7 @@ public class StylesFragment extends Fragment{
         pbTentative = (ProgressBar) v.findViewById(R.id.pbTentative);
         String activity = getArguments().getString("activity");
         if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
-            textBody = getArguments().getParcelable("textBody");
+            sms = getArguments().getParcelable("sms");
             setTexts();
             setProgressBars();
         }
@@ -59,21 +59,21 @@ public class StylesFragment extends Fragment{
     }
 
     public void setTexts() {
-        tvAnalyticalScore.setText(String.valueOf(textBody.getStyleLevel(0)));
-        tvConfidentScore.setText(String.valueOf(textBody.getStyleLevel(1)));
-        tvTentativeScore.setText(String.valueOf(textBody.getStyleLevel(2)));
+        tvAnalyticalScore.setText(String.valueOf(sms.getStyleLevel(0)));
+        tvConfidentScore.setText(String.valueOf(sms.getStyleLevel(1)));
+        tvTentativeScore.setText(String.valueOf(sms.getStyleLevel(2)));
     }
 
     public void setProgressBars(){
         pbAnalytical.setMax(100);
-        pbAnalytical.setProgress(textBody.getStyleLevel(0));
-        pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor()), PorterDuff.Mode.SRC_IN);
+        pbAnalytical.setProgress(sms.getStyleLevel(0));
+        pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
         pbConfident.setMax(100);
-        pbConfident.setProgress(textBody.getStyleLevel(1));
-        pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor()), PorterDuff.Mode.SRC_IN);
+        pbConfident.setProgress(sms.getStyleLevel(1));
+        pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
         pbTentative.setMax(100);
-        pbTentative.setProgress(textBody.getStyleLevel(2));
-        pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getStyleColor()), PorterDuff.Mode.SRC_IN);
+        pbTentative.setProgress(sms.getStyleLevel(2));
+        pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
     }
 
     public void setProfileTexts() {

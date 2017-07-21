@@ -31,16 +31,29 @@ public class User implements Parcelable{
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
     }
 
-    public void updateScores(TextBody textBody){
+    public void updateScores(SMS sms){
         messageCount++;
-        for(int i=0; i<7; i++){
-            if(i<3)
-                averageStyleLevels[i] = (averageStyleLevels[i] + textBody.getStyleLevel(i)) / messageCount;
-            if(i<5){
-                averageToneLevels[i] = (averageToneLevels[i] + textBody.getToneLevel(i)) / messageCount;
-                averageSocialLevels[i] = (averageSocialLevels[i] + textBody.getSocialLevel(i)) / messageCount;
+        if(messageCount>1) {
+            for (int i = 0; i < 7; i++) {
+                if (i < 3)
+                    averageStyleLevels[i] = (averageStyleLevels[i] * (messageCount - 1) + sms.getStyleLevel(i)) / messageCount;
+                if (i < 5) {
+                    averageToneLevels[i] = (averageToneLevels[i] * (messageCount - 1) + sms.getToneLevel(i)) / messageCount;
+                    averageSocialLevels[i] = (averageSocialLevels[i] * (messageCount - 1) + sms.getSocialLevel(i)) / messageCount;
+                }
+                averageUtteranceLevels[i] = (averageUtteranceLevels[i] * (messageCount - 1) + sms.getUtteranceLevel(i)) / messageCount;
             }
-            averageUtteranceLevels[i] = (averageUtteranceLevels[i] + textBody.getUtteranceLevel(i)) / messageCount;
+        }
+        else{
+            for (int i = 0; i < 7; i++) {
+                if (i < 3)
+                    averageStyleLevels[i] = sms.getStyleLevel(i);
+                if (i < 5) {
+                    averageToneLevels[i] = sms.getToneLevel(i);
+                    averageSocialLevels[i] = sms.getSocialLevel(i);
+                }
+                averageUtteranceLevels[i] = sms.getUtteranceLevel(i);
+            }
         }
     }
 

@@ -20,7 +20,6 @@
             android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:layout_gravity="center"
             android:tint="@color/lightGray"
             app:srcCompat="@drawable/ic_person_white" />
@@ -42,6 +41,7 @@
             android:layout_height="wrap_content"
             android:autoLink="all"
             android:linksClickable="true"
+            android:maxWidth="180dp"
             android:textSize="14dp"
             tools:text="Message"
             android:background="@drawable/turquoise"
@@ -55,13 +55,15 @@
             android:id="@+id/tvTimeStamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvBody"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="6dp"
             android:layout_toEndOf="@+id/tvBody"
             android:layout_toRightOf="@+id/tvBody"
             android:maxLines="1"
-            tools:text="Time"
-            android:layout_weight="1"/>
+            android:textSize="12dp"
+            android:visibility="visible"
+            tools:text="12:12 pm" />
         </RelativeLayout>
 
     <FrameLayout

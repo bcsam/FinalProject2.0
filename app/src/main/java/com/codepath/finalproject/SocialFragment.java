@@ -27,7 +27,7 @@ public class SocialFragment extends Fragment{
     ProgressBar pbExtraversion;
     ProgressBar pbAgreeableness;
     ProgressBar pbEmotionalRange;
-    TextBody textBody;
+    SMS sms;
     User user;
 
     public SocialFragment() {
@@ -37,7 +37,7 @@ public class SocialFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_social, container, false);
+        View v = inflater.inflate(R.layout.fragment_styles, container, false);
         tvOpennessScore = (TextView) v.findViewById(R.id.tvOpennessScore);
         tvConscientiousnessScore = (TextView) v.findViewById(R.id.tvConscientiousnessScore);
         tvExtraversionScore = (TextView) v.findViewById(R.id.tvExtraversionScore);
@@ -50,7 +50,7 @@ public class SocialFragment extends Fragment{
         pbEmotionalRange = (ProgressBar) v.findViewById(R.id.pbEmotionalRange);
         String activity = getArguments().getString("activity");
         if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
-            textBody = getArguments().getParcelable("textBody");
+            sms = getArguments().getParcelable("sms");
             setTexts();
             setProgressBars();
         }
@@ -68,29 +68,29 @@ public class SocialFragment extends Fragment{
     }
 
     public void setTexts() {
-        tvOpennessScore.setText(String.valueOf(textBody.getSocialLevel(0)));
-        tvConscientiousnessScore.setText(String.valueOf(textBody.getSocialLevel(1)));
-        tvExtraversionScore.setText(String.valueOf(textBody.getSocialLevel(2)));
-        tvAgreeablenessScore.setText(String.valueOf(textBody.getSocialLevel(3)));
-        tvEmotionalRangeScore.setText(String.valueOf(textBody.getSocialLevel(4)));
+        tvOpennessScore.setText(String.valueOf(sms.getSocialLevel(0)));
+        tvConscientiousnessScore.setText(String.valueOf(sms.getSocialLevel(1)));
+        tvExtraversionScore.setText(String.valueOf(sms.getSocialLevel(2)));
+        tvAgreeablenessScore.setText(String.valueOf(sms.getSocialLevel(3)));
+        tvEmotionalRangeScore.setText(String.valueOf(sms.getSocialLevel(4)));
     }
 
     public void setProgressBars(){
         pbOpenness.setMax(100);
-        pbOpenness.setProgress(textBody.getSocialLevel(0));
-        pbOpenness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbOpenness.setProgress(sms.getSocialLevel(0));
+        pbOpenness.getProgressDrawable().setColorFilter(Color.parseColor(sms.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbConscientiousness.setMax(100);
-        pbConscientiousness.setProgress(textBody.getSocialLevel(1));
-        pbConscientiousness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbConscientiousness.setProgress(sms.getSocialLevel(1));
+        pbConscientiousness.getProgressDrawable().setColorFilter(Color.parseColor(sms.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbExtraversion.setMax(100);
-        pbExtraversion.setProgress(textBody.getSocialLevel(2));
-        pbExtraversion.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbExtraversion.setProgress(sms.getSocialLevel(2));
+        pbExtraversion.getProgressDrawable().setColorFilter(Color.parseColor(sms.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbAgreeableness.setMax(100);
-        pbAgreeableness.setProgress(textBody.getSocialLevel(3));
-        pbAgreeableness.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbAgreeableness.setProgress(sms.getSocialLevel(3));
+        pbAgreeableness.getProgressDrawable().setColorFilter(Color.parseColor(sms.getSocialColor()), PorterDuff.Mode.SRC_IN);
         pbEmotionalRange.setMax(100);
-        pbEmotionalRange.setProgress(textBody.getSocialLevel(4));
-        pbEmotionalRange.getProgressDrawable().setColorFilter(Color.parseColor(textBody.getSocialColor()), PorterDuff.Mode.SRC_IN);
+        pbEmotionalRange.setProgress(sms.getSocialLevel(4));
+        pbEmotionalRange.getProgressDrawable().setColorFilter(Color.parseColor(sms.getSocialColor()), PorterDuff.Mode.SRC_IN);
     }
 
     public void setProfileTexts() {

@@ -11,9 +11,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:layout_weight="3"/>
 
-    <RelativeLayout
+    <!--<LinearLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,17 +22,99 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">-->
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/ivProfileImage"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_gravity="center"
+            android:layout_gravity="top"
             android:tint="@color/lightGray"
             app:srcCompat="@drawable/ic_person_white" />
+
+        <TextView
+            android:id="@+id/tvBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:linksClickable="true"
+            android:maxWidth="180dp"
+            android:text="Message"
+            android:backgroundTint="@color/paleOrange"
+            android:textSize="14dp"
+            android:background="@drawable/turquoise"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/ivProfileImage"
+            android:layout_toStartOf="@+id/ivProfileImage" />
+
+        <TextView
+            android:id="@+id/tvTimeStamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@+id/tvBody"
+            android:layout_toStartOf="@+id/tvBody"
+            android:layout_alignBottom="@+id/tvBody"
+            android:maxLines="1"
+            android:text="Time"
+            android:textAlignment="textEnd"
+            android:textSize="12dp"
+            android:visibility="visible" />
+
+        <!--<TextView
+            android:id="@+id/tvTimeStamp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@+id/tvBody"
+            android:layout_toStartOf="@+id/tvBody"
+            android:maxLines="1"
+            android:text="Time"
+            android:background="#ff0000"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:autoLink="all"
+            android:background="@drawable/turquoise"
+            android:backgroundTint="@color/lightYellow"
+            android:linksClickable="true"
+            android:text="Message"
+            android:textAlignment="textEnd"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="top"
+            android:tint="@color/lightGray"
+            app:srcCompat="@drawable/ic_person_white" />-->
+
 
         <!--
         <TextView
@@ -43,33 +126,6 @@
             android:text="Name"
             android:textColor="@color/black"
             android:textSize="16dp" />-->
-
-
-        <TextView
-            android:id="@+id/tvBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/ivProfileImage"
-            android:layout_toStartOf="@+id/ivProfileImage"
-            android:autoLink="all"
-            android:linksClickable="true"
-            android:text="Message"
-            android:textAlignment="textEnd"
-            android:backgroundTint="@color/lightYellow"
-            android:textSize="14dp"
-            android:background="@drawable/turquoise"/>
-
-        <TextView
-            android:id="@+id/tvTimeStamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="7dp"
-            android:layout_toRightOf="@+id/tvBody"
-            android:layout_toStartOf="@+id/tvBody"
-            android:maxLines="1"
-            android:text="Time" />
 
     </RelativeLayout>
 

@@ -176,10 +176,10 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
             intent.putExtra("recipientName", recipientName);
             //intent.putExtra("subject", subject);
 
-            TextBody tb = new TextBody();
-            tb.setMessage(message);
+            SMS sms = new SMS();
+            sms.setBody(message);
             client = new AnalyzerClient();
-            client.getScores(tb);
+            client.getScores(sms);
             ComposeActivity.this.startActivity(intent);
 
             //makes the user enter a message before submitting
