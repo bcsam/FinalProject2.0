@@ -215,6 +215,13 @@ public class SMS implements Parcelable {
 
     public SMS(Context context) {
         this.context = context;
+
+        toneLevels = new int[5];
+        styleLevels = new int[3];
+        socialLevels = new int[5];
+        utteranceLevels = new int[7];
+        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
     }
 
     public int getImageResource() {

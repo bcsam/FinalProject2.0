@@ -87,7 +87,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             holder.ivProfileImage.setImageBitmap(null);
             holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
         } else {
-            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+            holder.ivProfileImage.setImageResource(R.drawable.ic_person_gray);
         }
 
             holder.tvBody.setText(body);
