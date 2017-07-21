@@ -44,7 +44,6 @@ public class MessagingActivity extends AppCompatActivity {
 
     String recipientName;
     String recipientNumber;
-    String myNumber;
     public static MessagingActivity inst;
     //ListAdapter adapter;
     Cursor c;
@@ -71,8 +70,6 @@ public class MessagingActivity extends AppCompatActivity {
         Log.i("recipientNumber", recipientNumber);
         initializeViews();
         setListeners();
-        TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-        myNumber = tMgr.getLine1Number();
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
         messages = new ArrayList<SMS>();
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
@@ -84,7 +81,7 @@ public class MessagingActivity extends AppCompatActivity {
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         rvText.setAdapter(adapter);
-        rvText.scrollToPosition(messages.size() - 1);
+        rvText.scrollToPosition(0);
     }
 
     public static MessagingActivity instance() {
@@ -300,17 +297,15 @@ public class MessagingActivity extends AppCompatActivity {
         text.setNumber(recipientNumber);
         text.setBody(etBody.getText().toString());
         text.setDate(String.valueOf(System.currentTimeMillis()));
+        text.setType(2);
         etBody.clearFocus();
         etBody.setText("");
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         text.sendSMS();
-        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String myNumber = tMgr.getLine1Number();
-        text.setNumber(myNumber);
-        messages.add(messages.size(), text);
-        adapter.notifyItemInserted(messages.size());
-        rvText.scrollToPosition(messages.size());
+        messages.add(0, text);
+        adapter.notifyItemInserted(0);
+        rvText.scrollToPosition(0);
     }
 }
 

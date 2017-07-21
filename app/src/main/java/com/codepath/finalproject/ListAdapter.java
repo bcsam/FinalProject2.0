@@ -2,8 +2,6 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
@@ -74,8 +72,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             holder.tvUserName.setText(number);
         }
 
-        long contactIdLong = Long.parseLong(smsList.get(position).getContactId());
-        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+        //long contactIdLong = Long.parseLong(smsList.get(position).getContactId());
+       // Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
         /*
         if (position %2 == 0 ) {
@@ -83,13 +81,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }*/
-        if (image != null) {
+        /*if (image != null) {
             holder.ivProfileImage.setImageBitmap(null);
             holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
             //holder.ivProfileImage.setImageResource(R.drawable.ic_home_white);
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }
+        }*/
 
         /*if (uri != null) {
             holder.ivProfileImage.setImageURI(uri);
