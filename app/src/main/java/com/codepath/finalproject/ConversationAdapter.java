@@ -2,6 +2,8 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,7 +60,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         params[0] = smsList.get(position);
         client.doInBackground(params);
         holder.tvBody.setText(body);
-        //holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

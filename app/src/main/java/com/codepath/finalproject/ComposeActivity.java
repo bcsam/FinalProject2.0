@@ -41,7 +41,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose2);
+        setContentView(R.layout.activity_compose3);
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
 
