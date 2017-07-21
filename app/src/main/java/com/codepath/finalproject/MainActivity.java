@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SMS> smsList;
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
-
+    SharedPreferences sharedPrefs;
     private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
     private static final int MY_PERMISSIONS_REQUEST_READ_ALL = 3;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         Gson gson = new Gson();
         String json = sharedPrefs.getString("incomingList", null);
         Type type = new TypeToken<ArrayList<SMS>>() {}.getType();
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
         // Read the sms data and store it in the list
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
-                SMS sms = new SMS(this);
+                SMS sms = new SMS();
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
@@ -512,7 +512,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         Gson gson = new Gson();
         String iJson = gson.toJson(incomingList);

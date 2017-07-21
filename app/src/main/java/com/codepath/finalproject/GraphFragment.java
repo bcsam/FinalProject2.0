@@ -27,10 +27,13 @@ public class GraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_graph, container, false);
         GraphView graph = (GraphView) v.findViewById(R.id.graph);
+        User user = getArguments().getParcelable("user");
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3)
+                new DataPoint(0, user.getAverageToneLevels(0)),
+                new DataPoint(1, user.getAverageToneLevels(1)),
+                new DataPoint(2, user.getAverageToneLevels(2)),
+                new DataPoint(3, user.getAverageToneLevels(3)),
+                new DataPoint(4, user.getAverageToneLevels(4))
         });
         graph.addSeries(series);
         return v;
