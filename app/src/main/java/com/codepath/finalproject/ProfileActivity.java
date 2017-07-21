@@ -72,9 +72,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        /*adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
+        adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
         adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
-        adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");*/
+        adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
         //adapter.addFrag(new UtteranceFragment(), "Utterance", user, "ProfileActivity");
 
         viewPager.setAdapter(adapter);
