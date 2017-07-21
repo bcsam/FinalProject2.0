@@ -55,15 +55,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        SMS[] params = new SMS[1];
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
         final String id = smsList.get(position).getContactId();
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-        //client.getScores(smsList.get(position));
+        params[0] = smsList.get(position);
+        client.doInBackground(params);
         holder.tvBody.setText(body);
-        //holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);
 
 

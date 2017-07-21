@@ -133,8 +133,7 @@ public class SMS implements Parcelable {
         return toneLevels[tone];
     }
 
-    public void setToneLevel(int tone, double level){
-        toneLevels[tone] = (int)(level*100);
+    public void setToneLevel(int tone, double level){toneLevels[tone] = (int)(level*100);
     }
 
     public int getStyleLevel(int style){
