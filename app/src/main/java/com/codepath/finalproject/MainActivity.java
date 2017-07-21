@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<User> users;
     Context context;
     ArrayList<SMS> smsList;
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
 
     private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     String read;
     String id;
     Boolean SMS;
-    Boolean contact;
+    int type;
     Uri uri;
     Cursor c;
 
@@ -73,10 +75,13 @@ public class MainActivity extends AppCompatActivity {
         rvText = (RecyclerView) findViewById(R.id.rvText);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         Gson gson = new Gson();
-        String json = sharedPrefs.getString("smsList", null);
+        String json = sharedPrefs.getString("incomingList", null);
         Type type = new TypeToken<ArrayList<SMS>>() {}.getType();
-        ArrayList<SMS> smsList = gson.fromJson(json, type);
-        if(smsList == null)
+        incomingList = gson.fromJson(json, type);
+        json = sharedPrefs.getString("outgoingList", null);
+        type = new TypeToken<ArrayList<SMS>>() {}.getType();
+        outgoingList = gson.fromJson(json, type);
+        if(incomingList == null && outgoingList == null)
             getPermissionToRead();
         else
             Log.i("sharedPreferences", String.valueOf(smsList.size()));
@@ -139,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 searchView.clearFocus();
 
                 //insert query here
-                List<SMS> postQuerySmsList = new ArrayList<>();
+                ArrayList<SMS> postQuerySmsList = new ArrayList<>();
                 for (SMS text : smsList) {
                     String number = text.getNumber();
                     String body = text.getBody();
@@ -155,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList));
+                rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList, incomingList, outgoingList));
                 return true;
             }
 
@@ -190,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                rvText.setAdapter(new ListAdapter(MainActivity.this, smsList));
+                rvText.setAdapter(new ListAdapter(MainActivity.this, smsList, incomingList, outgoingList));
                 Toast.makeText(getApplicationContext(), "working",
                         Toast.LENGTH_LONG).show();
                 return true;
@@ -252,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_READ_ALL);
         }
         else {
+            Log.i("Main Activity", "getPermission");
             text();
         }
     }
@@ -267,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 makeText(this, "Permission granted", LENGTH_SHORT).show();
+                Log.i("Main Activity", "onRequest");
                 text();
             } else {
                 makeText(this, "Permission denied", LENGTH_SHORT).show();
@@ -307,6 +314,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
+        incomingList = new ArrayList<SMS>();
+        outgoingList = new ArrayList<SMS>();
+        //ContentResolver contentResolver = context.getContentResolver();
+
+        //Uri uriContact = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+
+        //String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
         uri = Uri.parse("content://sms/");
         c = getContentResolver().query(uri, null, null, null, null);
@@ -320,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                 read = c.getString(c.getColumnIndexOrThrow("read")).toString();
+                type = c.getInt(c.getColumnIndexOrThrow("type"));
 
                 ContentResolver contentResolver = this.getContentResolver();
 
@@ -350,14 +365,19 @@ public class MainActivity extends AppCompatActivity {
                 sms.setDate(date);
                 sms.setRead(read);
                 sms.setContactId(id);
+                sms.setType(type);
+                if(sms.getType() == 1) {
+                    incomingList.add(sms);
+                }
+                else {
+                    outgoingList.add(sms);
+                }
 
                 int count = 0;
                 for (SMS text : smsList) {
-                    if(!sms.getNumber().equals(text.getNumber()) && !("+1" + sms.getNumber()).equals(text.getNumber()) && !("1" + sms.getNumber()).equals(text.getNumber())
-                            && !("+" + sms.getNumber()).equals(text.getNumber())&& !(sms.getNumber()).equals("1" + text.getNumber()) &&
-                            !(sms.getNumber()).equals("+1" + text.getNumber()) && !(sms.getNumber()).equals("+" + text.getNumber())) {
+                     if(!matchNumber(sms, text)){
                         count++;
-                    }
+                     }
                 }
 
                 if (count == smsList.size()) {
@@ -369,27 +389,33 @@ public class MainActivity extends AppCompatActivity {
         }
         // Set smsList in the ListAdapter
         rvText.setLayoutManager(new LinearLayoutManager(this));
-        rvText.setAdapter(new ListAdapter(this, smsList));
+        rvText.setAdapter(new ListAdapter(this, smsList, incomingList, outgoingList));
     }
 
-    public void updateInbox(String smsMessageStr) {text();}
-
-    @Override
-    protected void onResume(){
-        super.onResume();
+    public void updateInbox(String smsMessageStr) {
         text();
     }
 
+    public boolean matchNumber(SMS sms, SMS text){
+        if(!sms.getNumber().equals(text.getNumber()) && !("+1" + sms.getNumber()).equals(text.getNumber()) && !("1" + sms.getNumber()).equals(text.getNumber())
+                && !("+" + sms.getNumber()).equals(text.getNumber())&& !(sms.getNumber()).equals("1" + text.getNumber()) &&
+                !(sms.getNumber()).equals("+1" + text.getNumber()) && !(sms.getNumber()).equals("+" + text.getNumber()))
+            return false;
+        return true;
+    }
+
+
     @Override
     protected void onDestroy() {
-        Log.i("sharedPreferences", String.valueOf(smsList.size()));
-        super.onDestroy();
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(smsList);
-        editor.putString("smsList", json);
+        String iJson = gson.toJson(incomingList);
+        String oJson = gson.toJson(outgoingList);
+        editor.putString("incomingList", iJson);
+        editor.putString("outgoingList", oJson);
         editor.commit();
         c.close();
+        super.onDestroy();
     }
 }

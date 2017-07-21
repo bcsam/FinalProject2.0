@@ -2,50 +2,25 @@ package com.codepath.finalproject;
 
 //import android.suppapp.Activity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-
-;
-;
 
 /**
- * Created by bcsam on 7/13/17.
+ * Created by bcsam on 7/21/17.
  */
 
-public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put past messages in a recycler view
+public class ComposeActivityBackup extends AppCompatActivity{
+ /*
     Button btCheck;
     Button btSend;
     EditText etBody;
     EditText etNumber;
     AnalyzerClient client;
-    ArrayList<User> contacts;
-    RecyclerView rvCompose;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose2);
-        rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
-        addContacts(); //populates contacts
-
-
+        setContentView(R.layout.activity_compose3);
 
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -58,8 +33,20 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         //unwrapIntent();
         setListeners();
 
+        /*ViewPager viewPager = (ViewPager) findViewById(R.id.compose_pager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new ContactsFragment(), "ComposeActivity");
 
+        viewPager.setAdapter(adapter);
 
+        /*FragmentManager fm = getSupportFragmentManager();
+
+        // Create the list fragment and add it as our sole content.
+        if (fm.findFragmentById(android.R.id.content) == null) {
+            ContactsFragment list = new ContactsFragment();
+
+            fm.beginTransaction().add(android.R.id.content, list).commit();
+        }
 
 
 
@@ -98,65 +85,43 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
                 }
             }
 
-        });*/
+        });
     }
 
-    public void addContacts(){
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
+          private final List<Fragment> mFragmentList = new ArrayList<>();
+          private final List<String> mFragmentTitleList = new ArrayList<>();
+
+          public ViewPagerAdapter(FragmentManager manager) {
+              super(manager);
+          }
+
+          @Override
+          public Fragment getItem(int position) {
+              return mFragmentList.get(position);
+          }
+
+          @Override
+          public int getCount() {
+              return mFragmentList.size();
+          }
+
+          public void addFrag(Fragment fragment, String activity) {
+              Bundle bundle = new Bundle();
+              bundle.putString("activity", activity);
+              fragment.setArguments(bundle);
+              mFragmentList.add(fragment);
+              //mFragmentTitleList.add(title);
+          }
+
+          @Override
+          public CharSequence getPageTitle(int position) {
+              return mFragmentTitleList.get(position);
+          }
+
+      }
 
 
-        try {
-            Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-
-            while (phones.moveToNext()) {
-                String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                User newContact = new User();
-                newContact.setName(name);
-                newContact.setNumber(phoneNumber);
-                contacts.add(newContact);
-                //Log.e("Contact list with name & numbers", " "+contacts);
-            }
-            phones.close(); //look for cursor errors here
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-  /* class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFrag(Fragment fragment, String activity) {
-            Bundle bundle = new Bundle();
-            bundle.putString("activity", activity);
-            fragment.setArguments(bundle);
-            mFragmentList.add(fragment);
-            //mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
-    }
-
-*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -172,7 +137,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    onCheck(); //check for fields filled is in onCheck()
+                onCheck(); //check for fields filled is in onCheck()
             }
         });
 
@@ -202,7 +167,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     public void InitializeViews(){
         btCheck = (Button) findViewById(R.id.btComp3Check);
         btSend = (Button) findViewById(R.id.btComp3Send);
-        etBody = (EditText) findViewById(R.id.etBody);
+        etBody = (EditText) findViewById(etBody);
         etNumber = (EditText) findViewById(R.id.etNumber);
 
         //etSubject = (EditText) findViewById(R.id.etSubject);
@@ -220,9 +185,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         }
     }
 
-    /**
-     *
-     */
     public void onCheck(){
         String message = etBody.getText().toString();
         String recipientName = etNumber.getText().toString();
@@ -268,7 +230,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
-        User user = new User(this);
+        User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber(mPhoneNumber);
@@ -291,4 +253,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         Intent i = new Intent(ComposeActivity.this, MainActivity.class);
         ComposeActivity.this.startActivity(i);
     }
+}
+*/
 }

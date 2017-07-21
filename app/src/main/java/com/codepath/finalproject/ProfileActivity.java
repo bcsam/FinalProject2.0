@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
             getMyAverages(user);
         else
             getAverages(user);
+
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
         ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfile);
@@ -63,8 +65,18 @@ public class ProfileActivity extends AppCompatActivity {
             ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }
 
-        tvName.setText(user.getName());
-        tvNumber.setText(user.toStringNumber());
+        ViewPager viewPagerTop = (ViewPager) findViewById(R.id.upper_pager);
+
+        // Set the ViewPagerAdapter into ViewPager
+        ViewPagerAdapter adapterTop = new ViewPagerAdapter(getSupportFragmentManager());
+        adapterTop.addFrag(new ProfileFragment(), "Profile", user, "ProfileActivity");
+        adapterTop.addFrag(new GraphFragment(), "Graph", user, "ProfileActivity");
+
+        viewPagerTop.setAdapter(adapterTop);
+
+        TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
+        mTabLayoutTop.setupWithViewPager(viewPagerTop);
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
         // Set the ViewPagerAdapter into ViewPager

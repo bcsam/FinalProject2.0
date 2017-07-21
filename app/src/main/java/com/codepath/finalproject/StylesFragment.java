@@ -32,7 +32,7 @@ public class StylesFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_social, container, false);
+        View v = inflater.inflate(R.layout.fragment_styles, container, false);
         tvAnalyticalScore = (TextView) v.findViewById(R.id.tvAnalyticalScore);
         tvConfidentScore = (TextView) v.findViewById(R.id.tvConfidentScore);
         tvTentativeScore = (TextView) v.findViewById(R.id.tvTentativeScore);

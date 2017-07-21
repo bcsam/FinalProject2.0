@@ -25,6 +25,7 @@ public class SMS implements Parcelable {
     private String contact;
     private String date;
     private String read;
+    private int type;
     private int[] toneLevels;
     private int[] styleLevels;
     private int[] socialLevels;
@@ -58,6 +59,10 @@ public class SMS implements Parcelable {
     public String getNumber() {
         return number;
     }
+
+    public int getType() { return type; }
+
+    public void setType(int type) { this.type = type; }
 
     public void setNumber(String number) {
         this.number = number;
@@ -209,6 +214,18 @@ public class SMS implements Parcelable {
         sms.sendTextMessage(number, null, body, null, null);
     }
 
+    public SMS(Context context) {
+        this.context = context;
+    }
+
+    public int getImageResource() {
+        return imageResource;
+    }
+
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -221,16 +238,16 @@ public class SMS implements Parcelable {
         dest.writeString(this.contact);
         dest.writeString(this.date);
         dest.writeString(this.read);
+        dest.writeInt(this.type);
         dest.writeIntArray(this.toneLevels);
         dest.writeIntArray(this.styleLevels);
         dest.writeIntArray(this.socialLevels);
         dest.writeIntArray(this.utteranceLevels);
         dest.writeStringArray(this.darkToneColors);
         dest.writeStringArray(this.lightToneColors);
-    }
-
-    public SMS(Context context) {
-        this.context = context;
+        dest.writeParcelable(this.uri, flags);
+        dest.writeString(this.contactId);
+        dest.writeInt(this.imageResource);
     }
 
     protected SMS(Parcel in) {
@@ -239,12 +256,16 @@ public class SMS implements Parcelable {
         this.contact = in.readString();
         this.date = in.readString();
         this.read = in.readString();
+        this.type = in.readInt();
         this.toneLevels = in.createIntArray();
         this.styleLevels = in.createIntArray();
         this.socialLevels = in.createIntArray();
         this.utteranceLevels = in.createIntArray();
         this.darkToneColors = in.createStringArray();
         this.lightToneColors = in.createStringArray();
+        this.uri = in.readParcelable(Uri.class.getClassLoader());
+        this.contactId = in.readString();
+        this.imageResource = in.readInt();
     }
 
     public static final Creator<SMS> CREATOR = new Creator<SMS>() {
@@ -258,12 +279,4 @@ public class SMS implements Parcelable {
             return new SMS[size];
         }
     };
-
-    public int getImageResource() {
-        return imageResource;
-    }
-
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
-    }
 }

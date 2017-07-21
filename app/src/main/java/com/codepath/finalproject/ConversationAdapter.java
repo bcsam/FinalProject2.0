@@ -63,7 +63,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         //client.getScores(smsList.get(position));
         holder.tvBody.setText(body);
-        holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        //holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);
 
 
@@ -102,11 +102,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public int getItemViewType(int position) {
         TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        if(smsList.get(position).getNumber().equals(myNumber)){
-            return 0;
+        if(smsList.get(position).getNumber().equals(myNumber)) {
+            if (smsList.get(position).getType() == 2) {
+                return 0;
+            }
         }
         return 1;
     }
+
 
     public static String millisToDate(long currentTime) {
         String finalDate;

@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by andreadeoli on 7/13/17.
@@ -26,12 +26,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     Context context;
     AnalyzerClient client;
     // List values
-    List<SMS> smsList;
+    ArrayList<SMS> smsList;
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
     View rowView;
 
-    public ListAdapter(Context mContext, List<SMS> mSmsList) {
+    public ListAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList) {
         context = mContext;
         smsList = mSmsList;
+        incomingList = mIncomingList;
+        outgoingList = mOutgoingList;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         client = new AnalyzerClient();
@@ -59,12 +63,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         String read = smsList.get(position).getRead();
         Log.i("read adapter", read);
 
-        if(read.equals("1"))
+        if (read.equals("1"))
             holder.ivRead.setVisibility(View.GONE);
         if (!name.equals("")) {
             holder.tvUserName.setText(name);
-        }
-        else {
+        } else {
             holder.tvUserName.setText(number);
         }
 
@@ -72,44 +75,55 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
         if (image != null) {
+            //long contactIdLong = Long.parseLong(smsList.get(position).getContactId());
+            // Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+
+        /*
+        if (position %2 == 0 ) {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_home_white);
+        } else {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }*/
+        /*if (image != null) {
+>>>>>>> fa98472d8f38ed8abd51fd3b6fc9a52133fee815
             holder.ivProfileImage.setImageBitmap(null);
             holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }*/
+
+            holder.tvBody.setText(body);
+            holder.date.setText(date);
+            holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    User user = new User(context);
+                    user.setName(name);
+                    user.setNumber(number);
+                    user.setContactId(contactId);
+
+                    intent.putExtra("id", contactId);
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
+
+            holder.tvBody.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    holder.tvTime.setVisibility(View.VISIBLE);
+                    return true;
+                }
+            });
         }
-
-        holder.tvBody.setText(body);
-        holder.date.setText(date);
-        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ProfileActivity.class);
-                User user = new User(context);
-                user.setName(name);
-                user.setNumber(number);
-                user.setContactId(contactId);
-
-                intent.putExtra("id", contactId);
-                intent.putExtra("user", user);
-                context.startActivity(intent);
-            }
-        });
-
-        holder.tvBody.setOnLongClickListener(new View.OnLongClickListener(){
-
-            @Override
-            public boolean onLongClick(View v) {
-                holder.tvTime.setVisibility(View.VISIBLE);
-                return true;
-            }
-        });
     }
 
-    @Override
+
     public int getItemCount() {
         return smsList.size();
     }
-
 
     public static String millisToDate(long currentTime) {
         String finalDate;
@@ -203,6 +217,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             intent.putExtra("name", name);
             intent.putExtra("number", number);
             intent.putExtra("id", id);
+            intent.putParcelableArrayListExtra("incomingList", incomingList);
+            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             context.startActivity(intent);
         }
     }
