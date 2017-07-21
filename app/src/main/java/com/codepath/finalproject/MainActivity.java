@@ -1,6 +1,7 @@
 package com.codepath.finalproject;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -143,8 +144,6 @@ public class MainActivity extends AppCompatActivity {
                     String number = text.getNumber();
                     String body = text.getBody();
                     String contact = text.getContact();
-
-                    Uri profileImage = text.getPhotoUri();
 
                     if (number.toLowerCase().contains(query.toLowerCase()) ||
                             body.toLowerCase().contains(query.toLowerCase()) ||
@@ -377,19 +376,63 @@ public class MainActivity extends AppCompatActivity {
 
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
+        //ContentResolver contentResolver = context.getContentResolver();
+
+        //Uri uriContact = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+
+        //String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
         uri = Uri.parse("content://sms/");
         c = getContentResolver().query(uri, null, null, null, null);
+        /*Cursor cursor =
+                contentResolver.query(
+                        uriContact,
+                        projection,
+                        null,
+                        null,
+                        null);*/
         startManagingCursor(c);
 
         // Read the sms data and store it in the list
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
-                SMS sms = new SMS();
+                SMS sms = new SMS(this);
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                 read = c.getString(c.getColumnIndexOrThrow("read")).toString();
-                id = c.getString(c.getColumnIndexOrThrow("_id"));
+
+                ContentResolver contentResolver = this.getContentResolver();
+
+                Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(recipientNumber));
+
+                String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+                Cursor cursor =
+                        contentResolver.query(
+                                uri,
+                                projection,
+                                null,
+                                null,
+                                null);
+
+                if(cursor != null) {
+                    while(cursor.moveToNext()){
+                        id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                    }
+                    cursor.close();
+                }
+
+                //Uri personUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,Long.parseLong(id));
+                //InputStream is = ContactsContract.Contacts.openContactPhotoInputStream(this.getContentResolver(), personUri);
+
+                /*if (is == null) {
+                    // Your contact doesn't have a valid photo
+                    // i.e. use the default photo for your app
+                } else {
+                    // This will always succeed when assigned to an ImageView!
+                    return Uri photoUri=Uri.withAppendedPath(personUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+                }*/
 
                 recipientName = getContactName(recipientNumber, this);
 
@@ -398,13 +441,25 @@ public class MainActivity extends AppCompatActivity {
                 sms.setContact(recipientName);
                 sms.setDate(date);
                 sms.setRead(read);
+                sms.setContactId(id);
 
-                Uri u = sms.getPhotoUri();
+                /**if (BitmapFactory.decodeStream(sms.openPhoto(Long.parseLong(sms.getContactId()))) != null) {
+                    long contactIdLong = Long.parseLong(sms.getContactId());
+                    ImageView hello = (ImageView) findViewById(R.id.hello);
+                    Bitmap image = BitmapFactory.decodeStream(sms.openPhoto(contactIdLong));
+                    hello.setImageBitmap(image);
+                } **/
+
+
+                /*Uri u = sms.getPhotoUri();
+
                 if (u != null) {
                     sms.setUri(u);
                 } else {
                     sms.setImageResource(R.drawable.ic_person_white);
-                }
+                }*/
+
+                //sms.openPhoto(Long.parseLong(id));
 
                 int count = 0;
                 for (SMS text : smsList) {

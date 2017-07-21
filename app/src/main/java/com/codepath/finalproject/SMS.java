@@ -9,6 +9,9 @@ import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 /**
  * Created by andreadeoli on 7/13/17.
  */
@@ -29,6 +32,7 @@ public class SMS implements Parcelable {
     private String[] darkToneColors;
     private String[] lightToneColors;
     private Uri uri;
+    private Context context;
     private String contactId;
     private int imageResource;
 
@@ -59,8 +63,7 @@ public class SMS implements Parcelable {
 
     public Uri getPhotoUri() {
         try {
-            ContextHolder contextHolder = new ContextHolder();
-            Cursor cur = contextHolder.getContext().getContentResolver().query(
+            Cursor cur = this.context.getContentResolver().query(
                     ContactsContract.Data.CONTENT_URI,
                     null,
                     ContactsContract.Data.CONTACT_ID + "=" + this.getContactId() + " AND "
@@ -81,6 +84,27 @@ public class SMS implements Parcelable {
         Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long
                 .parseLong(getNumber()));
         return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+    }
+
+    public InputStream openPhoto(long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return new ByteArrayInputStream(data);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
     }
 
     public void setUri(Uri uri) {
@@ -220,6 +244,10 @@ public class SMS implements Parcelable {
         dest.writeStringArray(this.lightToneColors);
     }
 
+    public SMS(Context context) {
+        this.context = context;
+    }
+
     protected SMS(Parcel in) {
         this.number = in.readString();
         this.body = in.readString();
@@ -252,18 +280,5 @@ public class SMS implements Parcelable {
 
     public void setImageResource(int imageResource) {
         this.imageResource = imageResource;
-    }
-
-    private class ContextHolder {
-        public Context context = null;
-
-        public void setContext(Context context){
-            ContextHolder contextHolder = new ContextHolder();
-            contextHolder.context = context;
-        }
-
-        public Context getContext(){
-            return context;
-        }
     }
 }
