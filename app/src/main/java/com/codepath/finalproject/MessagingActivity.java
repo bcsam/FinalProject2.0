@@ -50,6 +50,7 @@ public class MessagingActivity extends AppCompatActivity {
     ConversationAdapter adapter;
 
     RecyclerView rvText;
+    List<SMS> postQuerySmsList = new ArrayList<SMS>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,27 +99,41 @@ public class MessagingActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
-
+                postQuerySmsList.clear();
                 //insert query here
                 //edit here down
-                List<SMS> postQuerySmsList = new ArrayList<SMS>();
-                for (SMS text : messages) {
-                    String body = text.getBody();
+                if(query.equals("")){
+                    postQuerySmsList.clear();
+                    adapter.notifyDataSetChanged();
+                }else {
+                    for (SMS text : messages) {
+                        String body = text.getBody();
 
-                    if (body.toLowerCase().contains(query.toLowerCase())) {
-                        Toast.makeText(getApplicationContext(), query,
-                                Toast.LENGTH_LONG).show();
-                        postQuerySmsList.add(text);
+                        if (body.toLowerCase().contains(query.toLowerCase())) {
+                            Toast.makeText(getApplicationContext(), query,
+                                    Toast.LENGTH_LONG).show();
+                            postQuerySmsList.add(text);
+                        }
                     }
                 }
-
                 rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                postQuerySmsList.clear();
+                //insert query here
+                //edit here down
+                    for (SMS text : messages) {
+                        String body = text.getBody();
+
+                        if (body.toLowerCase().contains(newText.toLowerCase())) {
+                            postQuerySmsList.add(text);
+                        }
+                    }
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
+                return true;
             }
         });
 

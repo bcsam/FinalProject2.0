@@ -5,13 +5,14 @@ package com.codepath.finalproject;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +22,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
-;
-;
 
 /**
  * Created by bcsam on 7/13/17.
@@ -37,20 +35,28 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     AnalyzerClient client;
     ArrayList<User> contacts;
     RecyclerView rvCompose;
+    ComposeAdapter composeAdapter;
+    ArrayList<User> postQueryContacts;
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose2);
+
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
+        populateRecyclerView();
+        postQueryContacts = new ArrayList<>();
+        composeAdapter = new ComposeAdapter(postQueryContacts);
+        rvCompose.setLayoutManager(new LinearLayoutManager(this));
+        rvCompose.setAdapter(composeAdapter);
 
-
-
+        /*
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-        }
+        }*/
 
         InitializeViews();
         etBody.setText(getIntent().getStringExtra("message"));
@@ -101,18 +107,23 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         });*/
     }
 
+    private void populateRecyclerView() {
+
+    }
+
     public void addContacts(){
 
 
         try {
             Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-
+            contacts = new ArrayList<>();
             while (phones.moveToNext()) {
                 String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 User newContact = new User();
                 newContact.setName(name);
                 newContact.setNumber(phoneNumber);
+
                 contacts.add(newContact);
                 //Log.e("Contact list with name & numbers", " "+contacts);
             }
@@ -197,11 +208,66 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
             }
         });
 
+        etNumber.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                postQueryContacts.clear();
+                composeAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                query = s.toString();
+                postQueryContacts.clear();
+
+                if(query.equals("")){
+                    postQueryContacts.clear();
+                    composeAdapter.notifyDataSetChanged();
+                }else {
+                    for (User contact : contacts) {
+                        String name = contact.getName();
+                        String number = contact.getNumber();
+                        if (name.toLowerCase().contains(query.toLowerCase()) ||
+                                number.toLowerCase().contains(query.toLowerCase())) {
+                            postQueryContacts.add(contact);
+                            composeAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                query = s.toString();
+                postQueryContacts.clear();
+
+                if(query.equals("")){
+                    postQueryContacts.clear();
+                    composeAdapter.notifyDataSetChanged();
+                }else {
+                    for (User contact : contacts) {
+                        String name = contact.getName();
+                        String number = contact.getNumber();
+                        if (name.toLowerCase().contains(query.toLowerCase()) ||
+                                number.toLowerCase().contains(query.toLowerCase())) {
+                            postQueryContacts.add(contact);
+                            composeAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void updateRecycler(){
+
+
     }
 
     public void InitializeViews(){
-        btCheck = (Button) findViewById(R.id.btComp3Check);
-        btSend = (Button) findViewById(R.id.btComp3Send);
+        btCheck = (Button) findViewById(R.id.btComp2Check);
+        btSend = (Button) findViewById(R.id.btComp2Send);
         etBody = (EditText) findViewById(R.id.etBody);
         etNumber = (EditText) findViewById(R.id.etNumber);
 
@@ -291,4 +357,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         Intent i = new Intent(ComposeActivity.this, MainActivity.class);
         ComposeActivity.this.startActivity(i);
     }
+
+
 }

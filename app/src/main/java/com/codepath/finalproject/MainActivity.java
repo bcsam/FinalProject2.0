@@ -33,7 +33,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     int type;
     Uri uri;
     Cursor c;
+    ArrayList<SMS> onQuerySmsList = new ArrayList<>();
 
     TextView tvUserName;
 
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query) { //this works
                 searchView.clearFocus();
 
                 //insert query here
@@ -165,23 +165,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                List<SMS> onQuerySmsList = new ArrayList<>();
-                for (SMS text : smsList) {
-                    String number = text.getNumber();
-                    String body = text.getBody();
-                    String contact = text.getContact();
+                onQuerySmsList.clear();
+                    for (SMS text : smsList) {
+                        String number = text.getNumber();
+                        String body = text.getBody();
+                        String contact = text.getContact();
 
-                    Uri profileImage = text.getPhotoUri();
+                        Uri profileImage = text.getPhotoUri();
 
-                    if (number.toLowerCase().contains(newText.toLowerCase()) ||
-                            body.toLowerCase().contains(newText.toLowerCase()) ||
-                            contact.toLowerCase().contains(newText.toLowerCase())) {
-
-                        makeText(getApplicationContext(), newText,
-                                LENGTH_LONG).show();
-                        onQuerySmsList.add(text);
+                        if (number.toLowerCase().contains(newText.toLowerCase()) ||
+                                body.toLowerCase().contains(newText.toLowerCase()) ||
+                                contact.toLowerCase().contains(newText.toLowerCase())) {
+                            onQuerySmsList.add(text);
+                        }
                     }
-                }
+
+                rvText.setAdapter(new ListAdapter(MainActivity.this, (ArrayList<com.codepath.finalproject.SMS>) onQuerySmsList, incomingList, outgoingList));
                 return true;
             }
         });
