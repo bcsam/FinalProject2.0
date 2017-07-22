@@ -33,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SMS> smsList;
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
-
+    SharedPreferences sharedPrefs;
     private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
     private static final int MY_PERMISSIONS_REQUEST_READ_ALL = 3;
@@ -73,14 +74,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         Gson gson = new Gson();
-        String json = sharedPrefs.getString("smsList", null);
+        String json = sharedPrefs.getString("incomingList", null);
         Type type = new TypeToken<ArrayList<SMS>>() {}.getType();
-        ArrayList<SMS> smsList = gson.fromJson(json, type);
-        incomingList = new ArrayList<SMS>();
-        outgoingList = new ArrayList<SMS>();
-        if(smsList == null)
+        incomingList = gson.fromJson(json, type);
+        json = sharedPrefs.getString("outgoingList", null);
+        type = new TypeToken<ArrayList<SMS>>() {}.getType();
+        outgoingList = gson.fromJson(json, type);
+        if(incomingList == null && outgoingList == null)
             getPermissionToRead();
         else
             Log.i("sharedPreferences", String.valueOf(smsList.size()));
@@ -166,42 +168,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 onQuerySmsList.clear();
-                    for (SMS text : smsList) {
-                        String number = text.getNumber();
-                        String body = text.getBody();
-                        String contact = text.getContact();
+                onQuerySmsList.clear();
+                for (SMS text : smsList) {
+                    String number = text.getNumber();
+                    String body = text.getBody();
+                    String contact = text.getContact();
 
-                        Uri profileImage = text.getPhotoUri();
+                    //Uri profileImage = text.getPhotoUri();
 
-                        if (number.toLowerCase().contains(newText.toLowerCase()) ||
-                                body.toLowerCase().contains(newText.toLowerCase()) ||
-                                contact.toLowerCase().contains(newText.toLowerCase())) {
-                            onQuerySmsList.add(text);
-                        }
+                    if (number.toLowerCase().contains(newText.toLowerCase()) ||
+                            body.toLowerCase().contains(newText.toLowerCase()) ||
+                            contact.toLowerCase().contains(newText.toLowerCase())) {
+                        onQuerySmsList.add(text);
                     }
+                }
 
                 rvText.setAdapter(new ListAdapter(MainActivity.this, (ArrayList<com.codepath.finalproject.SMS>) onQuerySmsList, incomingList, outgoingList));
                 return true;
             }
         });
-
-/*
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                return false;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                rvText.setAdapter(new ListAdapter(MainActivity.this, smsList));
-                Toast.makeText(getApplicationContext(), "working",
-                        Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
-        */
-        //ran on here up
 
 
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener(){
@@ -229,38 +214,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
-        User user = new User();
+        User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
+        //user.setContactId(id);
 
-        //user.setProfileImageUri();
-
-        /*Uri u = objItem.getPhotoUri();
-
-        if (u != null) {
-            user.setProfileImage(u);
-        } else {
-            user.setProfileImage(R.drawable.);
-        }*/
-
-
-        Log.i("profile", user.getNumber());
-        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-
         i.putExtra("user", user);
         MainActivity.this.startActivity(i);
     }
 
     public void launchComposeActivity(MenuItem item) {
-        //launches the profile view
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         MainActivity.this.startActivity(i);
     }
-        //this might be why we can't get to the messaging activity
-    //@Override
 
     protected void onListItemClick(ListView l, View v, int position, long id) {
        // SMS sms = (SMS) getListAdapter().getItem(position);
@@ -286,10 +255,6 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED;
 
         if (readSMS || readContacts || sendSMS) {
-            /*if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.READ_SMS)) {
-                Toast.makeText(this, "Please allow permission!", Toast.LENGTH_SHORT).show();
-            }*/
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS},
                     MY_PERMISSIONS_REQUEST_READ_ALL);
@@ -297,17 +262,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             Log.i("Main Activity", "getPermission");
             text();
-        }/* else
-        if (readSMS) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_SMS},
-                    MY_PERMISSIONS_REQUEST_READ_SMS);
-        } else
-        if (readContacts) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-        }*/
+        }
     }
 
     @Override
@@ -327,27 +282,7 @@ public class MainActivity extends AppCompatActivity {
                 makeText(this, "Permission denied", LENGTH_SHORT).show();
             }
 
-        } /*else
-        if (requestCode == MY_PERMISSIONS_REQUEST_READ_SMS) {
-            if (grantResults.length == 1 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "SMS permission granted", Toast.LENGTH_SHORT).show();
-                text();
-            } else {
-                Toast.makeText(this, "SMS permission denied", Toast.LENGTH_SHORT).show();
-            }
-
-        } else
-        if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Contact permission granted", Toast.LENGTH_SHORT).show();
-                text();
-            } else {
-                Toast.makeText(this, "Contact permission denied", Toast.LENGTH_SHORT).show();
-            }
-
-        }*/
+        }
         else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -360,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
         if (phoneNumber == null || phoneNumber.equals("")) {
             return "Anonymous";
         }
+
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));
 
         String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
@@ -381,6 +317,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
+        incomingList = new ArrayList<SMS>();
+        outgoingList = new ArrayList<SMS>();
         //ContentResolver contentResolver = context.getContentResolver();
 
         //Uri uriContact = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
@@ -389,13 +327,6 @@ public class MainActivity extends AppCompatActivity {
 
         uri = Uri.parse("content://sms/");
         c = getContentResolver().query(uri, null, null, null, null);
-        /*Cursor cursor =
-                contentResolver.query(
-                        uriContact,
-                        projection,
-                        null,
-                        null,
-                        null);*/
         startManagingCursor(c);
 
         // Read the sms data and store it in the list
@@ -429,17 +360,6 @@ public class MainActivity extends AppCompatActivity {
                     cursor.close();
                 }
 
-                //Uri personUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,Long.parseLong(id));
-                //InputStream is = ContactsContract.Contacts.openContactPhotoInputStream(this.getContentResolver(), personUri);
-
-                /*if (is == null) {
-                    // Your contact doesn't have a valid photo
-                    // i.e. use the default photo for your app
-                } else {
-                    // This will always succeed when assigned to an ImageView!
-                    return Uri photoUri=Uri.withAppendedPath(personUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-                }*/
-
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);
@@ -448,6 +368,7 @@ public class MainActivity extends AppCompatActivity {
                 sms.setDate(date);
                 sms.setRead(read);
                 sms.setContactId(id);
+
                 sms.setType(type);
                 if(sms.getType() == 1) {
                     incomingList.add(sms);
@@ -455,24 +376,6 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     outgoingList.add(sms);
                 }
-
-                /**if (BitmapFactory.decodeStream(sms.openPhoto(Long.parseLong(sms.getContactId()))) != null) {
-                    long contactIdLong = Long.parseLong(sms.getContactId());
-                    ImageView hello = (ImageView) findViewById(R.id.hello);
-                    Bitmap image = BitmapFactory.decodeStream(sms.openPhoto(contactIdLong));
-                    hello.setImageBitmap(image);
-                } **/
-
-
-                /*Uri u = sms.getPhotoUri();
-
-                if (u != null) {
-                    sms.setUri(u);
-                } else {
-                    sms.setImageResource(R.drawable.ic_person_white);
-                }*/
-
-                //sms.openPhoto(Long.parseLong(id));
 
                 int count = 0;
                 for (SMS text : smsList) {
@@ -506,16 +409,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        Log.i("sharedPreferences", String.valueOf(smsList.size()));
-        super.onDestroy();
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(smsList);
-        editor.putString("smsList", json);
-        editor.commit();
-        c.close();
-    }
+            @Override
+            protected void onDestroy() {
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                Gson gson = new Gson();
+                String iJson = gson.toJson(incomingList);
+                String oJson = gson.toJson(outgoingList);
+                editor.putString("incomingList", iJson);
+                editor.putString("outgoingList", oJson);
+                editor.commit();
+                c.close();
+                super.onDestroy();
+            }
 }

@@ -125,13 +125,13 @@ public class MessagingActivity extends AppCompatActivity {
                 postQuerySmsList.clear();
                 //insert query here
                 //edit here down
-                    for (SMS text : messages) {
-                        String body = text.getBody();
+                for (SMS text : messages) {
+                    String body = text.getBody();
 
-                        if (body.toLowerCase().contains(newText.toLowerCase())) {
-                            postQuerySmsList.add(text);
-                        }
+                    if (body.toLowerCase().contains(newText.toLowerCase())) {
+                        postQuerySmsList.add(text);
                     }
+                }
                 rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
                 return true;
             }

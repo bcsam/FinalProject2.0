@@ -1,8 +1,15 @@
 package com.codepath.finalproject;
 
+import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * Created by vf608 on 7/13/17.
@@ -18,6 +25,11 @@ public class User implements Parcelable{
     private String number;
     private Uri profileImage;
     private String[] darkToneColors;
+    private Context context;
+
+    private boolean other;
+
+    private String contactId;
 
     public User(){
         averageToneLevels = new int[5];
@@ -27,8 +39,39 @@ public class User implements Parcelable{
         messageCount = 0;
         name = "";
         number = "";
+        contactId = "";
         profileImage = null;
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+    }
+
+    public User(Context context){
+        averageToneLevels = new int[5];
+        averageStyleLevels =  new int[3];
+        averageSocialLevels = new int[5];
+        averageUtteranceLevels = new int[7];
+        messageCount = 0;
+        name = "";
+        number = "";
+        contactId = "";
+        profileImage = null;
+        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public boolean isOther() {
+        return other;
+    }
+
+    public void setOther(boolean other) {
+        this.other = other;
     }
 
     public void updateScores(SMS sms){
@@ -55,6 +98,35 @@ public class User implements Parcelable{
                 averageUtteranceLevels[i] = sms.getUtteranceLevel(i);
             }
         }
+    }
+
+    public InputStream openPhoto(long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return new ByteArrayInputStream(data);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
     }
 
     public int getAverageToneLevels(int tone){ return averageToneLevels[tone]; }
@@ -139,6 +211,7 @@ public class User implements Parcelable{
         dest.writeString(this.name);
         dest.writeString(this.number);
         dest.writeStringArray(this.darkToneColors);
+        dest.writeString(this.contactId);
     }
 
     protected User(Parcel in) {
@@ -150,6 +223,7 @@ public class User implements Parcelable{
         this.name = in.readString();
         this.number = in.readString();
         this.darkToneColors = in.createStringArray();
+        this.contactId = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

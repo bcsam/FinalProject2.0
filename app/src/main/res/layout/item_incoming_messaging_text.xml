@@ -21,7 +21,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_gravity="center"
-            android:tint="@color/lightGray"
             app:srcCompat="@drawable/ic_person_white" />
 
         <!--

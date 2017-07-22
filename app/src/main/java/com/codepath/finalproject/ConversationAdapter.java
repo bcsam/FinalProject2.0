@@ -2,8 +2,13 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,22 +55,38 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        SMS[] params = new SMS[1];
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
+        final String id = smsList.get(position).getContactId();
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-        //client.getScores(smsList.get(position));
+        params[0] = smsList.get(position);
+        client.doInBackground(params);
         holder.tvBody.setText(body);
-        //holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);
+
+
+        long contactIdLong = Long.parseLong(id);
+
+        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+
+        if (image != null) {
+            holder.ivProfileImage.setImageBitmap(null);
+            holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+        } else {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }
+
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfileActivity.class);
-                User user = new User();
+                User user = new User(context);
                 user.setName(name);
                 user.setNumber(number);
+                user.setContactId(id);
                 intent.putExtra("user", user);
                 context.startActivity(intent);
             }
@@ -80,11 +101,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public int getItemViewType(int position) {
-        if(smsList.get(position).getType() == 2){
-            return 0;
+        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        if(smsList.get(position).getNumber().equals(myNumber)) {
+            if (smsList.get(position).getType() == 2) {
+                return 0;
+            }
         }
         return 1;
     }
+
 
     public static String millisToDate(long currentTime) {
         String finalDate;

@@ -43,16 +43,14 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose2);
-
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
-        populateRecyclerView();
         postQueryContacts = new ArrayList<>();
         composeAdapter = new ComposeAdapter(postQueryContacts);
         rvCompose.setLayoutManager(new LinearLayoutManager(this));
         rvCompose.setAdapter(composeAdapter);
 
-        /*
+/*
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -105,10 +103,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
             }
 
         });*/
-    }
-
-    private void populateRecyclerView() {
-
     }
 
     public void addContacts(){
@@ -260,10 +254,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         });
     }
 
-    public void updateRecycler(){
-
-
-    }
 
     public void InitializeViews(){
         btCheck = (Button) findViewById(R.id.btComp2Check);
@@ -334,7 +324,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
-        User user = new User();
+        User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber(mPhoneNumber);

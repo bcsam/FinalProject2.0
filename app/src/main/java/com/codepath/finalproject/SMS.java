@@ -37,6 +37,16 @@ public class SMS implements Parcelable {
     private String contactId;
     private int imageResource;
 
+    public boolean isOther() {
+        return other;
+    }
+
+    public void setOther(boolean other) {
+        this.other = other;
+    }
+
+    private boolean other;
+
     public SMS(){
         toneLevels = new int[5];
         styleLevels = new int[3];
@@ -64,31 +74,6 @@ public class SMS implements Parcelable {
 
     public void setContactId(String contactId) {
         this.contactId = contactId;
-    }
-
-    public Uri getPhotoUri() {
-        try {
-            Cursor cur = this.context.getContentResolver().query(
-                    ContactsContract.Data.CONTENT_URI,
-                    null,
-                    ContactsContract.Data.CONTACT_ID + "=" + this.getContactId() + " AND "
-                            + ContactsContract.Data.MIMETYPE + "='"
-                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", null,
-                    null);
-            if (cur != null) {
-                if (!cur.moveToFirst()) {
-                    return null; // no photo
-                }
-            } else {
-                return null; // error in cursor process
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long
-                .parseLong(getNumber()));
-        return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
     }
 
     public InputStream openPhoto(long contactId) {
@@ -148,8 +133,7 @@ public class SMS implements Parcelable {
         return toneLevels[tone];
     }
 
-    public void setToneLevel(int tone, double level){
-        toneLevels[tone] = (int)(level*100);
+    public void setToneLevel(int tone, double level){toneLevels[tone] = (int)(level*100);
     }
 
     public int getStyleLevel(int style){
@@ -231,6 +215,13 @@ public class SMS implements Parcelable {
 
     public SMS(Context context) {
         this.context = context;
+
+        toneLevels = new int[5];
+        styleLevels = new int[3];
+        socialLevels = new int[5];
+        utteranceLevels = new int[7];
+        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
     }
 
     public int getImageResource() {

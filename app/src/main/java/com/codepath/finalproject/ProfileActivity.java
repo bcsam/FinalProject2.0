@@ -1,11 +1,13 @@
 package com.codepath.finalproject;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +18,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +37,37 @@ public class ProfileActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         User user = getIntent().getParcelableExtra("user");
+        String id = getIntent().getStringExtra("id");
+
         if(user.getName().equals("Me"))
             getMyAverages(user);
         else
             getAverages(user);
-        TextView tvName = (TextView) findViewById(R.id.tvName);
-        TextView tvNumber = (TextView) findViewById(R.id.tvNumber);
 
-        tvName.setText(user.getName());
-        tvNumber.setText(user.toStringNumber());
+
+        /*long contactIdLong = Long.parseLong(id);
+
+        Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
+
+        if (image != null) {
+            ivProfileImage.setImageBitmap(null);
+            ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+        } else {
+            ivProfileImage.setImageResource(R.drawable.ic_person_white);
+        }*/
+
+        ViewPager viewPagerTop = (ViewPager) findViewById(R.id.upper_pager);
+
+        // Set the ViewPagerAdapter into ViewPager
+        ViewPagerAdapter adapterTop = new ViewPagerAdapter(getSupportFragmentManager());
+        adapterTop.addFrag(new ProfileFragment(), "Profile", user, "ProfileActivity");
+        adapterTop.addFrag(new GraphFragment(), "Graph", user, "ProfileActivity");
+
+        viewPagerTop.setAdapter(adapterTop);
+
+        TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
+        mTabLayoutTop.setupWithViewPager(viewPagerTop);
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
         // Set the ViewPagerAdapter into ViewPager
@@ -60,6 +83,8 @@ public class ProfileActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(viewPager);
 
     }
+
+
     public void getMyAverages(User user) {
         Uri uri = Uri.parse("content://sms/sent");
         Cursor c = getContentResolver().query(uri, null, null, null, null);
@@ -75,7 +100,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
             SMS sms = new SMS();
             sms.setBody(fullText);
-            client.getScores(sms);
+            SMS[] params = new SMS[]{sms};
+            client.doInBackground(params);
             user.updateScores(sms);
         }
         c.close();
@@ -116,11 +142,35 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
-        User user = new User();
+        User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
+
+        String id = null;
+        ContentResolver contentResolver = this.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(mPhoneNumber));
+
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        Cursor cursor =
+                contentResolver.query(
+                        uri,
+                        projection,
+                        null,
+                        null,
+                        null);
+
+        if(cursor != null) {
+            while(cursor.moveToNext()){
+                id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            }
+            cursor.close();
+        }
+        user.setContactId(id);
+
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
