@@ -100,8 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
             SMS sms = new SMS();
             sms.setBody(fullText);
-            SMS[] params = new SMS[]{sms};
-            client.doInBackground(params);
+            client.getScores(sms);
             user.updateScores(sms);
         }
         c.close();

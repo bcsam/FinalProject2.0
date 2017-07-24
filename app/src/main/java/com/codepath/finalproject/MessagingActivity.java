@@ -250,7 +250,7 @@ public class MessagingActivity extends AppCompatActivity {
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 7/23/17 send the message
+                sendText(v);
             }
         });
     }
@@ -364,7 +364,17 @@ public class MessagingActivity extends AppCompatActivity {
         text.sendSMS();
         messages.add(0, text);
         adapter.notifyItemInserted(0);
+        outgoingList.add(0, text);
         rvText.scrollToPosition(0);
+    }
+
+    @Override
+    public void onBackPressed(){
+        Log.i("MessagingActivity", "onBackPressed");
+        Intent i =  new Intent(MessagingActivity.this, MainActivity.class);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        setResult(RESULT_OK, i);
+        finish();
     }
 }
 

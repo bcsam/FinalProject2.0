@@ -3,11 +3,8 @@ package com.codepath.finalproject;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
@@ -67,7 +64,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
-        client.execute(params);
+        //client.execute(params);
         holder.tvBody.setText(body);
         holder.date.setText(date);
 

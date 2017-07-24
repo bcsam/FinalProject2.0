@@ -84,6 +84,8 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
             Intent intent = new Intent(context, MessagingActivity.class);
             String name = contactList.get(position).getName();
             String number = contactList.get(position).getNumber();
+            number = number.replaceAll("-", "");
+            number = number.replaceAll(" ", "");
             //String id = contactList.get(position).getContactId();
             intent.putExtra("name", name);
             intent.putExtra("number", number);
@@ -91,6 +93,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             context.startActivity(intent);
+
         }
     }
 }

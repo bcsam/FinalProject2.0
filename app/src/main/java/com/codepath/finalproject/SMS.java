@@ -26,6 +26,7 @@ public class SMS implements Parcelable {
     private String date;
     private String read;
     private int type;
+    private int id;
     private int[] toneLevels;
     private int[] styleLevels;
     private int[] socialLevels;
@@ -55,6 +56,10 @@ public class SMS implements Parcelable {
         darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
         lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getNumber() {
         return number;
@@ -251,6 +256,7 @@ public class SMS implements Parcelable {
         dest.writeString(this.date);
         dest.writeString(this.read);
         dest.writeInt(this.type);
+        dest.writeInt(this.id);
         dest.writeIntArray(this.toneLevels);
         dest.writeIntArray(this.styleLevels);
         dest.writeIntArray(this.socialLevels);
@@ -260,6 +266,7 @@ public class SMS implements Parcelable {
         dest.writeParcelable(this.uri, flags);
         dest.writeString(this.contactId);
         dest.writeInt(this.imageResource);
+        dest.writeByte(this.other ? (byte) 1 : (byte) 0);
     }
 
     protected SMS(Parcel in) {
@@ -269,6 +276,7 @@ public class SMS implements Parcelable {
         this.date = in.readString();
         this.read = in.readString();
         this.type = in.readInt();
+        this.id = in.readInt();
         this.toneLevels = in.createIntArray();
         this.styleLevels = in.createIntArray();
         this.socialLevels = in.createIntArray();
@@ -278,6 +286,7 @@ public class SMS implements Parcelable {
         this.uri = in.readParcelable(Uri.class.getClassLoader());
         this.contactId = in.readString();
         this.imageResource = in.readInt();
+        this.other = in.readByte() != 0;
     }
 
     public static final Creator<SMS> CREATOR = new Creator<SMS>() {
