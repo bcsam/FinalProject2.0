@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -86,6 +88,34 @@ public class MainActivity extends AppCompatActivity {
         else
             Log.i("sharedPreferences", String.valueOf(smsList.size()));
         ins = this;
+
+        int random = (int) Math.floor(Math.random() * 5);
+        int color;
+
+        switch (random) {
+            case 0:  color = ContextCompat.getColor(this, R.color.newRed);
+                break;
+            case 1:  color = ContextCompat.getColor(this, R.color.newYellow);
+                break;
+            case 2:  color = ContextCompat.getColor(this, R.color.newPurple);
+                break;
+            case 3:  color = ContextCompat.getColor(this, R.color.newGreen);
+                break;
+            case 4:  color = ContextCompat.getColor(this, R.color.newBlue);
+                break;
+            default: color = ContextCompat.getColor(this, R.color.darkRed);
+                break;
+        }
+
+        color = ContextCompat.getColor(this, R.color.colorPrimary);
+
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+
+        getSupportActionBar().setBackgroundDrawable(
+                new ColorDrawable(Color.parseColor(hexColor)));
+
+        getSupportActionBar().setTitle("ToneTeller");
+
 
 
         //if statement for requesting info
@@ -347,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
-                /*Cursor cursor =
+                Cursor cursor =
                         contentResolver.query(
                                 uri,
                                 projection,
@@ -362,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     Log.i("out cursor", id);
                     cursor.close();
-                }*/
+                }
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);

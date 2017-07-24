@@ -34,6 +34,7 @@
             tools:text="Name"
             android:layout_toRightOf="@+id/ivProfileImage"
             android:layout_alignParentTop="true" />-->
+
         <TextView
             android:id="@+id/tvBody"
             android:layout_width="wrap_content"
