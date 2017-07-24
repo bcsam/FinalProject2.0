@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 
 public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put past messages in a recycler view
     Button btCheck;
-    Button btSend;
+    ImageView btSend;
     EditText etBody;
     EditText etNumber;
     AnalyzerClient client;
@@ -41,7 +42,9 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose3);
+        setContentView(R.layout.activity_compose2);
+        InitializeViews();
+        setListeners();
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
 
@@ -52,11 +55,10 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
             StrictMode.setThreadPolicy(policy);
         }
 
-        InitializeViews();
         etBody.setText(getIntent().getStringExtra("message"));
         etNumber.setText(getIntent().getStringExtra("recipient"));
         //unwrapIntent();
-        setListeners();
+
 
 
 
@@ -200,10 +202,10 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     }
 
     public void InitializeViews(){
-        btCheck = (Button) findViewById(R.id.btComp3Check);
-        btSend = (Button) findViewById(R.id.btComp3Send);
-        etBody = (EditText) findViewById(R.id.etBody);
-        etNumber = (EditText) findViewById(R.id.etNumber);
+        btCheck = (Button) findViewById(R.id.btComp2Check);
+        btSend = (ImageView) findViewById(R.id.btComp2Send);
+        etBody = (EditText) findViewById(R.id.etComp2Body);
+        etNumber = (EditText) findViewById(R.id.etComp2Number);
 
         //etSubject = (EditText) findViewById(R.id.etSubject);
     }

@@ -7,11 +7,13 @@
     <color name="darkRed">#b30000</color>
     <color name="lightRed">#ff8080</color>
     <color name="darkBlue">#004d99</color>
+    <color name="twitterBlue">#4099FF</color>
     <color name="lightBlue">#80bfff</color>
     <color name="darkPurple">#5900b3</color>
     <color name="lightPurple">#cc99ff</color>
     <color name="darkGreen">#267326</color>
     <color name="fluorescentGreen">#00FF00</color>
+    <color name="googleGreen">#26B14C</color>
     <color name="lightGreen">#8cd98c</color>
     <color name="darkYellow">#e6b800</color>
     <color name="lightYellow">#ffdb4d</color>
@@ -19,4 +21,8 @@
     <color name="white">#ffffff</color>
     <color name="lightGray">#D3D3D3</color>
     <color name="veryLightGray">#F5F5F5</color>
+
+    <color name="checkButton">@color/googleGreen</color>
+    <color name="sendButton">@color/twitterBlue</color>
+    <color name="personIcon">@color/lightGray</color>
 </resources>
