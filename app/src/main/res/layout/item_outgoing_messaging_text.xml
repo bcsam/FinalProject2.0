@@ -42,7 +42,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="top"
-            app:srcCompat="@drawable/ic_person_white" />
+            app:srcCompat="@drawable/ic_person_gray" />
 
         <TextView
             android:id="@+id/tvBody"

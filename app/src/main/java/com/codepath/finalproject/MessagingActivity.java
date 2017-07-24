@@ -84,7 +84,7 @@ public class MessagingActivity extends AppCompatActivity {
         TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         myNumber = tMgr.getLine1Number();
 
-        ContentResolver contentResolver = this.getContentResolver();
+        /*ContentResolver contentResolver = this.getContentResolver();
 
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(myNumber));
 
@@ -103,7 +103,7 @@ public class MessagingActivity extends AppCompatActivity {
                 myId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
             }
             cursor.close();
-        }
+        }*/
 
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
         messages = new ArrayList<SMS>();
@@ -235,24 +235,24 @@ public class MessagingActivity extends AppCompatActivity {
     public void getMessages() {
         ContentValues contentValues = new ContentValues();
 
-        if (recipientNumber.length() == 12) {
-           /* differentNumber(recipientNumber);
+        /*if (recipientNumber.length() == 12) {
+            differentNumber(recipientNumber);
             differentNumber(recipientNumber.substring(1, 12));
-            differentNumber(recipientNumber.substring(2, 12));*/
+            differentNumber(recipientNumber.substring(2, 12));
         }
         else if (recipientNumber.length() == 11) {
-            /*differentNumber(recipientNumber);
+            differentNumber(recipientNumber);
             differentNumber(recipientNumber.substring(1, 11));
-            differentNumber("+" + recipientNumber);*/
+            differentNumber("+" + recipientNumber);
         }
         else if (recipientNumber.length() == 10) {
-            /*differentNumber(recipientNumber);
+            differentNumber(recipientNumber);
             differentNumber("1" + recipientNumber);
-            differentNumber("+1" + recipientNumber);*/
+            differentNumber("+1" + recipientNumber);
         }
         else {
             differentNumber(recipientNumber);
-        }
+        }*/
 
         for(SMS s: incomingList){
             if(s.getNumber().equals(recipientNumber))
