@@ -38,15 +38,25 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     ComposeAdapter composeAdapter;
     ArrayList<User> postQueryContacts;
     String query;
+    ArrayList<SMS> incomingList = new ArrayList<>();
+    ArrayList<SMS> outgoingList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose2);
+        InitializeViews();
+        setListeners();
+
+        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
         postQueryContacts = new ArrayList<>();
-        composeAdapter = new ComposeAdapter(postQueryContacts);
+
+        // TODO: 7/23/17 figure out how to pass the in-flight message to the messaging activity
+        composeAdapter = new ComposeAdapter(ComposeActivity.this, postQueryContacts, incomingList, outgoingList);
         rvCompose.setLayoutManager(new LinearLayoutManager(this));
         rvCompose.setAdapter(composeAdapter);
 
@@ -56,11 +66,11 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
             StrictMode.setThreadPolicy(policy);
         }*/
 
-        InitializeViews();
+
         etBody.setText(getIntent().getStringExtra("message"));
         etNumber.setText(getIntent().getStringExtra("recipient"));
         //unwrapIntent();
-        setListeners();
+
 
 
 
@@ -111,9 +121,11 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         try {
             Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
             contacts = new ArrayList<>();
-            while (phones.moveToNext()) {
+            while (phones.moveToNext()) { // TODO: 7/23/17 change how read in 
                 String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                //sets phone number like +1 555-555-5555
+                String phoneNumber = phones.getString(phones.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                //String phoneNumber = phones.getString(phones.getColumnIndexOrThrow("address")).toString();
                 User newContact = new User();
                 newContact.setName(name);
                 newContact.setNumber(phoneNumber);
@@ -258,7 +270,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     public void InitializeViews(){
         btCheck = (Button) findViewById(R.id.btComp2Check);
         btSend = (Button) findViewById(R.id.btComp2Send);
-        etBody = (EditText) findViewById(R.id.etBody);
+        etBody = (EditText) findViewById(R.id.etComp2Body);
         etNumber = (EditText) findViewById(R.id.etNumber);
 
         //etSubject = (EditText) findViewById(R.id.etSubject);
@@ -319,6 +331,8 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ComposeActivity.this, ComposeActivity.class);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
         ComposeActivity.this.startActivity(i);
     }
 

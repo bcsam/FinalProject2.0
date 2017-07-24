@@ -213,7 +213,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("name", name);
             intent.putExtra("number", number);
-            intent.putExtra("id", id);
+            //intent.putExtra("id", id);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             context.startActivity(intent);

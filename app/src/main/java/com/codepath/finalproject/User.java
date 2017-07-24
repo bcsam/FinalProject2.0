@@ -153,6 +153,7 @@ public class User implements Parcelable{
 
     public void setProfileImageUri(Uri profileImage){ this.profileImage = profileImage; }
 
+    //formats numbers +1(555)555-5555
     public String toStringNumber(){
         String newNumber = number;
         if(newNumber.length() > 7)

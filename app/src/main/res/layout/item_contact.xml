@@ -41,9 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvContactName"
             android:layout_toRightOf="@+id/ivProfileImage"
-            android:autoLink="all"
             android:ellipsize="end"
-            android:linksClickable="true"
             android:textSize="12dp"
             tools:text="Number" />
 

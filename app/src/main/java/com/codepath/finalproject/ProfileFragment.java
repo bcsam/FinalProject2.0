@@ -40,7 +40,7 @@ public class ProfileFragment extends Fragment {
 
         User user = getArguments().getParcelable("user");
 
-        long contactIdLong = Long.parseLong(user.getContactId());
+        long contactIdLong = Long.parseLong(user.getContactId()); // TODO: 7/23/17 throws error if contact Id is "" 
 
         Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 

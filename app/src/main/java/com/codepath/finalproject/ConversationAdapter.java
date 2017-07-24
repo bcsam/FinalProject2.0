@@ -3,7 +3,6 @@ package com.codepath.finalproject;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.StrictMode;
@@ -70,7 +69,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         long contactIdLong = Long.parseLong(id);
 
-        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+        Bitmap image = null;
+        //image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
         if (image != null) {
             holder.ivProfileImage.setImageBitmap(null);

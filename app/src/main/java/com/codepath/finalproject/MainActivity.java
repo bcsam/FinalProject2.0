@@ -33,7 +33,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -228,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchComposeActivity(MenuItem item) {
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
         MainActivity.this.startActivity(i);
     }
 
@@ -333,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
                 SMS sms = new SMS(this);
+                // TODO: 7/23/17 cleaning: isn't this a sender?
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
@@ -377,6 +379,8 @@ public class MainActivity extends AppCompatActivity {
                     outgoingList.add(sms);
                 }
 
+                //if the sms is from a new person add it to the list
+                // TODO: 7/23/17 better way to do this?
                 int count = 0;
                 for (SMS text : smsList) {
                      if(!matchNumber(sms, text)){

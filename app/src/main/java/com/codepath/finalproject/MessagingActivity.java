@@ -56,11 +56,15 @@ public class MessagingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
+        initializeViews();
+        setListeners();
         inst = this;
 
         //stores this info to know which messages to bring up
         recipientName = getIntent().getStringExtra("name");
         recipientNumber = getIntent().getStringExtra("number");
+        String message = getIntent().getStringExtra("message");
+        etBody.setText(message);
 
         if (!recipientName.equals("")) {
             getSupportActionBar().setTitle(recipientName);
@@ -69,8 +73,6 @@ public class MessagingActivity extends AppCompatActivity {
         }
 
         Log.i("recipientNumber", recipientNumber);
-        initializeViews();
-        setListeners();
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
         messages = new ArrayList<SMS>();
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
@@ -208,8 +210,15 @@ public class MessagingActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
-
+                    rvText.scrollToPosition(0);
                 }
+            }
+        });
+
+        btSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 7/23/17 send the message
             }
         });
     }
