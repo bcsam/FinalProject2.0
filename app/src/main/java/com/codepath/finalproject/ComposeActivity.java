@@ -45,7 +45,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose2);
+        setContentView(R.layout.activity_compose);
         InitializeViews();
         setListeners();
 
@@ -71,49 +71,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         etBody.setText(getIntent().getStringExtra("message"));
         etNumber.setText(getIntent().getStringExtra("recipient"));
         //unwrapIntent();
-
-
-
-
-
-
-
-        //This is an attempt to make the buttons appear and disappear
-        /*
-        etBody.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //btCheck.setVisibility(View.VISIBLE);
-                //btCheck.setBackgroundColor(Color.parseColor("#D3D3D3")); // TODO: 7/12/17 abstract this
-                if(etBody.getText().toString().trim().length()>0 && etName.getText().toString().trim().length()>0) {
-                    btCheck.setBackgroundColor(Color.parseColor("#267326")); // TODO: 7/12/17 abstract this
-
-                }else if(etBody.getText().toString().trim().length()>0 || etName.getText().toString().trim().length()>0){
-                    btCheck.setBackgroundColor(Color.parseColor("#D3D3D3")); // TODO: 7/12/17 abstract this
-
-                }else{
-                    btCheck.setVisibility(View.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable str) {
-                if(etBody.getText().toString().trim().length()>0 && etName.getText().toString().trim().length()>0) {
-                    btCheck.setBackgroundColor(Color.parseColor("#267326")); // TODO: 7/12/17 abstract this
-
-                }else if(etBody.getText().toString().trim().length()>0 || etName.getText().toString().trim().length()>0){
-                    btCheck.setBackgroundColor(Color.parseColor("#D3D3D3")); // TODO: 7/12/17 abstract this
-
-                }else{
-                    btCheck.setVisibility(View.INVISIBLE);
-                }
-            }
-
-        });*/
     }
 
     public void addContacts(){
@@ -141,40 +98,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         }
     }
 
-  /* class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFrag(Fragment fragment, String activity) {
-            Bundle bundle = new Bundle();
-            bundle.putString("activity", activity);
-            fragment.setArguments(bundle);
-            mFragmentList.add(fragment);
-            //mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
-    }
-
-*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -184,20 +107,20 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     }
 
     private void setListeners() {
-        final boolean messageEntered = !etBody.getText().toString().equals("");
-        final boolean recipientEntered = !etNumber.getText().toString().equals("");
+
 
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    onCheck(); //check for fields filled is in onCheck()
+                onCheck(); //check for fields filled is in onCheck()
             }
         });
 
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                final boolean messageEntered = !etBody.getText().toString().equals("");
+                final boolean recipientEntered = !etNumber.getText().toString().equals("");
                 if(messageEntered && recipientEntered){
                     sendText(view);
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();

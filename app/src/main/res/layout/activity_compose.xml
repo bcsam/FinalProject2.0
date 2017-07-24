@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.finalproject.MainActivity"
-    android:fitsSystemWindows="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <EditText
-        android:id="@+id/etNumber"
+        android:id="@+id/etComp2Number"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -22,80 +21,61 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_editor_absoluteY="16dp" />
 
-    <EditText
-        android:id="@+id/etBody"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvCompose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:autoLink="all"
-        android:background="@android:color/transparent"
         android:gravity="top"
-        android:hint="Enter Message:"
-        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:layout_below="@+id/line1"
+        android:background="@color/veryLightGray"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/btComp2Check"
+        android:layout_below="@+id/etComp2Number" />
 
-    <View
-        android:id="@+id/line1"
+    <Button
+        android:id="@+id/btComp2Check"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/etNumber"/>
+        android:layout_height="wrap_content"
+        android:background="@color/googleGreen"
+        android:text="Check!"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/white"
+        android:layout_above="@+id/relativeLayout2"/>
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="45dp"
-        android:weightSum="2"
-        android:id="@+id/linearLayout2"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="125dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <Button
-            android:id="@+id/btCompCheck"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etComp2Body"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:hint="Enter Message" />
+
+        <ImageView
+            android:id="@+id/btComp2Send"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/darkGreen"
-            android:text="Check!"
-            android:textColor="@color/white"
-            tools:layout_editor_absoluteX="7dp"
-            tools:layout_editor_absoluteY="125dp" />
+            android:layout_alignEnd="@+id/etComp2Body"
+            android:layout_alignRight="@+id/etComp2Body"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            app:srcCompat="@drawable/ic_send_blue"
+            android:onClick="sendText"/>
+            <!--android:background="@color/darkBlue"-->
 
-        <Button
-            android:id="@+id/btCompSend"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/darkBlue"
-            android:onClick="sendText"
-            android:text="Send"
-            android:textColor="@color/white" />
-    </LinearLayout>
 
-    <!--
-    <FrameLayout
-        android:id="@+id/hello"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/etNumber"
-        android:layout_above="@+id/linearLayout2">
-    </FrameLayout>
+    </RelativeLayout>
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/linearLayout2" />-->
+
+
 
 </RelativeLayout>
