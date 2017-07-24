@@ -175,6 +175,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
             int AMPM = calendar.get(Calendar.AM_PM);
             String curTime = String.format("%d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE));
+            if (curTime.charAt(0) == '0') {
+                curTime = String.format("%d:%02d", 12, calendar.get(Calendar.MINUTE));
+            }
 
             if (AMPM == 0) {
                 return curTime + " AM";
