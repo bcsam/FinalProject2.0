@@ -42,12 +42,8 @@ public class ProfileFragment extends Fragment {
 
         User user = getArguments().getParcelable("user");
 
-<<<<<<< HEAD
-        long contactIdLong = Long.parseLong(user.getContactId()); // TODO: 7/23/17 throws error if contact Id is "" 
-=======
         if (!user.getName().equals("Me")) {
             long contactIdLong = Long.parseLong(user.getContactId());
->>>>>>> 9341c1a9cd2dc406b626133462779cb1118821a5
 
             Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));
 
