@@ -33,7 +33,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     int type;
     Uri uri;
     Cursor c;
+    ArrayList<SMS> onQuerySmsList = new ArrayList<>();
 
     TextView tvUserName;
 
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query) { //this works
                 searchView.clearFocus();
 
                 //insert query here
@@ -166,21 +166,23 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                List<SMS> onQuerySmsList = new ArrayList<>();
+                onQuerySmsList.clear();
+                onQuerySmsList.clear();
                 for (SMS text : smsList) {
                     String number = text.getNumber();
                     String body = text.getBody();
                     String contact = text.getContact();
 
+                    //Uri profileImage = text.getPhotoUri();
+
                     if (number.toLowerCase().contains(newText.toLowerCase()) ||
                             body.toLowerCase().contains(newText.toLowerCase()) ||
                             contact.toLowerCase().contains(newText.toLowerCase())) {
-
-                        makeText(getApplicationContext(), newText,
-                                LENGTH_LONG).show();
                         onQuerySmsList.add(text);
                     }
                 }
+
+                rvText.setAdapter(new ListAdapter(MainActivity.this, (ArrayList<com.codepath.finalproject.SMS>) onQuerySmsList, incomingList, outgoingList));
                 return true;
             }
         });
@@ -225,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchComposeActivity(MenuItem item) {
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
         MainActivity.this.startActivity(i);
     }
 
@@ -330,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
                 SMS sms = new SMS(this);
+                // TODO: 7/23/17 cleaning: isn't this a sender?
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
@@ -374,6 +379,8 @@ public class MainActivity extends AppCompatActivity {
                     outgoingList.add(sms);
                 }
 
+                //if the sms is from a new person add it to the list
+                // TODO: 7/23/17 better way to do this?
                 int count = 0;
                 for (SMS text : smsList) {
                      if(!matchNumber(sms, text)){
@@ -406,16 +413,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        Gson gson = new Gson();
-        String iJson = gson.toJson(incomingList);
-        String oJson = gson.toJson(outgoingList);
-        editor.putString("incomingList", iJson);
-        editor.putString("outgoingList", oJson);
-        editor.commit();
-        c.close();
-        super.onDestroy();
-    }
+            @Override
+            protected void onDestroy() {
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                Gson gson = new Gson();
+                String iJson = gson.toJson(incomingList);
+                String oJson = gson.toJson(outgoingList);
+                editor.putString("incomingList", iJson);
+                editor.putString("outgoingList", oJson);
+                editor.commit();
+                c.close();
+                super.onDestroy();
+            }
 }
