@@ -70,7 +70,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         }
         /*long contactIdLong = Long.parseLong(contactId);
         Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+        if (!contactId.equals("")) {
+            long contactIdLong = Long.parseLong(contactId);
+            Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
+            //if (image != null) {
+            //    Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
         if (position %2 == 0 ) {
             holder.ivProfileImage.setImageResource(R.drawable.ic_home_white);
@@ -83,6 +88,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_gray);
         }*/
+
 
             holder.tvBody.setText(body);
             holder.date.setText(date);
@@ -207,7 +213,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("name", name);
             intent.putExtra("number", number);
-            intent.putExtra("id", id);
+            //intent.putExtra("id", id);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             context.startActivity(intent);

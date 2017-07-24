@@ -14,7 +14,7 @@
         android:layout_height="150dp"
         android:layout_weight="1"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_person_white" />
+        app:srcCompat="@drawable/ic_person_gray" />
 
     <TextView
         android:id="@+id/tvName"

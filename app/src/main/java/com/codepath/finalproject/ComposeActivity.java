@@ -5,25 +5,24 @@ package com.codepath.finalproject;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
-;
-;
 
 /**
  * Created by bcsam on 7/13/17.
@@ -31,32 +30,48 @@ import java.util.ArrayList;
 
 public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put past messages in a recycler view
     Button btCheck;
-    Button btSend;
+    ImageView btSend;
     EditText etBody;
     EditText etNumber;
     AnalyzerClient client;
     ArrayList<User> contacts;
     RecyclerView rvCompose;
+    ComposeAdapter composeAdapter;
+    ArrayList<User> postQueryContacts;
+    String query;
+    ArrayList<SMS> incomingList = new ArrayList<>();
+    ArrayList<SMS> outgoingList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose3);
+        setContentView(R.layout.activity_compose2);
+        InitializeViews();
+        setListeners();
+
+        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
+        postQueryContacts = new ArrayList<>();
 
+        // TODO: 7/23/17 figure out how to pass the in-flight message to the messaging activity
+        composeAdapter = new ComposeAdapter(ComposeActivity.this, postQueryContacts, incomingList, outgoingList);
+        rvCompose.setLayoutManager(new LinearLayoutManager(this));
+        rvCompose.setAdapter(composeAdapter);
 
-
+/*
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-        }
+        }*/
 
-        InitializeViews();
+
         etBody.setText(getIntent().getStringExtra("message"));
         etNumber.setText(getIntent().getStringExtra("recipient"));
         //unwrapIntent();
-        setListeners();
+
 
 
 
@@ -106,13 +121,16 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
 
         try {
             Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-
-            while (phones.moveToNext()) {
+            contacts = new ArrayList<>();
+            while (phones.moveToNext()) { // TODO: 7/23/17 change how read in 
                 String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                //sets phone number like +1 555-555-5555
+                String phoneNumber = phones.getString(phones.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                //String phoneNumber = phones.getString(phones.getColumnIndexOrThrow("address")).toString();
                 User newContact = new User();
                 newContact.setName(name);
                 newContact.setNumber(phoneNumber);
+
                 contacts.add(newContact);
                 //Log.e("Contact list with name & numbers", " "+contacts);
             }
@@ -197,13 +215,64 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
             }
         });
 
+        etNumber.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                postQueryContacts.clear();
+                composeAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                query = s.toString();
+                postQueryContacts.clear();
+
+                if(query.equals("")){
+                    postQueryContacts.clear();
+                    composeAdapter.notifyDataSetChanged();
+                }else {
+                    for (User contact : contacts) {
+                        String name = contact.getName();
+                        String number = contact.getNumber();
+                        if (name.toLowerCase().contains(query.toLowerCase()) ||
+                                number.toLowerCase().contains(query.toLowerCase())) {
+                            postQueryContacts.add(contact);
+                            composeAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                query = s.toString();
+                postQueryContacts.clear();
+
+                if(query.equals("")){
+                    postQueryContacts.clear();
+                    composeAdapter.notifyDataSetChanged();
+                }else {
+                    for (User contact : contacts) {
+                        String name = contact.getName();
+                        String number = contact.getNumber();
+                        if (name.toLowerCase().contains(query.toLowerCase()) ||
+                                number.toLowerCase().contains(query.toLowerCase())) {
+                            postQueryContacts.add(contact);
+                            composeAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+        });
     }
 
+
     public void InitializeViews(){
-        btCheck = (Button) findViewById(R.id.btComp3Check);
-        btSend = (Button) findViewById(R.id.btComp3Send);
-        etBody = (EditText) findViewById(R.id.etBody);
-        etNumber = (EditText) findViewById(R.id.etNumber);
+        btCheck = (Button) findViewById(R.id.btComp2Check);
+        btSend = (ImageView) findViewById(R.id.btComp2Send);
+        etBody = (EditText) findViewById(R.id.etComp2Body);
+        etNumber = (EditText) findViewById(R.id.etComp2Number);
 
         //etSubject = (EditText) findViewById(R.id.etSubject);
     }
@@ -263,6 +332,8 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ComposeActivity.this, ComposeActivity.class);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
         ComposeActivity.this.startActivity(i);
     }
 
@@ -291,4 +362,6 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         Intent i = new Intent(ComposeActivity.this, MainActivity.class);
         ComposeActivity.this.startActivity(i);
     }
+
+
 }
