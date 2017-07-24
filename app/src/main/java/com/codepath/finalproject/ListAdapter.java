@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.StrictMode;
@@ -216,7 +217,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             //intent.putExtra("id", id);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
-            context.startActivity(intent);
+            ((Activity) context).startActivityForResult(intent, 1);
         }
     }
 }

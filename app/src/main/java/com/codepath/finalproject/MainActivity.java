@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     Uri uri;
     Cursor c;
     ArrayList<SMS> onQuerySmsList = new ArrayList<>();
+    ListAdapter adapter;
 
     TextView tvUserName;
 
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
-        MainActivity.this.startActivity(i);
+        MainActivity.this.startActivityForResult(i, 1);
     }
 
     protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -399,7 +400,8 @@ public class MainActivity extends AppCompatActivity {
         }
         // Set smsList in the ListAdapter
         rvText.setLayoutManager(new LinearLayoutManager(this));
-        rvText.setAdapter(new ListAdapter(this, smsList, incomingList, outgoingList));
+        adapter = new ListAdapter(this, smsList, incomingList, outgoingList);
+        rvText.setAdapter(adapter);
     }
 
     public void updateInbox(String smsMessageStr) {
@@ -415,16 +417,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-            @Override
-            protected void onDestroy() {
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                Gson gson = new Gson();
-                String iJson = gson.toJson(incomingList);
-                String oJson = gson.toJson(outgoingList);
-                editor.putString("incomingList", iJson);
-                editor.putString("outgoingList", oJson);
-                editor.commit();
-                c.close();
-                super.onDestroy();
-            }
+    @Override
+    protected void onDestroy() {
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+        String iJson = gson.toJson(incomingList);
+        String oJson = gson.toJson(outgoingList);
+        editor.putString("incomingList", iJson);
+        editor.putString("outgoingList", oJson);
+        editor.commit();
+        c.close();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.i("Main", "onActivityResult");
+        //outgoingList = data.getParcelableArrayListExtra("outgoingList");
+        text();
+        adapter.notifyDataSetChanged();
+        rvText.scrollToPosition(0);
+    }
 }
