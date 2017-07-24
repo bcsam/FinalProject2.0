@@ -365,6 +365,7 @@ public class MainActivity extends AppCompatActivity {
                 sms.setDate(date);
                 sms.setRead(read);
                 sms.setContactId(id);
+                id = "";
 
                 sms.setType(type);
                 if(sms.getType() == 1) {
