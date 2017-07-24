@@ -1,11 +1,15 @@
 package com.codepath.finalproject;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -15,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -67,16 +73,18 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.date.setText(date);
 
 
-        long contactIdLong = Long.parseLong(id);
+        if (!name.equals("Me")) {
+            long contactIdLong = Long.parseLong(id);
 
         Bitmap image = null;
         //image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
-        if (image != null) {
-            holder.ivProfileImage.setImageBitmap(null);
-            holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-        } else {
-            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+            if (image != null) {
+                holder.ivProfileImage.setImageBitmap(null);
+                holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+            } else {
+                holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+            }
         }
 
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +176,27 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         } else {
             return dateMonth;
         }
+    }
+
+    public InputStream openPhoto(long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return new ByteArrayInputStream(data);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

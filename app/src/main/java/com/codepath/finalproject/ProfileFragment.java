@@ -1,6 +1,7 @@
 package com.codepath.finalproject;
 
 import android.content.ContentUris;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -40,16 +42,23 @@ public class ProfileFragment extends Fragment {
 
         User user = getArguments().getParcelable("user");
 
+<<<<<<< HEAD
         long contactIdLong = Long.parseLong(user.getContactId()); // TODO: 7/23/17 throws error if contact Id is "" 
+=======
+        if (!user.getName().equals("Me")) {
+            long contactIdLong = Long.parseLong(user.getContactId());
+>>>>>>> 9341c1a9cd2dc406b626133462779cb1118821a5
 
-        Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
+            Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));
 
-        if (image != null) {
-            ivProfileImage.setImageBitmap(null);
-            ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-        } else {
-            ivProfileImage.setImageResource(R.drawable.ic_person_white);
+            if (image != null) {
+                ivProfileImage.setImageBitmap(null);
+                ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 150, 150, false));
+            } else {
+                ivProfileImage.setImageResource(R.drawable.ic_person_gray);
+            }
         }
+
 
         tvName.setText(user.getName());
         tvNumber.setText(user.toStringNumber());
@@ -75,6 +84,18 @@ public class ProfileFragment extends Fragment {
             cursor.close();
         }
         return null;
+    }
+
+    public InputStream openDisplayPhoto(long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri displayPhotoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.DISPLAY_PHOTO);
+        try {
+            AssetFileDescriptor fd =
+                    getActivity().getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
+            return fd.createInputStream();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Override

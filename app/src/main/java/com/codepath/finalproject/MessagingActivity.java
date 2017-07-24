@@ -52,6 +52,12 @@ public class MessagingActivity extends AppCompatActivity {
     RecyclerView rvText;
     List<SMS> postQuerySmsList = new ArrayList<SMS>();
 
+    String recipientId;
+
+    String myId;
+    String myNumber;
+    String id;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +78,33 @@ public class MessagingActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(recipientNumber);
         }
 
-        Log.i("recipientNumber", recipientNumber);
+        initializeViews();
+        setListeners();
+
+        TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+        myNumber = tMgr.getLine1Number();
+
+        /*ContentResolver contentResolver = this.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(myNumber));
+
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        Cursor cursor =
+                contentResolver.query(
+                        uri,
+                        projection,
+                        null,
+                        null,
+                        null);
+
+        if(cursor != null) {
+            while(cursor.moveToNext()){
+                myId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            }
+            cursor.close();
+        }*/
+
         rvText = (RecyclerView) findViewById(R.id.rvMessaging);
         messages = new ArrayList<SMS>();
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
@@ -226,21 +258,24 @@ public class MessagingActivity extends AppCompatActivity {
     public void getMessages() {
         ContentValues contentValues = new ContentValues();
 
-        if (recipientNumber.length() == 12) {
-           /* differentNumber(recipientNumber);
+        /*if (recipientNumber.length() == 12) {
+            differentNumber(recipientNumber);
             differentNumber(recipientNumber.substring(1, 12));
-            differentNumber(recipientNumber.substring(2, 12));*/
+            differentNumber(recipientNumber.substring(2, 12));
         }
         else if (recipientNumber.length() == 11) {
-            /*differentNumber(recipientNumber);
+            differentNumber(recipientNumber);
             differentNumber(recipientNumber.substring(1, 11));
-            differentNumber("+" + recipientNumber);*/
+            differentNumber("+" + recipientNumber);
         }
         else if (recipientNumber.length() == 10) {
-            /*differentNumber(recipientNumber);
+            differentNumber(recipientNumber);
             differentNumber("1" + recipientNumber);
-            differentNumber("+1" + recipientNumber);*/
+            differentNumber("+1" + recipientNumber);
         }
+        else {
+            differentNumber(recipientNumber);
+        }*/
 
         for(SMS s: incomingList){
             if(s.getNumber().equals(recipientNumber))
