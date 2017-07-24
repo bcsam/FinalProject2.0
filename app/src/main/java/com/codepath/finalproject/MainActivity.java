@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
         // Read the sms data and store it in the list
         if (c.moveToFirst()) {
             for (int i = 0; i < c.getCount(); i++) {
-                SMS sms = new SMS(this);
+                SMS sms = new SMS();
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
@@ -352,11 +352,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if(cursor != null) {
                     while(cursor.moveToNext()){
-                        id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                        if(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID))!= null)
+                            id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
                     }
                     cursor.close();
                 }
-
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);

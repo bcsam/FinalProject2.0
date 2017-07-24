@@ -2,8 +2,6 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -70,9 +68,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.tvUserName.setText(number);
         }
-
-        long contactIdLong = Long.parseLong(contactId);
-        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+        //long contactIdLong = Long.parseLong(contactId);
+        //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
         //if (image != null) {
         //    Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
@@ -83,12 +80,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }*/
-        if (image != null) {
+        /*if (image != null) {
             holder.ivProfileImage.setImageBitmap(null);
             holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }
+        }*/
 
             holder.tvBody.setText(body);
             holder.date.setText(date);
