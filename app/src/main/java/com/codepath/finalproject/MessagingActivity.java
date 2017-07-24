@@ -250,7 +250,7 @@ public class MessagingActivity extends AppCompatActivity {
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 7/23/17 send the message
+                sendText(v);
             }
         });
     }
