@@ -2,13 +2,9 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +23,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     // List context
     Context context;
-    AnalyzerClient client;
     // List values
     List<SMS> smsList;
     View rowView;
@@ -37,7 +32,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         smsList = mSmsList;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        client = new AnalyzerClient();
     }
 
 
@@ -55,6 +49,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Drawable drawable = holder.tvBody.getBackground();
+        AnalyzerClient client = new AnalyzerClient(context, drawable);
         SMS[] params = new SMS[1];
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
@@ -62,13 +58,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
-        client.doInBackground(params);
+        client.execute(params);
         holder.tvBody.setText(body);
-        holder.tvBody.getBackground().setColorFilter(Color.parseColor(smsList.get(position).getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.date.setText(date);
 
 
-        long contactIdLong = Long.parseLong(id);
+        /*long contactIdLong = Long.parseLong(id);
 
         Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
@@ -77,7 +72,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }
+        }*/
 
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,12 +96,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public int getItemViewType(int position) {
-        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        String myNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        if(smsList.get(position).getNumber().equals(myNumber)) {
-            if (smsList.get(position).getType() == 2) {
-                return 0;
-            }
+        if (smsList.get(position).getType() == 2) {
+            return 0;
         }
         return 1;
     }

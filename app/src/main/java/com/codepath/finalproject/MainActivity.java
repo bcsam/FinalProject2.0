@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         Gson gson = new Gson();
         String json = sharedPrefs.getString("incomingList", null);
         Type type = new TypeToken<ArrayList<SMS>>() {}.getType();
@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
-                Cursor cursor =
+                /*Cursor cursor =
                         contentResolver.query(
                                 uri,
                                 projection,
@@ -352,11 +352,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if(cursor != null) {
                     while(cursor.moveToNext()){
-                        if(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID))!= null)
-                            id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                        id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                        Log.i("in cursor", id);
                     }
+                    Log.i("out cursor", id);
                     cursor.close();
-                }
+                }*/
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);

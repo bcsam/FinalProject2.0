@@ -68,19 +68,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.tvUserName.setText(number);
         }
-        //long contactIdLong = Long.parseLong(contactId);
-        //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+        /*long contactIdLong = Long.parseLong(contactId);
+        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
-        //if (image != null) {
-        //    Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
-        /*
         if (position %2 == 0 ) {
             holder.ivProfileImage.setImageResource(R.drawable.ic_home_white);
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }*/
-        /*if (image != null) {
+        }
+        if (image != null) {
             holder.ivProfileImage.setImageBitmap(null);
             holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
         } else {
