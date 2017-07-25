@@ -39,14 +39,23 @@ public class StylesFragment extends Fragment{
         pbAnalytical = (ProgressBar) v.findViewById(R.id.pbAnalytical);
         pbConfident = (ProgressBar) v.findViewById(R.id.pbConfident);
         pbTentative = (ProgressBar) v.findViewById(R.id.pbTentative);
+        pbAnalytical.setMax(100);
+        pbConfident.setMax(100);
+        pbTentative.setMax(100);
         String activity = getArguments().getString("activity");
         if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
             sms = getArguments().getParcelable("sms");
+            pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
+            pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
+            pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
             setTexts();
             setProgressBars();
         }
         else if(activity.equals("ProfileActivity")){
             user = getArguments().getParcelable("user");
+            pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
+            pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
+            pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
             setProfileTexts();
             setProfileProgressBars();
         }
@@ -65,15 +74,9 @@ public class StylesFragment extends Fragment{
     }
 
     public void setProgressBars(){
-        pbAnalytical.setMax(100);
         pbAnalytical.setProgress(sms.getStyleLevel(0));
-        pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
-        pbConfident.setMax(100);
         pbConfident.setProgress(sms.getStyleLevel(1));
-        pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
-        pbTentative.setMax(100);
         pbTentative.setProgress(sms.getStyleLevel(2));
-        pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
     }
 
     public void setProfileTexts() {
@@ -83,15 +86,9 @@ public class StylesFragment extends Fragment{
     }
 
     public void setProfileProgressBars(){
-        pbAnalytical.setMax(100);
         pbAnalytical.setProgress(user.getAverageStyleLevels(0));
-        pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
-        pbConfident.setMax(100);
         pbConfident.setProgress(user.getAverageStyleLevels(1));
-        pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
-        pbTentative.setMax(100);
         pbTentative.setProgress(user.getAverageStyleLevels(2));
-        pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
     }
 
 }

@@ -67,7 +67,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
-        //client.execute(params);
+        client.execute(params);
         holder.tvBody.setText(body);
         holder.date.setText(date);
 
