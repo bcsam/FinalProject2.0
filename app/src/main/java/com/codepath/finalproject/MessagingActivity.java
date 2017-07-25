@@ -175,6 +175,7 @@ public class MessagingActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                //rvText.scrollToPosition(0); //this scrolls and then opens the soft input
                 return true;
             }
 
@@ -184,8 +185,18 @@ public class MessagingActivity extends AppCompatActivity {
                 return true;
             }
         });
-        return super.onCreateOptionsMenu(menu);
 
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    rvText.scrollToPosition(0);
+                }
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void launchComposeActivity(MenuItem item) {
@@ -218,6 +229,7 @@ public class MessagingActivity extends AppCompatActivity {
         btSend = (ImageView) findViewById(R.id.btSend);
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
+
     }
 
     public void setListeners() {

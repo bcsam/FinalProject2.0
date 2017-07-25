@@ -145,7 +145,6 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
                     etBody.setText("");
                     etNumber.setText("");
-                    // TODO: 7/25/17 update list displayed and notify adapter
 
                 }else if(!isValidInput()){
                     Toast.makeText(getApplicationContext(), "Invalid number",
@@ -209,6 +208,15 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                             composeAdapter.notifyDataSetChanged();
                         }
                     }
+                }
+            }
+        });
+
+        etBody.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    rvCompose.scrollToPosition(0);
                 }
             }
         });
@@ -283,7 +291,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                         validRecipient = false;
                     }
                 }
-
+                //this is for if you exactly type a contact name
             }else{
                 validRecipient = false;
                 for(User contact : contacts){
