@@ -25,8 +25,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -263,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.startActivityForResult(i, 1);
     }
 
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+   /* protected void onListItemClick(ListView l, View v, int position, long id) {
        // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
@@ -275,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
         //want to send to MessageActivity
         //want to send name and number of whose text you clicked in intent
-    }
+    }*/
 
     public void getPermissionToRead() {
         Log.i("sharedPreferences", "getPermissionToRead");
@@ -467,5 +465,9 @@ public class MainActivity extends AppCompatActivity {
         text();
         adapter.notifyDataSetChanged();
         rvText.scrollToPosition(0);
+    }
+
+    interface DataTransfer{
+        public void setValues(ArrayList<SMS> smsList, String contactName, String contactNumber);
     }
 }

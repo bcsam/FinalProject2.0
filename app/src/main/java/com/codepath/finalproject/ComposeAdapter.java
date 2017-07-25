@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,10 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
     String message;
+    MainActivity.DataTransfer dtTransfer;
 
-    public ComposeAdapter(Context mContext, List<User> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList) {
+    public ComposeAdapter(Context mContext, List<User> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList, MainActivity.DataTransfer dtTransfer) {
+        this.dtTransfer = dtTransfer;
         context = mContext;
         contactList = mContactList;
         incomingList = mIncomingList;
@@ -86,13 +89,29 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
             String number = contactList.get(position).getNumber();
             number = number.replaceAll("-", "");
             number = number.replaceAll(" ", "");
-            //String id = contactList.get(position).getContactId();
-            intent.putExtra("name", name);
-            intent.putExtra("number", number);
-            //intent.putExtra("id", id);
-            intent.putParcelableArrayListExtra("incomingList", incomingList);
-            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
-            context.startActivity(intent);
+            ArrayList<SMS> messages = new ArrayList<>();
+
+
+            for(SMS s: incomingList){
+                if(s.getNumber().equals(number))
+                    messages.add(s);
+            }
+            for(SMS s: outgoingList){
+                if(s.getNumber().equals(number)) {
+                    int index = 0;
+                    Log.i("MessagingActivity body", s.getBody());
+                    for (SMS m : messages) {
+                        if (Double.parseDouble(m.getDate()) < Double.parseDouble(s.getDate())) {
+                            Log.i("MessagingActivity index", String.valueOf(index));
+                            index = messages.indexOf(m);
+                            break;
+                        }
+                    }
+                    messages.add(index, s);
+                }
+            }
+
+            dtTransfer.setValues(messages, name, number);
 
         }
     }

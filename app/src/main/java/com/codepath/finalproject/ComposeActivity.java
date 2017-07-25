@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put past messages in a recycler view
+public class ComposeActivity extends AppCompatActivity implements MainActivity.DataTransfer{
     Button btCheck;
     ImageView btSend;
     EditText etBody;
@@ -41,6 +41,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     String query;
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
+    String recipientNumber; //// TODO: 7/24/17 put person's name in the space but send to their number
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
         postQueryContacts = new ArrayList<>();
 
         // TODO: 7/23/17 figure out how to pass the in-flight message to the messaging activity
-        composeAdapter = new ComposeAdapter(ComposeActivity.this, postQueryContacts, incomingList, outgoingList);
+        composeAdapter = new ComposeAdapter(ComposeActivity.this, postQueryContacts, incomingList, outgoingList, this);
         rvCompose.setLayoutManager(new LinearLayoutManager(this));
         rvCompose.setAdapter(composeAdapter);
 
@@ -247,7 +248,27 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
 
     public void sendText(View view){
         SMS text = new SMS();
-        text.setNumber(etNumber.getText().toString());
+        boolean validRecipient = true;
+        if(recipientNumber == null){
+            String inputNumber = etNumber.getText().toString();
+            String phoneNumberChars = "1234567890-()";
+            
+            //checks if the input is a valid phone number
+            for(int i=0; i<inputNumber.length(); i++){
+                if(!phoneNumberChars.contains(Character.toString(inputNumber.charAt(i)))){
+                    Toast.makeText(getApplicationContext(), "Invalid Recipient",
+                            Toast.LENGTH_LONG).show();
+                    validRecipient = false;
+                }
+            }
+
+            // TODO: 7/24/17 checks if input is the name of a contact 
+        }
+        //determine if the input is a phone number as opposed to
+
+
+
+        text.setNumber(recipientNumber);
         text.setBody(etBody.getText().toString());
         text.sendSMS();
     }
@@ -287,4 +308,11 @@ public class ComposeActivity extends AppCompatActivity { // TODO: 7/17/17 put pa
     }
 
 
+    @Override
+    public void setValues(ArrayList<SMS> smsList, String contactName, String contactNumber) {
+        ConversationAdapter conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList);
+        etNumber.setText(contactName);
+        recipientNumber = contactNumber;
+        rvCompose.setAdapter(conversationAdapter);
+    }
 }
