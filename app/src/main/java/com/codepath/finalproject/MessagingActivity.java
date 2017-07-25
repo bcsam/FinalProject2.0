@@ -17,9 +17,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
 //****textBody will be created in message detail
 public class MessagingActivity extends AppCompatActivity {
 
-    Button btSend;
+    ImageView btSend;
     Button btCheck;
     EditText etBody;
     ArrayList<SMS> messages;
@@ -215,7 +215,7 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void initializeViews() {
-        btSend = (Button) findViewById(R.id.btSend);
+        btSend = (ImageView) findViewById(R.id.btSend);
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
     }
@@ -359,8 +359,9 @@ public class MessagingActivity extends AppCompatActivity {
         text.setType(2);
         etBody.clearFocus();
         etBody.setText("");
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        //this would hide the keyboard
+        //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         text.sendSMS();
         messages.add(0, text);
         adapter.notifyItemInserted(0);

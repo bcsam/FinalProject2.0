@@ -42,6 +42,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
     String recipientNumber; //// TODO: 7/24/17 put person's name in the space but send to their number
+    ConversationAdapter conversationAdapter;
+    ArrayList<SMS> smsList;
 
 
     @Override
@@ -58,7 +60,6 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         addContacts(); //populates contacts
         postQueryContacts = new ArrayList<>();
 
-        // TODO: 7/23/17 figure out how to pass the in-flight message to the messaging activity
         composeAdapter = new ComposeAdapter(ComposeActivity.this, postQueryContacts, incomingList, outgoingList, this);
         rvCompose.setLayoutManager(new LinearLayoutManager(this));
         rvCompose.setAdapter(composeAdapter);
@@ -125,10 +126,26 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 final boolean recipientEntered = !etNumber.getText().toString().equals("");
                 if(messageEntered && recipientEntered && isValidInput()) {
 
-                    sendText(view);
-                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
+                    //sends the text
+                    SMS text = new SMS();
+                    text.setNumber(recipientNumber);
+                    text.setBody(etBody.getText().toString());
+                    text.setDate(String.valueOf(System.currentTimeMillis()));
+                    text.setType(2);
+                    //this would hide the keyboard
+                    //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    //inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    text.sendSMS();
+                    outgoingList.add(0, text); //why is it add(0, text)?
+                    smsList.add(0, text);
+                    conversationAdapter.notifyDataSetChanged();
+                    rvCompose.scrollToPosition(0);
+
+                    //toasts and resets
+                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
                     etBody.setText("");
                     etNumber.setText("");
+                    // TODO: 7/25/17 update list displayed and notify adapter
 
                 }else if(!isValidInput()){
                     Toast.makeText(getApplicationContext(), "Invalid number",
@@ -252,15 +269,6 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         }
     }
 
-    public void sendText(View view){
-        SMS text = new SMS();
-        text.setNumber(recipientNumber);
-        text.setBody(etBody.getText().toString());
-        text.sendSMS();
-        outgoingList.add(text);
-
-    }
-
     public boolean isValidInput(){
         boolean validRecipient = true;
         if(recipientNumber == null) {
@@ -328,9 +336,14 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     @Override
     public void setValues(ArrayList<SMS> smsList, String contactName, String contactNumber) {
         this.smsList = smsList;
-        ConversationAdapter conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvCompose.setLayoutManager(layoutManager);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList);
         etNumber.setText(contactName);
         recipientNumber = contactNumber;
         rvCompose.setAdapter(conversationAdapter);
+        rvCompose.scrollToPosition(0);
     }
 }
