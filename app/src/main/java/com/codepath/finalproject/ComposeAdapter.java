@@ -1,15 +1,31 @@
 package com.codepath.finalproject;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +67,91 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         /*if(number.length() > 7)
             number = number.substring(0,2) + " (" + number.substring(3,6) + ") " + number.substring(7);*/
 
+        String id = "";
+
+        ContentResolver contentResolver = context.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        Cursor cursor =
+                contentResolver.query(
+                        uri,
+                        projection,
+                        null,
+                        null,
+                        null);
+
+        if(cursor != null) {
+            while(cursor.moveToNext()){
+                id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            }
+            cursor.close();
+        }
+
+
         holder.tvContactNumber.setText(number);
         holder.tvContactName.setText(contact.getName());
+
+
+        if (!id.equals("")) {
+            Toast.makeText(context, id, Toast.LENGTH_LONG).show();
+            long contactIdLong = Long.parseLong(id);
+            Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
+
+            if (image != null) {
+                holder.profileImage.setImageBitmap(null);
+                holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+            } else if (!contact.getName().equals("")) {
+                //holder.textCircle.setVisibility(View.VISIBLE);
+                holder.profileImage.setVisibility(View.INVISIBLE);
+                //holder.textCircle.setText("" + name.charAt(0));
+            }
+        }
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
+    }
+
+    public InputStream openPhoto(long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return new ByteArrayInputStream(data);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
     }
 
     @Override
@@ -63,6 +162,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
     public class ViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvContactName;
         TextView tvContactNumber;
+        ImageView profileImage;
         EditText etBody;
 
         public ViewHolder(View itemView){
@@ -70,6 +170,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
 
             tvContactName = (TextView) itemView.findViewById(R.id.tvContactName);
             tvContactNumber = (TextView) itemView.findViewById(R.id.tvContactNumber);
+            profileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             itemView.setOnClickListener(this);
             context = itemView.getContext();
         }
