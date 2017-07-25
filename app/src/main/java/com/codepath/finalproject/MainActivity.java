@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,8 +25,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,6 +87,34 @@ public class MainActivity extends AppCompatActivity {
         else
             Log.i("sharedPreferences", String.valueOf(smsList.size()));
         ins = this;
+
+        int random = (int) Math.floor(Math.random() * 5);
+        int color;
+
+        switch (random) {
+            case 0:  color = ContextCompat.getColor(this, R.color.newRed);
+                break;
+            case 1:  color = ContextCompat.getColor(this, R.color.newYellow);
+                break;
+            case 2:  color = ContextCompat.getColor(this, R.color.newPurple);
+                break;
+            case 3:  color = ContextCompat.getColor(this, R.color.newGreen);
+                break;
+            case 4:  color = ContextCompat.getColor(this, R.color.newBlue);
+                break;
+            default: color = ContextCompat.getColor(this, R.color.darkRed);
+                break;
+        }
+
+        color = ContextCompat.getColor(this, R.color.colorPrimary);
+
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+
+        getSupportActionBar().setBackgroundDrawable(
+                new ColorDrawable(Color.parseColor(hexColor)));
+
+        getSupportActionBar().setTitle("ToneTeller");
+
 
 
         //if statement for requesting info
@@ -233,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.startActivityForResult(i, 1);
     }
 
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+   /* protected void onListItemClick(ListView l, View v, int position, long id) {
        // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
@@ -245,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
         //want to send to MessageActivity
         //want to send name and number of whose text you clicked in intent
-    }
+    }*/
 
     public void getPermissionToRead() {
         Log.i("sharedPreferences", "getPermissionToRead");
@@ -348,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
-                /*Cursor cursor =
+                Cursor cursor =
                         contentResolver.query(
                                 uri,
                                 projection,
@@ -363,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     Log.i("out cursor", id);
                     cursor.close();
-                }*/
+                }
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);
@@ -437,5 +465,9 @@ public class MainActivity extends AppCompatActivity {
         text();
         adapter.notifyDataSetChanged();
         rvText.scrollToPosition(0);
+    }
+
+    interface DataTransfer{
+        public void setValues(ArrayList<SMS> smsList, String contactName, String contactNumber);
     }
 }

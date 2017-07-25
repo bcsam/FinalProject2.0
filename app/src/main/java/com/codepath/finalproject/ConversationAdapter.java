@@ -33,11 +33,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     List<SMS> smsList;
     View rowView;
 
+
     public ConversationAdapter(Context mContext, List<SMS> mSmsList) {
+
         context = mContext;
         smsList = mSmsList;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
     }
 
 

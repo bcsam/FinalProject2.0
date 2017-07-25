@@ -3,6 +3,13 @@ package com.codepath.finalproject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -69,27 +76,24 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         } else {
             holder.tvUserName.setText(number);
         }
-        /*long contactIdLong = Long.parseLong(contactId);
-        Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+
+        //long contactIdLong = Long.parseLong(contactId);
+        //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+
         if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
-            //if (image != null) {
-            //    Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
-
-        if (position %2 == 0 ) {
-            holder.ivProfileImage.setImageResource(R.drawable.ic_home_white);
-        } else {
-            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+            if (image != null) {
+                holder.ivProfileImage.setImageBitmap(null);
+                //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+            } else if (!name.equals("")) {
+                holder.textCircle.setVisibility(View.VISIBLE);
+                holder.ivProfileImage.setVisibility(View.INVISIBLE);
+                holder.textCircle.setText("" + name.charAt(0));
+            }
         }
-        if (image != null) {
-            holder.ivProfileImage.setImageBitmap(null);
-            holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-        } else {
-            holder.ivProfileImage.setImageResource(R.drawable.ic_person_gray);
-        }*/
-
 
             holder.tvBody.setText(body);
             holder.date.setText(date);
@@ -116,7 +120,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     return true;
                 }
             });
-        }
+    }
 
 
     public int getItemCount() {
@@ -169,6 +173,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
             int AMPM = calendar.get(Calendar.AM_PM);
             String curTime = String.format("%d:%02d", calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE));
+            if (curTime.charAt(0) == '0') {
+                curTime = String.format("%d:%02d", 12, calendar.get(Calendar.MINUTE));
+            }
 
             if (AMPM == 0) {
                 return curTime + " AM";
@@ -181,6 +188,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         }
     }
 
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvUserName;
         public TextView tvBody;
@@ -188,6 +217,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         public TextView date;
         public ImageView ivProfileImage;
         public ImageView ivRead;
+        public TextView textCircle;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -198,6 +228,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             ivRead = (ImageView) itemView.findViewById(R.id.Read);
+            textCircle = (TextView)  itemView.findViewById(R.id.circleText);
 
             itemView.setOnClickListener(this);
             context = itemView.getContext();

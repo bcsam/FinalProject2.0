@@ -25,7 +25,7 @@ public class SMS implements Parcelable {
     private String contact;
     private String date;
     private String read;
-    private int type;
+    private int type; //1: incoming, 2: outgoing
     private int id;
     private int[] toneLevels;
     private int[] styleLevels;
