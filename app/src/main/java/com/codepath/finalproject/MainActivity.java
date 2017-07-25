@@ -387,9 +387,7 @@ public class MainActivity extends AppCompatActivity {
                 if(cursor != null) {
                     while(cursor.moveToNext()){
                         id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-                        Log.i("in cursor", id);
                     }
-                    Log.i("out cursor", id);
                     cursor.close();
                 }
                 recipientName = getContactName(recipientNumber, this);

@@ -20,6 +20,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
@@ -42,6 +44,8 @@ public class ProfileActivity extends AppCompatActivity {
         //sets up the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        ProgressBar pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
+        pbLoading.setVisibility(View.VISIBLE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -237,7 +241,8 @@ public class ProfileActivity extends AppCompatActivity {
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
+                    ProgressBar pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
+                    pbLoading.setVisibility(View.GONE);
                     ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
                     // Set the ViewPagerAdapter into ViewPager
