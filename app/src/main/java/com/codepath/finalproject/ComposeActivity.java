@@ -43,6 +43,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     ArrayList<SMS> outgoingList = new ArrayList<>();
     String recipientNumber; //// TODO: 7/24/17 put person's name in the space but send to their number
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,11 +123,16 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             public void onClick(View view) {
                 final boolean messageEntered = !etBody.getText().toString().equals("");
                 final boolean recipientEntered = !etNumber.getText().toString().equals("");
-                if(messageEntered && recipientEntered){
+                if(messageEntered && recipientEntered && isValidInput()) {
+
                     sendText(view);
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
                     etBody.setText("");
                     etNumber.setText("");
+
+                }else if(!isValidInput()){
+                    Toast.makeText(getApplicationContext(), "Invalid number",
+                            Toast.LENGTH_LONG).show();
 
                 }else if(etNumber.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "Please enter a recipient!",
@@ -248,29 +254,40 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
     public void sendText(View view){
         SMS text = new SMS();
-        boolean validRecipient = true;
-        if(recipientNumber == null){
-            String inputNumber = etNumber.getText().toString();
-            String phoneNumberChars = "1234567890-()";
-            
-            //checks if the input is a valid phone number
-            for(int i=0; i<inputNumber.length(); i++){
-                if(!phoneNumberChars.contains(Character.toString(inputNumber.charAt(i)))){
-                    Toast.makeText(getApplicationContext(), "Invalid Recipient",
-                            Toast.LENGTH_LONG).show();
-                    validRecipient = false;
-                }
-            }
-
-            // TODO: 7/24/17 checks if input is the name of a contact 
-        }
-        //determine if the input is a phone number as opposed to
-
-
-
         text.setNumber(recipientNumber);
         text.setBody(etBody.getText().toString());
         text.sendSMS();
+        outgoingList.add(text);
+
+    }
+
+    public boolean isValidInput(){
+        boolean validRecipient = true;
+        if(recipientNumber == null) {
+            String inputNumber = etNumber.getText().toString();
+            String phoneNumberChars = "1234567890-()";
+
+            //if for if it looks like a phone number
+            if (phoneNumberChars.contains(inputNumber.substring(0, 1))){
+                //checks if the input is a valid phone number
+                for (int i = 0; i < inputNumber.length(); i++) {
+                    if (!phoneNumberChars.contains(Character.toString(inputNumber.charAt(i)))) {
+                        validRecipient = false;
+                    }
+                }
+
+            }else{
+                validRecipient = false;
+                for(User contact : contacts){
+                    if(contact.getNumber().equals(inputNumber)){
+                        validRecipient = true;
+                        break;
+                    }
+                }
+
+            }
+        }
+        return validRecipient;
     }
 
     public void launchComposeActivity(MenuItem item) {
@@ -310,6 +327,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
     @Override
     public void setValues(ArrayList<SMS> smsList, String contactName, String contactNumber) {
+        this.smsList = smsList;
         ConversationAdapter conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList);
         etNumber.setText(contactName);
         recipientNumber = contactNumber;

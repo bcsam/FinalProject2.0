@@ -42,7 +42,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
     String message;
     MainActivity.DataTransfer dtTransfer;
 
-    public ComposeAdapter(Context mContext, List<User> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList, MainActivity.DataTransfer dtTransfer) {
+    public ComposeAdapter(Context mContext, ArrayList<User> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList, MainActivity.DataTransfer dtTransfer) {
         this.dtTransfer = dtTransfer;
         context = mContext;
         contactList = mContactList;
