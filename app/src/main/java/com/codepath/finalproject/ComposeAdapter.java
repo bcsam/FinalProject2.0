@@ -103,6 +103,8 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         holder.tvContactNumber.setText(number);
         holder.tvContactName.setText(contact.getName());
 
+        holder.profileImage.setImageResource(R.drawable.ic_person_gray);
+
 
 
         if (!id.equals("")) {
@@ -111,12 +113,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
             contactIdLong = 0;
 
-            //Toast.makeText(context, id, Toast.LENGTH_LONG).show();
-            long contactIdLong = Long.parseLong(id);
-            Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
-
             if (image != null) {
-                //holder.profileImage.setImageResource(R.drawable.ic_send_blue);
                 holder.profileImage.setImageBitmap(null);
                 holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
                 image = null;
