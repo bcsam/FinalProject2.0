@@ -129,7 +129,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
                     //sends the text
                     SMS text = new SMS();
-                    text.setNumber(recipientNumber);
+                    text.setNumber("+"+recipientNumber);
                     text.setBody(etBody.getText().toString());
                     text.setDate(String.valueOf(System.currentTimeMillis()));
                     text.setType(2);
@@ -294,7 +294,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     }
                 }
                 //this is for if you exactly type a contact name
-            } else {
+            /*} else {
                 validRecipient = false;
                 for (User contact : contacts) {
                     if (contact.getNumber().equals(inputNumber)) {
@@ -303,6 +303,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     }
                 }
 
+            }*/
             }
         }
         return validRecipient;
