@@ -11,7 +11,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,16 +64,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-        String read = smsList.get(position).getRead();
-        Log.i("read adapter", read);
-
-        if (read.equals("1"))
-            holder.ivRead.setVisibility(View.GONE);
-        if (!name.equals("")) {
-            holder.tvUserName.setText(name);
-        } else {
-            holder.tvUserName.setText(number);
-        }
 
         //long contactIdLong = Long.parseLong(contactId);
         //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
