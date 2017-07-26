@@ -39,6 +39,9 @@ import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //sets up the activity
@@ -51,6 +54,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         User user = getIntent().getParcelableExtra("user");
         String id = getIntent().getStringExtra("id");
+        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         ViewPager viewPagerTop = (ViewPager) findViewById(R.id.upper_pager);
 
         // Set the ViewPagerAdapter into ViewPager
@@ -93,6 +98,8 @@ public class ProfileActivity extends AppCompatActivity {
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ProfileActivity.this, ComposeActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ProfileActivity.this.startActivity(i);
     }
 
@@ -132,11 +139,15 @@ public class ProfileActivity extends AppCompatActivity {
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ProfileActivity.this.startActivity(i);
     }
 
     public void launchMainActivity(MenuItem item){
         Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ProfileActivity.this.startActivity(i);
     }
 

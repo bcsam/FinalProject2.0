@@ -163,8 +163,10 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void launchComposeActivity(MenuItem item) {
-        //launches the compose activit
+        //launches the compose activity
         Intent i = new Intent(PostCheckActivity.this, ComposeActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         PostCheckActivity.this.startActivity(i);
     }
 

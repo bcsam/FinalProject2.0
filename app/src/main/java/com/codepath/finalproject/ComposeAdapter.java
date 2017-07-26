@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -99,7 +98,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
 
 
         if (!id.equals("")) {
-            Toast.makeText(context, id, Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, id, Toast.LENGTH_LONG).show();
             long contactIdLong = Long.parseLong(id);
             Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 

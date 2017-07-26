@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,11 +31,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     // List context
     Context context;
     // List values
-    List<SMS> smsList;
+    ArrayList<SMS> smsList;
     View rowView;
 
+    ArrayList<SMS> incomingList = new ArrayList<>();
+    ArrayList<SMS> outgoingList = new ArrayList<>();
 
-    public ConversationAdapter(Context mContext, List<SMS> mSmsList) {
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, List<SMS> outgoingList) {
 
         context = mContext;
         smsList = mSmsList;
@@ -222,6 +225,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             context = itemView.getContext();
             int position = getAdapterPosition();
             Intent intent = new Intent(context, MessageDetailActivity.class);
+            intent.putParcelableArrayListExtra("incomingList", incomingList);
+            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             intent.putExtra("sms", smsList.get(position));
             context.startActivity(intent);
         }
