@@ -38,22 +38,26 @@
         <EditText
             android:id="@+id/etBody"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:minHeight="50dp"
+            android:maxLines="4"
+            android:hint="Enter Message"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="Enter Message" />
+            android:layout_toLeftOf="@+id/btSend"
+            android:layout_toStartOf="@+id/btSend"/>
 
         <ImageView
             android:id="@+id/btSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/etBody"
-            android:layout_alignRight="@+id/etBody"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
             app:srcCompat="@drawable/ic_send_blue"
-            android:onClick="sendText"/>
+            android:onClick="sendText"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 </RelativeLayout>
