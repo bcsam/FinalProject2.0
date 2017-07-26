@@ -26,7 +26,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -227,8 +226,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 rvText.setAdapter(new ListAdapter(MainActivity.this, smsList, incomingList, outgoingList));
-                Toast.makeText(getApplicationContext(), "working",
-                        Toast.LENGTH_LONG).show();
                 return true;
             }
         });

@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:layout_marginTop="4dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/darkGray"
                     android:textSize="16dp"
                     android:layout_marginLeft="5dp"
                     tools:text="Name"

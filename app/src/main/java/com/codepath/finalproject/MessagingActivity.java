@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by bcsam on 7/14/17.
@@ -50,7 +49,7 @@ public class MessagingActivity extends AppCompatActivity {
     ConversationAdapter adapter;
 
     RecyclerView rvText;
-    List<SMS> postQuerySmsList = new ArrayList<SMS>();
+    ArrayList<SMS> postQuerySmsList = new ArrayList<SMS>();
 
     String recipientId;
 
@@ -110,7 +109,7 @@ public class MessagingActivity extends AppCompatActivity {
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         getMessages();
-        adapter = new ConversationAdapter(this, messages);
+        adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvText.setLayoutManager(layoutManager);
         layoutManager.setReverseLayout(true);
@@ -144,13 +143,12 @@ public class MessagingActivity extends AppCompatActivity {
                         String body = text.getBody();
 
                         if (body.toLowerCase().contains(query.toLowerCase())) {
-                            Toast.makeText(getApplicationContext(), query,
-                                    Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
                             postQuerySmsList.add(text);
                         }
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList));
                 return true;
             }
 
@@ -166,7 +164,7 @@ public class MessagingActivity extends AppCompatActivity {
                         postQuerySmsList.add(text);
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList));
                 return true;
             }
         });
@@ -175,17 +173,28 @@ public class MessagingActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                //rvText.scrollToPosition(0); //this scrolls and then opens the soft input
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList));
                 return true;
             }
         });
-        return super.onCreateOptionsMenu(menu);
 
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    rvText.scrollToPosition(0);
+                }
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void launchComposeActivity(MenuItem item) {
@@ -218,6 +227,7 @@ public class MessagingActivity extends AppCompatActivity {
         btSend = (ImageView) findViewById(R.id.btSend);
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
+
     }
 
     public void setListeners() {
@@ -373,6 +383,7 @@ public class MessagingActivity extends AppCompatActivity {
     public void onBackPressed(){
         Log.i("MessagingActivity", "onBackPressed");
         Intent i =  new Intent(MessagingActivity.this, MainActivity.class);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
         setResult(RESULT_OK, i);
         finish();

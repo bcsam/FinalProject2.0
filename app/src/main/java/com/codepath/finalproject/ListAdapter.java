@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -68,7 +69,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         //long contactIdLong = Long.parseLong(contactId);
         //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
-        /*if (!contactId.equals("")) {
+        if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
@@ -81,7 +82,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
 
             holder.tvBody.setText(body);
             holder.date.setText(date);
@@ -156,7 +157,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 break;
         }
 
-        String dateMonth = monthString + " " + day;
+        String dateMonth = monthString.substring(0, 3) + " " + day;
 
         if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
             int AMPM = calendar.get(Calendar.AM_PM);

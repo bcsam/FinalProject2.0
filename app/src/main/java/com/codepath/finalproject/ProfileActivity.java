@@ -39,6 +39,9 @@ import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //sets up the activity
@@ -51,6 +54,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         User user = getIntent().getParcelableExtra("user");
         String id = getIntent().getStringExtra("id");
+        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         ViewPager viewPagerTop = (ViewPager) findViewById(R.id.upper_pager);
 
         // Set the ViewPagerAdapter into ViewPager
@@ -93,6 +98,8 @@ public class ProfileActivity extends AppCompatActivity {
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ProfileActivity.this, ComposeActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ProfileActivity.this.startActivity(i);
     }
 
@@ -101,7 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
         User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber("+"+mPhoneNumber);
+        user.setNumber(mPhoneNumber); //this is why the + shows up
         user.setName("Me");
 
         String id = null;
@@ -112,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
         String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
         Cursor cursor =
-                contentResolver.query(
+                contentResolver.query( // TODO: 7/25/17 This line crashes the app 
                         uri,
                         projection,
                         null,
@@ -132,11 +139,15 @@ public class ProfileActivity extends AppCompatActivity {
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ProfileActivity.this.startActivity(i);
     }
 
     public void launchMainActivity(MenuItem item){
         Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ProfileActivity.this.startActivity(i);
     }
 

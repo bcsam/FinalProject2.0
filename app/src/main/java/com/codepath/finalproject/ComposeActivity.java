@@ -5,6 +5,7 @@ package com.codepath.finalproject;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity implements MainActivity.DataTransfer{
+public class ComposeActivity extends AppCompatActivity implements MainActivity.DataTransfer {
     Button btCheck;
     ImageView btSend;
     EditText etBody;
@@ -76,7 +78,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         //unwrapIntent();
     }
 
-    public void addContacts(){
+    public void addContacts() {
 
 
         try {
@@ -95,8 +97,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 //Log.e("Contact list with name & numbers", " "+contacts);
             }
             phones.close(); //look for cursor errors here
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -124,7 +125,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             public void onClick(View view) {
                 final boolean messageEntered = !etBody.getText().toString().equals("");
                 final boolean recipientEntered = !etNumber.getText().toString().equals("");
-                if(messageEntered && recipientEntered && isValidInput()) {
+                if (messageEntered && recipientEntered && isValidInput()) {
 
                     //sends the text
                     SMS text = new SMS();
@@ -145,17 +146,16 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
                     etBody.setText("");
                     etNumber.setText("");
-                    // TODO: 7/25/17 update list displayed and notify adapter
 
-                }else if(!isValidInput()){
+                } else if (!isValidInput()) {
                     Toast.makeText(getApplicationContext(), "Invalid number",
                             Toast.LENGTH_LONG).show();
 
-                }else if(etNumber.getText().toString().equals("")){
+                } else if (etNumber.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter a recipient!",
                             Toast.LENGTH_LONG).show();
 
-                }else if(etBody.getText().toString().equals("")) {
+                } else if (etBody.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter a message!",
                             Toast.LENGTH_LONG).show();
                 }
@@ -175,10 +175,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 query = s.toString();
                 postQueryContacts.clear();
 
-                if(query.equals("")){
+                if (query.equals("")) {
                     postQueryContacts.clear();
                     composeAdapter.notifyDataSetChanged();
-                }else {
+                } else {
                     for (User contact : contacts) {
                         String name = contact.getName();
                         String number = contact.getNumber();
@@ -196,10 +196,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 query = s.toString();
                 postQueryContacts.clear();
 
-                if(query.equals("")){
+                if (query.equals("")) {
                     postQueryContacts.clear();
                     composeAdapter.notifyDataSetChanged();
-                }else {
+                } else {
                     for (User contact : contacts) {
                         String name = contact.getName();
                         String number = contact.getNumber();
@@ -212,10 +212,19 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 }
             }
         });
+
+        etBody.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    rvCompose.scrollToPosition(0);
+                }
+            }
+        });
     }
 
 
-    public void InitializeViews(){
+    public void InitializeViews() {
         btCheck = (Button) findViewById(R.id.btComp2Check);
         btSend = (ImageView) findViewById(R.id.btComp2Send);
         etBody = (EditText) findViewById(R.id.etComp2Body);
@@ -224,14 +233,14 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         //etSubject = (EditText) findViewById(R.id.etSubject);
     }
 
-    public void unwrapIntent(){
+    public void unwrapIntent() {
         String recipient = getIntent().getStringExtra("recipient");
-        if (recipient != null){
+        if (recipient != null) {
             etNumber.setText(recipient);
         }
 
         String message = getIntent().getStringExtra("message");
-        if (message != null){
+        if (message != null) {
             etBody.setText(message);
         }
     }
@@ -239,55 +248,56 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     /**
      *
      */
-    public void onCheck(){
+    public void onCheck() {
         String message = etBody.getText().toString();
         String recipientName = etNumber.getText().toString();
         //String subject = etSubject.getText().toString();
 
-        if(!message.equals("") && !recipientName.equals("")){
+        if (!message.equals("") && !recipientName.equals("")) {
             Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
             intent.putExtra("message", message);
-            // TODO: 7/14/17 send the number and name of the recipient
             intent.putExtra("recipientName", recipientName);
-            //intent.putExtra("subject", subject);
+            intent.putParcelableArrayListExtra("incomingList", incomingList);
+            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
 
             SMS sms = new SMS();
             sms.setBody(message);
             client = new AnalyzerClient();
             client.getScores(sms);
+
             ComposeActivity.this.startActivity(intent);
 
             //makes the user enter a message before submitting
-        }else if (message.equals("")){
+        } else if (message.equals("")) {
             Toast.makeText(getApplicationContext(), "Please enter a message!",
                     Toast.LENGTH_LONG).show();
 
             //makes the user enter a recipient before submitting
-        }else {
+        } else {
             Toast.makeText(getApplicationContext(), "Please enter a recipient!",
                     Toast.LENGTH_LONG).show();
         }
     }
 
-    public boolean isValidInput(){
+    public boolean isValidInput() {
         boolean validRecipient = true;
-        if(recipientNumber == null) {
+        if (recipientNumber == null) {
             String inputNumber = etNumber.getText().toString();
             String phoneNumberChars = "1234567890-()";
 
             //if for if it looks like a phone number
-            if (phoneNumberChars.contains(inputNumber.substring(0, 1))){
+            if (phoneNumberChars.contains(inputNumber.substring(0, 1))) {
                 //checks if the input is a valid phone number
                 for (int i = 0; i < inputNumber.length(); i++) {
                     if (!phoneNumberChars.contains(Character.toString(inputNumber.charAt(i)))) {
                         validRecipient = false;
                     }
                 }
-
-            }else{
+                //this is for if you exactly type a contact name
+            } else {
                 validRecipient = false;
-                for(User contact : contacts){
-                    if(contact.getNumber().equals(inputNumber)){
+                for (User contact : contacts) {
+                    if (contact.getNumber().equals(inputNumber)) {
                         validRecipient = true;
                         break;
                     }
@@ -309,7 +319,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
         User user = new User(this);
-        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber(mPhoneNumber);
         user.setName("Me");
@@ -318,6 +328,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ComposeActivity.this.startActivity(i);
     }
 
@@ -327,7 +339,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         startActivity(i);
     }
 
-    public void launchMainActivity(MenuItem item){
+    public void launchMainActivity(MenuItem item) {
         Intent i = new Intent(ComposeActivity.this, MainActivity.class);
         ComposeActivity.this.startActivity(i);
     }
@@ -340,10 +352,26 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         rvCompose.setLayoutManager(layoutManager);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList);
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList); // TODO: 7/25/17 the smsList hasn't been filled 
         etNumber.setText(contactName);
+        etNumber.setTypeface(null, Typeface.BOLD);
+        etNumber.setSelection(etNumber.getText().length());
+
         recipientNumber = contactNumber;
         rvCompose.setAdapter(conversationAdapter);
         rvCompose.scrollToPosition(0);
+
+        etNumber.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    etNumber.setText("");
+                    rvCompose.setAdapter(composeAdapter);
+                    etNumber.setTypeface(null, Typeface.NORMAL);
+                    etNumber.setOnKeyListener(null);
+                }
+                return true;
+            }
+        });
     }
 }
