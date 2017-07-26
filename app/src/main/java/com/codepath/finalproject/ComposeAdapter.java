@@ -3,7 +3,6 @@ package com.codepath.finalproject;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -197,7 +196,6 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
             //etNumber.setText(tvContactNumber.getText().toString());
 
             int position = getAdapterPosition();
-            Intent intent = new Intent(context, MessagingActivity.class);
             String name = contactList.get(position).getName();
             String number = contactList.get(position).getNumber();
             number = number.replaceAll("-", "");
@@ -228,4 +226,50 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
 
         }
     }
+
+    /*
+    public class ViewHolderNumber extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView tvCustomNumber;
+
+        ViewHolderNumber(View itemView){
+            super(itemView);
+
+            tvCustomNumber = (TextView) itemView.findViewById(R.id.tvCustomNumber);
+            itemView.setOnClickListener(this);
+            context = itemView.getContext();
+        }
+
+        @Override
+        public void onClick(View v) {
+            //int position = getAdapterPosition();
+            //Intent intent = new Intent(context, MessagingActivity.class);
+            //String name = contactList.get(position).getName();
+            //String number = contactList.get(position).getNumber();
+            String number = tvCustomNumber.getText().toString();
+            number = number.replaceAll("-", "");
+            number = number.replaceAll(" ", "");
+            ArrayList<SMS> messages = new ArrayList<>();
+
+
+            for(SMS s: incomingList){
+                if(s.getNumber().equals(number))
+                    messages.add(s);
+            }
+            for(SMS s: outgoingList){
+                if(s.getNumber().equals(number)) {
+                    int index = 0;
+                    Log.i("MessagingActivity body", s.getBody());
+                    for (SMS m : messages) {
+                        if (Double.parseDouble(m.getDate()) < Double.parseDouble(s.getDate())) {
+                            Log.i("MessagingActivity index", String.valueOf(index));
+                            index = messages.indexOf(m);
+                            break;
+                        }
+                    }
+                    messages.add(index, s);
+                }
+            }
+
+            dtTransfer.setValues(messages, name, number);
+    }*/
 }

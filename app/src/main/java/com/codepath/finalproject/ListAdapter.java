@@ -60,6 +60,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         //final ViewHolder holder1 = holder;
+        SMS sms = smsList.get(position);
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
         final String contactId = smsList.get(position).getContactId();

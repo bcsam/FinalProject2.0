@@ -167,6 +167,9 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 postQueryContacts.clear();
+                User customNum = new User();
+                customNum.setNumber(etNumber.toString());
+                postQueryContacts.add(customNum);
                 composeAdapter.notifyDataSetChanged();
             }
 
@@ -174,6 +177,9 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 query = s.toString();
                 postQueryContacts.clear();
+                User customNum = new User();
+                customNum.setNumber(etNumber.toString());
+                postQueryContacts.add(customNum);
 
                 if (query.equals("")) {
                     postQueryContacts.clear();
