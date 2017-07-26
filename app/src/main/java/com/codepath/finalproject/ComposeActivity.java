@@ -125,20 +125,26 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             public void onClick(View view) {
                 final boolean messageEntered = !etBody.getText().toString().equals("");
                 final boolean recipientEntered = !etNumber.getText().toString().equals("");
-                if (messageEntered && recipientEntered && isValidInput()) {
 
-                    //sends the text
+                if(messageEntered && recipientEntered && isValidInput()) {
                     SMS text = new SMS();
-                    text.setNumber("+"+recipientNumber);
                     text.setBody(etBody.getText().toString());
                     text.setDate(String.valueOf(System.currentTimeMillis()));
                     text.setType(2);
+
+                    if(recipientNumber == null){
+                        recipientNumber = etNumber.getText().toString();
+                        text.setNumber("+"+recipientNumber);
+                    }else{
+                        text.setNumber(recipientNumber);
+                    }
+
+
                     //this would hide the keyboard
                     //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     //inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     text.sendSMS();
                     outgoingList.add(0, text); //why is it add(0, text)?
-                    smsList.add(0, text);
                     conversationAdapter.notifyDataSetChanged();
                     rvCompose.scrollToPosition(0);
 
