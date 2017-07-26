@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -79,11 +80,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         //long contactIdLong = Long.parseLong(contactId);
         //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
-        /*if (!contactId.equals("")) {
+
+        if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
             if (image != null) {
+                holder.profileCircle.setVisibility(View.INVISIBLE);
+                holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
                 holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
@@ -92,7 +96,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
 
             holder.tvBody.setText(body);
             holder.date.setText(date);
@@ -167,7 +171,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 break;
         }
 
-        String dateMonth = monthString + " " + day;
+        String dateMonth = monthString.substring(0, 3) + " " + day;
 
         if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
             int AMPM = calendar.get(Calendar.AM_PM);
@@ -217,6 +221,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         public ImageView ivProfileImage;
         public ImageView ivRead;
         public TextView textCircle;
+        public ImageView profileCircle;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -228,6 +233,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             ivRead = (ImageView) itemView.findViewById(R.id.Read);
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);
+            profileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
 
             itemView.setOnClickListener(this);
             context = itemView.getContext();
