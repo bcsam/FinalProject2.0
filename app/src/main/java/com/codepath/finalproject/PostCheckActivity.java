@@ -31,6 +31,8 @@ public class PostCheckActivity extends AppCompatActivity {
     String recipient;
     Button btSend;
     Button btEdit;
+    ArrayList<SMS> incomingList = new ArrayList<>();
+    ArrayList<SMS> outgoingList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class PostCheckActivity extends AppCompatActivity {
         //stores info in intent for sending back to MainActivity
         message = getIntent().getStringExtra("message");
         recipient = getIntent().getStringExtra("recipientName");
+        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
 
         //makes a Textbody with the user's message
         sms = new SMS();
@@ -159,8 +163,10 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void launchComposeActivity(MenuItem item) {
-        //launches the compose activit
+        //launches the compose activity
         Intent i = new Intent(PostCheckActivity.this, ComposeActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         PostCheckActivity.this.startActivity(i);
     }
 

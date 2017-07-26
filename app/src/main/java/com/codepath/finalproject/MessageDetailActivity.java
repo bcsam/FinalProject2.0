@@ -29,6 +29,8 @@ public class MessageDetailActivity extends AppCompatActivity{
     TextView tvName;
     TextView tvMessage;
 
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
 
     //needs author's name, message, analysis info
     @Override
@@ -37,6 +39,8 @@ public class MessageDetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_message_detail);
 
         sms = getIntent().getParcelableExtra("sms");
+        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
 
         tvMessage = (TextView) findViewById(R.id.tvMessage);
         tvMessage.setText(sms.getBody());
@@ -69,12 +73,16 @@ public class MessageDetailActivity extends AppCompatActivity{
     public void launchComposeActivity(MenuItem item) {
         //launches the compose activit
         Intent i = new Intent(MessageDetailActivity.this, ComposeActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         MessageDetailActivity.this.startActivity(i);
     }
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(MessageDetailActivity.this, ProfileActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         MessageDetailActivity.this.startActivity(i);
     }
 

@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="@android:color/black" />
     </LinearLayout>
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="@android:color/black" />
 
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="@android:color/black" />
     </LinearLayout>

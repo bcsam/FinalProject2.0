@@ -25,10 +25,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -229,8 +226,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 rvText.setAdapter(new ListAdapter(MainActivity.this, smsList, incomingList, outgoingList));
-                Toast.makeText(getApplicationContext(), "working",
-                        Toast.LENGTH_LONG).show();
                 return true;
             }
         });
@@ -263,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.startActivityForResult(i, 1);
     }
 
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+   /* protected void onListItemClick(ListView l, View v, int position, long id) {
        // SMS sms = (SMS) getListAdapter().getItem(position);
 
         Intent intent = new Intent(this, MessagingActivity.class);
@@ -275,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
         //want to send to MessageActivity
         //want to send name and number of whose text you clicked in intent
-    }
+    }*/
 
     public void getPermissionToRead() {
         Log.i("sharedPreferences", "getPermissionToRead");
@@ -389,9 +384,7 @@ public class MainActivity extends AppCompatActivity {
                 if(cursor != null) {
                     while(cursor.moveToNext()){
                         id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-                        Log.i("in cursor", id);
                     }
-                    Log.i("out cursor", id);
                     cursor.close();
                 }
                 recipientName = getContactName(recipientNumber, this);
@@ -467,5 +460,9 @@ public class MainActivity extends AppCompatActivity {
         text();
         adapter.notifyDataSetChanged();
         rvText.scrollToPosition(0);
+    }
+
+    interface DataTransfer{
+        public void setValues(ArrayList<SMS> smsList, String contactName, String contactNumber);
     }
 }
