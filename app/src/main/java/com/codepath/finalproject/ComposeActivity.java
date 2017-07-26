@@ -5,6 +5,7 @@ package com.codepath.finalproject;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -255,14 +257,15 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         if(!message.equals("") && !recipientName.equals("")){
             Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
             intent.putExtra("message", message);
-            // TODO: 7/14/17 send the number and name of the recipient
             intent.putExtra("recipientName", recipientName);
-            //intent.putExtra("subject", subject);
+            intent.putParcelableArrayListExtra("incomingList", incomingList);
+            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
 
             SMS sms = new SMS();
             sms.setBody(message);
             client = new AnalyzerClient();
             client.getScores(sms);
+
             ComposeActivity.this.startActivity(intent);
 
             //makes the user enter a message before submitting
@@ -350,8 +353,23 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         layoutManager.setStackFromEnd(true);
         conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList);
         etNumber.setText(contactName);
+        etNumber.setTypeface(null, Typeface.BOLD);
+        etNumber.setSelection(etNumber.getText().length());
+
         recipientNumber = contactNumber;
         rvCompose.setAdapter(conversationAdapter);
         rvCompose.scrollToPosition(0);
+
+        etNumber.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    etNumber.setText("");
+                    rvCompose.setAdapter(composeAdapter);
+                    etNumber.setTypeface(null,Typeface.NORMAL);
+                    etNumber.setOnKeyListener(null);
+                return true;
+            }
+        });
     }
 }

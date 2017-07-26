@@ -101,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
         User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber("+"+mPhoneNumber);
+        user.setNumber(mPhoneNumber); //this is why the + shows up
         user.setName("Me");
 
         String id = null;
@@ -112,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
         String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
         Cursor cursor =
-                contentResolver.query(
+                contentResolver.query( // TODO: 7/25/17 This line crashes the app 
                         uri,
                         projection,
                         null,

@@ -67,7 +67,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2" >
+        android:weightSum="2"
+        android:background="@color/sendButton">
 
 
         <Button
@@ -75,19 +76,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/darkRed"
-            android:textColor="@color/white"
-            android:text="Edit" />
+            android:background="@android:color/transparent"
+            android:text="Edit"
+            android:textColor="@color/white" />
+
+        <View
+            android:id="@+id/horizontalLine"
+            android:layout_width="2dip"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white"
+            android:layout_marginTop="5dp" />
 
         <Button
             android:id="@+id/btSend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:onClick="sendEmail"
             android:text="Send"
-            android:background="@color/darkBlue"
-            android:textColor="@color/white"
-            android:onClick="sendEmail"/>
+            android:textColor="@color/white" />
 
 
     </LinearLayout>
