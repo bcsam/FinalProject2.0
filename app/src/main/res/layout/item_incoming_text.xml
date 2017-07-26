@@ -93,16 +93,6 @@
                     android:ellipsize="end"
                     android:maxLines="2"/>
 
-                <ImageView
-                    android:id="@+id/Read"
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/tvBody"
-                    android:layout_alignEnd="@+id/tvTimeStamp"
-                    android:layout_alignRight="@+id/tvTimeStamp"
-                    android:layout_marginRight="5dp"
-                    app:srcCompat="@android:drawable/ic_notification_overlay" />
-
         </RelativeLayout>
 
 </RelativeLayout>

@@ -7,6 +7,14 @@
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"
-        android:id="@+id/graph" />
+        android:id="@+id/graph"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:id="@+id/pbGraphLoading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center" />
 
 </FrameLayout>
