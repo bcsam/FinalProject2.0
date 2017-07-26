@@ -24,7 +24,6 @@ public class SMS implements Parcelable {
     private String body;
     private String contact;
     private String date;
-    private String read;
     private int type; //1: incoming, 2: outgoing
     private int id;
     private int[] toneLevels;
@@ -130,16 +129,11 @@ public class SMS implements Parcelable {
         this.date = date;
     }
 
-    public String getRead() { return read; }
-
-    public void setRead(String read) { this.read = read; }
-
     public int getToneLevel(int tone){
         return toneLevels[tone];
     }
 
-    public void setToneLevel(int tone, double level){toneLevels[tone] = (int)(level*100);
-    }
+    public void setToneLevel(int tone, double level){ toneLevels[tone] = (int)(level*100); }
 
     public int getStyleLevel(int style){
         return styleLevels[style];
@@ -159,16 +153,10 @@ public class SMS implements Parcelable {
         return utteranceLevels[utterance];
     }
 
-    public void setUtteranceLevel(int utterance, double level){ utteranceLevels[utterance] = (int)(level*100); }
-
     public String getStyleColor(){ return "#00334d"; }
 
     public String getSocialColor(){
         return "#2eb8b8";
-    }
-
-    public String getUtteranceColor(){
-        return "#600080";
     }
 
     public String getToneColor(int tone){
@@ -254,7 +242,6 @@ public class SMS implements Parcelable {
         dest.writeString(this.body);
         dest.writeString(this.contact);
         dest.writeString(this.date);
-        dest.writeString(this.read);
         dest.writeInt(this.type);
         dest.writeInt(this.id);
         dest.writeIntArray(this.toneLevels);
@@ -274,7 +261,6 @@ public class SMS implements Parcelable {
         this.body = in.readString();
         this.contact = in.readString();
         this.date = in.readString();
-        this.read = in.readString();
         this.type = in.readInt();
         this.id = in.readInt();
         this.toneLevels = in.createIntArray();

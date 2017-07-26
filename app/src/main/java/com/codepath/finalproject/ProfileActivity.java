@@ -67,7 +67,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-
         ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
         if(user.getName().equals("Me"))
             client.execute(getMyAverages(user));
@@ -163,8 +162,6 @@ public class ProfileActivity extends AppCompatActivity {
                 fullText += ". "+text;
                 c.moveToNext();
             }
-            //client.getScores(sms);
-            //user.updateScores(sms);
         }
         c.close();
         SMS sms = new SMS();
@@ -185,8 +182,6 @@ public class ProfileActivity extends AppCompatActivity {
                 fullText += ". "+text;
                 c.moveToNext();
             }
-            //client.getScores(sms);
-            //user.updateScores(sms);
         }
         c.close();
         SMS sms = new SMS();
@@ -261,7 +256,6 @@ public class ProfileActivity extends AppCompatActivity {
                     adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
                     adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
                     adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
-                    //adapter.addFrag(new UtteranceFragment(), "Utterance", user, "ProfileActivity");
 
                     viewPager.setAdapter(adapter);
 
