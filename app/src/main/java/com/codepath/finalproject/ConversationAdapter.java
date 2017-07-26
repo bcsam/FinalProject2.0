@@ -92,9 +92,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
                 holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
             } else if (!name.equals("")) {
-                holder.textCircle.setVisibility(View.VISIBLE);
+                //holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
-                holder.textCircle.setText("" + name.charAt(0));
+                //holder.textCircle.setText("" + name.charAt(0));
             }
         }
 
@@ -265,6 +265,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivProfileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
+            textCircle = (TextView) itemView.findViewById(R.id.circleText);
 
             itemView.setOnClickListener(this);
         }

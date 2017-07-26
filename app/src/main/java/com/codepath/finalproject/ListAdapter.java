@@ -92,9 +92,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
                 holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
             } else if (!name.equals("")) {
-                holder.textCircle.setVisibility(View.VISIBLE);
+                //holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
-                holder.textCircle.setText("" + name.charAt(0));
+                //holder.textCircle.setText("" + name.charAt(0));
             }
         }
 
