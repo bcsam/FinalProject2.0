@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -39,6 +38,10 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
     String message;
+    Bitmap image;
+    long contactIdLong;
+    String number;
+    String id;
 
     public ComposeAdapter(Context mContext, List<User> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList) {
         context = mContext;
@@ -63,15 +66,15 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         User contact = contactList.get(position);
 
         //contact numbers are in the form +1 555-555-5555
-        String number = contact.getNumber();
+        number = contact.getNumber();
         /*if(number.length() > 7)
             number = number.substring(0,2) + " (" + number.substring(3,6) + ") " + number.substring(7);*/
 
-        String id = "";
 
         ContentResolver contentResolver = context.getContentResolver();
 
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        number = "";
 
         String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
@@ -95,17 +98,22 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         holder.tvContactName.setText(contact.getName());
 
 
+
         if (!id.equals("")) {
-            Toast.makeText(context, id, Toast.LENGTH_LONG).show();
-            long contactIdLong = Long.parseLong(id);
-            Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
+            contactIdLong = Long.parseLong(id);
+            id = "";
+            image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
+            contactIdLong = 0;
 
             if (image != null) {
+                //holder.profileImage.setImageResource(R.drawable.ic_send_blue);
                 holder.profileImage.setImageBitmap(null);
                 holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
-            } else if (!contact.getName().equals("")) {
+                image = null;
+            } else
+            if (!contact.getName().equals("")) {
                 //holder.textCircle.setVisibility(View.VISIBLE);
-                holder.profileImage.setVisibility(View.INVISIBLE);
+                //holder.profileImage.setVisibility(View.INVISIBLE);
                 //holder.textCircle.setText("" + name.charAt(0));
             }
         }

@@ -17,8 +17,6 @@
             android:id="@+id/ivProfileImage"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:tint="@android:color/transparent"
-            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_person_gray"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
