@@ -4,6 +4,13 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.StrictMode;
@@ -26,7 +33,7 @@ import java.util.List;
  * Created by andreadeoli on 7/13/17.
  */
 
-public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder>{
+public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder> {
 
     // List context
     Context context;
@@ -51,7 +58,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        if(viewType == 0)
+        if (viewType == 0)
             rowView = inflater.inflate(R.layout.item_outgoing_messaging_text, parent, false);
         else
             rowView = inflater.inflate(R.layout.item_incoming_messaging_text, parent, false);
@@ -74,36 +81,51 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.tvBody.setText(body);
         holder.date.setText(date);
 
-        /*long contactIdLong = Long.parseLong(id);
-=======
-        if (!name.equals("Me")) {
+        if (!id.equals("") && !name.equals("Me")) {
             long contactIdLong = Long.parseLong(id);
->>>>>>> 6d4446d331e3af863753fb2c4fb1de7eb9286e31
+            Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
-        Bitmap image = null;
-        //image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
-
-<<<<<<< HEAD
-        if (image != null) {
-            holder.ivProfileImage.setImageBitmap(null);
-            holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-        } else {
-            holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }*/
-
-        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ProfileActivity.class);
-                User user = new User(context);
-                user.setName(name);
-                user.setNumber(number);
-                user.setContactId(id);
-                intent.putExtra("user", user);
-                context.startActivity(intent);
+            if (image != null) {
+                //holder.ivProfileCircle.setVisibility(View.INVISIBLE);
+                holder.ivProfileImage.setVisibility(View.VISIBLE);
+                holder.ivProfileImage.setImageBitmap(null);
+                //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+            } else if (!name.equals("")) {
+                holder.textCircle.setVisibility(View.VISIBLE);
+                holder.ivProfileImage.setVisibility(View.INVISIBLE);
+                holder.textCircle.setText("" + name.charAt(0));
             }
-        });
-        Log.i("position", String.valueOf(position));
+        }
+
+
+
+        /*if (!name.equals("Me")) {
+            long contactIdLong = Long.parseLong(id);
+
+            Bitmap image = null;
+            image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+
+            if (image != null) {
+                holder.ivProfileImage.setImageBitmap(null);
+                holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
+            } else {
+                holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
+            }*/
+
+            holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    User user = new User(context);
+                    user.setName(name);
+                    user.setNumber(number);
+                    user.setContactId(id);
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
+            Log.i("position", String.valueOf(position));
     }
 
     @Override
@@ -117,6 +139,28 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             return 0;
         }
         return 1;
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
     }
 
 
@@ -161,7 +205,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 break;
         }
 
-        String dateMonth = monthString + " " + day;
+        String dateMonth = monthString.substring(0, 3) + " " + day;
 
         if (calendar.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ) {
             int AMPM = calendar.get(Calendar.AM_PM);
@@ -169,6 +213,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             if (curTime.charAt(0) == '0') {
                 curTime = String.format("%d:%02d", 12, calendar.get(Calendar.MINUTE));
             }
+
             if (AMPM == 0) {
                 return curTime + " AM";
             }
@@ -201,12 +246,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         return null;
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvTime;
         public TextView date;
         public ImageView ivProfileImage;
+        public ImageView ivProfileCircle;
+        public TextView textCircle;
 
         public ViewHolder(View itemView){
             super(itemView);

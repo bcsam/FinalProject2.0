@@ -68,11 +68,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         //long contactIdLong = Long.parseLong(contactId);
         //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
+
+
         /*if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
             if (image != null) {
+                holder.profileCircle.setVisibility(View.INVISIBLE);
+                holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
                 holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
@@ -209,6 +213,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         public ImageView ivProfileImage;
         public ImageView ivRead;
         public TextView textCircle;
+        public ImageView profileCircle;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -220,6 +225,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             ivRead = (ImageView) itemView.findViewById(R.id.Read);
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);
+            profileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
 
             itemView.setOnClickListener(this);
             context = itemView.getContext();
