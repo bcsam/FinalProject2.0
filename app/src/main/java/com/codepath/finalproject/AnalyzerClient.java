@@ -51,7 +51,7 @@ public class AnalyzerClient extends AsyncTask <SMS, String, SMS>{
         ((Activity) context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                drawable.setColorFilter(Color.parseColor(sms.getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+                drawable.setColorFilter(Color.parseColor(sms.setBubbleColor()), PorterDuff.Mode.SRC_ATOP);
             }
         });
         return sms;
