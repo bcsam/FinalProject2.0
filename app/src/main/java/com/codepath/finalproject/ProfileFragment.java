@@ -4,7 +4,6 @@ import android.content.ContentUris;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -48,16 +47,16 @@ public class ProfileFragment extends Fragment {
         User user = getArguments().getParcelable("user");
 
         if (!user.getName().equals("Me")) {
-            long contactIdLong = Long.parseLong(user.getContactId());
+            /*long contactIdLong = Long.parseLong(user.getContactId());
 
             Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));
 
             if (image != null) {
                 ivProfileImage.setImageBitmap(null);
                 ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 150, 150, false)));
-            } else {
+            } else {*/
                 ivProfileImage.setImageResource(R.drawable.ic_person_gray);
-            }
+            //}
         }
 
 
