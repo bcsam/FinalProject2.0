@@ -39,7 +39,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     ArrayList<User> contacts;
     RecyclerView rvCompose;
     ComposeAdapter composeAdapter;
-    ArrayList<User> postQueryContacts;
+    ArrayList<Object> postQueryContacts;
     String query;
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
@@ -167,6 +167,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 postQueryContacts.clear();
+                postQueryContacts.add(etNumber.getText().toString());
                 composeAdapter.notifyDataSetChanged();
             }
 
@@ -174,6 +175,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 query = s.toString();
                 postQueryContacts.clear();
+                postQueryContacts.add(etNumber.getText().toString());
 
                 if (query.equals("")) {
                     postQueryContacts.clear();
@@ -195,6 +197,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             public void afterTextChanged(Editable s) {
                 query = s.toString();
                 postQueryContacts.clear();
+                postQueryContacts.add(etNumber.getText().toString());
 
                 if (query.equals("")) {
                     postQueryContacts.clear();

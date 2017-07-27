@@ -3,7 +3,6 @@ package com.codepath.finalproject;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,9 +32,11 @@ import java.util.List;
  * Created by bcsam on 7/21/17.
  */
 
-class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
+class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final int STRING = 0;
+    private final int USER = 1;
     Context context;
-    List<User> contactList;
+    List<Object> contactList;
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
     String message;
@@ -48,7 +49,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
     MainActivity.DataTransfer dtTransfer;
 
 
-    public ComposeAdapter(Context mContext, ArrayList<User> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList, MainActivity.DataTransfer dtTransfer) {
+    public ComposeAdapter(Context mContext, ArrayList<Object> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList, MainActivity.DataTransfer dtTransfer) {
         this.dtTransfer = dtTransfer;
         context = mContext;
         contactList = mContactList;
@@ -59,17 +60,68 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemCount() {
+        return contactList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (contactList.get(position) instanceof String) {
+            return STRING;
+        } else if (contactList.get(position) instanceof User) {
+            return USER;
+        }
+        return -1;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        ViewHolder viewHolder = new ViewHolder(inflater.inflate(R.layout.item_contact, parent, false));
+        RecyclerView.ViewHolder viewHolder;
+
+        switch (viewType) {
+            case STRING:
+                View v1 = inflater.inflate(R.layout.item_custom_number, parent, false);
+                viewHolder = new NumberViewHolder(v1);
+                break;
+
+            case USER:
+                View v2 = inflater.inflate(R.layout.item_contact, parent, false);
+                viewHolder = new ContactsViewHolder(v2);
+                break;
+
+             default:
+                View v = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+                viewHolder = new ContactsViewHolder(v);
+                break;
+        }
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ComposeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+
+        switch (viewHolder.getItemViewType()) {
+            case STRING:
+                NumberViewHolder vh1 = (NumberViewHolder) viewHolder;
+                configureNumberViewHolder(vh1, position);
+                break;
+            case USER:
+                ContactsViewHolder vh2 = (ContactsViewHolder) viewHolder;
+                configureContactsViewHolder(vh2, position);
+                break;
+        }
+    }
+
+    public void configureNumberViewHolder(NumberViewHolder holder, int position) {
+        String number = (String) contactList.get(position);
+        holder.tvCustomNumber.setText(number);
+    }
+
+    public void configureContactsViewHolder(ContactsViewHolder holder, int position) {
         // TODO: 7/21/17 add in contact pictures
-        User contact = contactList.get(position);
+        User contact = (User) contactList.get(position);
 
         //contact numbers are in the form +1 555-555-5555
         number = contact.getNumber();
@@ -82,7 +134,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
         number = "";
 
-        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
         Cursor cursor =
                 contentResolver.query(
@@ -92,8 +144,8 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
                         null,
                         null);
 
-        if(cursor != null) {
-            while(cursor.moveToNext()){
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
                 id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
             }
             cursor.close();
@@ -106,7 +158,6 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         holder.profileImage.setImageResource(R.drawable.ic_person_gray);
 
 
-
         if (!id.equals("")) {
             contactIdLong = Long.parseLong(id);
             id = "";
@@ -117,14 +168,14 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
                 holder.profileImage.setImageBitmap(null);
                 holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
                 image = null;
-            } else
-            if (!contact.getName().equals("")) {
+            } else if (!contact.getName().equals("")) {
                 //holder.textCircle.setVisibility(View.VISIBLE);
                 //holder.profileImage.setVisibility(View.INVISIBLE);
                 //holder.textCircle.setText("" + name.charAt(0));
             }
         }
     }
+
 
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
@@ -152,7 +203,7 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
         Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         Cursor cursor = context.getContentResolver().query(photoUri,
-                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+                new String[]{ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
         if (cursor == null) {
             return null;
         }
@@ -169,18 +220,13 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
         return null;
     }
 
-    @Override
-    public int getItemCount() {
-        return contactList.size();
-    }
-
-    public class ViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ContactsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvContactName;
         TextView tvContactNumber;
         ImageView profileImage;
         EditText etBody;
 
-        public ViewHolder(View itemView){
+        public ContactsViewHolder(View itemView) {
             super(itemView);
 
             tvContactName = (TextView) itemView.findViewById(R.id.tvContactName);
@@ -197,20 +243,20 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
             //etNumber.setText(tvContactNumber.getText().toString());
 
             int position = getAdapterPosition();
-            Intent intent = new Intent(context, MessagingActivity.class);
-            String name = contactList.get(position).getName();
-            String number = contactList.get(position).getNumber();
+            User user = (User) contactList.get(position);
+            String name = user.getName();
+            String number = user.getNumber();
             number = number.replaceAll("-", "");
             number = number.replaceAll(" ", "");
             ArrayList<SMS> messages = new ArrayList<>();
 
 
-            for(SMS s: incomingList){
-                if(s.getNumber().equals(number))
+            for (SMS s : incomingList) {
+                if (s.getNumber().equals(number))
                     messages.add(s);
             }
-            for(SMS s: outgoingList){
-                if(s.getNumber().equals(number)) {
+            for (SMS s : outgoingList) {
+                if (s.getNumber().equals(number)) {
                     int index = 0;
                     Log.i("MessagingActivity body", s.getBody());
                     for (SMS m : messages) {
@@ -226,6 +272,52 @@ class ComposeAdapter extends RecyclerView.Adapter<ComposeAdapter.ViewHolder>{
 
             dtTransfer.setValues(messages, name, number);
 
+        }
+    }
+
+
+    public class NumberViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView tvCustomNumber;
+
+        public NumberViewHolder(View itemView) {
+            super(itemView);
+            tvCustomNumber = (TextView) itemView.findViewById(R.id.tvCustomNumber);
+            itemView.setOnClickListener(this);
+            context = itemView.getContext();
+        }
+
+        @Override
+        public void onClick(View v) {
+            //int position = getAdapterPosition();
+            //Intent intent = new Intent(context, MessagingActivity.class);
+            //String name = contactList.get(position).getName();
+            //String number = contactList.get(position).getNumber();
+            String number = tvCustomNumber.getText().toString();
+            number = number.replaceAll("-", "");
+            number = number.replaceAll(" ", "");
+            ArrayList<SMS> messages = new ArrayList<>();
+
+
+            for (SMS s : incomingList) {
+                if (s.getNumber().equals(number))
+                    messages.add(s);
+            }
+            for (SMS s : outgoingList) {
+                if (s.getNumber().equals(number)) {
+                    int index = 0;
+                    Log.i("MessagingActivity body", s.getBody());
+                    for (SMS m : messages) {
+                        if (Double.parseDouble(m.getDate()) < Double.parseDouble(s.getDate())) {
+                            Log.i("MessagingActivity index", String.valueOf(index));
+                            index = messages.indexOf(m);
+                            break;
+                        }
+                    }
+                    messages.add(index, s);
+                }
+            }
+
+            dtTransfer.setValues(messages, number, number);
         }
     }
 }
