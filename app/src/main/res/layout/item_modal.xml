@@ -57,3 +57,4 @@
         android:text="To: ContactName"
         android:textSize="10dp" />
 </RelativeLayout>
+

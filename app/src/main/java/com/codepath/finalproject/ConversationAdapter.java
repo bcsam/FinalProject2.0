@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -87,7 +86,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.ivProfileImage.setVisibility(View.INVISIBLE);
 
 
-        if (!id.equals("") && smsList.get(position).getType() == 1) {
+        /*if (!id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
@@ -103,23 +102,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-
-        }
-
+        }*/
 
 
-        /*if (!name.equals("Me")) {
-            long contactIdLong = Long.parseLong(id);
 
-            Bitmap image = null;
-            image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
-
-            if (image != null) {
-                holder.ivProfileImage.setImageBitmap(null);
-                holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-            } else {
-                holder.ivProfileImage.setImageResource(R.drawable.ic_person_white);
-            }*/
 
             holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -283,6 +269,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         public void onClick(View view) {
             context = itemView.getContext();
             int position = getAdapterPosition();
+            Log.i("onClick", smsList.get(position).getBody());
             Intent intent = new Intent(context, MessageDetailActivity.class);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
