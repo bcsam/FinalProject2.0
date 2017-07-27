@@ -162,20 +162,32 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             contactIdLong = Long.parseLong(id);
             id = "";
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
-            contactIdLong = 0;
+            int count;
+            ArrayList<Long> idList = new ArrayList<Long>();
 
             if (image != null) {
+                holder.profileImageIcon.setVisibility(View.INVISIBLE);
+                holder.profileImage.setVisibility(View.VISIBLE);
                 holder.profileImage.setImageBitmap(null);
                 holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
-                image = null;
-            } else if (!contact.getName().equals("")) {
-                //holder.textCircle.setVisibility(View.VISIBLE);
-                //holder.profileImage.setVisibility(View.INVISIBLE);
-                //holder.textCircle.setText("" + name.charAt(0));
+                idList.add(contactIdLong);
+            } else {
+                count = 0;
+                for (int i = 0; i < idList.size(); i++) {
+                    if (contactIdLong != idList.get(i)) {
+                        count ++;
+                    }
+                }
+
+                if (count == idList.size()) {
+                    holder.textCircle.setVisibility(View.VISIBLE);
+                    holder.profileImage.setVisibility(View.INVISIBLE);
+                    holder.textCircle.setText("" + contact.getName().charAt(0));
+                }
             }
+            image = null;
         }
     }
-
 
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
@@ -204,6 +216,7 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         Cursor cursor = context.getContentResolver().query(photoUri,
                 new String[]{ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+
         if (cursor == null) {
             return null;
         }
@@ -225,6 +238,8 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView tvContactNumber;
         ImageView profileImage;
         EditText etBody;
+        ImageView profileImageIcon;
+        TextView textCircle;
 
         public ContactsViewHolder(View itemView) {
             super(itemView);
@@ -232,6 +247,8 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvContactName = (TextView) itemView.findViewById(R.id.tvContactName);
             tvContactNumber = (TextView) itemView.findViewById(R.id.tvContactNumber);
             profileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            profileImageIcon = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
+            textCircle = (TextView) itemView.findViewById(R.id.circleText);
             itemView.setOnClickListener(this);
             context = itemView.getContext();
         }

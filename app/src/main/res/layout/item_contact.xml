@@ -17,17 +17,55 @@
             android:id="@+id/ivProfileImage"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             app:srcCompat="@drawable/ic_person_gray"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/ivProfileIcon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_person_gray"
+            android:background="@drawable/circle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:text="AD"
+            android:textSize="20sp"
+            android:background="@drawable/rounded_textview"
+            android:textColor="@color/lightGray"
+            android:gravity="center"
+            android:id="@+id/circleText"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="invisible"/>
+
 
         <TextView
             android:id="@+id/tvContactName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textColor="@color/black"
+            android:textColor="@color/darkGray"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
             android:textSize="16dp"
             tools:text="Name"
             android:layout_toRightOf="@+id/ivProfileImage"
@@ -36,6 +74,7 @@
         <TextView
             android:id="@+id/tvContactNumber"
             android:layout_width="match_parent"
+            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvContactName"
             android:layout_toRightOf="@+id/ivProfileImage"
