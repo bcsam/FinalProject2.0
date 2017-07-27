@@ -242,7 +242,16 @@ public class ProfileActivity extends AppCompatActivity {
         @Override
         protected SMS doInBackground(SMS... params) {
             Log.i("client", "in background");
-            getScores(params[0]);
+            if(params[0].getBody().equals("")){
+                for(int j = 0; j < 5; j++) {
+                    if(j<3)
+                        params[0].setStyleLevel(j, 0);
+                    params[0].setToneLevel(j, 0);
+                    params[0].setSocialLevel(j, 0);
+                }
+            }
+            else
+                getScores(params[0]);
             user.updateScores(params[0]);
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override

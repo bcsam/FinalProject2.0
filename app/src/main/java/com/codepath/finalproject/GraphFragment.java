@@ -66,44 +66,80 @@ public class GraphFragment extends Fragment {
         Uri uri = Uri.parse("content://sms/sent");
         Cursor c = getContext().getContentResolver().query(uri, null, null, null, null);
         ((Activity) getContext()).startManagingCursor(c);
-        int count = c.getCount()/10;
+        int count = 0;
+        int size = c.getCount()/10;
+        if(size == 0)
+            size = 1;
         SMS[] smsList = new SMS[10];
+        if(c.getCount() == 0){
+            for(int i = 0; i < smsList.length; i++){
+                smsList[i] = new SMS();
+                smsList[i].setBody("");
+            }
+        }
         // Read the sms data and store it in the listco
         if (c.moveToFirst()) {
             for (int i = 0; i < 10; i++) {
-                String fullText = "";
-                for(int j = 0; j < count; j++) {
-                    String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                    fullText += ". " + text;
-                    c.moveToNext();
+                if(count >= c.getCount()) {
+                    smsList[i] = new SMS();
+                    smsList[i].setBody("");
                 }
-                SMS sms = new SMS();
-                sms.setBody(fullText);
-                smsList[i] = sms;
+                else {
+                    String fullText = "";
+                    for (int j = 0; j < size; j++) {
+                        String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                        fullText += ". " + text;
+                        c.moveToNext();
+                    }
+                    SMS sms = new SMS();
+                    sms.setBody(fullText);
+                    smsList[i] = sms;
+                }
+                count++;
             }
         }
         c.close();
         return smsList;
     }
 
-    public SMS getGraph(User user) {
+    public SMS[] getGraph(User user) {
         Uri uri = Uri.parse("content://sms/inbox");
         Cursor c = getContext().getContentResolver().query(uri, null, "address='"+user.getNumber()+"'", null, null);
         ((Activity) getContext()).startManagingCursor(c);
-        String fullText = "";
-
+        int count = 0;
+        int size = c.getCount()/10;
+        if(size == 0)
+            size = 1;
+        SMS[] smsList = new SMS[10];
+        if(c.getCount() == 0){
+            for(int i = 0; i < smsList.length; i++){
+                smsList[i] = new SMS();
+                smsList[i].setBody("");
+            }
+        }
         // Read the sms data and store it in the listco
         if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                fullText += ". "+text;
-                c.moveToNext();
+            for (int i = 0; i < 10; i++) {
+                if(count >= c.getCount()) {
+                    smsList[i] = new SMS();
+                    smsList[i].setBody("");
+                }
+                else {
+                    String fullText = "";
+                    for (int j = 0; j < size; j++) {
+                        String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                        fullText += ". " + text;
+                        c.moveToNext();
+                    }
+                    SMS sms = new SMS();
+                    sms.setBody(fullText);
+                    smsList[i] = sms;
+                }
+                count++;
             }
         }
         c.close();
-        SMS sms = new SMS();
-        sms.setBody(fullText);
-        return sms;
+        return smsList;
     }
 
     public class GraphAnalyzerClient extends AsyncTask<SMS, String, SMS> {
@@ -128,9 +164,13 @@ public class GraphFragment extends Fragment {
         @Override
         protected SMS doInBackground(final SMS... params) {
             Log.i("client", "in background");
-            final SMS[] smsList = params;
             for(int i = 0; i < params.length; i++) {
-                getScores(params[i]);
+                if(params[i].getBody().equals("")){
+                    for(int j = 0; j < 5; j++)
+                        params[i].setToneLevel(j, 0);
+                }
+                else
+                    getScores(params[i]);
                 user.updateScores(params[i]);
             }
             ((Activity) context).runOnUiThread(new Runnable() {
@@ -139,19 +179,11 @@ public class GraphFragment extends Fragment {
                     ProgressBar pbLoading = (ProgressBar) ((Activity) context).findViewById(R.id.pbGraphLoading);
                     pbLoading.setVisibility(View.GONE);
                     for(int i = 0; i< 5; i++) {
-                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                                new DataPoint(0, smsList[0].getToneLevel(i)),
-                                new DataPoint(1, smsList[1].getToneLevel(i)),
-                                new DataPoint(2, smsList[2].getToneLevel(i)),
-                                new DataPoint(3, smsList[3].getToneLevel(i)),
-                                new DataPoint(4, smsList[4].getToneLevel(i)),
-                                new DataPoint(5, smsList[5].getToneLevel(i)),
-                                new DataPoint(6, smsList[6].getToneLevel(i)),
-                                new DataPoint(7, smsList[7].getToneLevel(i)),
-                                new DataPoint(8, smsList[8].getToneLevel(i)),
-                                new DataPoint(9, smsList[9].getToneLevel(i))
-                        });
-                        series.setColor(Color.parseColor(smsList[0].getToneColor(i)));
+                        DataPoint[] dataPoints = new DataPoint[params.length];
+                        for (int j = 0; j < params.length; j++)
+                            dataPoints[j] = new DataPoint(j, params[j].getToneLevel(i));
+                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
+                        series.setColor(Color.parseColor(params[0].getToneColor(i)));
                         graph.addSeries(series);
                     }
                     graph.setVisibility(View.VISIBLE);

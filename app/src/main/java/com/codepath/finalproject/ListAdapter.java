@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -72,7 +73,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
 
 
-        /*if (!contactId.equals("")) {
+        if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
@@ -88,27 +89,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
+
         if(!name.equals(""))
             holder.tvUserName.setText(name);
         else
             holder.tvUserName.setText(number);
         holder.tvBody.setText(body);
         holder.date.setText(date);
-        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ProfileActivity.class);
-                User user = new User(context);
-                user.setName(name);
-                user.setNumber(number);
-                user.setContactId(contactId);
-
-                intent.putExtra("id", contactId);
-                intent.putExtra("user", user);
-                context.startActivity(intent);
-            }
-        });
 
         holder.tvBody.setOnLongClickListener(new View.OnLongClickListener() {
 
@@ -214,7 +202,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         public TextView tvTime;
         public TextView date;
         public ImageView ivProfileImage;
-        public ImageView ivRead;
+        public ImageView ivProfileIcon;
         public TextView textCircle;
         public ImageView profileCircle;
 
@@ -226,7 +214,33 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
-            ivRead = (ImageView) itemView.findViewById(R.id.Read);
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    user.setName(smsList.get(position).getContact());
+                    user.setNumber(smsList.get(position).getNumber());
+                    user.setContactId(smsList.get(position).getContactId());
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
+            ivProfileIcon = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
+            ivProfileIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    user.setName(smsList.get(position).getContact());
+                    user.setNumber(smsList.get(position).getNumber());
+                    user.setContactId(smsList.get(position).getContactId());
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);
             profileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
 
@@ -248,6 +262,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             ((Activity) context).startActivityForResult(intent, 1);
+        }
+
+        public void onClickImage(View view){
+
         }
     }
 }
