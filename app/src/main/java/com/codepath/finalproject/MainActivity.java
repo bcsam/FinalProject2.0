@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
     Boolean SMS;
     int type;
     Uri uri;
-    Cursor c;
     ArrayList<SMS> onQuerySmsList = new ArrayList<>();
     ListAdapter adapter;
+    Cursor c;
 
     TextView tvUserName;
 
