@@ -162,28 +162,16 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             contactIdLong = Long.parseLong(id);
             id = "";
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
-            int count;
-            ArrayList<Long> idList = new ArrayList<Long>();
 
             if (image != null) {
                 holder.profileImageIcon.setVisibility(View.INVISIBLE);
                 holder.profileImage.setVisibility(View.VISIBLE);
                 holder.profileImage.setImageBitmap(null);
                 holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
-                idList.add(contactIdLong);
-            } else {
-                count = 0;
-                for (int i = 0; i < idList.size(); i++) {
-                    if (contactIdLong != idList.get(i)) {
-                        count ++;
-                    }
-                }
-
-                if (count == idList.size()) {
-                    holder.textCircle.setVisibility(View.VISIBLE);
-                    holder.profileImage.setVisibility(View.INVISIBLE);
-                    holder.textCircle.setText("" + contact.getName().charAt(0));
-                }
+            } else if (!contact.getName().equals("")){
+                holder.textCircle.setVisibility(View.VISIBLE);
+                holder.profileImage.setVisibility(View.INVISIBLE);
+                holder.textCircle.setText("" + contact.getName().charAt(0));
             }
             image = null;
         }
