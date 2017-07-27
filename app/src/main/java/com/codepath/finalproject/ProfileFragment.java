@@ -43,6 +43,8 @@ public class ProfileFragment extends Fragment {
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvNumber = (TextView) v.findViewById(R.id.tvNumber);
         ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfile);
+        ImageView ivProfileImageIcon = (ImageView) v.findViewById(R.id.ivProfileIcon);
+        TextView textCircle = (TextView) v.findViewById(R.id.circleText);
 
 
         User user = getArguments().getParcelable("user");
@@ -53,6 +55,8 @@ public class ProfileFragment extends Fragment {
             Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));
 
             if (image != null) {
+                ivProfileImage.setVisibility(View.VISIBLE);
+                ivProfileImageIcon.setVisibility(View.INVISIBLE);
                 ivProfileImage.setImageBitmap(null);
                 ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 140, 140, false)));
             } else {

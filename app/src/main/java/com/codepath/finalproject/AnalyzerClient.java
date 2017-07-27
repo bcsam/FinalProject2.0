@@ -112,44 +112,4 @@ public class AnalyzerClient extends AsyncTask <SMS, String, SMS>{
             }
         }
     }
-
-   /* public void getUtteranceScores(TextBody textBody) {
-        List<Utterance> utterances = new ArrayList<>();
-        Utterance utterance = new Utterance.Builder()
-                .text(textBody.getMessage())
-                .build();
-        utterances.add(utterance);
-        ToneChatRequest options = new ToneChatRequest.Builder()
-                .utterances(utterances).build();
-        UtterancesTone tone = service.getChatTone(options).execute();
-        for(UtteranceAnalysis ua : tone.getUtterancesTone()){
-            for(ToneScore ts : ua.getTones()){
-                Log.i("UtteranceScore", "for loop 2");
-                switch(ts.getName()){
-                    case("Sad"):
-                        Log.i("UtteranceScore", "got score");
-                        textBody.setUtteranceLevel(0, ts.getScore());
-                        break;
-                    case("Frustrated"):
-                        textBody.setUtteranceLevel(1, ts.getScore());
-                        break;
-                    case("Satisfied"):
-                        textBody.setUtteranceLevel(2, ts.getScore());
-                        break;
-                    case("Excited"):
-                        textBody.setUtteranceLevel(3, ts.getScore());
-                        break;
-                    case("Polite"):
-                        textBody.setUtteranceLevel(4, ts.getScore());
-                        break;
-                    case("Impolite"):
-                        textBody.setUtteranceLevel(5, ts.getScore());
-                        break;
-                    case("Sympathetic"):
-                        textBody.setUtteranceLevel(6, ts.getScore());
-                        break;
-                }
-            }
-        }
-    }*/
 }

@@ -165,6 +165,7 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             if (image != null) {
                 holder.profileImageIcon.setVisibility(View.INVISIBLE);
+                holder.textCircle.setVisibility(View.INVISIBLE);
                 holder.profileImage.setVisibility(View.VISIBLE);
                 holder.profileImage.setImageBitmap(null);
                 holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
