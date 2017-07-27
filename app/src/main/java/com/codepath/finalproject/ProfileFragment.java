@@ -53,10 +53,11 @@ public class ProfileFragment extends Fragment {
 
             if (image != null) {
                 ivProfileImage.setImageBitmap(null);
-                ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 150, 150, false)));
-            } else {*/
+
+                ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 140, 140, false)));
+            } else {
                 ivProfileImage.setImageResource(R.drawable.ic_person_gray);
-            //}
+            //}*/
         }
 
 
