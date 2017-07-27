@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class TonesFragment extends Fragment {
     ProgressBar pbSadness;
     SMS sms;
     User user;
+    int tone;
 
     public TonesFragment() {
         // Required empty public constructor
@@ -71,6 +73,13 @@ public class TonesFragment extends Fragment {
             pbFear.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(2)), PorterDuff.Mode.SRC_IN);
             pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(3)), PorterDuff.Mode.SRC_IN);
             pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(4)), PorterDuff.Mode.SRC_IN);
+            pbAnger.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tone = 0;
+                    showEditDialog();
+                }
+            });
             setProfileTexts();
             setProfileProgressBars();
         }
@@ -113,6 +122,12 @@ public class TonesFragment extends Fragment {
         pbFear.setProgress(user.getAverageToneLevels(2));
         pbJoy.setProgress(user.getAverageToneLevels(3));
         pbSadness.setProgress(user.getAverageToneLevels(4));
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = getFragmentManager();
+        TextsDialogFragment textsDialogFragment = TextsDialogFragment.newInstance(user, tone);
+        textsDialogFragment.show(fm, "fragment_texts_dialog");
     }
 
 }
