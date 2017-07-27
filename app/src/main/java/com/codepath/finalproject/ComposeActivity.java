@@ -97,6 +97,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 //Log.e("Contact list with name & numbers", " "+contacts);
             }
             phones.close(); //look for cursor errors here
+            Log.i("comp num", contacts.get(0).getNumber());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,7 +147,26 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     //toasts and resets
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
                     etBody.setText("");
-                    etNumber.setText("");
+
+                    etNumber.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                                recipientNumber = null;
+                                etNumber.setText("");
+                                rvCompose.setAdapter(composeAdapter);
+
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(ComposeActivity.this);
+                                rvCompose.setLayoutManager(layoutManager);
+                                layoutManager.setReverseLayout(false);
+                                layoutManager.setStackFromEnd(false);
+
+                                etNumber.setTypeface(null, Typeface.NORMAL);
+                                etNumber.setOnKeyListener(null);
+                            }
+                            return true;
+                        }
+                    });
 
                 } else if (!isValidInput()) {
                     Toast.makeText(getApplicationContext(), "Invalid number",
@@ -296,17 +317,6 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                         validRecipient = false;
                     }
                 }
-                //this is for if you exactly type a contact name
-            /*} else {
-                validRecipient = false;
-                for (User contact : contacts) {
-                    if (contact.getNumber().equals(inputNumber)) {
-                        validRecipient = true;
-                        break;
-                    }
-                }
-
-            }*/
             }
         }
         return validRecipient;
@@ -356,7 +366,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         rvCompose.setLayoutManager(layoutManager);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList); // TODO: 7/25/17 the smsList hasn't been filled 
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList);
         etNumber.setText(contactName);
         etNumber.setTypeface(null, Typeface.BOLD);
         etNumber.setSelection(etNumber.getText().length());
@@ -371,6 +381,12 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
                     etNumber.setText("");
                     rvCompose.setAdapter(composeAdapter);
+
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(ComposeActivity.this);
+                    rvCompose.setLayoutManager(layoutManager);
+                    layoutManager.setReverseLayout(false);
+                    layoutManager.setStackFromEnd(false);
+
                     etNumber.setTypeface(null, Typeface.NORMAL);
                     etNumber.setOnKeyListener(null);
                 }

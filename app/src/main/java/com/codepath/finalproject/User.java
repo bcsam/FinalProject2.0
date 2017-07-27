@@ -41,7 +41,7 @@ public class User implements Parcelable{
         number = "";
         contactId = "";
         profileImage = null;
-        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
+         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
     }
 
     public User(Context context){

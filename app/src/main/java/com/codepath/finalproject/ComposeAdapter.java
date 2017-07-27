@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -43,7 +44,7 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Bitmap image;
     long contactIdLong;
-    String number;
+    String contactNumber;
     String id;
 
     MainActivity.DataTransfer dtTransfer;
@@ -124,15 +125,15 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         User contact = (User) contactList.get(position);
 
         //contact numbers are in the form +1 555-555-5555
-        number = contact.getNumber();
+        contactNumber = contact.getNumber();
         /*if(number.length() > 7)
             number = number.substring(0,2) + " (" + number.substring(3,6) + ") " + number.substring(7);*/
 
 
         ContentResolver contentResolver = context.getContentResolver();
 
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-        number = "";
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contactNumber));
+        //contactNumber = "";
 
         String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
@@ -152,7 +153,7 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
 
-        holder.tvContactNumber.setText(number);
+        holder.tvContactNumber.setText(contactNumber);
         holder.tvContactName.setText(contact.getName());
 
         holder.profileImage.setImageResource(R.drawable.ic_person_gray);
@@ -297,18 +298,18 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             //Intent intent = new Intent(context, MessagingActivity.class);
             //String name = contactList.get(position).getName();
             //String number = contactList.get(position).getNumber();
-            String number = tvCustomNumber.getText().toString();
-            number = number.replaceAll("-", "");
-            number = number.replaceAll(" ", "");
+            String customNumber = tvCustomNumber.getText().toString();
+            customNumber = customNumber.replaceAll("-", "");
+            customNumber = customNumber.replaceAll(" ", "");
             ArrayList<SMS> messages = new ArrayList<>();
 
 
             for (SMS s : incomingList) {
-                if (s.getNumber().equals(number))
+                if (s.getNumber().equals(customNumber))
                     messages.add(s);
             }
             for (SMS s : outgoingList) {
-                if (s.getNumber().equals(number)) {
+                if (s.getNumber().equals(customNumber)) {
                     int index = 0;
                     Log.i("MessagingActivity body", s.getBody());
                     for (SMS m : messages) {
@@ -321,8 +322,32 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     messages.add(index, s);
                 }
             }
-
-            dtTransfer.setValues(messages, number, number);
+            if(isValidInput(customNumber)) {
+                dtTransfer.setValues(messages, customNumber, customNumber);
+            }else{
+                Toast.makeText(context, "Invalid recipient",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
+
+        public boolean isValidInput(String number) {
+            boolean validRecipient = true;
+            String inputNumber = number.toString();
+            String phoneNumberChars = "1234567890-()";
+
+            if (number.length() < 3){
+                return false;
+            }
+
+            //checks if the input is a valid phone number
+            for (int i = 0; i < inputNumber.length(); i++) {
+                if (!phoneNumberChars.contains(Character.toString(inputNumber.charAt(i)))) {
+                    return false;
+                }
+            }
+
+            return validRecipient;
+        }
+
     }
 }
