@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingLeft="10dp">
 
     <LinearLayout android:layout_width="fill_parent"
         android:id="@+id/layout_1"
@@ -16,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Anger"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
         <ProgressBar
             android:id="@+id/pbAnger"
@@ -32,7 +34,7 @@
             android:layout_weight="1"
             android:text="0"
             android:textAlignment="center"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
     </LinearLayout>
 
 
@@ -48,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Disgust"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
         <ProgressBar
             android:id="@+id/pbDisgust"
@@ -64,7 +66,7 @@
             android:layout_weight="1"
             android:text="0"
             android:textAlignment="center"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
     </LinearLayout>
 
@@ -80,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Fear"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
         <ProgressBar
             android:id="@+id/pbFear"
@@ -96,7 +98,7 @@
             android:layout_weight="1"
             android:text="0"
             android:textAlignment="center"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
     </LinearLayout>
 
@@ -112,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Joy"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
         <ProgressBar
             android:id="@+id/pbJoy"
@@ -128,7 +130,7 @@
             android:layout_weight="1"
             android:text="0"
             android:textAlignment="center"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
     </LinearLayout>
 
@@ -144,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sadness"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
 
         <ProgressBar
             android:id="@+id/pbSadness"
@@ -160,6 +162,6 @@
             android:layout_weight="1"
             android:text="0"
             android:textAlignment="center"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/darkGray" />
     </LinearLayout>
 </LinearLayout>

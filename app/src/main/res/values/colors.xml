@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#c66a30</color>
+    <color name="colorPrimaryDark">#903d00</color>
     <color name="colorAccent">#FF4081</color>
     <color name="black">#000000</color>
     <color name="darkRed">#b30000</color>
@@ -22,12 +22,15 @@
     <color name="lightGray">#D3D3D3</color>
     <color name="veryLightGray">#F5F5F5</color>
     <color name="darkGray">#58585B</color>
+    <color name = "darkOrange">#cc8254</color>
+    <color name="veryDarkOrange">#985529</color>
+    <color name="teal">#397e87</color>
 
-    <color name="newYellow">#F7F6A2</color>
-    <color name="newBlue">#77A4C5</color>
-    <color name="newRed">#D98E84</color>
-    <color name="newGreen">#B8D697</color>
-    <color name="newPurple">#AA8DC8</color>
+    <color name="newYellow">#EFCF4F</color>
+    <color name="newBlue">#277B9C</color>
+    <color name="newRed">#C3412F</color>
+    <color name="newGreen">#73A939</color>
+    <color name="newPurple">#8943AF</color>
 
     <color name="checkButton">@color/googleGreen</color>
     <color name="sendButton">@color/twitterBlue</color>

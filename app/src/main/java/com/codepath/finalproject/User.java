@@ -41,7 +41,7 @@ public class User implements Parcelable{
         number = "";
         contactId = "";
         profileImage = null;
-        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
     }
 
     public User(Context context){
@@ -54,7 +54,7 @@ public class User implements Parcelable{
         number = "";
         contactId = "";
         profileImage = null;
-        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         this.context = context;
     }
 
@@ -168,11 +168,11 @@ public class User implements Parcelable{
     public Uri getProfileImageUri(){ return profileImage; }
 
     public String getStyleColor(){
-        return "#00334d";
+        return "#c66a30";
     }
 
     public String getSocialColor(){
-        return "#2eb8b8";
+        return "#c66a30";
     }
 
     public String getUtteranceColor(){

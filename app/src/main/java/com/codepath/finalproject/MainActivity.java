@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -90,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        color = ContextCompat.getColor(this, R.color.colorPrimary);
+        color = ContextCompat.getColor(this, R.color.teal);
 
         String hexColor = String.format("#%06X", (0xFFFFFF & color));
 
-        getSupportActionBar().setBackgroundDrawable(
-                new ColorDrawable(Color.parseColor(hexColor)));
+        //getSupportActionBar().setBackgroundDrawable(
+        //        new ColorDrawable(Color.parseColor(hexColor)));
 
         getSupportActionBar().setTitle("ToneTeller");
 
