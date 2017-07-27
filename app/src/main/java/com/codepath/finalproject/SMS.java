@@ -53,7 +53,7 @@ public class SMS implements Parcelable {
         socialLevels = new int[5];
         utteranceLevels = new int[7];
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
-        lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
+        lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
     }
 
     public int getId() { return id; }
@@ -189,7 +189,7 @@ public class SMS implements Parcelable {
         }
         if(level > 50)
             return lightToneColors[tone];
-        return "#D3D3D3";
+        return "#e2e2e2";
     }
 
     //---sends an SMS message to another device---
@@ -214,7 +214,7 @@ public class SMS implements Parcelable {
         socialLevels = new int[5];
         utteranceLevels = new int[7];
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
-        lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
+        lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
         this.context = context;
 
         toneLevels = new int[5];
@@ -222,7 +222,7 @@ public class SMS implements Parcelable {
         socialLevels = new int[5];
         utteranceLevels = new int[7];
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
-        lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
+        lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
     }
 
     public int getImageResource() {

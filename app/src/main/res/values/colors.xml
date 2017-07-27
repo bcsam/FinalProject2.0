@@ -20,6 +20,7 @@
     <color name="paleOrange">#ffd394</color>
     <color name="white">#ffffff</color>
     <color name="lightGray">#D3D3D3</color>
+    <color name="lighterGray">#e2e2e2</color>
     <color name="veryLightGray">#F5F5F5</color>
     <color name="darkGray">#58585B</color>
     <color name = "darkOrange">#cc8254</color>
@@ -31,6 +32,12 @@
     <color name="newRed">#C3412F</color>
     <color name="newGreen">#73A939</color>
     <color name="newPurple">#8943AF</color>
+
+    <color name="newLightYellow">#f4e4a5</color>
+    <color name="newLightBlue">#FF91CBE2</color>
+    <color name="newLightRed">#FFF7ABA0</color>
+    <color name="newLightGreen">#FFBDDF99</color>
+    <color name="newLightPurple">#FFCBA5DF</color>
 
     <color name="checkButton">@color/googleGreen</color>
     <color name="sendButton">@color/twitterBlue</color>
