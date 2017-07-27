@@ -13,8 +13,7 @@
         android:layout_above="@+id/btCheck"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/veryLightGray" />
+        android:layout_alignParentStart="true" />
 
 
     <Button

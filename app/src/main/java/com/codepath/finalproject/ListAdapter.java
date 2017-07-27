@@ -36,6 +36,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
     View rowView;
+    Bitmap image;
 
     public ListAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList) {
         context = mContext;
@@ -83,7 +84,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
         if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
-            Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+            image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
             if (image != null) {
                 holder.profileCircle.setVisibility(View.INVISIBLE);
@@ -91,10 +92,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
                 holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+                image = null;
             } else if (!name.equals("")) {
-                //holder.textCircle.setVisibility(View.VISIBLE);
+                holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
-                //holder.textCircle.setText("" + name.charAt(0));
+                holder.textCircle.setText("" + name.charAt(0));
             }
         }
 
