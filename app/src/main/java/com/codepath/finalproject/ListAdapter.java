@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -12,7 +11,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,22 +65,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-        String read = smsList.get(position).getRead();
-        Log.i("read adapter", read);
-
-        if (read.equals("1"))
-            holder.ivRead.setVisibility(View.GONE);
-        if (!name.equals("")) {
-            holder.tvUserName.setText(name);
-        } else {
-            holder.tvUserName.setText(number);
-        }
 
         //long contactIdLong = Long.parseLong(contactId);
         //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
 
-        if (!contactId.equals("")) {
+
+        /*if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
@@ -98,33 +87,36 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }
+        }*/
+        if(!name.equals(""))
+            holder.tvUserName.setText(name);
+        else
+            holder.tvUserName.setText(number);
+        holder.tvBody.setText(body);
+        holder.date.setText(date);
+        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProfileActivity.class);
+                User user = new User(context);
+                user.setName(name);
+                user.setNumber(number);
+                user.setContactId(contactId);
 
-            holder.tvBody.setText(body);
-            holder.date.setText(date);
-            holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, ProfileActivity.class);
-                    User user = new User(context);
-                    user.setName(name);
-                    user.setNumber(number);
-                    user.setContactId(contactId);
+                intent.putExtra("id", contactId);
+                intent.putExtra("user", user);
+                context.startActivity(intent);
+            }
+        });
 
-                    intent.putExtra("id", contactId);
-                    intent.putExtra("user", user);
-                    context.startActivity(intent);
-                }
-            });
+        holder.tvBody.setOnLongClickListener(new View.OnLongClickListener() {
 
-            holder.tvBody.setOnLongClickListener(new View.OnLongClickListener() {
-
-                @Override
-                public boolean onLongClick(View v) {
-                    holder.tvTime.setVisibility(View.VISIBLE);
-                    return true;
-                }
-            });
+            @Override
+            public boolean onLongClick(View v) {
+                holder.tvTime.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
     }
 
 
@@ -247,7 +239,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             String name = smsList.get(position).getContact();
             String number = smsList.get(position).getNumber();
             String id = smsList.get(position).getContactId();
-            smsList.get(position).setRead("1");
             notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("name", name);

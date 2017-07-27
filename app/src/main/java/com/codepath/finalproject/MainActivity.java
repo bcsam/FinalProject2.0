@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -26,9 +25,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -71,19 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        Gson gson = new Gson();
-        String json = sharedPrefs.getString("incomingList", null);
-        Type type = new TypeToken<ArrayList<SMS>>() {}.getType();
-        incomingList = gson.fromJson(json, type);
-        json = sharedPrefs.getString("outgoingList", null);
-        type = new TypeToken<ArrayList<SMS>>() {}.getType();
-        outgoingList = gson.fromJson(json, type);
-        if(incomingList == null && outgoingList == null)
-            getPermissionToRead();
-        else
-            Log.i("sharedPreferences", String.valueOf(smsList.size()));
-        ins = this;
+        getPermissionToRead();
 
         int random = (int) Math.floor(Math.random() * 5);
         int color;
@@ -246,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent i = new Intent(MainActivity.this, ProfileActivity.class);
         i.putExtra("user", user);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
         MainActivity.this.startActivity(i);
     }
 
@@ -362,7 +349,6 @@ public class MainActivity extends AppCompatActivity {
                 recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
                 body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-                read = c.getString(c.getColumnIndexOrThrow("read")).toString();
                 type = c.getInt(c.getColumnIndexOrThrow("type"));
 
                 ContentResolver contentResolver = this.getContentResolver();
@@ -391,7 +377,6 @@ public class MainActivity extends AppCompatActivity {
                 sms.setNumber(recipientNumber);
                 sms.setContact(recipientName);
                 sms.setDate(date);
-                sms.setRead(read);
                 sms.setContactId(id);
                 id = "";
 
