@@ -3,7 +3,6 @@ package com.codepath.finalproject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -45,7 +44,6 @@ public class MessagingActivity extends AppCompatActivity {
     String recipientNumber;
     public static MessagingActivity inst;
     //ListAdapter adapter;
-    Cursor c;
     ConversationAdapter adapter;
 
     RecyclerView rvText;
