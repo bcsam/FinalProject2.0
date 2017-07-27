@@ -39,6 +39,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     // List values
     ArrayList<SMS> smsList;
     View rowView;
+    Bitmap image;
 
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
@@ -80,22 +81,30 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.tvBody.setText(body);
         holder.date.setText(date);
 
-        /*if (!id.equals("") && !name.equals("Me")) {
+        holder.textCircle.setVisibility(View.INVISIBLE);
+        holder.ivProfileCircle.setVisibility(View.VISIBLE);
+        holder.ivProfileImage.setVisibility(View.INVISIBLE);
+
+
+        /*if (!id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
-            Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
+            image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
             if (image != null) {
-                //holder.ivProfileCircle.setVisibility(View.INVISIBLE);
+                holder.ivProfileCircle.setVisibility(View.INVISIBLE);
                 holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
                 holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+                image = null;
             } else if (!name.equals("")) {
                 holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
         }*/
+
+
 
 
             holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +259,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivProfileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
+            textCircle = (TextView) itemView.findViewById(R.id.circleText);
 
             itemView.setOnClickListener(this);
         }

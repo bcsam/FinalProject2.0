@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal"
+    android:weightSum="4">
+
+    <TextView
+        android:id="@+id/tvRank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvText"
+        android:layout_alignBottom="@+id/tvText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="#99" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tvRank"
+        android:autoLink="all"
+        android:background="@drawable/turquoise"
+        android:backgroundTint="@color/lightGray"
+        android:inputType="textMultiLine"
+        android:linksClickable="true"
+        android:maxWidth="180dp"
+        android:textSize="14dp"
+        tools:text="Message" />
+
+    <TextView
+        android:id="@+id/tvTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvRank"
+        android:layout_alignTop="@+id/tvRank"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/tvText"
+        android:maxLines="1"
+        android:textSize="12dp"
+        android:visibility="visible"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvText"
+        android:layout_alignStart="@+id/tvText"
+        android:layout_below="@+id/tvText"
+        android:text="To: ContactName"
+        android:textSize="10dp" />
+</RelativeLayout>
+
+
+</RelativeLayout>

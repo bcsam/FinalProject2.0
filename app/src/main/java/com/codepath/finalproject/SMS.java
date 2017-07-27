@@ -52,7 +52,7 @@ public class SMS implements Parcelable {
         styleLevels = new int[3];
         socialLevels = new int[5];
         utteranceLevels = new int[7];
-        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
     }
 
@@ -153,10 +153,12 @@ public class SMS implements Parcelable {
         return utteranceLevels[utterance];
     }
 
-    public String getStyleColor(){ return "#00334d"; }
+    public void setUtteranceLevel(int utterance, double level){ utteranceLevels[utterance] = (int)(level*100); }
+
+    public String getStyleColor(){ return "#c66a30"; }
 
     public String getSocialColor(){
-        return "#2eb8b8";
+        return "#c66a30";
     }
 
     public String getToneColor(int tone){
@@ -211,7 +213,7 @@ public class SMS implements Parcelable {
         styleLevels = new int[3];
         socialLevels = new int[5];
         utteranceLevels = new int[7];
-        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
         this.context = context;
 
@@ -219,7 +221,7 @@ public class SMS implements Parcelable {
         styleLevels = new int[3];
         socialLevels = new int[5];
         utteranceLevels = new int[7];
-        darkToneColors = new String[]{"#b30000", "#267326", "#5900b3", "#e6b800", "#004d99"};
+        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#e29c9c", "#9ce29c", "#c5a6d9", "#ffe680", "#a3c4f5"};
     }
 
