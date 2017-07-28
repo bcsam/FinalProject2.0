@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SMS> onQuerySmsList = new ArrayList<>();
     ListAdapter adapter;
     Cursor c;
+    Cursor c1;
+    Cursor c2;
 
     TextView tvUserName;
 
@@ -315,16 +317,14 @@ public class MainActivity extends AppCompatActivity {
         String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
 
         String contactName = "";
-        Cursor cursor = context.getContentResolver().query(uri,projection,null,null,null);
+        c1 = context.getContentResolver().query(uri,projection,null,null,null);
 
-        if(cursor.moveToFirst())
+        if(c1.moveToFirst())
         {
 
-            contactName=cursor.getString(0);
+            contactName=c1.getString(0);
 
         }
-        cursor.close();
-        cursor = null;
 
         return contactName;
     }
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
-                Cursor cursor =
+                c2 =
                         contentResolver.query(
                                 uri,
                                 projection,
@@ -367,11 +367,11 @@ public class MainActivity extends AppCompatActivity {
                                 null,
                                 null);
 
-                if(cursor != null) {
-                    while(cursor.moveToNext()){
-                        id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                if(c2 != null) {
+                    while(c2.moveToNext()){
+                        id = c2.getString(c2.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
                     }
-                    cursor.close();
+                    c2.close();
                 }
                 recipientName = getContactName(recipientNumber, this);
 
@@ -435,6 +435,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("outgoingList", oJson);
         editor.commit();
         c.close();
+        c1.close();
+        c2.close();
         super.onDestroy();
     }
 

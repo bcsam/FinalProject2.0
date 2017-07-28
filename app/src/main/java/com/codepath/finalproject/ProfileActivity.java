@@ -39,6 +39,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
+    Cursor c;
+    Cursor c1;
+    Cursor c2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
-        Cursor cursor =
+        c =
                 contentResolver.query( // TODO: 7/25/17 This line crashes the app 
                         uri,
                         projection,
@@ -123,11 +126,10 @@ public class ProfileActivity extends AppCompatActivity {
                         null,
                         null);
 
-        if(cursor != null) {
-            while(cursor.moveToNext()){
-                id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+        if(c != null) {
+            while(c.moveToNext()){
+                id = c.getString(c.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
             }
-            cursor.close();
         }
         user.setContactId(id);*/
 
@@ -150,18 +152,17 @@ public class ProfileActivity extends AppCompatActivity {
 
     public SMS getMyAverages(User user) {
         Uri uri = Uri.parse("content://sms/sent");
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
-        startManagingCursor(c);
+        c1 = getContentResolver().query(uri, null, null, null, null);
+        startManagingCursor(c1);
         String fullText = "";
         // Read the sms data and store it in the listco
-        if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+        if (c1.moveToFirst()) {
+            for (int i = 0; i < c1.getCount(); i++) {
+                String text = c1.getString(c1.getColumnIndexOrThrow("body")).toString();
                 fullText += ". "+text;
-                c.moveToNext();
+                c1.moveToNext();
             }
         }
-        c.close();
         SMS sms = new SMS();
         sms.setBody(fullText);
         return sms;
@@ -169,22 +170,28 @@ public class ProfileActivity extends AppCompatActivity {
 
     public SMS getAverages(User user) {
         Uri uri = Uri.parse("content://sms/inbox");
-        Cursor c = getContentResolver().query(uri, null, "address='"+user.getNumber()+"'", null, null);
-        startManagingCursor(c);
+        c2 = getContentResolver().query(uri, null, "address='"+user.getNumber()+"'", null, null);
+        startManagingCursor(c2);
         String fullText = "";
 
         // Read the sms data and store it in the listco
-        if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
+        if (c2.moveToFirst()) {
+            for (int i = 0; i < c2.getCount(); i++) {
+                String text = c2.getString(c2.getColumnIndexOrThrow("body")).toString();
                 fullText += ". "+text;
-                c.moveToNext();
+                c2.moveToNext();
             }
         }
-        c.close();
         SMS sms = new SMS();
         sms.setBody(fullText);
         return sms;
+    }
+
+    @Override
+    public void onDestroy(){
+        c.close();
+        c1.close();
+        c2.close();
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
