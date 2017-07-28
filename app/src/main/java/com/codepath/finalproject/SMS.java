@@ -178,7 +178,7 @@ public class SMS implements Parcelable {
         }
         if(level > 50)
             return darkToneColors[tone];
-        return "#000000";
+        return "#58585B";
     }
     public String setBubbleColor() {
         int tone = 6;

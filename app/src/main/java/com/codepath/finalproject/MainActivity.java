@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ins = this;
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
@@ -392,7 +393,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i("Main", "onActivityResult");
-        outgoingList = data.getParcelableArrayListExtra("outgoingList");
         text();
         adapter.notifyDataSetChanged();
         rvText.scrollToPosition(0);

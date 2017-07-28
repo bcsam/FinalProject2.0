@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -188,9 +190,18 @@ public class PostCheckActivity extends AppCompatActivity {
     }
 
     public void launchMyProfileActivity(MenuItem item) {
-        //launches the profile view
+        User user = new User(this);
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        user.setNumber("+"+mPhoneNumber);
+        user.setName("Me");
+        //user.setContactId(id);
+
         Intent i = new Intent(PostCheckActivity.this, ProfileActivity.class);
-        PostCheckActivity.this.startActivity(i);
+        i.putExtra("user", user);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        startActivity(i);
     }
 
     public void launchMainActivity(MenuItem item){
