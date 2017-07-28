@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
@@ -68,11 +69,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-        /*ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
+        ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
         if(user.getName().equals("Me"))
             client.execute(getMyAverages(user));
         else
-            client.execute(getAverages(user));*/
+            client.execute(getAverages(user));
 
 
         /*long contactIdLong = Long.parseLong(id);
@@ -108,6 +109,8 @@ public class ProfileActivity extends AppCompatActivity {
         User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        Toast.makeText(this, mPhoneNumber, Toast.LENGTH_LONG).show();
+
         user.setNumber(mPhoneNumber); //this is why the + shows up
         user.setName("Me");
 
@@ -234,8 +237,8 @@ public class ProfileActivity extends AppCompatActivity {
     public class ProfileAnalyzerClient extends AsyncTask<SMS, String, SMS> {
         //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
         public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-        public static final String USERNAME = "52233a3a-e2ba-4200-9e96-219dcfecc475";
-        public static final String PASSWORD = "bPXmzsAYOPh3";
+        public static final String USERNAME = "63e0a895-2d09-4809-9dfe-85ee36a3dcfc";
+        public static final String PASSWORD = "AxAOMozz8Dyh";
         ToneAnalyzer service;
         Context context;
         User user;

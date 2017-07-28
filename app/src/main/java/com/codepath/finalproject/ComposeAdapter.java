@@ -38,21 +38,23 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int USER = 1;
     Context context;
     List<Object> contactList;
-    ArrayList<SMS> incomingList = new ArrayList<>();
-    ArrayList<SMS> outgoingList = new ArrayList<>();
+    ArrayList<SMS> incomingList;
+    ArrayList<SMS> outgoingList;
     String message;
 
     Bitmap image;
     long contactIdLong;
     String contactNumber;
     String id;
+    NumberViewHolder vh1;
+    ContactsViewHolder vh2;
 
     MainActivity.DataTransfer dtTransfer;
 
 
     public ComposeAdapter(Context mContext, ArrayList<Object> mContactList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList, MainActivity.DataTransfer dtTransfer) {
-        this.dtTransfer = dtTransfer;
         context = mContext;
+        this.dtTransfer = dtTransfer;
         contactList = mContactList;
         incomingList = mIncomingList;
         outgoingList = mOutgoingList;
@@ -80,20 +82,23 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         RecyclerView.ViewHolder viewHolder;
+        View v1;
+        View v2;
+        View v;
 
         switch (viewType) {
             case STRING:
-                View v1 = inflater.inflate(R.layout.item_custom_number, parent, false);
+                v1 = inflater.inflate(R.layout.item_custom_number, parent, false);
                 viewHolder = new NumberViewHolder(v1);
                 break;
 
             case USER:
-                View v2 = inflater.inflate(R.layout.item_contact, parent, false);
+                v2 = inflater.inflate(R.layout.item_contact, parent, false);
                 viewHolder = new ContactsViewHolder(v2);
                 break;
 
              default:
-                View v = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+                v = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
                 viewHolder = new ContactsViewHolder(v);
                 break;
         }
@@ -105,11 +110,11 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         switch (viewHolder.getItemViewType()) {
             case STRING:
-                NumberViewHolder vh1 = (NumberViewHolder) viewHolder;
+                vh1 = (NumberViewHolder) viewHolder;
                 configureNumberViewHolder(vh1, position);
                 break;
             case USER:
-                ContactsViewHolder vh2 = (ContactsViewHolder) viewHolder;
+                vh2 = (ContactsViewHolder) viewHolder;
                 configureContactsViewHolder(vh2, position);
                 break;
         }
