@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,14 +13,43 @@
         android:layout_width="140dp"
         android:layout_marginTop="15dp"
         android:layout_height="140dp"
-        android:layout_weight="1"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_person_gray" />
+        app:srcCompat="@drawable/ic_person_gray"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/ivProfileIcon"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_person_gray"
+        android:background="@drawable/circle"
+        android:visibility="visible"/>
+
+    <TextView
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="15dp"
+        android:text="AD"
+        android:textSize="44sp"
+        android:background="@drawable/rounded_textview"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/lightGray"
+        android:gravity="center"
+        android:id="@+id/circleText"
+        android:visibility="invisible"/>
+
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivProfile"
+        android:layout_marginTop="10dp"
         android:layout_weight=".3"
         android:gravity="center"
         android:text="TextView"
@@ -31,10 +60,12 @@
         android:id="@+id/tvNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_weight=".3"
         android:gravity="center_horizontal"
+        android:layout_below="@id/tvName"
         android:text="TextView"
         android:textSize="18sp"
         android:layout_marginBottom="10dp"/>
 
-</LinearLayout>
+</RelativeLayout>

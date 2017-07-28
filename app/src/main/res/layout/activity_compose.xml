@@ -22,10 +22,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_editor_absoluteY="16dp" />
     <View
+        android:id="@+id/horizontalLine"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@id/etComp2Number"/>
+        android:layout_height="2dip"
+        android:layout_below="@+id/etComp2Number"
+        android:background="#D3D3D3"
+        android:ellipsize="end"
+        android:maxLines="2"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCompose"
