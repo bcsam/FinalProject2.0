@@ -12,6 +12,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -66,6 +70,21 @@ public class MessageDetailActivity extends AppCompatActivity{
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
         mTabLayout.setupWithViewPager(viewPager);
+        animate();
+    }
+
+    public void animate(){
+        RelativeLayout bottom_layout = (RelativeLayout) findViewById(R.id.bottom_layout);
+        bottom_layout.setVisibility(LinearLayout.VISIBLE);
+        Animation animationExpand   =    AnimationUtils.loadAnimation(this, R.anim.expand);
+        Animation animationFade = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        animationFade.setDuration(500);
+        tvMessage.setAnimation(animationExpand);
+        tvMessage.animate();
+        animationExpand.start();
+        bottom_layout.setAnimation(animationFade);
+        bottom_layout.animate();
+        animationFade.start();
     }
 
     @Override

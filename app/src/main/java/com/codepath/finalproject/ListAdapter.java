@@ -15,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -111,8 +113,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 return true;
             }
         });
+        setAnimation(holder.itemView, getItemViewType(position));
     }
 
+    private void setAnimation(View viewToAnimate, int viewType){
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.bottom_top_slide);
+            viewToAnimate.startAnimation(animation);
+    }
 
     public int getItemCount() {
         return smsList.size();

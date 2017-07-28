@@ -47,7 +47,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
-    int lastPosition = -1;
+    int lastPosition = 2147483647;
+    String id;
 
     public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, List<SMS> outgoingList) {
 
@@ -78,7 +79,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         SMS[] params = new SMS[1];
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
-        final String id = smsList.get(position).getContactId();
+        id = smsList.get(position).getContactId(); //might have to change -Brent
+        if(id == null){
+            id = "";
+        }
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
@@ -112,9 +116,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
         }
 
-
-
-
             holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -130,6 +131,18 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             Log.i("position", String.valueOf(position));
 
         setAnimation(holder.itemView, position);
+    }
+
+    private void setAnimation(View viewToAnimate, int position){
+        if(getItemViewType(position)==0) {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.right_left_slide);
+            viewToAnimate.startAnimation(animation);
+            //lastPosition = position;
+        }else{
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.left_right_slide);
+            viewToAnimate.startAnimation(animation);
+            //lastPosition = position;
+        }
     }
 
     @Override
@@ -250,14 +263,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         return null;
     }
 
-    private void setAnimation(View viewToAnimate, int position){
-        if(position > lastPosition){
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
-    }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvUserName;
@@ -285,6 +290,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         @Override
         public void onClick(View view) {
             context = itemView.getContext();
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.expand);
+            itemView.setAnimation(animation);
+            itemView.startAnimation(animation);
             int position = getAdapterPosition();
             Log.i("onClick", smsList.get(position).getBody());
             Intent intent = new Intent(context, MessageDetailActivity.class);
@@ -292,6 +300,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             intent.putExtra("sms", smsList.get(position));
             context.startActivity(intent);
+
         }
     }
 }

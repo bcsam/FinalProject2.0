@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayoutComp">
 
     <EditText
         android:id="@+id/etComp2Number"
@@ -21,6 +21,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_editor_absoluteY="16dp" />
+
+
     <View
         android:id="@+id/horizontalLine"
         android:layout_width="match_parent"

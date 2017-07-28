@@ -258,7 +258,13 @@ public class MessagingActivity extends AppCompatActivity {
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendText(v);
+                if (isValidInput()) {
+                    sendText(v);
+                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Invalid text", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -375,6 +381,13 @@ public class MessagingActivity extends AppCompatActivity {
         adapter.notifyItemInserted(0);
         outgoingList.add(0, text);
         rvText.scrollToPosition(0);
+    }
+
+    public boolean isValidInput(){
+        if(etBody.length()>0){
+            return true;
+        }
+        return false;
     }
 
     @Override

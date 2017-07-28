@@ -19,9 +19,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -52,6 +56,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+        //animate();
         InitializeViews();
         setListeners();
 
@@ -76,6 +81,16 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         etBody.setText(getIntent().getStringExtra("message"));
         etNumber.setText(getIntent().getStringExtra("recipient"));
         //unwrapIntent();
+    }
+
+    public void animate(){
+        RelativeLayout dialog   = (RelativeLayout) findViewById(R.id.relativeLayoutComp);
+        dialog.setVisibility(LinearLayout.VISIBLE);
+        Animation animation   =    AnimationUtils.loadAnimation(this, R.animator.expand);
+        animation.setDuration(500);
+        dialog.setAnimation(animation);
+        dialog.animate();
+        animation.start();
     }
 
     public void addContacts() {
