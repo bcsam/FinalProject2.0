@@ -55,9 +55,8 @@ public class PostCheckActivity extends AppCompatActivity {
         sms.setBody(message);
 
         //gets the textbody's score and puts them in textBody
-        //AnalyzerClient client = new AnalyzerClient();
-        //client.getScores(sms);
-        //client.getUtteranceScores(textBody);
+        AnalyzerClient client = new AnalyzerClient();
+        client.getScores(sms);
 
         //sets the message on the activity
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);

@@ -45,10 +45,10 @@ public class MessageDetailActivity extends AppCompatActivity{
         sms = getIntent().getParcelableExtra("sms");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-        /*if(sms.getBubbleColor().equals("")){
+        if(sms.getBubbleColor().equals("")){
             AnalyzerClient client = new AnalyzerClient();
             client.getScores(sms);
-        }*/
+        }
 
 
         tvMessage = (TextView) findViewById(R.id.tvMessage);
