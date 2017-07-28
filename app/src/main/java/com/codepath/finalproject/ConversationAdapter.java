@@ -85,10 +85,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
-        if(params[0].getBubbleColor().equals(""))
+        if(params[0].getBubbleColor().equals("")){
+            Log.i("ConversationAdapter", "if");
+            setAnimation(holder.itemView, position);
             client.execute(params);
-        else
+        }
+        else {
             drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+            Log.i("ConversationAdapter", "else");
+        }
         holder.tvBody.setText(body);
         holder.date.setText(date);
 
@@ -128,8 +133,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 }
             });
             Log.i("position", String.valueOf(position));
-
-        setAnimation(holder.itemView, position);
     }
 
     private void setAnimation(View viewToAnimate, int position){
