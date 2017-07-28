@@ -393,7 +393,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i("Main", "onActivityResult");
-        //outgoingList = data.getParcelableArrayListExtra("outgoingList");
         text();
         adapter.notifyDataSetChanged();
         rvText.scrollToPosition(0);

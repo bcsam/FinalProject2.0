@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
+import android.telephony.PhoneNumberUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -155,9 +156,7 @@ public class User implements Parcelable{
 
     //formats numbers +1(555)555-5555
     public String toStringNumber(){
-        String newNumber = number;
-        if(newNumber.length() > 7)
-            newNumber = number.substring(0,2) + " (" + number.substring(2,5) + ") " + number.substring(5,8) + "-" + number.substring(8);
+        String newNumber = PhoneNumberUtils.formatNumber(number);
         return newNumber;
     }
 
