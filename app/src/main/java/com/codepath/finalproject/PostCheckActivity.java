@@ -28,7 +28,8 @@ public class PostCheckActivity extends AppCompatActivity {
     TextView tvTextBody;
     SMS sms;
     String message;
-    String recipient;
+    String recipientName;
+    String recipientNumber;
     Button btSend;
     Button btEdit;
     ArrayList<SMS> incomingList = new ArrayList<>();
@@ -42,7 +43,8 @@ public class PostCheckActivity extends AppCompatActivity {
 
         //stores info in intent for sending back to MainActivity
         message = getIntent().getStringExtra("message");
-        recipient = getIntent().getStringExtra("recipientName");
+        recipientName = getIntent().getStringExtra("recipientName");
+        recipientNumber = getIntent().getStringExtra("recipientNumber");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
 
@@ -87,7 +89,7 @@ public class PostCheckActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_unsearchable, menu);
         return true;
     }
-
+/*
     public void sendEmail(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
         //for only emails
@@ -100,6 +102,7 @@ public class PostCheckActivity extends AppCompatActivity {
             Toast.makeText(PostCheckActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
+*/
 
     public void setOnClickListeners(){
 
@@ -108,17 +111,20 @@ public class PostCheckActivity extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(PostCheckActivity.this, ComposeActivity.class);
                 intent.putExtra("message", message);
-                intent.putExtra("recipient", recipient);
+                intent.putExtra("recipient", recipientName);
                 PostCheckActivity.this.startActivity(intent);
             }
         });
 
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) { // TODO: 7/28/17 send this to the messaging activity 
                     sendText(view);
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(PostCheckActivity.this, MainActivity.class);
+                    Intent intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                    intent.putExtra("name", recipientName);
+                    intent.putExtra("number", recipientNumber);
+                    intent.putExtra("message", message);
                     startActivity(intent);
             }
         });
@@ -183,7 +189,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
     public void sendText(View view){
         SMS text = new SMS();
-        text.setNumber(recipient);
+        text.setNumber(recipientNumber);
         text.setBody(message);
         text.sendSMS();
     }

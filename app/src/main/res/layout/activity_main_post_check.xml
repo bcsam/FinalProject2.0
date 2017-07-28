@@ -15,6 +15,8 @@
 
         <TextView
             android:id="@+id/tvTextBody"
+            android:transitionName="message"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="5dp"
@@ -94,7 +96,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:onClick="sendEmail"
             android:text="Send"
             android:textColor="@color/white" />
 

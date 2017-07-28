@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -239,6 +240,9 @@ public class MessagingActivity extends AppCompatActivity {
                     intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
                     intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
                     MessagingActivity.this.startActivity(intent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(MessagingActivity.this, etBody, "profile");
+                    startActivity(intent, options.toBundle());
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter a message!",
                             Toast.LENGTH_LONG).show();
@@ -259,7 +263,13 @@ public class MessagingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isValidInput()) {
-                    sendText(v);
+                    //sendText(v);
+                    SMS text = new SMS();
+                    text.setNumber(recipientNumber);
+                    text.setBody(etBody.getText().toString());
+                    text.setDate(String.valueOf(System.currentTimeMillis()));
+                    text.setType(2);
+                    sendText(text);
                     Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -364,14 +374,26 @@ public class MessagingActivity extends AppCompatActivity {
             }
         }
     }*/
-
+/*
     public void sendText(View view){
         SMS text = new SMS();
         text.setNumber(recipientNumber);
         text.setBody(etBody.getText().toString());
         text.setDate(String.valueOf(System.currentTimeMillis()));
         text.setType(2);
-        etBody.clearFocus();
+        //etBody.clearFocus();
+        etBody.setText("");
+        //this would hide the keyboard
+        //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        text.sendSMS();
+        messages.add(0, text);
+        adapter.notifyItemInserted(0);
+        outgoingList.add(0, text);
+        rvText.scrollToPosition(0);
+    }
+*/
+    public void sendText(SMS text){
         etBody.setText("");
         //this would hide the keyboard
         //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
