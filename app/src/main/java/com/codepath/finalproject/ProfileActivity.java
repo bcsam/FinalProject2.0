@@ -136,8 +136,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
         user.setContactId(id);*/
 
-        Log.i("profile", user.getNumber());
-        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
@@ -253,7 +251,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         @Override
         protected SMS doInBackground(SMS... params) {
-            Log.i("client", "in background");
             if(params[0].getBody().equals("")){
                 for(int j = 0; j < 5; j++) {
                     if(j<3)

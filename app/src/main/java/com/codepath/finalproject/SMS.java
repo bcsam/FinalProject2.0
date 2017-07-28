@@ -29,7 +29,6 @@ public class SMS implements Parcelable {
     private int[] toneLevels;
     private int[] styleLevels;
     private int[] socialLevels;
-    private int[] utteranceLevels;
     private String[] darkToneColors;
     private String[] lightToneColors;
     private String bubbleColor;
@@ -52,7 +51,6 @@ public class SMS implements Parcelable {
         toneLevels = new int[5];
         styleLevels = new int[3];
         socialLevels = new int[5];
-        utteranceLevels = new int[7];
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
         bubbleColor = "";
@@ -151,12 +149,6 @@ public class SMS implements Parcelable {
 
     public void setSocialLevel(int social, double level){ socialLevels[social] = (int)(level*100); }
 
-    public int getUtteranceLevel(int utterance){
-        return utteranceLevels[utterance];
-    }
-
-    public void setUtteranceLevel(int utterance, double level){ utteranceLevels[utterance] = (int)(level*100); }
-
     public String getStyleColor(){ return "#c66a30"; }
 
     public String getSocialColor(){
@@ -219,7 +211,6 @@ public class SMS implements Parcelable {
         toneLevels = new int[5];
         styleLevels = new int[3];
         socialLevels = new int[5];
-        utteranceLevels = new int[7];
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
         this.context = context;
@@ -250,7 +241,6 @@ public class SMS implements Parcelable {
         dest.writeIntArray(this.toneLevels);
         dest.writeIntArray(this.styleLevels);
         dest.writeIntArray(this.socialLevels);
-        dest.writeIntArray(this.utteranceLevels);
         dest.writeStringArray(this.darkToneColors);
         dest.writeStringArray(this.lightToneColors);
         dest.writeString(this.bubbleColor);
@@ -270,7 +260,6 @@ public class SMS implements Parcelable {
         this.toneLevels = in.createIntArray();
         this.styleLevels = in.createIntArray();
         this.socialLevels = in.createIntArray();
-        this.utteranceLevels = in.createIntArray();
         this.darkToneColors = in.createStringArray();
         this.lightToneColors = in.createStringArray();
         this.bubbleColor = in.readString();

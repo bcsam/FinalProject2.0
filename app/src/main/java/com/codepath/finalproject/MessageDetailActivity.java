@@ -27,10 +27,8 @@ import java.util.List;
 
 public class MessageDetailActivity extends AppCompatActivity{
     String name;
-    String message;
     String number;
     SMS sms;
-    TextView tvName;
     TextView tvMessage;
 
     ArrayList<SMS> incomingList;

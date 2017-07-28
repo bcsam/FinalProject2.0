@@ -1,9 +1,7 @@
 package com.codepath.finalproject;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,8 +38,6 @@ public class MessagingActivity extends AppCompatActivity {
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
     Uri uri;
-    Cursor c;
-    Cursor c1;
 
     String recipientName = "";
     String recipientNumber;
@@ -242,8 +237,6 @@ public class MessagingActivity extends AppCompatActivity {
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         user.setNumber("+"+mPhoneNumber);
         user.setName("Me");
-        Log.i("profile", user.getNumber());
-        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
@@ -251,7 +244,6 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void launchMainActivity(MenuItem item) {
-        Log.i("MessagingActivity", "onBackPressed");
         Intent i =  new Intent(MessagingActivity.this, MainActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
@@ -326,26 +318,6 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void getMessages() {
-        ContentValues contentValues = new ContentValues();
-
-        /*if (recipientNumber.length() == 12) {
-            differentNumber(recipientNumber);
-            differentNumber(recipientNumber.substring(1, 12));
-            differentNumber(recipientNumber.substring(2, 12));
-        }
-        else if (recipientNumber.length() == 11) {
-            differentNumber(recipientNumber);
-            differentNumber(recipientNumber.substring(1, 11));
-            differentNumber("+" + recipientNumber);
-        }
-        else if (recipientNumber.length() == 10) {
-            differentNumber(recipientNumber);
-            differentNumber("1" + recipientNumber);
-            differentNumber("+1" + recipientNumber);
-        }
-        else {
-            differentNumber(recipientNumber);
-        }*/
 
         for (SMS s : incomingList) {
             if (s.getNumber().equals(recipientNumber) || s.getNumber().equals("+" + recipientNumber)) {
@@ -355,10 +327,8 @@ public class MessagingActivity extends AppCompatActivity {
         for (SMS s : outgoingList) {
             if (s.getNumber().equals(recipientNumber) || s.getNumber().equals("+" + recipientNumber)) {
                 int index = 0;
-                Log.i("MessagingActivity body", s.getBody());
                 for (SMS m : messages) {
                     if (Double.parseDouble(m.getDate()) < Double.parseDouble(s.getDate())) {
-                        Log.i("MessagingActivity index", String.valueOf(index));
                         index = messages.indexOf(m);
                         break;
                     }
@@ -368,50 +338,6 @@ public class MessagingActivity extends AppCompatActivity {
         }
     }
 
-   /* public void differentNumber(String number) {
-        c = getContentResolver().query(Uri.parse("content://sms/inbox"), null, "address='" + number + "'", null, null);
-        while (c.moveToNext()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-                SMS message = new SMS();
-                message.setBody(text);
-                Log.i("MyNumber", myNumber);
-                message.setNumber(number);
-                message.setDate(date);
-                message.setContact(" ");
-                int index = messages.size();
-                for (SMS m : messages) {
-                    if (Double.parseDouble(m.getDate()) > Double.parseDouble(message.getDate())) {
-                        index = messages.indexOf(m);
-                        break;
-                    }
-                }
-                messages.add(index, message);
-                c.moveToNext();
-            }
-        }
-    }*/
-/*
-
-    public void sendText(View view){
-        SMS text = new SMS();
-        text.setNumber(recipientNumber);
-        text.setBody(etBody.getText().toString());
-        text.setDate(String.valueOf(System.currentTimeMillis()));
-        text.setType(2);
-        //etBody.clearFocus();
-        etBody.setText("");
-        //this would hide the keyboard
-        //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        text.sendSMS();
-        messages.add(0, text);
-        adapter.notifyItemInserted(0);
-        outgoingList.add(0, text);
-        rvText.scrollToPosition(0);
-    }
-*/
     public void sendText(SMS text){
         etBody.setText("");
         //this would hide the keyboard
@@ -434,7 +360,6 @@ public class MessagingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        Log.i("MessagingActivity", "onBackPressed");
         Intent i =  new Intent(MessagingActivity.this, MainActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);

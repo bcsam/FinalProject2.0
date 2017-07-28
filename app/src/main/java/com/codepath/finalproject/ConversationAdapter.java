@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,15 +84,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
-        if(params[0].getBubbleColor().equals("")){
-            Log.i("ConversationAdapter", "if");
+        if(params[0].getBubbleColor().equals("")) {
             setAnimation(holder.itemView, position);
             client.execute(params);
         }
-        else {
+        else
             drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
-            Log.i("ConversationAdapter", "else");
-        }
         holder.tvBody.setText(body);
         holder.date.setText(date);
 
@@ -132,7 +128,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     context.startActivity(intent);
                 }
             });
-            Log.i("position", String.valueOf(position));
     }
 
     private void setAnimation(View viewToAnimate, int position){
@@ -296,7 +291,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             itemView.setAnimation(animation);
             itemView.startAnimation(animation);
             int position = getAdapterPosition();
-            Log.i("onClick", smsList.get(position).getBody());
             Intent intent = new Intent(context, MessageDetailActivity.class);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
