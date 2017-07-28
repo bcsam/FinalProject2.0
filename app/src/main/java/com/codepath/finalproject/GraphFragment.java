@@ -48,11 +48,11 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
         User user = getArguments().getParcelable("user");
-        GraphAnalyzerClient client = new GraphAnalyzerClient(getContext(), user, graph);
+        /*GraphAnalyzerClient client = new GraphAnalyzerClient(getContext(), user, graph);
         if(user.getName().equals("Me"))
             client.execute(getMyGraph(user));
         else
-            client.execute(getGraph(user));
+            client.execute(getGraph(user));*/
         return v;
     }
 

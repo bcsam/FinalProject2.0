@@ -68,11 +68,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-        ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
+        /*ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
         if(user.getName().equals("Me"))
             client.execute(getMyAverages(user));
         else
-            client.execute(getAverages(user));
+            client.execute(getAverages(user));*/
 
 
         /*long contactIdLong = Long.parseLong(id);
@@ -189,9 +189,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
-        c.close();
-        c1.close();
-        c2.close();
+        if(c != null)
+            c.close();
+        if(c1 != null)
+            c1.close();
+        if(c2 != null)
+            c2.close();
+        super.onDestroy();
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {

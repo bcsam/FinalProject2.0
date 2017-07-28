@@ -24,8 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -98,51 +96,6 @@ public class MainActivity extends AppCompatActivity {
         //        new ColorDrawable(Color.parseColor(hexColor)));
 
         getSupportActionBar().setTitle("ToneTeller");
-
-
-
-        //if statement for requesting info
-        /*if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_SMS},
-                    MY_PERMISSIONS_REQUEST_READ_SMS);
-        }
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-        }
-
-        SMS = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_SMS)
-                == PackageManager.PERMISSION_GRANTED;
-        contact = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                == PackageManager.PERMISSION_GRANTED;
-
-        if (SMS && contact) {
-            text();
-        }
-        /*
-        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
-        ivProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-                User OtherUser = new User();
-                OtherUser.setNumber(recipientNumber);
-                OtherUser.setName(recipientName);
-                MainActivity.this.startActivity(i);
-            }
-        });
-        */
     }
 
     @Override
@@ -427,16 +380,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        Gson gson = new Gson();
-        String iJson = gson.toJson(incomingList);
-        String oJson = gson.toJson(outgoingList);
-        editor.putString("incomingList", iJson);
-        editor.putString("outgoingList", oJson);
-        editor.commit();
-        c.close();
-        c1.close();
-        c2.close();
+        if(c != null)
+            c.close();
+        if(c1 != null)
+            c1.close();
+        if(c2 != null)
+            c2.close();
         super.onDestroy();
     }
 
