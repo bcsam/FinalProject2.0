@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
@@ -108,6 +109,8 @@ public class ProfileActivity extends AppCompatActivity {
         User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+        Toast.makeText(this, mPhoneNumber, Toast.LENGTH_LONG).show();
+
         user.setNumber(mPhoneNumber); //this is why the + shows up
         user.setName("Me");
 

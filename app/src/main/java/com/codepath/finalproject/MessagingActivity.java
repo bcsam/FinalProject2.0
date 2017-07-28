@@ -202,6 +202,8 @@ public class MessagingActivity extends AppCompatActivity {
     public void launchComposeActivity(MenuItem item) {
         //launches the compose activit
         Intent i = new Intent(MessagingActivity.this, ComposeActivity.class);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         MessagingActivity.this.startActivity(i);
     }
 
