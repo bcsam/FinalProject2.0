@@ -32,6 +32,7 @@ public class SMS implements Parcelable {
     private int[] utteranceLevels;
     private String[] darkToneColors;
     private String[] lightToneColors;
+    private String bubbleColor;
     private Uri uri;
     private Context context;
     private String contactId;
@@ -54,6 +55,7 @@ public class SMS implements Parcelable {
         utteranceLevels = new int[7];
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
+        bubbleColor = "";
     }
 
     public int getId() { return id; }
@@ -178,7 +180,7 @@ public class SMS implements Parcelable {
             return darkToneColors[tone];
         return "#000000";
     }
-    public String getBubbleColor() {
+    public String setBubbleColor() {
         int tone = 6;
         int level = 0;
         for(int i=0; i<5; i++) {
@@ -187,11 +189,16 @@ public class SMS implements Parcelable {
                 tone = i;
             }
         }
-        if(level > 50)
+        if(level > 50) {
+            bubbleColor = lightToneColors[tone];
             return lightToneColors[tone];
+        }
+        bubbleColor = "#e2e2e2";
         return "#e2e2e2";
     }
-
+    public String getBubbleColor(){
+        return bubbleColor;
+    }
     //---sends an SMS message to another device---
     public void sendSMS(String contact, String phoneNumber, String message)
     {
@@ -216,13 +223,7 @@ public class SMS implements Parcelable {
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
         this.context = context;
-
-        toneLevels = new int[5];
-        styleLevels = new int[3];
-        socialLevels = new int[5];
-        utteranceLevels = new int[7];
-        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
-        lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
+        bubbleColor = "";
     }
 
     public int getImageResource() {
@@ -252,6 +253,7 @@ public class SMS implements Parcelable {
         dest.writeIntArray(this.utteranceLevels);
         dest.writeStringArray(this.darkToneColors);
         dest.writeStringArray(this.lightToneColors);
+        dest.writeString(this.bubbleColor);
         dest.writeParcelable(this.uri, flags);
         dest.writeString(this.contactId);
         dest.writeInt(this.imageResource);
@@ -271,6 +273,7 @@ public class SMS implements Parcelable {
         this.utteranceLevels = in.createIntArray();
         this.darkToneColors = in.createStringArray();
         this.lightToneColors = in.createStringArray();
+        this.bubbleColor = in.readString();
         this.uri = in.readParcelable(Uri.class.getClassLoader());
         this.contactId = in.readString();
         this.imageResource = in.readInt();

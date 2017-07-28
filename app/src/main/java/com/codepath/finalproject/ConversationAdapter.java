@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -80,7 +82,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
-        client.execute(params);
+        if(params[0].getBubbleColor().equals(""))
+            client.execute(params);
+        else
+            drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.tvBody.setText(body);
         holder.date.setText(date);
 
@@ -89,7 +94,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.ivProfileImage.setVisibility(View.INVISIBLE);
 
 
-        /*if (!id.equals("") && smsList.get(position).getType() == 1) {
+        if (!id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
@@ -105,7 +110,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
 
 
 
