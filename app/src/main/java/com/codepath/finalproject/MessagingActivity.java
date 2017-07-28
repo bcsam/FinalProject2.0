@@ -3,6 +3,7 @@ package com.codepath.finalproject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,6 +41,8 @@ public class MessagingActivity extends AppCompatActivity {
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
     Uri uri;
+    Cursor c;
+    Cursor c1;
 
     String recipientName;
     String recipientNumber;
@@ -218,8 +221,12 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void launchMainActivity(MenuItem item) {
-        Intent i = new Intent(MessagingActivity.this, MainActivity.class);
-        MessagingActivity.this.startActivity(i);
+        Log.i("MessagingActivity", "onBackPressed");
+        Intent i =  new Intent(MessagingActivity.this, MainActivity.class);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        setResult(RESULT_OK, i);
+        finish();
     }
 
     public void initializeViews() {
@@ -301,12 +308,12 @@ public class MessagingActivity extends AppCompatActivity {
             differentNumber(recipientNumber);
         }*/
 
-        for(SMS s: incomingList){
-            if(s.getNumber().equals(recipientNumber))
+        for (SMS s : incomingList) {
+            if (s.getNumber().equals(recipientNumber))
                 messages.add(s);
         }
-        for(SMS s: outgoingList){
-            if(s.getNumber().equals(recipientNumber)) {
+        for (SMS s : outgoingList) {
+            if (s.getNumber().equals(recipientNumber)) {
                 int index = 0;
                 Log.i("MessagingActivity body", s.getBody());
                 for (SMS m : messages) {
@@ -319,35 +326,6 @@ public class MessagingActivity extends AppCompatActivity {
                 messages.add(index, s);
             }
         }
-        /*c = getContentResolver().query(Uri.parse("content://sms/sent"), null, "address='" + recipientNumber + "'", null, null);
-        while (c.moveToNext()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                String text = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                String date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-                String id = c.getString(c.getColumnIndexOrThrow("_id")).toString();
-                contentValues.put("read", true);
-                getContentResolver().update(Uri.parse("content://sms/inbox"), contentValues, "_id=" + id, null);
-                Log.i("check id", id);
-                Log.i("check value", c.getString(c.getColumnIndexOrThrow("read")).toString());
-                SMS message = new SMS();
-                message.setBody(text);
-                Log.i("MyNumber", myNumber);
-                message.setNumber(myNumber);
-                message.setDate(date);
-                message.setContact(" ");
-                int index = messages.size();
-                for (SMS m : messages) {
-                    if (Double.parseDouble(m.getDate()) > Double.parseDouble(message.getDate())) {
-                        index = messages.indexOf(m);
-                        break;
-                    }
-                }
-                messages.add(index, message);
-                c.moveToNext();
-            }
-        }
-        c.close();*/
-
     }
 
    /* public void differentNumber(String number) {
@@ -375,6 +353,7 @@ public class MessagingActivity extends AppCompatActivity {
         }
     }*/
 /*
+
     public void sendText(View view){
         SMS text = new SMS();
         text.setNumber(recipientNumber);
@@ -411,6 +390,7 @@ public class MessagingActivity extends AppCompatActivity {
         }
         return false;
     }
+
 
     @Override
     public void onBackPressed(){
