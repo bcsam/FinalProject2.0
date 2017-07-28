@@ -63,7 +63,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         SMS sms = smsList.get(position);
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
-        final String contactId = smsList.get(position).getContactId();
+        String contactId = smsList.get(position).getContactId();
+
+        if (contactId == null){
+            contactId = "";
+        }
+
 
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
