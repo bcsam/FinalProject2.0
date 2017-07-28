@@ -44,7 +44,7 @@ public class MessagingActivity extends AppCompatActivity {
     Cursor c;
     Cursor c1;
 
-    String recipientName;
+    String recipientName = "";
     String recipientNumber;
     public static MessagingActivity inst;
     //ListAdapter adapter;
@@ -67,23 +67,50 @@ public class MessagingActivity extends AppCompatActivity {
         setListeners();
         inst = this;
 
-        //stores this info to know which messages to bring up
-        recipientName = getIntent().getStringExtra("name");
-        recipientNumber = getIntent().getStringExtra("number");
-        String message = getIntent().getStringExtra("message");
-        etBody.setText(message);
+        SMS checkedText = getIntent().getParcelableExtra("text");
+        if (checkedText != null) { //if clicked send from post check // TODO: 7/28/17 put the sent message on the right side
+            recipientName = checkedText.getContact();
+            recipientNumber = checkedText.getNumber();
+            etBody.setText("");
 
-        if (!recipientName.equals("")) {
-            getSupportActionBar().setTitle(recipientName);
-        } else {
-            getSupportActionBar().setTitle(recipientNumber);
-        }
+            if (!recipientName.equals("")) {
+                getSupportActionBar().setTitle(recipientName);
+            } else {
+                getSupportActionBar().setTitle(recipientNumber);
+            }
 
-        initializeViews();
-        setListeners();
+            rvText = (RecyclerView) findViewById(R.id.rvMessaging);
+            messages = new ArrayList<>();
+            incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+            outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+            getMessages();
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            rvText.setLayoutManager(layoutManager);
+            layoutManager.setReverseLayout(true);
+            layoutManager.setStackFromEnd(true);
+            rvText.setAdapter(adapter);
+            rvText.scrollToPosition(0);
 
-        TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-        myNumber = tMgr.getLine1Number();
+            checkedText.setType(2);
+            sendText(checkedText);
+        }else {
+            //stores this info to know which messages to bring up
+            recipientName = getIntent().getStringExtra("name");
+            recipientNumber = getIntent().getStringExtra("number");
+            String message = getIntent().getStringExtra("message");
+            etBody.setText(message);
+
+
+            if (!recipientName.equals("")) {
+                getSupportActionBar().setTitle(recipientName);
+            } else {
+                getSupportActionBar().setTitle(recipientNumber);
+            }
+
+
+            TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+            myNumber = tMgr.getLine1Number();
 
         /*ContentResolver contentResolver = this.getContentResolver();
 
@@ -106,18 +133,19 @@ public class MessagingActivity extends AppCompatActivity {
             cursor.close();
         }*/
 
-        rvText = (RecyclerView) findViewById(R.id.rvMessaging);
-        messages = new ArrayList<SMS>();
-        incomingList = getIntent().getParcelableArrayListExtra("incomingList");
-        outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-        getMessages();
-        adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        rvText.setLayoutManager(layoutManager);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
-        rvText.setAdapter(adapter);
-        rvText.scrollToPosition(0);
+            rvText = (RecyclerView) findViewById(R.id.rvMessaging);
+            messages = new ArrayList<>();
+            incomingList = getIntent().getParcelableArrayListExtra("incomingList");
+            outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+            getMessages();
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            rvText.setLayoutManager(layoutManager);
+            layoutManager.setReverseLayout(true);
+            layoutManager.setStackFromEnd(true);
+            rvText.setAdapter(adapter);
+            rvText.scrollToPosition(0);
+        }
     }
 
     public static MessagingActivity instance() {
@@ -200,7 +228,7 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void launchComposeActivity(MenuItem item) {
-        //launches the compose activit
+        //launches the compose activity
         Intent i = new Intent(MessagingActivity.this, ComposeActivity.class);
         i.putExtra("incomingList", incomingList);
         i.putExtra("outgoingList", outgoingList);
@@ -245,9 +273,18 @@ public class MessagingActivity extends AppCompatActivity {
                 Intent intent = new Intent(MessagingActivity.this, PostCheckActivity.class);
                 String message = etBody.getText().toString();
                 if (!message.equals("")) {
+                    SMS text = new SMS();
+                    text.setNumber(recipientNumber);
+                    text.setContact(recipientName);
+                    text.setBody(message);
+                    intent.putExtra("text", text);
+                    intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    /*
                     intent.putExtra("message", message);
                     intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
                     intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
+                    */
                     MessagingActivity.this.startActivity(intent);
                     ActivityOptionsCompat options = ActivityOptionsCompat.
                             makeSceneTransitionAnimation(MessagingActivity.this, etBody, "profile");
