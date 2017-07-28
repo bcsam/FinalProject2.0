@@ -47,7 +47,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     String query;
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
-    String recipientNumber; //// TODO: 7/24/17 put person's name in the space but send to their number
+    String recipientNumber;
     ConversationAdapter conversationAdapter;
     ArrayList<SMS> smsList;
 
@@ -86,7 +86,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     public void animate(){
         RelativeLayout dialog   = (RelativeLayout) findViewById(R.id.relativeLayoutComp);
         dialog.setVisibility(LinearLayout.VISIBLE);
-        Animation animation   =    AnimationUtils.loadAnimation(this, R.animator.expand);
+        Animation animation   =    AnimationUtils.loadAnimation(this, R.anim.expand);
         animation.setDuration(500);
         dialog.setAnimation(animation);
         dialog.animate();
@@ -133,7 +133,41 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCheck(); //check for fields filled is in onCheck()
+                String message = etBody.getText().toString();
+                String recipientName = etNumber.getText().toString();
+                //String subject = etSubject.getText().toString();
+
+                if (!message.equals("") && !recipientName.equals("")) {
+                    Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
+                    SMS text = new SMS();
+                    text.setContact(recipientName);
+                    text.setBody(message);
+                    text.setNumber(recipientNumber);
+                    intent.putExtra("text", text);
+
+                    //intent.putExtra("message", message);
+                    //intent.putExtra("recipientName", recipientName);
+
+                    intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+
+                    SMS sms = new SMS();
+                    sms.setBody(message);
+                    client = new AnalyzerClient();
+                    //client.getScores(sms);
+
+                    ComposeActivity.this.startActivity(intent);
+
+                    //makes the user enter a message before submitting
+                } else if (message.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please enter a message!",
+                            Toast.LENGTH_LONG).show();
+
+                    //makes the user enter a recipient before submitting
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please enter a recipient!",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -284,40 +318,6 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         }
     }
 
-    /**
-     *
-     */
-    public void onCheck() {
-        String message = etBody.getText().toString();
-        String recipientName = etNumber.getText().toString();
-        //String subject = etSubject.getText().toString();
-
-        if (!message.equals("") && !recipientName.equals("")) {
-            Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
-            intent.putExtra("message", message);
-            intent.putExtra("recipientName", recipientName);
-            intent.putParcelableArrayListExtra("incomingList", incomingList);
-            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
-
-            SMS sms = new SMS();
-            sms.setBody(message);
-            client = new AnalyzerClient();
-            client.getScores(sms);
-
-            ComposeActivity.this.startActivity(intent);
-
-            //makes the user enter a message before submitting
-        } else if (message.equals("")) {
-            Toast.makeText(getApplicationContext(), "Please enter a message!",
-                    Toast.LENGTH_LONG).show();
-
-            //makes the user enter a recipient before submitting
-        } else {
-            Toast.makeText(getApplicationContext(), "Please enter a recipient!",
-                    Toast.LENGTH_LONG).show();
-        }
-    }
-
     public boolean isValidInput() {
         boolean validRecipient = true;
         if (recipientNumber == null) {
@@ -340,8 +340,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     public void launchComposeActivity(MenuItem item) {
         //launches the profile view
         Intent i = new Intent(ComposeActivity.this, ComposeActivity.class);
-        i.putParcelableArrayListExtra("incomingList", incomingList);
-        i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putExtra("incomingList", incomingList);
+        i.putExtra("outgoingList", outgoingList);
         ComposeActivity.this.startActivity(i);
     }
 

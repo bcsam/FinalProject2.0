@@ -393,6 +393,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i("Main", "onActivityResult");
+        try {
+            ArrayList<SMS> newoutgoingList = data.getParcelableArrayListExtra("outgoingList");
+            outgoingList = newoutgoingList;
+        } catch (NullPointerException e) {
+
+        }
         text();
         adapter.notifyDataSetChanged();
         rvText.scrollToPosition(0);

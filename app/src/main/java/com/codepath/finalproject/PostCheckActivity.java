@@ -2,7 +2,6 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ import java.util.List;
 public class PostCheckActivity extends AppCompatActivity {
 
     TextView tvTextBody;
-    SMS sms;
+    SMS text;
     String message;
     String recipientName;
     String recipientNumber;
@@ -44,15 +42,21 @@ public class PostCheckActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_post_check);
 
         //stores info in intent for sending back to MainActivity
+        /*
         message = getIntent().getStringExtra("message");
         recipientName = getIntent().getStringExtra("recipientName");
         recipientNumber = getIntent().getStringExtra("recipientNumber");
+        */
+        text = getIntent().getParcelableExtra("text");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
 
         //makes a Textbody with the user's message
+
+        /*
         sms = new SMS();
         sms.setBody(message);
+        */
 
         //gets the textbody's score and puts them in textBody
         AnalyzerClient client = new AnalyzerClient();
@@ -60,19 +64,19 @@ public class PostCheckActivity extends AppCompatActivity {
 
         //sets the message on the activity
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
-        tvTextBody.setText(message);
-        tvTextBody.setTextColor(Color.parseColor(sms.getTextColor()));
+        tvTextBody.setText(text.getBody());
+        //tvTextBody.setTextColor(Color.parseColor(text.getTextColor()));
 
         //Code for tabs below
 
-        // Locate the viewpager in activity_composeose.xml
+        // Locate the viewpager in activity_compose.xml
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TonesFragment(), "Tones", sms, "PostCheckActivity");
-        adapter.addFrag(new StylesFragment(), "Styles", sms, "PostCheckActivity");
-        adapter.addFrag(new SocialFragment(), "Social", sms, "PostCheckActivity");
+        adapter.addFrag(new TonesFragment(), "Tones", text, "PostCheckActivity");
+        adapter.addFrag(new StylesFragment(), "Styles", text, "PostCheckActivity");
+        adapter.addFrag(new SocialFragment(), "Social", text, "PostCheckActivity");
         //adapter.addFrag(new UtteranceFragment(), "Utterance", textBody, "PostCheckActivity");
 
         viewPager.setAdapter(adapter);
@@ -110,22 +114,29 @@ public class PostCheckActivity extends AppCompatActivity {
         btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(PostCheckActivity.this, ComposeActivity.class);
-                intent.putExtra("message", message);
-                intent.putExtra("recipient", recipientName);
+                Intent intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                intent.putExtra("message", text.getBody());
+                intent.putExtra("name", text.getContact());
+                intent.putExtra("number", text.getNumber());
+                intent.putParcelableArrayListExtra("incomingList", incomingList);
+                intent.putParcelableArrayListExtra("outgoingList", outgoingList);
                 PostCheckActivity.this.startActivity(intent);
             }
         });
 
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { // TODO: 7/28/17 send this to the messaging activity 
-                    sendText(view);
-                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
+            public void onClick(View view) { // TODO: 7/28/17 send this to the messaging activity
                     Intent intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                    text.setDate(String.valueOf(System.currentTimeMillis()));
+                    intent.putExtra("text", text);
+                    intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                /*
                     intent.putExtra("name", recipientName);
                     intent.putExtra("number", recipientNumber);
                     intent.putExtra("message", message);
+                    */
                     startActivity(intent);
             }
         });
