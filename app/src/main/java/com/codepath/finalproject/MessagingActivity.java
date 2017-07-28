@@ -348,11 +348,12 @@ public class MessagingActivity extends AppCompatActivity {
         }*/
 
         for (SMS s : incomingList) {
-            if (s.getNumber().equals(recipientNumber))
+            if (s.getNumber().equals(recipientNumber) || s.getNumber().equals("+" + recipientNumber)) {
                 messages.add(s);
+            }
         }
         for (SMS s : outgoingList) {
-            if (s.getNumber().equals(recipientNumber)) {
+            if (s.getNumber().equals(recipientNumber) || s.getNumber().equals("+" + recipientNumber)) {
                 int index = 0;
                 Log.i("MessagingActivity body", s.getBody());
                 for (SMS m : messages) {
