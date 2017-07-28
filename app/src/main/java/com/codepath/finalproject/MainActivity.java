@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ins = this;
         setContentView(R.layout.activity_main);
         users = new ArrayList<User>();
         rvText = (RecyclerView) findViewById(R.id.rvText);
