@@ -51,13 +51,13 @@ public class SocialFragment extends Fragment{
         String activity = getArguments().getString("activity");
         if(activity.equals("PostCheckActivity") || activity.equals("MessageDetailActivity")) {
             sms = getArguments().getParcelable("sms");
-            setTexts();
-            setProgressBars();
+            //setTexts();
+            //setProgressBars();
         }
         else if(activity.equals("ProfileActivity")){
             user = getArguments().getParcelable("user");
-            setProfileTexts();
-            setProfileProgressBars();
+            //setProfileTexts();
+            //setProfileProgressBars();
         }
         return v;
     }

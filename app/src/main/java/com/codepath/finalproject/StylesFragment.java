@@ -48,16 +48,16 @@ public class StylesFragment extends Fragment{
             pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
             pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
             pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(sms.getStyleColor()), PorterDuff.Mode.SRC_IN);
-            setTexts();
-            setProgressBars();
+            //setTexts();
+            //setProgressBars();
         }
         else if(activity.equals("ProfileActivity")){
             user = getArguments().getParcelable("user");
             pbAnalytical.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
             pbConfident.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
             pbTentative.getProgressDrawable().setColorFilter(Color.parseColor(user.getStyleColor()), PorterDuff.Mode.SRC_IN);
-            setProfileTexts();
-            setProfileProgressBars();
+            //setProfileTexts();
+            //setProfileProgressBars();
         }
         return v;
     }

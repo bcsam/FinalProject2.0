@@ -63,8 +63,8 @@ public class TonesFragment extends Fragment {
             pbFear.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(2)), PorterDuff.Mode.SRC_IN);
             pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(3)), PorterDuff.Mode.SRC_IN);
             pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(sms.getToneColor(4)), PorterDuff.Mode.SRC_IN);
-            setTexts();
-            setProgressBars();
+            //setTexts();
+            //setProgressBars();
         }
         else if(activity.equals("ProfileActivity")){
             user = getArguments().getParcelable("user");
@@ -73,15 +73,8 @@ public class TonesFragment extends Fragment {
             pbFear.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(2)), PorterDuff.Mode.SRC_IN);
             pbJoy.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(3)), PorterDuff.Mode.SRC_IN);
             pbSadness.getProgressDrawable().setColorFilter(Color.parseColor(user.getToneColor(4)), PorterDuff.Mode.SRC_IN);
-            pbAnger.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tone = 0;
-                    showEditDialog();
-                }
-            });
-            setProfileTexts();
-            setProfileProgressBars();
+            //setProfileTexts();
+            //setProfileProgressBars();
         }
         return v;
     }
