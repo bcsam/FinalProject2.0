@@ -1,7 +1,6 @@
 package com.codepath.finalproject;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -114,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
         user.setName("Me");
 
         String id = null;
-        ContentResolver contentResolver = this.getContentResolver();
+        /*ContentResolver contentResolver = this.getContentResolver();
 
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(mPhoneNumber));
 
@@ -133,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
                 id = c.getString(c.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
             }
         }
-        user.setContactId(id);
+        user.setContactId(id);*/
 
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());

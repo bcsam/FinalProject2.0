@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +46,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
+    int lastPosition = -1;
 
     public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, List<SMS> outgoingList) {
 
@@ -124,6 +127,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 }
             });
             Log.i("position", String.valueOf(position));
+
+        setAnimation(holder.itemView, position);
     }
 
     @Override
@@ -244,6 +249,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         return null;
     }
 
+    private void setAnimation(View viewToAnimate, int position){
+        if(position > lastPosition){
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
