@@ -302,6 +302,11 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String customNumber = tvCustomNumber.getText().toString();
             customNumber = customNumber.replaceAll("-", "");
             customNumber = customNumber.replaceAll(" ", "");
+            customNumber = customNumber.replaceAll("\\(", ""); // TODO: 7/28/17 add a plus at the front
+            customNumber = customNumber.replaceAll("\\)", "");
+            if(customNumber.charAt(0) != '+'){
+                customNumber = "+" + customNumber;
+            }
             ArrayList<SMS> messages = new ArrayList<>();
 
 
@@ -334,7 +339,7 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public boolean isValidInput(String number) {
             boolean validRecipient = true;
             String inputNumber = number.toString();
-            String phoneNumberChars = "1234567890-()";
+            String phoneNumberChars = "1234567890-()+";
 
             if (number.length() < 3){
                 return false;
