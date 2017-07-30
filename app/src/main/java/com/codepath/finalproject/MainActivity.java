@@ -181,7 +181,10 @@ public class MainActivity extends AppCompatActivity {
         User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber("+"+mPhoneNumber);
+        if (!mPhoneNumber.equals("")) {
+            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+        }
+
         user.setName("Me");
         //user.setContactId(id);
 

@@ -240,7 +240,10 @@ public class MessagingActivity extends AppCompatActivity {
         User user = new User();
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber("+"+mPhoneNumber);
+        if (!mPhoneNumber.equals("")) {
+            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+        }
+
         user.setName("Me");
         Log.i("profile", user.getNumber());
         Log.i("profile", user.toStringNumber());
