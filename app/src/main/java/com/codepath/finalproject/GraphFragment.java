@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +47,11 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
         User user = getArguments().getParcelable("user");
-        /*GraphAnalyzerClient client = new GraphAnalyzerClient(getContext(), user, graph);
+        GraphAnalyzerClient client = new GraphAnalyzerClient(getContext(), user, graph);
         if(user.getName().equals("Me"))
             client.execute(getMyGraph(user));
         else
-            client.execute(getGraph(user));*/
+            client.execute(getGraph(user));
         return v;
     }
 
@@ -145,8 +144,8 @@ public class GraphFragment extends Fragment {
     public class GraphAnalyzerClient extends AsyncTask<SMS, String, SMS> {
         //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
         public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-        public static final String USERNAME = "52233a3a-e2ba-4200-9e96-219dcfecc475";
-        public static final String PASSWORD = "bPXmzsAYOPh3";
+        public static final String USERNAME = "63e0a895-2d09-4809-9dfe-85ee36a3dcfc";
+        public static final String PASSWORD = "AxAOMozz8Dyh";
         ToneAnalyzer service;
         Context context;
         User user;
@@ -163,7 +162,6 @@ public class GraphFragment extends Fragment {
 
         @Override
         protected SMS doInBackground(final SMS... params) {
-            Log.i("client", "in background");
             for(int i = 0; i < params.length; i++) {
                 if(params[i].getBody().equals("")){
                     for(int j = 0; j < 5; j++)

@@ -19,7 +19,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     String recipientNumber;
     String body;
     String date;
-    String read;
     String id;
     Boolean SMS;
     int type;
@@ -204,22 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-   /* protected void onListItemClick(ListView l, View v, int position, long id) {
-       // SMS sms = (SMS) getListAdapter().getItem(position);
-
-        Intent intent = new Intent(this, MessagingActivity.class);
-        intent.putExtra("recipientName", recipientName);
-        intent.putExtra("recipientNumber", recipientNumber);
-
-
-        startActivity(intent);
-
-        //want to send to MessageActivity
-        //want to send name and number of whose text you clicked in intent
-    }*/
-
     public void getPermissionToRead() {
-        Log.i("sharedPreferences", "getPermissionToRead");
         boolean readSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED;
         boolean readContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
@@ -233,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_READ_ALL);
         }
         else {
-            Log.i("Main Activity", "getPermission");
             text();
         }
     }
@@ -249,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 makeText(this, "Permission granted", LENGTH_SHORT).show();
-                Log.i("Main Activity", "onRequest");
                 text();
             } else {
                 makeText(this, "Permission denied", LENGTH_SHORT).show();
@@ -290,11 +271,6 @@ public class MainActivity extends AppCompatActivity {
         smsList = new ArrayList<SMS>();
         incomingList = new ArrayList<SMS>();
         outgoingList = new ArrayList<SMS>();
-        //ContentResolver contentResolver = context.getContentResolver();
-
-        //Uri uriContact = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-
-        //String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
 
         uri = Uri.parse("content://sms/");
         c = getContentResolver().query(uri, null, null, null, null);
@@ -395,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.i("Main", "onActivityResult");
         try {
             ArrayList<SMS> newoutgoingList = data.getParcelableArrayListExtra("outgoingList");
             outgoingList = newoutgoingList;

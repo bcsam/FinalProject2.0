@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
@@ -23,8 +22,8 @@ import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
 public class AnalyzerClient extends AsyncTask <SMS, String, SMS>{
     //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
     public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-    public static final String USERNAME = "52233a3a-e2ba-4200-9e96-219dcfecc475";
-    public static final String PASSWORD = "bPXmzsAYOPh3";
+    public static final String USERNAME = "63e0a895-2d09-4809-9dfe-85ee36a3dcfc";
+    public static final String PASSWORD = "AxAOMozz8Dyh";
     ToneAnalyzer service;
     Context context;
     Drawable drawable;
@@ -45,7 +44,6 @@ public class AnalyzerClient extends AsyncTask <SMS, String, SMS>{
 
     @Override
     protected SMS doInBackground(SMS... params) {
-        Log.i("client", "in background");
         final SMS sms = (SMS) params[0];
         getScores(sms);
         ((Activity) context).runOnUiThread(new Runnable() {

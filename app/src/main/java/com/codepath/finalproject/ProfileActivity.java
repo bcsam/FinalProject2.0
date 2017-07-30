@@ -69,11 +69,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-        /*ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
+        ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
         if(user.getName().equals("Me"))
             client.execute(getMyAverages(user));
         else
-            client.execute(getAverages(user));*/
+            client.execute(getAverages(user));
 
 
         /*long contactIdLong = Long.parseLong(id);
@@ -138,8 +138,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
         user.setContactId(id);*/
 
-        Log.i("profile", user.getNumber());
-        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
@@ -239,8 +237,8 @@ public class ProfileActivity extends AppCompatActivity {
     public class ProfileAnalyzerClient extends AsyncTask<SMS, String, SMS> {
         //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
         public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-        public static final String USERNAME = "52233a3a-e2ba-4200-9e96-219dcfecc475";
-        public static final String PASSWORD = "bPXmzsAYOPh3";
+        public static final String USERNAME = "63e0a895-2d09-4809-9dfe-85ee36a3dcfc";
+        public static final String PASSWORD = "AxAOMozz8Dyh";
         ToneAnalyzer service;
         Context context;
         User user;
@@ -255,7 +253,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         @Override
         protected SMS doInBackground(SMS... params) {
-            Log.i("client", "in background");
             if(params[0].getBody().equals("")){
                 for(int j = 0; j < 5; j++) {
                     if(j<3)

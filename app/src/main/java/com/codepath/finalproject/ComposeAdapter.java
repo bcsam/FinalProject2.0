@@ -264,11 +264,11 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
             for (SMS s : incomingList) {
-                if (s.getNumber().equals(number))
+                if (s.getNumber().equals(number) || s.getNumber().equals("+" + number))
                     messages.add(s);
             }
             for (SMS s : outgoingList) {
-                if (s.getNumber().equals(number)) {
+                if (s.getNumber().equals(number) || s.getNumber().equals("+" + number)) {
                     int index = 0;
                     Log.i("MessagingActivity body", s.getBody());
                     for (SMS m : messages) {
@@ -307,15 +307,18 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String customNumber = tvCustomNumber.getText().toString();
             customNumber = customNumber.replaceAll("-", "");
             customNumber = customNumber.replaceAll(" ", "");
+            customNumber = customNumber.replaceAll("\\(", ""); // TODO: 7/28/17 add a plus at the front
+            customNumber = customNumber.replaceAll("\\)", "");
             ArrayList<SMS> messages = new ArrayList<>();
 
 
             for (SMS s : incomingList) {
-                if (s.getNumber().equals(customNumber))
+                if (s.getNumber().equals(customNumber) || s.getNumber().equals("+" + customNumber)) {
                     messages.add(s);
+                }
             }
             for (SMS s : outgoingList) {
-                if (s.getNumber().equals(customNumber)) {
+                if (s.getNumber().equals(customNumber) || s.getNumber().equals("+" + customNumber)) {
                     int index = 0;
                     Log.i("MessagingActivity body", s.getBody());
                     for (SMS m : messages) {
@@ -339,7 +342,7 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public boolean isValidInput(String number) {
             boolean validRecipient = true;
             String inputNumber = number.toString();
-            String phoneNumberChars = "1234567890-()";
+            String phoneNumberChars = "1234567890-()+";
 
             if (number.length() < 3){
                 return false;

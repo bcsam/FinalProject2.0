@@ -27,10 +27,8 @@ import java.util.List;
 
 public class MessageDetailActivity extends AppCompatActivity{
     String name;
-    String message;
     String number;
     SMS sms;
-    TextView tvName;
     TextView tvMessage;
 
     ArrayList<SMS> incomingList;
@@ -45,10 +43,10 @@ public class MessageDetailActivity extends AppCompatActivity{
         sms = getIntent().getParcelableExtra("sms");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-        /*if(sms.getBubbleColor().equals("")){
+        if(sms.getBubbleColor().equals("")){
             AnalyzerClient client = new AnalyzerClient();
             client.getScores(sms);
-        }*/
+        }
 
 
         tvMessage = (TextView) findViewById(R.id.tvMessage);

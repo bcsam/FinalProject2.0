@@ -2,6 +2,7 @@ package com.codepath.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -59,14 +60,13 @@ public class PostCheckActivity extends AppCompatActivity {
         */
 
         //gets the textbody's score and puts them in textBody
-        //AnalyzerClient client = new AnalyzerClient();
-        //client.getScores(sms);
-        //client.getUtteranceScores(textBody);
+        AnalyzerClient client = new AnalyzerClient();
+        client.getScores(text);
 
         //sets the message on the activity
         tvTextBody = (TextView) findViewById(R.id.tvTextBody);
         tvTextBody.setText(text.getBody());
-        //tvTextBody.setTextColor(Color.parseColor(text.getTextColor()));
+        tvTextBody.setTextColor(Color.parseColor(text.getTextColor()));
 
         //Code for tabs below
 
@@ -95,20 +95,6 @@ public class PostCheckActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_unsearchable, menu);
         return true;
     }
-/*
-    public void sendEmail(View view) {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        //for only emails
-        i.setType("message/rfc822"); // TODO: 7/14/17 make this sending a text
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
-        i.putExtra(Intent.EXTRA_TEXT, message);
-        try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(PostCheckActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
-    }
-*/
 
     public void setOnClickListeners(){
 
