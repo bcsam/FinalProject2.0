@@ -280,18 +280,6 @@ public class SMS implements Parcelable {
         this.other = in.readByte() != 0;
     }
 
-    public int hashCode() {
-        return this.id;
-    }
-
-    public boolean equals(Object o) {
-        if (!(o instanceof SMS)) {
-            return false;
-        }
-        SMS other = (SMS) o;
-        return this.id == other.id;
-    }
-
     public static final Creator<SMS> CREATOR = new Creator<SMS>() {
         @Override
         public SMS createFromParcel(Parcel source) {
