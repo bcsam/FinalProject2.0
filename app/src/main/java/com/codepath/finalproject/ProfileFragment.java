@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
 
         User user = getArguments().getParcelable("user");
 
-        if (!user.getName().equals("Me")) {
+        if (!user.getName().equals("Me") && !user.getName().equals("")) {
             long contactIdLong = Long.parseLong(user.getContactId());
 
             Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));
@@ -67,17 +67,11 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-
-        if (!user.getName().equals("")) {
+        if(user.getName().equals(""))
+            tvName.setVisibility(View.GONE);
+        else
             tvName.setText(user.getName());
-            tvNumber.setText(user.toStringNumber());
-        }
-        else {
-            tvName.setText((user.toStringNumber()));
-            tvNumber.setText("");
-        }
-
-
+        tvNumber.setText(user.toStringNumber());
         return v;
     }
 

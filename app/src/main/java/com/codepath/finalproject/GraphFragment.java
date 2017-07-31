@@ -46,12 +46,18 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graph.getGridLabelRenderer().setVerticalAxisTitle("TONE SCORES");
         User user = getArguments().getParcelable("user");
         client = new GraphAnalyzerClient(getContext(), user, graph);
-        if(user.getName().equals("Me"))
+        if(user.getName().equals("Me")) {
+            graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS SENT");
             client.execute(getMyGraph(user));
-        else
+        }
+        else {
+            graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS RECEIVED");
             client.execute(getGraph(user));
+        }
         return v;
     }
 
@@ -173,8 +179,8 @@ public class GraphFragment extends Fragment {
                     for(int j = 0; j < 5; j++)
                         params[i].setToneLevel(j, 0);
                 }
-                else
-                    getScores(params[i]);
+                //else
+                    //getScores(params[i]);
                 user.updateScores(params[i]);
             }
             ((Activity) context).runOnUiThread(new Runnable() {

@@ -49,12 +49,21 @@ public class ProfileActivity extends AppCompatActivity {
         //sets up the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         ProgressBar pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
         pbLoading.setVisibility(View.VISIBLE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         User user = getIntent().getParcelableExtra("user");
+
+        if (!user.getName().equals("") && user.getName() != null) {
+            getSupportActionBar().setTitle(user.getName());
+        } else {
+            getSupportActionBar().setTitle("ToneTeller");
+        }
+
+
         String id = getIntent().getStringExtra("id");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
