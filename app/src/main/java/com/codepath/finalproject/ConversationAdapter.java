@@ -84,6 +84,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
         params[0] = smsList.get(position);
+
         if(params[0].getBubbleColor().equals("")) {
             setAnimation(holder.itemView, position);
             client.execute(params);

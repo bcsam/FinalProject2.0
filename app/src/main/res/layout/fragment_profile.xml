@@ -15,7 +15,7 @@
         android:layout_height="140dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_person_gray"
+        app:srcCompat="@drawable/ic_noun_992928_cc"
         android:visibility="invisible"/>
 
     <ImageView
@@ -25,8 +25,8 @@
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_person_gray"
-        android:background="@drawable/circle"
+        app:srcCompat="@drawable/ic_noun_992928_cc"
+        android:background="@drawable/big_circle"
         android:visibility="visible"/>
 
     <TextView
