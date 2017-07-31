@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,7 +162,6 @@ public class GraphFragment extends Fragment {
 
         @Override
         protected SMS doInBackground(final SMS... params) {
-            Log.i("client", "in background");
             for(int i = 0; i < params.length; i++) {
                 if(params[i].getBody().equals("")){
                     for(int j = 0; j < 5; j++)

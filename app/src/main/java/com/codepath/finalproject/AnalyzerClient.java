@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
@@ -45,7 +44,6 @@ public class AnalyzerClient extends AsyncTask <SMS, String, SMS>{
 
     @Override
     protected SMS doInBackground(SMS... params) {
-        Log.i("client", "in background");
         final SMS sms = (SMS) params[0];
         getScores(sms);
         ((Activity) context).runOnUiThread(new Runnable() {

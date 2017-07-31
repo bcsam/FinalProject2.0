@@ -19,12 +19,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SMS> smsList;
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
+    HashMap<String, String> getContactIdMemo;
+    HashMap<String, String> getContactNameMemo;
     SharedPreferences sharedPrefs;
     private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     String recipientNumber;
     String body;
     String date;
-    String read;
     String id;
     Boolean SMS;
     int type;
@@ -181,7 +182,10 @@ public class MainActivity extends AppCompatActivity {
         User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        user.setNumber("+"+mPhoneNumber);
+        if (!mPhoneNumber.equals("")) {
+            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+        }
+
         user.setName("Me");
         //user.setContactId(id);
 
@@ -201,22 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-   /* protected void onListItemClick(ListView l, View v, int position, long id) {
-       // SMS sms = (SMS) getListAdapter().getItem(position);
-
-        Intent intent = new Intent(this, MessagingActivity.class);
-        intent.putExtra("recipientName", recipientName);
-        intent.putExtra("recipientNumber", recipientNumber);
-
-
-        startActivity(intent);
-
-        //want to send to MessageActivity
-        //want to send name and number of whose text you clicked in intent
-    }*/
-
     public void getPermissionToRead() {
-        Log.i("sharedPreferences", "getPermissionToRead");
         boolean readSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED;
         boolean readContacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
@@ -230,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_READ_ALL);
         }
         else {
-            Log.i("Main Activity", "getPermission");
             text();
         }
     }
@@ -246,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 makeText(this, "Permission granted", LENGTH_SHORT).show();
-                Log.i("Main Activity", "onRequest");
                 text();
             } else {
                 makeText(this, "Permission denied", LENGTH_SHORT).show();
@@ -258,10 +245,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String getContactName(final String phoneNumber,Context context)
-
-    {
-
+    public String getContactName(final String phoneNumber, Context context)  {
+        String memoizedResult = getContactNameMemo.get(phoneNumber);
+        if(memoizedResult != null) {
+            return memoizedResult;
+        }
         if (phoneNumber == null || phoneNumber.equals("")) {
             return "Anonymous";
         }
@@ -280,21 +268,52 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        getContactNameMemo.put(phoneNumber, contactName);
+
         return contactName;
+    }
+
+    private String getContactId(String recipientNumber) {
+        String memoizedResult = getContactIdMemo.get(recipientNumber);
+        if (memoizedResult != null) {
+            return memoizedResult;
+        }
+
+        ContentResolver contentResolver = this.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(recipientNumber));
+
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        c2 = contentResolver.query(
+                uri,
+                projection,
+                null,
+                null,
+                null);
+
+        String id = null;
+        if(c2 != null && c2.moveToNext()) {
+            id = c2.getString(c2.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            c2.close();
+        }
+        if (id == null) {
+            id = "";
+        }
+
+        getContactIdMemo.put(recipientNumber, id);
+        return id;
     }
 
     private void text(){ // TODO: 7/17/17 rename this method
         smsList = new ArrayList<SMS>();
         incomingList = new ArrayList<SMS>();
         outgoingList = new ArrayList<SMS>();
-        //ContentResolver contentResolver = context.getContentResolver();
-
-        //Uri uriContact = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-
-        //String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+        getContactIdMemo = new HashMap<String, String>();
+        getContactNameMemo = new HashMap<String, String>();
 
         uri = Uri.parse("content://sms/");
-        c = getContentResolver().query(uri, null, null, null, null);
+        c = getContentResolver().query(uri, new String[]{"address", "body", "type", "date"}, null, null, null);
         startManagingCursor(c);
 
         // Read the sms data and store it in the list
@@ -307,26 +326,8 @@ public class MainActivity extends AppCompatActivity {
                 date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                 type = c.getInt(c.getColumnIndexOrThrow("type"));
 
-                ContentResolver contentResolver = this.getContentResolver();
+                id = getContactId(recipientNumber);
 
-                Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(recipientNumber));
-
-                String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
-
-                c2 =
-                        contentResolver.query(
-                                uri,
-                                projection,
-                                null,
-                                null,
-                                null);
-
-                if(c2 != null) {
-                    while(c2.moveToNext()){
-                        id = c2.getString(c2.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-                    }
-                    c2.close();
-                }
                 recipientName = getContactName(recipientNumber, this);
 
                 sms.setBody(body);
@@ -334,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
                 sms.setContact(recipientName);
                 sms.setDate(date);
                 sms.setContactId(id);
-                id = "";
 
                 sms.setType(type);
                 if(sms.getType() == 1) {
@@ -346,14 +346,15 @@ public class MainActivity extends AppCompatActivity {
 
                 //if the sms is from a new person add it to the list
                 // TODO: 7/23/17 better way to do this?
-                int count = 0;
+                boolean isAdded = false;
                 for (SMS text : smsList) {
-                     if(!matchNumber(sms, text)){
-                        count++;
-                     }
+                    if (matchNumber(sms, text)) {
+                        isAdded = true;
+                        break;
+                    }
                 }
 
-                if (count == smsList.size()) {
+                if (!isAdded) {
                     smsList.add(sms);
                 }
 
@@ -392,7 +393,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.i("Main", "onActivityResult");
         try {
             ArrayList<SMS> newoutgoingList = data.getParcelableArrayListExtra("outgoingList");
             outgoingList = newoutgoingList;

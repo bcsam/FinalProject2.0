@@ -110,8 +110,10 @@ public class ProfileActivity extends AppCompatActivity {
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
         Toast.makeText(this, mPhoneNumber, Toast.LENGTH_LONG).show();
+        if (!mPhoneNumber.equals("")) {
+            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+        }
 
-        user.setNumber(mPhoneNumber); //this is why the + shows up
         user.setName("Me");
 
         String id = null;
@@ -136,8 +138,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
         user.setContactId(id);*/
 
-        Log.i("profile", user.getNumber());
-        Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
 
         i.putExtra("user", user);
@@ -253,7 +253,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         @Override
         protected SMS doInBackground(SMS... params) {
-            Log.i("client", "in background");
             if(params[0].getBody().equals("")){
                 for(int j = 0; j < 5; j++) {
                     if(j<3)

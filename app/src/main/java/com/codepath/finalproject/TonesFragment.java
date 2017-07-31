@@ -29,7 +29,6 @@ public class TonesFragment extends Fragment {
     ProgressBar pbSadness;
     SMS sms;
     User user;
-    int tone;
 
     public TonesFragment() {
         // Required empty public constructor
