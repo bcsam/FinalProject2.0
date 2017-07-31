@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (!user.getName().equals("") && user.getName() != null) {
             getSupportActionBar().setTitle(user.getName());
         } else {
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle("ToneTeller");
         }
 
 
