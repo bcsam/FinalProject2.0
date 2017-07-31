@@ -73,8 +73,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Drawable drawable = holder.tvBody.getBackground();
+        drawable.setColorFilter(Color.parseColor("#ffcc99"), PorterDuff.Mode.SRC_ATOP);
         AnalyzerClient client = new AnalyzerClient(context, drawable);
         SMS[] params = new SMS[1];
+        params[0] = smsList.get(position);
+        if(params[0].getBubbleColor().equals("")) {
+            setAnimation(holder.itemView, position);
+            client.execute(params);
+        }
+        else
+            drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
         id = smsList.get(position).getContactId(); //might have to change -Brent
@@ -83,13 +91,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-        params[0] = smsList.get(position);
-        if(params[0].getBubbleColor().equals("")) {
-            setAnimation(holder.itemView, position);
-            client.execute(params);
-        }
-        else
-            drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         holder.tvBody.setText(body);
         holder.date.setText(date);
 
