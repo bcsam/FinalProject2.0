@@ -282,7 +282,7 @@ public class MessagingActivity extends AppCompatActivity {
                     */
                     MessagingActivity.this.startActivity(intent);
                     ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation(MessagingActivity.this, etBody, "profile");
+                            makeSceneTransitionAnimation(MessagingActivity.this, etBody, "message");
                     startActivity(intent, options.toBundle());
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter a message!",

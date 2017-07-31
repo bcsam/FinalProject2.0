@@ -28,7 +28,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by andreadeoli on 7/13/17.
@@ -48,13 +47,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     int lastPosition = 2147483647;
     String id;
 
-    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, List<SMS> outgoingList) {
-
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList) {
         context = mContext;
         smsList = mSmsList;
+        this.incomingList = incomingList;
+        this.outgoingList = outgoingList;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
     }
 
 
@@ -73,8 +72,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Drawable drawable = holder.tvBody.getBackground();
+        drawable.setColorFilter(Color.parseColor("#ffcc99"), PorterDuff.Mode.SRC_ATOP);
         AnalyzerClient client = new AnalyzerClient(context, drawable);
         SMS[] params = new SMS[1];
+        params[0] = smsList.get(position);
+        if(params[0].getBubbleColor().equals("")) {
+            setAnimation(holder.itemView, position);
+            AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
+            analyzerClient.execute(params);
+        }
+        else
+            drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
         id = smsList.get(position).getContactId(); //might have to change -Brent
@@ -91,6 +99,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
         else
             drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+
         holder.tvBody.setText(body);
         holder.date.setText(date);
 

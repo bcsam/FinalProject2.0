@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
     Cursor c;
     Cursor c1;
     Cursor c2;
+    ProfileAnalyzerClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-        ProfileAnalyzerClient client = new ProfileAnalyzerClient(this, user);
+        client = new ProfileAnalyzerClient(this, user);
         if(user.getName().equals("Me"))
             client.execute(getMyAverages(user));
         else
@@ -199,6 +199,12 @@ public class ProfileActivity extends AppCompatActivity {
         if(c2 != null)
             c2.close();
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause(){
+        client.cancel(true);
+        super.onPause();
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {

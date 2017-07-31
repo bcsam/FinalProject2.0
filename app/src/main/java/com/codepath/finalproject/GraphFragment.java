@@ -30,7 +30,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class GraphFragment extends Fragment {
 
-
+    GraphAnalyzerClient client;
     public GraphFragment() {
         // Required empty public constructor
     }
@@ -47,7 +47,7 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
         User user = getArguments().getParcelable("user");
-        GraphAnalyzerClient client = new GraphAnalyzerClient(getContext(), user, graph);
+        client = new GraphAnalyzerClient(getContext(), user, graph);
         if(user.getName().equals("Me"))
             client.execute(getMyGraph(user));
         else
@@ -58,6 +58,12 @@ public class GraphFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onPause(){
+        client.cancel(true);
+        super.onPause();
     }
 
 
@@ -182,6 +188,7 @@ public class GraphFragment extends Fragment {
                             dataPoints[j] = new DataPoint(j, params[j].getToneLevel(i));
                         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
                         series.setColor(Color.parseColor(params[0].getToneColor(i)));
+                        series.setDrawDataPoints(true);
                         graph.addSeries(series);
                     }
                     graph.setVisibility(View.VISIBLE);
