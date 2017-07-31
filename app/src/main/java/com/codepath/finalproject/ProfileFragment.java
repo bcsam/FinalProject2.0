@@ -67,21 +67,12 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-
-        if (!user.getName().equals("")) {
-            tvName.setText(user.getName());
-            tvNumber.setText(user.toStringNumber());
-        }
-        else {
-            tvName.setText((user.toStringNumber()));
-            tvNumber.setText("");
-        }
-
         if(user.getName().equals(""))
             tvName.setVisibility(View.GONE);
         else
             tvName.setText(user.getName());
         tvNumber.setText(user.toStringNumber());
+        return v;
     }
 
     public InputStream openPhoto(long contactId) {
