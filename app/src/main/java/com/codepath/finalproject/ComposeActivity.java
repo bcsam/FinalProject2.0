@@ -159,8 +159,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     //client.getScores(sms);
 
                     ComposeActivity.this.startActivity(intent);
+
+                    String transitionName = ComposeActivity.this.getString(R.string.postCheckTransition);
                     ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation(ComposeActivity.this, etBody, "message");
+                            makeSceneTransitionAnimation(ComposeActivity.this, etBody, transitionName);
                     startActivity(intent, options.toBundle());
 
                     //makes the user enter a message before submitting

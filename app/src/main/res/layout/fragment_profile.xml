@@ -16,7 +16,8 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         app:srcCompat="@drawable/ic_noun_992928_cc"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:transitionName="@string/profileTransition"/>
 
     <ImageView
         android:id="@+id/ivProfileIcon"
@@ -55,7 +56,8 @@
         android:gravity="center"
         android:text="TextView"
         android:textColor="@color/darkGray"
-        android:textSize="28sp" />
+        android:textSize="28sp"
+        android:transitionName="@string/nameTransition"/>
 
     <TextView
         android:id="@+id/tvNumber"
