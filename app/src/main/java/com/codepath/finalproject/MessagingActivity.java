@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -133,6 +134,7 @@ public class MessagingActivity extends AppCompatActivity {
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
             getMessages();
+            Log.i("messages", String.valueOf(messages.size()));
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
@@ -321,7 +323,7 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void getMessages() {
-
+        Log.i("messages", "getMessages");
         for (SMS s : incomingList) {
             if (s.getNumber().equals(recipientNumber) || s.getNumber().equals("+" + recipientNumber)) {
                 messages.add(s);
@@ -360,6 +362,11 @@ public class MessagingActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onPause(){
+        messages = adapter.getModifyList();
+        super.onPause();
+    }
 
     @Override
     public void onBackPressed(){

@@ -53,7 +53,7 @@ public class SMS implements Parcelable {
         socialLevels = new int[5];
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
-        bubbleColor = "";
+        bubbleColor = "#ffcc99";
     }
 
     public int getId() { return id; }
@@ -186,7 +186,7 @@ public class SMS implements Parcelable {
             return lightToneColors[tone];
         }
         bubbleColor = "#e2e2e2";
-        return "#e2e2e2";
+        return bubbleColor;
     }
     public String getBubbleColor(){
         return bubbleColor;
@@ -214,7 +214,7 @@ public class SMS implements Parcelable {
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         lightToneColors = new String[]{"#FFF7ABA0", "#FFBDDF99", "#FFCBA5DF", "#f4e4a5", "#FF91CBE2"};
         this.context = context;
-        bubbleColor = "";
+        bubbleColor = "#ffcc99";
     }
 
     public int getImageResource() {

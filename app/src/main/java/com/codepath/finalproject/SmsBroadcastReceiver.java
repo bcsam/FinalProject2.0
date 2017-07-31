@@ -42,7 +42,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
                 smsMessageStr += smsBody + "\n";
             }
 
-            MainActivity inst = MainActivity.getInstace();
+            MainActivity inst = MainActivity.getInstance();
             MessagingActivity instance = MessagingActivity.instance();
             //instance.hello();
             //instance.updateInbox(smsBody, address, dateString);

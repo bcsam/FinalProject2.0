@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public static MainActivity getInstace(){
+    public static MainActivity getInstance(){
         return ins;
     }
 
