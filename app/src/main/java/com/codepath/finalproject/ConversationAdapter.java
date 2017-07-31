@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -108,7 +109,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.ivProfileImage.setVisibility(View.INVISIBLE);
 
 
-        /*if (!id.equals("") && smsList.get(position).getType() == 1) {
+        if (!id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
@@ -124,7 +125,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
 
             holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
