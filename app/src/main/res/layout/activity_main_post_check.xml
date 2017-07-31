@@ -23,7 +23,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="Loading..."
             android:textSize="20dp"
-            android:transitionName="@string/message"/>
+            android:transitionName="@string/postCheckTransition"/>
 
     </LinearLayout>
 
