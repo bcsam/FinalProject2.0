@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_ALL = 3;
 
     private static MainActivity ins;
+    LinearLayoutManager layoutManager;
 
     String recipientName;
     String recipientNumber;
@@ -306,69 +307,103 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void text(){ // TODO: 7/17/17 rename this method
-        smsList = new ArrayList<SMS>();
-        incomingList = new ArrayList<SMS>();
-        outgoingList = new ArrayList<SMS>();
-        getContactIdMemo = new HashMap<String, String>();
-        getContactNameMemo = new HashMap<String, String>();
+        FinalProject applicationClass = ((FinalProject)getApplicationContext());
 
-        uri = Uri.parse("content://sms/");
-        c = getContentResolver().query(uri, new String[]{"address", "body", "type", "date"}, null, null, null);
-        startManagingCursor(c);
+        if (applicationClass.getSmsList() == null) {
 
-        // Read the sms data and store it in the list
-        if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                SMS sms = new SMS(this);
-                // TODO: 7/23/17 cleaning: isn't this a sender?
-                recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
-                body = c.getString(c.getColumnIndexOrThrow("body")).toString();
-                date = c.getString(c.getColumnIndexOrThrow("date")).toString();
-                type = c.getInt(c.getColumnIndexOrThrow("type"));
+            smsList = new ArrayList<SMS>();
+            incomingList = new ArrayList<SMS>();
+            outgoingList = new ArrayList<SMS>();
+            getContactIdMemo = new HashMap<String, String>();
+            getContactNameMemo = new HashMap<String, String>();
 
-                id = getContactId(recipientNumber);
+            uri = Uri.parse("content://sms/");
+            c = getContentResolver().query(uri, new String[]{"address", "body", "type", "date"}, null, null, null);
+            startManagingCursor(c);
 
-                recipientName = getContactName(recipientNumber, this);
+            // Read the sms data and store it in the list
+            if (c.moveToFirst()) {
+                for (int i = 0; i < c.getCount(); i++) {
+                    SMS sms = new SMS(this);
+                    // TODO: 7/23/17 cleaning: isn't this a sender?
+                    recipientNumber = c.getString(c.getColumnIndexOrThrow("address")).toString();
+                    body = c.getString(c.getColumnIndexOrThrow("body")).toString();
+                    date = c.getString(c.getColumnIndexOrThrow("date")).toString();
+                    type = c.getInt(c.getColumnIndexOrThrow("type"));
 
-                sms.setBody(body);
-                sms.setNumber(recipientNumber);
-                sms.setContact(recipientName);
-                sms.setDate(date);
-                sms.setContactId(id);
+                    id = getContactId(recipientNumber);
 
-                sms.setType(type);
-                if(sms.getType() == 1) {
-                    incomingList.add(sms);
-                }
-                else {
-                    outgoingList.add(sms);
-                }
+                    recipientName = getContactName(recipientNumber, this);
 
-                //if the sms is from a new person add it to the list
-                // TODO: 7/23/17 better way to do this?
-                boolean isAdded = false;
-                for (SMS text : smsList) {
-                    if (matchNumber(sms, text)) {
-                        isAdded = true;
-                        break;
+                    sms.setBody(body);
+                    sms.setNumber(recipientNumber);
+                    sms.setContact(recipientName);
+                    sms.setDate(date);
+                    sms.setContactId(id);
+
+                    sms.setType(type);
+                    if(sms.getType() == 1) {
+                        incomingList.add(sms);
                     }
-                }
+                    else {
+                        outgoingList.add(sms);
+                    }
 
-                if (!isAdded) {
-                    smsList.add(sms);
-                }
+                    //if the sms is from a new person add it to the list
+                    // TODO: 7/23/17 better way to do this?
+                    boolean isAdded = false;
+                    for (SMS text : smsList) {
+                        if (matchNumber(sms, text)) {
+                            isAdded = true;
+                            break;
+                        }
+                    }
 
-                c.moveToNext();
+                    if (!isAdded) {
+                        smsList.add(sms);
+                    }
+
+                    c.moveToNext();
+                }
             }
+            applicationClass.setSmsList(smsList);
+            applicationClass.setIncomingList(incomingList);
+            applicationClass.setOutgoingList(outgoingList);
         }
+        else {
+            smsList = applicationClass.getSmsList();
+            incomingList = applicationClass.getIncomingList();
+            outgoingList = applicationClass.getOutgoingList();
+        }
+
         // Set smsList in the ListAdapter
-        rvText.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        rvText.setLayoutManager(layoutManager);
         adapter = new ListAdapter(this, smsList, incomingList, outgoingList);
         rvText.setAdapter(adapter);
     }
 
-    public void updateInbox(String smsMessageStr) {
-        text();
+    public void updateInbox(String message, String from, String date) {
+        FinalProject applicationClass = ((FinalProject)getApplicationContext());
+        SMS sms = new SMS(this);
+
+        sms.setBody(message);
+        sms.setNumber(from);
+        sms.setContact(getContactName(from, this));
+        sms.setDate(date);
+        sms.setContactId(getContactId(from));
+        sms.setType(1);
+
+        smsList.add(sms);
+        incomingList.add(sms);
+
+        applicationClass.setSmsList(smsList);
+        applicationClass.setIncomingList(incomingList);
+
+        adapter = new ListAdapter(this, smsList, incomingList, outgoingList);
+        rvText.setAdapter(adapter);
+        layoutManager.scrollToPosition(0);
+
     }
 
     public boolean matchNumber(SMS sms, SMS text){

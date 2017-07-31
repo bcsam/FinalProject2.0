@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -48,7 +49,7 @@ public class ProfileFragment extends Fragment {
 
         User user = getArguments().getParcelable("user");
 
-        /*if (!user.getName().equals("Me")) {
+        if (!user.getName().equals("Me")) {
             long contactIdLong = Long.parseLong(user.getContactId());
 
             Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));
@@ -64,14 +65,23 @@ public class ProfileFragment extends Fragment {
                 ivProfileImage.setVisibility(View.INVISIBLE);
                 textCircle.setText("" + user.getName().charAt(0));
             }
-        }*/
+        }
+
+
+        if (!user.getName().equals("")) {
+            tvName.setText(user.getName());
+            tvNumber.setText(user.toStringNumber());
+        }
+        else {
+            tvName.setText((user.toStringNumber()));
+            tvNumber.setText("");
+        }
 
         if(user.getName().equals(""))
             tvName.setVisibility(View.GONE);
         else
             tvName.setText(user.getName());
         tvNumber.setText(user.toStringNumber());
-        return v;
     }
 
     public InputStream openPhoto(long contactId) {

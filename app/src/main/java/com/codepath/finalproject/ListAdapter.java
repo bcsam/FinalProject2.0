@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -74,12 +75,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
 
-        //long contactIdLong = Long.parseLong(contactId);
-        //Bitmap image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
 
-
-        /*if (!contactId.equals("")) {
+        if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
 
@@ -95,7 +93,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
 
         if(!name.equals(""))
             holder.tvUserName.setText(name);

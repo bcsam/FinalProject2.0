@@ -44,14 +44,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="5dp"
             android:layout_gravity="top"
-            app:srcCompat="@drawable/ic_person_gray" />
+            app:srcCompat="@drawable/ic_noun_992928_cc" />
 
         <ImageView
             android:id="@+id/ivProfileIcon"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_person_outline_black_24dp"
+            app:srcCompat="@drawable/ic_noun_992928_cc"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
@@ -87,7 +87,8 @@
             android:background="@drawable/turquoise"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/ivProfileImage"
-            android:layout_toStartOf="@+id/ivProfileImage" />
+            android:layout_toStartOf="@+id/ivProfileImage"
+            android:transitionName="@string/messageDetailTransition"/>
 
         <TextView
             android:id="@+id/tvTimeStamp"

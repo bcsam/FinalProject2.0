@@ -68,7 +68,7 @@ public class MessageDetailActivity extends AppCompatActivity{
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
         mTabLayout.setupWithViewPager(viewPager);
-        animate();
+        //animate();
     }
 
     public void animate(){

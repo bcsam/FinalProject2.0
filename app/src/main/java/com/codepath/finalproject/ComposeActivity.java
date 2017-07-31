@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -157,6 +158,9 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     //client.getScores(sms);
 
                     ComposeActivity.this.startActivity(intent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(ComposeActivity.this, etBody, "message");
+                    startActivity(intent, options.toBundle());
 
                     //makes the user enter a message before submitting
                 } else if (message.equals("")) {

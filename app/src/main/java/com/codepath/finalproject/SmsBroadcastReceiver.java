@@ -17,6 +17,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
     String smsBody;
     String address;
     String dateString;
+    long date;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onReceive(Context context, Intent intent) {
@@ -34,8 +35,8 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 
                 smsBody = smsMessage.getMessageBody().toString();
                 address = smsMessage.getOriginatingAddress();
-                long date = smsMessage.getTimestampMillis();
-                dateString = ListAdapter.millisToDate(date);
+                date = smsMessage.getTimestampMillis();
+                dateString = date + "";
 
                 smsMessageStr += "SMS From: " + address + "\n";
                 smsMessageStr += smsBody + "\n";
@@ -45,7 +46,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
             MessagingActivity instance = MessagingActivity.instance();
             //instance.hello();
             //instance.updateInbox(smsBody, address, dateString);
-            inst.updateInbox(smsMessageStr);
+            inst.updateInbox(smsBody, address, dateString);
             //instance.updateInbox(smsMessageStr);
         }
     }
