@@ -87,7 +87,8 @@
             android:background="@drawable/turquoise"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/ivProfileImage"
-            android:layout_toStartOf="@+id/ivProfileImage" />
+            android:layout_toStartOf="@+id/ivProfileImage"
+            android:transitionName="@string/messageDetailTransition"/>
 
         <TextView
             android:id="@+id/tvTimeStamp"

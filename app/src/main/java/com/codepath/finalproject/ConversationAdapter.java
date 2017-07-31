@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +15,11 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -289,24 +293,51 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    user.setName(smsList.get(position).getContact());
+                    user.setNumber(smsList.get(position).getNumber());
+                    user.setContactId(smsList.get(position).getContactId());
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
             ivProfileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
+            ivProfileCircle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    user.setName(smsList.get(position).getContact());
+                    user.setNumber(smsList.get(position).getNumber());
+                    user.setContactId(smsList.get(position).getContactId());
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
 
             itemView.setOnClickListener(this);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onClick(View view) {
             context = itemView.getContext();
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.expand);
-            itemView.setAnimation(animation);
-            itemView.startAnimation(animation);
+            String transitionName = context.getString(R.string.messageDetailTransition);
+
+            ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
             int position = getAdapterPosition();
             Intent intent = new Intent(context, MessageDetailActivity.class);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             intent.putExtra("sms", smsList.get(position));
-            context.startActivity(intent);
+            context.startActivity(intent, transition.toBundle());
 
         }
     }

@@ -25,6 +25,7 @@
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
+        android:transitionName="@string/profileTransition"
         app:srcCompat="@drawable/ic_noun_992928_cc"
         android:background="@drawable/big_circle"
         android:visibility="visible"/>
@@ -40,7 +41,6 @@
         android:textColor="@color/lightGray"
         android:gravity="center"
         android:id="@+id/circleText"
-        android:transitionName="profileImage"
         android:visibility="invisible"/>
 
 

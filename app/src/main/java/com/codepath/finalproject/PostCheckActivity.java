@@ -26,7 +26,7 @@ import java.util.List;
 
 public class PostCheckActivity extends AppCompatActivity {
 
-    TextView tvTextBody;
+    TextView tvBody;
     SMS text;
     String message;
     String recipientName;
@@ -64,9 +64,9 @@ public class PostCheckActivity extends AppCompatActivity {
         client.getScores(text);
 
         //sets the message on the activity
-        tvTextBody = (TextView) findViewById(R.id.tvTextBody);
-        tvTextBody.setText(text.getBody());
-        tvTextBody.setTextColor(Color.parseColor(text.getTextColor()));
+        tvBody = (TextView) findViewById(R.id.tvBody);
+        tvBody.setText(text.getBody());
+        tvBody.setTextColor(Color.parseColor(text.getTextColor()));
 
         //Code for tabs below
 

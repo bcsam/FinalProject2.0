@@ -77,8 +77,11 @@ public class ProfileFragment extends Fragment {
             tvNumber.setText("");
         }
 
-
-        return v;
+        if(user.getName().equals(""))
+            tvName.setVisibility(View.GONE);
+        else
+            tvName.setText(user.getName());
+        tvNumber.setText(user.toStringNumber());
     }
 
     public InputStream openPhoto(long contactId) {
