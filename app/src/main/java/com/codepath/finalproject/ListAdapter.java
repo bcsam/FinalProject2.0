@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v4.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -252,8 +253,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     user.setContactId(smsList.get(position).getContactId());
                     intent.putExtra("user", user);
 
-                    String transitionName = context.getString(R.string.profileTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileIcon, transitionName);
+                    String p1TransitionName = context.getString(R.string.profileTransition);
+                    String p2TransitionName = context.getString(R.string.nameTransition);
+                    Pair<View, String> p1 = Pair.create((View) ivProfileIcon, p1TransitionName);
+                    Pair<View, String> p2 = Pair.create((View) ivProfileIcon, p2TransitionName);;
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2);
                     context.startActivity(intent, transition.toBundle());
                 }
             });

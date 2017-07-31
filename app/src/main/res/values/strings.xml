@@ -8,4 +8,5 @@
     <string name="postCheckTransition">postCheckTransition</string>
     <string name="messageDetailTransition">messageDetailTransition</string>
     <string name="profileTransition">profileTransition</string>
+    <string name="nameTransition">nameTransition</string>
 </resources>

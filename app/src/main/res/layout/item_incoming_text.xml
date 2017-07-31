@@ -72,7 +72,8 @@
                     android:layout_marginLeft="5dp"
                     tools:text="Name"
                     android:layout_toRightOf="@+id/ivProfileImage"
-                    android:layout_alignParentTop="true" />
+                    android:layout_alignParentTop="true"
+                    android:transitionName="@string/nameTransition"/>
 
                 <TextView
                     android:id="@+id/tvBody"

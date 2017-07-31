@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.codepath.finalproject.R.id.ivProfileIcon;
+
 /**
  * Created by andreadeoli on 7/13/17.
  */
@@ -302,10 +304,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     user.setNumber(smsList.get(position).getNumber());
                     user.setContactId(smsList.get(position).getContactId());
                     intent.putExtra("user", user);
-                    context.startActivity(intent);
+
+                    String transitionName = context.getString(R.string.profileTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
+                    context.startActivity(intent, transition.toBundle());
                 }
             });
-            ivProfileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
+            ivProfileCircle = (ImageView) itemView.findViewById(ivProfileIcon);
             ivProfileCircle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -316,7 +321,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     user.setNumber(smsList.get(position).getNumber());
                     user.setContactId(smsList.get(position).getContactId());
                     intent.putExtra("user", user);
-                    context.startActivity(intent);
+
+                    String transitionName = context.getString(R.string.profileTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
+                    context.startActivity(intent, transition.toBundle());
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
