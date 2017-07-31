@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v4.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -233,7 +235,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     user.setNumber(smsList.get(position).getNumber());
                     user.setContactId(smsList.get(position).getContactId());
                     intent.putExtra("user", user);
-                    context.startActivity(intent);
+
+                    String transitionName = context.getString(R.string.profileTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
+                    context.startActivity(intent, transition.toBundle());
                 }
             });
             ivProfileIcon = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
@@ -247,7 +252,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     user.setNumber(smsList.get(position).getNumber());
                     user.setContactId(smsList.get(position).getContactId());
                     intent.putExtra("user", user);
-                    context.startActivity(intent);
+
+                    String p1TransitionName = context.getString(R.string.profileTransition);
+                    String p2TransitionName = context.getString(R.string.nameTransition);
+                    Pair<View, String> p1 = Pair.create((View) ivProfileIcon, p1TransitionName);
+                    Pair<View, String> p2 = Pair.create((View) ivProfileIcon, p2TransitionName);;
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2);
+                    context.startActivity(intent, transition.toBundle());
                 }
             });
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);

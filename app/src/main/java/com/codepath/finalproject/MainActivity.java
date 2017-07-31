@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
         //getSupportActionBar().setBackgroundDrawable(
         //        new ColorDrawable(Color.parseColor(hexColor)));
 
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        //getSupportActionBar().setIcon(R.drawable.white_icon);
         getSupportActionBar().setTitle("ToneTeller");
     }
 
