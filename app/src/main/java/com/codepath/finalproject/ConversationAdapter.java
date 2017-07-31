@@ -303,14 +303,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         @Override
         public void onClick(View view) {
             context = itemView.getContext();
-            String transitionName = context.getString(R.string.messageDetailTransition);
-
-            ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
             int position = getAdapterPosition();
             Intent intent = new Intent(context, MessageDetailActivity.class);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             intent.putExtra("sms", smsList.get(position));
+
+            String transitionName = context.getString(R.string.messageDetailTransition);
+            ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
             context.startActivity(intent, transition.toBundle());
 
         }

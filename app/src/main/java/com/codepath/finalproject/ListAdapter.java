@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -233,7 +234,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     user.setNumber(smsList.get(position).getNumber());
                     user.setContactId(smsList.get(position).getContactId());
                     intent.putExtra("user", user);
-                    context.startActivity(intent);
+
+                    String transitionName = context.getString(R.string.profileTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
+                    context.startActivity(intent, transition.toBundle());
                 }
             });
             ivProfileIcon = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
@@ -247,7 +251,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     user.setNumber(smsList.get(position).getNumber());
                     user.setContactId(smsList.get(position).getContactId());
                     intent.putExtra("user", user);
-                    context.startActivity(intent);
+
+                    String transitionName = context.getString(R.string.profileTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileIcon, transitionName);
+                    context.startActivity(intent, transition.toBundle());
                 }
             });
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);
