@@ -51,11 +51,11 @@ public class GraphFragment extends Fragment {
         User user = getArguments().getParcelable("user");
         client = new GraphAnalyzerClient(getContext(), user, graph);
         if(user.getName().equals("Me")) {
-            graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS SENT");
+            //graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS SENT");
             client.execute(getMyGraph(user));
         }
         else {
-            graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS RECEIVED");
+            //graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS RECEIVED");
             client.execute(getGraph(user));
         }
         return v;
