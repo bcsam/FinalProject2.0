@@ -78,7 +78,7 @@
             android:backgroundTint="@color/lighterGray"
             android:inputType="textMultiLine"
             android:linksClickable="true"
-            android:maxWidth="180dp"
+            android:maxWidth="175dp"
             android:textSize="14dp"
             tools:text="Message"
             android:transitionName="@string/messageDetailTransition"/>

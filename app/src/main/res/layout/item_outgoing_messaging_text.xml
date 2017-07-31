@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:autoLink="all"
             android:linksClickable="true"
-            android:maxWidth="180dp"
+            android:maxWidth="175dp"
             android:text="Message"
             android:backgroundTint="@color/lighterGray"
             android:textSize="14dp"
