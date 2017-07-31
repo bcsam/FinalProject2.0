@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +47,21 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        //graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        int color = ContextCompat.getColor(getActivity(), R.color.veryLightGray);
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(color);
+
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("# OF TEXTS");
+
+        color = ContextCompat.getColor(getActivity(), R.color.darkGray);
+
+        graph.getGridLabelRenderer().setVerticalLabelsColor(color);
+        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(color);
+        graph.getGridLabelRenderer().setGridColor(color);
         graph.getGridLabelRenderer().setVerticalAxisTitle("TONE SCORES");
+
         User user = getArguments().getParcelable("user");
+        graph.getGridLabelRenderer().setVerticalAxisTitleColor(color);
         client = new GraphAnalyzerClient(getContext(), user, graph);
         if(user.getName().equals("Me")) {
             //graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS SENT");
