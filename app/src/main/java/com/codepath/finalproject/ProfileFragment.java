@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
 
         User user = getArguments().getParcelable("user");
 
-        if (!user.getName().equals("Me")) {
+        if (!user.getName().equals("Me") && !user.getName().equals("")) {
             long contactIdLong = Long.parseLong(user.getContactId());
 
             Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));

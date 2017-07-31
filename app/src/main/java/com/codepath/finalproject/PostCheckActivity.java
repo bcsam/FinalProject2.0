@@ -48,6 +48,7 @@ public class PostCheckActivity extends AppCompatActivity {
         recipientName = getIntent().getStringExtra("recipientName");
         recipientNumber = getIntent().getStringExtra("recipientNumber");
         */
+        getSupportActionBar().setTitle("ToneTeller");
         text = getIntent().getParcelableExtra("text");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
