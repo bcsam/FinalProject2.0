@@ -2,16 +2,20 @@ package com.codepath.finalproject;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -35,8 +39,15 @@ public class MessageDetailActivity extends AppCompatActivity{
     ArrayList<SMS> outgoingList;
 
     //needs author's name, message, analysis info
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        Fade fade = new Fade(Fade.IN);
+        fade.setDuration(1200);
+        getWindow().setSharedElementsUseOverlay(false);
+        getWindow().setEnterTransition(fade);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
 
