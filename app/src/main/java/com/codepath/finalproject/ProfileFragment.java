@@ -66,8 +66,10 @@ public class ProfileFragment extends Fragment {
             }
         }*/
 
-
-        tvName.setText(user.getName());
+        if(user.getName().equals(""))
+            tvName.setVisibility(View.GONE);
+        else
+            tvName.setText(user.getName());
         tvNumber.setText(user.toStringNumber());
         return v;
     }

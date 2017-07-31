@@ -278,7 +278,33 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    user.setName(smsList.get(position).getContact());
+                    user.setNumber(smsList.get(position).getNumber());
+                    user.setContactId(smsList.get(position).getContactId());
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
             ivProfileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
+            ivProfileCircle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    user.setName(smsList.get(position).getContact());
+                    user.setNumber(smsList.get(position).getNumber());
+                    user.setContactId(smsList.get(position).getContactId());
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
 
             itemView.setOnClickListener(this);
