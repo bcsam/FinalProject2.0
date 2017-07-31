@@ -192,8 +192,8 @@ public class GraphFragment extends Fragment {
                     for(int j = 0; j < 5; j++)
                         params[i].setToneLevel(j, 0);
                 }
-                //else
-                    //getScores(params[i]);
+                else
+                    getScores(params[i]);
                 user.updateScores(params[i]);
             }
             ((Activity) context).runOnUiThread(new Runnable() {
@@ -207,7 +207,7 @@ public class GraphFragment extends Fragment {
                             dataPoints[j] = new DataPoint(j, params[j].getToneLevel(i));
                         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
                         series.setColor(Color.parseColor(params[0].getToneColor(i)));
-                        series.setDrawDataPoints(true);
+                        //series.setDrawDataPoints(true);
                         graph.addSeries(series);
                     }
                     graph.setVisibility(View.VISIBLE);
