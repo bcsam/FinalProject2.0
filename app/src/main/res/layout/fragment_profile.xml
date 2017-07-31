@@ -27,7 +27,8 @@
         android:layout_gravity="center"
         app:srcCompat="@drawable/ic_person_gray"
         android:background="@drawable/circle"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:transitionName="@string/profileTransition"/>
 
     <TextView
         android:layout_width="140dp"
@@ -40,7 +41,6 @@
         android:textColor="@color/lightGray"
         android:gravity="center"
         android:id="@+id/circleText"
-        android:transitionName="profileImage"
         android:visibility="invisible"/>
 
 

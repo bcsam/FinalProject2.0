@@ -13,7 +13,8 @@
         android:layout_above="@+id/btCheck"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
 
 
     <Button
@@ -36,7 +37,7 @@
 
         <EditText
             android:id="@+id/etBody"
-            android:transitionName="message"
+            android:transitionName="@string/postCheckTransition"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
