@@ -99,7 +99,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             }
         }
 
-        if(!name.equals(""))
+        if(!name.equals("")) //NPE here
             holder.tvUserName.setText(name);
         else
             holder.tvUserName.setText(number);

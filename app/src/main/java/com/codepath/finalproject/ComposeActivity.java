@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -194,9 +195,15 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     //this would hide the keyboard
                     //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     //inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    FinalProject applicationClass = ((FinalProject)getApplicationContext());
+
                     text.sendSMS();
+
                     outgoingList.add(0, text); //why is it add(0, text)?
                     smsList.add(0, text);
+                    applicationClass.setOutgoingList(outgoingList);
+                    applicationClass.setSmsList(smsList);
+
                     conversationAdapter.notifyDataSetChanged();
                     rvCompose.scrollToPosition(0);
 
@@ -387,7 +394,9 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         layoutManager.setStackFromEnd(true);
         conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList);
         etNumber.setText(contactName);
-        etNumber.setTypeface(null, Typeface.BOLD);
+        //etNumber.setTypeface(null, Typeface.BOLD);
+        int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        etNumber.setTextColor(color);
         etNumber.setSelection(etNumber.getText().length());
 
         recipientNumber = contactNumber;
