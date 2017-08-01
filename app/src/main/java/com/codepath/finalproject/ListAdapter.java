@@ -99,7 +99,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             }
         }
 
-        if(!name.equals(""))
+        if(!name.equals("")) //NPE here
             holder.tvUserName.setText(name);
         else
             holder.tvUserName.setText(number);
@@ -236,10 +236,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     intent.putExtra("user", user);
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
-                    String p2TransitionName = context.getString(R.string.nameTransition);
                     Pair<View, String> p1 = Pair.create((View) ivProfileImage, p1TransitionName);
-                    Pair<View, String> p2 = Pair.create((View) ivProfileImage, p2TransitionName);;
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
                     context.startActivity(intent, transition.toBundle());
                 }
             });
@@ -253,10 +251,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     intent.putExtra("user", user);
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
-                    String p2TransitionName = context.getString(R.string.nameTransition);
                     Pair<View, String> p1 = Pair.create((View) ivProfileIcon, p1TransitionName);
-                    Pair<View, String> p2 = Pair.create((View) ivProfileIcon, p2TransitionName);;
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
                     context.startActivity(intent, transition.toBundle());
                 }
             });

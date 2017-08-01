@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
         i.putParcelableArrayListExtra("users", users);
         MainActivity.this.startActivityForResult(i, 1);
-        overridePendingTransition(R.anim.expand, 0);
+        //overridePendingTransition(R.anim.expand, 0);
 
     }
 

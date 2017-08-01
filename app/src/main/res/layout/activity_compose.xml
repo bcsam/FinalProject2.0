@@ -40,7 +40,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/btComp2Check"
-        android:layout_below="@+id/etComp2Number" />
+        android:layout_below="@+id/horizontalLine" />
 
     <Button
         android:id="@+id/btComp2Check"
