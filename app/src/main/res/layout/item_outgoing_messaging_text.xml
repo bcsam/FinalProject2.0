@@ -79,16 +79,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="all"
-            android:linksClickable="true"
-            android:maxWidth="175dp"
-            android:text="Message"
-            android:backgroundTint="@color/lighterGray"
-            android:textSize="14dp"
             android:background="@drawable/turquoise"
+            android:backgroundTint="@color/lighterGray"
+            android:linksClickable="true"
+            android:maxWidth="170dp"
+            android:text="test test test test test test"
+            android:textSize="14dp"
+            android:transitionName="@string/messageDetailTransition"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/ivProfileImage"
-            android:layout_toStartOf="@+id/ivProfileImage"
-            android:transitionName="@string/messageDetailTransition"/>
+            android:layout_toStartOf="@+id/ivProfileImage" />
 
         <TextView
             android:id="@+id/tvTimeStamp"

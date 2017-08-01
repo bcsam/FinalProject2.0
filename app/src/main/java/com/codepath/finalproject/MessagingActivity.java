@@ -97,7 +97,7 @@ public class MessagingActivity extends AppCompatActivity {
             //stores this info to know which messages to bring up
             int position = getIntent().getIntExtra("position", 0);
             users = getIntent().getParcelableArrayListExtra("users");
-            user = users.get(position);
+            user = users.get(position); // TODO: 8/1/17 Check for IOB and Null Pointer errors!!!!!!!
             recipientName = user.getName();
             recipientNumber = user.getNumber();
             String message = getIntent().getStringExtra("message");

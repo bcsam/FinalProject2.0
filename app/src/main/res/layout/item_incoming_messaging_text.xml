@@ -78,10 +78,10 @@
             android:backgroundTint="@color/colorPrimaryLight"
             android:inputType="textMultiLine"
             android:linksClickable="true"
-            android:maxWidth="175dp"
+            android:maxWidth="170dp"
             android:textSize="14dp"
-            tools:text="Message"
-            android:transitionName="@string/messageDetailTransition"/>
+            android:transitionName="@string/messageDetailTransition"
+            tools:text="test test test test test test" />
 
         <TextView
             android:id="@+id/tvTimeStamp"
