@@ -66,6 +66,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+        smsList = getIntent().getParcelableArrayListExtra("smsList");
         users = getIntent().getParcelableArrayListExtra("users");
         position = getIntent().getIntExtra("position", -1);
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
@@ -208,7 +209,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     outgoingList.add(0, text); //why is it add(0, text)?
                     smsList.add(0, text);
                     applicationClass.setOutgoingList(outgoingList);
-                    applicationClass.setSmsList(smsList);
+                    //applicationClass.setSmsList(smsList);
 
                     conversationAdapter.notifyDataSetChanged();
                     rvCompose.scrollToPosition(0);

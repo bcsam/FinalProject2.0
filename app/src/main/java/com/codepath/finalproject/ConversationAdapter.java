@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -100,8 +101,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.ivProfileCircle.setVisibility(View.VISIBLE);
         holder.ivProfileImage.setVisibility(View.INVISIBLE);
 
+        final String id = smsList.get(position).getContactId();
+        final String name = smsList.get(position).getContact();
 
-        /*if (!id.equals("") && smsList.get(position).getType() == 1) {
+
+        if (id != null && !id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
@@ -110,14 +114,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 100, 100, false)));
                 image = null;
-            } else if (!name.equals("")) {
+            } else if (!smsList.get(position).getContact().equals("")) {
                 holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
+                holder.ivProfileCircle.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
 
             /*holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override

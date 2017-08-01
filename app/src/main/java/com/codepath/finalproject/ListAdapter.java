@@ -69,7 +69,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         SMS sms = smsList.get(position);
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
-        String contactId = smsList.get(position).getContactId();
+        String contactId = "";
+        contactId = smsList.get(position).getContactId();
 
         if (contactId == null){
             contactId = "";
@@ -80,21 +81,27 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
 
 
+        holder.ivProfileIcon.setVisibility(View.VISIBLE);
+        holder.ivProfileImage.setVisibility(View.INVISIBLE);
+        holder.textCircle.setVisibility(View.INVISIBLE);
 
         if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+            contactIdLong = 0;
 
             if (image != null) {
                 holder.profileCircle.setVisibility(View.INVISIBLE);
+                holder.textCircle.setVisibility(View.INVISIBLE);
                 holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 100, 100, false)));
                 image = null;
             } else if (!name.equals("")) {
                 holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
+                holder.ivProfileIcon.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
         }
@@ -232,7 +239,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
                     int position = getAdapterPosition();
-                    User user = users.get(position); //ERROR HERE
+                    User user = users.get(position);
                     intent.putExtra("user", user);
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
