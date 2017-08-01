@@ -38,14 +38,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     ArrayList<SMS> smsList;
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
+    ArrayList<User> users;
     View rowView;
     Bitmap image;
 
-    public ListAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList) {
+    public ListAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> mIncomingList, ArrayList<SMS> mOutgoingList, ArrayList<User> mUsers) {
         context = mContext;
         smsList = mSmsList;
         incomingList = mIncomingList;
         outgoingList = mOutgoingList;
+        users = mUsers;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         client = new AnalyzerClient();
@@ -276,9 +278,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             String id = smsList.get(position).getContactId();
             notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);
-            intent.putExtra("name", name);
-            intent.putExtra("number", number);
-            //intent.putExtra("id", id);
+            intent.putExtra("position", position);
+            intent.putExtra("users", users);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);
             ((Activity) context).startActivityForResult(intent, 1);

@@ -7,8 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowSharedElementEnterTransition">@transition/expand</item>
-        <item name="android:windowSharedElementExitTransition">@transition/expand</item>
+        <!--item name="android:windowSharedElementEnterTransition">@transition/expand</item>
+        <item name="android:windowSharedElementExitTransition">@transition/expand</item-->
     </style>
 
 </resources>

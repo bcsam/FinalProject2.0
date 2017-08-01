@@ -38,6 +38,8 @@ public class MessagingActivity extends AppCompatActivity {
     ArrayList<SMS> messages;
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
+    ArrayList<User> users;
+    User user;
     Uri uri;
 
     String recipientName = "";
@@ -76,10 +78,11 @@ public class MessagingActivity extends AppCompatActivity {
             }
 
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
-            messages = new ArrayList<>();
+            messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-            getMessages();
+            if(messages.size() == 0)
+                getMessages();
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
@@ -92,8 +95,11 @@ public class MessagingActivity extends AppCompatActivity {
             sendText(checkedText);
         }else {
             //stores this info to know which messages to bring up
-            recipientName = getIntent().getStringExtra("name");
-            recipientNumber = getIntent().getStringExtra("number");
+            int position = getIntent().getIntExtra("position", 0);
+            users = getIntent().getParcelableArrayListExtra("users");
+            user = users.get(position);
+            recipientName = user.getName();
+            recipientNumber = user.getNumber();
             String message = getIntent().getStringExtra("message");
             etBody.setText(message);
 
@@ -130,10 +136,11 @@ public class MessagingActivity extends AppCompatActivity {
         }*/
 
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
-            messages = new ArrayList<>();
+            messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-            getMessages();
+            if(messages.size() == 0)
+                getMessages();
             Log.i("messages", String.valueOf(messages.size()));
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -365,6 +372,7 @@ public class MessagingActivity extends AppCompatActivity {
     @Override
     public void onPause(){
         messages = adapter.getModifyList();
+        user.setConversation(messages);
         super.onPause();
     }
 
@@ -373,6 +381,7 @@ public class MessagingActivity extends AppCompatActivity {
         Intent i =  new Intent(MessagingActivity.this, MainActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("users", users);
         setResult(RESULT_OK, i);
         finish();
     }

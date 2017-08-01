@@ -11,6 +11,7 @@ import android.telephony.PhoneNumberUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Created by vf608 on 7/13/17.
@@ -26,6 +27,7 @@ public class User implements Parcelable{
     private Uri profileImage;
     private String[] darkToneColors;
     private Context context;
+    private ArrayList<SMS> conversation;
 
     private boolean other;
 
@@ -40,7 +42,8 @@ public class User implements Parcelable{
         number = "";
         contactId = "";
         profileImage = null;
-         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
+        darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
+        conversation = new ArrayList<SMS>();
     }
 
     public User(Context context){
@@ -54,6 +57,7 @@ public class User implements Parcelable{
         profileImage = null;
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         this.context = context;
+        conversation = new ArrayList<SMS>();
     }
 
     public Context getContext() {
@@ -162,13 +166,13 @@ public class User implements Parcelable{
         return "#c66a30";
     }
 
-    public String getUtteranceColor(){
-        return "#600080";
-    }
-
     public String getToneColor(int tone){
         return darkToneColors[tone];
     }
+
+    public ArrayList<SMS> getConversation(){ return conversation; }
+
+    public void setConversation(ArrayList<SMS> conversation){ this.conversation = conversation; }
 
     public void clear(){
         messageCount = 0;
@@ -194,7 +198,10 @@ public class User implements Parcelable{
         dest.writeInt(this.messageCount);
         dest.writeString(this.name);
         dest.writeString(this.number);
+        dest.writeParcelable(this.profileImage, flags);
         dest.writeStringArray(this.darkToneColors);
+        dest.writeTypedList(this.conversation);
+        dest.writeByte(this.other ? (byte) 1 : (byte) 0);
         dest.writeString(this.contactId);
     }
 
@@ -205,7 +212,10 @@ public class User implements Parcelable{
         this.messageCount = in.readInt();
         this.name = in.readString();
         this.number = in.readString();
+        this.profileImage = in.readParcelable(Uri.class.getClassLoader());
         this.darkToneColors = in.createStringArray();
+        this.conversation = in.createTypedArrayList(SMS.CREATOR);
+        this.other = in.readByte() != 0;
         this.contactId = in.readString();
     }
 
