@@ -235,8 +235,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     User user = users.get(position);
                     intent.putExtra("user", user);
 
-                    String transitionName = context.getString(R.string.profileTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
+                    String p1TransitionName = context.getString(R.string.profileTransition);
+                    String p2TransitionName = context.getString(R.string.nameTransition);
+                    Pair<View, String> p1 = Pair.create((View) ivProfileImage, p1TransitionName);
+                    Pair<View, String> p2 = Pair.create((View) ivProfileImage, p2TransitionName);;
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2);
                     context.startActivity(intent, transition.toBundle());
                 }
             });
