@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("user", user);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("users", users);
         MainActivity.this.startActivity(i);
     }
 
@@ -206,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("users", users);
         MainActivity.this.startActivityForResult(i, 1);
         //overridePendingTransition(R.anim.expand, 0);
 
@@ -394,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateInbox(String message, String from, String date) {
-        FinalProject applicationClass = ((FinalProject)getApplicationContext());
+        /*FinalProject applicationClass = ((FinalProject)getApplicationContext());
         SMS sms = new SMS(this);
 
         sms.setBody(message);
@@ -404,15 +406,34 @@ public class MainActivity extends AppCompatActivity {
         sms.setContactId(getContactId(from));
         sms.setType(1);
 
-        smsList.add(sms);
-        incomingList.add(sms);
+
+        boolean isAdded = false;
+        for (SMS text : smsList) {
+            if (matchNumber(sms, text)) {
+                isAdded = true;
+                break;
+            }
+        }
+
+        if (!isAdded) {
+            User user = new User(context);
+            user.setNumber(recipientNumber);
+            user.setName(recipientName);
+            user.setContactId(id);
+            users.add(user);
+            smsList.add(sms);
+            incomingList.add(sms);
+
+        }
+
 
         applicationClass.setSmsList(smsList);
         applicationClass.setIncomingList(incomingList);
 
         adapter = new ListAdapter(this, smsList, incomingList, outgoingList, users);
         rvText.setAdapter(adapter);
-        layoutManager.scrollToPosition(0);
+        layoutManager.scrollToPosition(0);*/
+        text();
 
     }
 

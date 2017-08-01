@@ -41,6 +41,7 @@ public class MessagingActivity extends AppCompatActivity {
     ArrayList<User> users;
     User user;
     Uri uri;
+    int position;
 
     String recipientName = "";
     String recipientNumber;
@@ -78,6 +79,9 @@ public class MessagingActivity extends AppCompatActivity {
             }
 
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
+            int position = getIntent().getIntExtra("position", 0);
+            users = getIntent().getParcelableArrayListExtra("users");
+            user = users.get(position);
             messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
@@ -95,7 +99,7 @@ public class MessagingActivity extends AppCompatActivity {
             sendText(checkedText);
         }else {
             //stores this info to know which messages to bring up
-            int position = getIntent().getIntExtra("position", 0);
+            position = getIntent().getIntExtra("position", 0);
             users = getIntent().getParcelableArrayListExtra("users");
             user = users.get(position); // TODO: 8/1/17 Check for IOB and Null Pointer errors!!!!!!!
             recipientName = user.getName();
@@ -284,6 +288,8 @@ public class MessagingActivity extends AppCompatActivity {
                     intent.putExtra("text", text);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putParcelableArrayListExtra("users", users);
+                    intent.putExtra("position", position);
                     /*
                     intent.putExtra("message", message);
                     intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting

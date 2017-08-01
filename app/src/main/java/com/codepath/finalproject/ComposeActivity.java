@@ -51,6 +51,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     String recipientNumber;
     ConversationAdapter conversationAdapter;
     ArrayList<SMS> smsList;
+    ArrayList<User> users;
 
 
     @Override
@@ -64,6 +65,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+        users = getIntent().getParcelableArrayListExtra("users");
 
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
@@ -349,6 +351,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         Intent i = new Intent(ComposeActivity.this, ComposeActivity.class);
         i.putExtra("incomingList", incomingList);
         i.putExtra("outgoingList", outgoingList);
+        i.putExtra("users", users);
         ComposeActivity.this.startActivity(i);
     }
 

@@ -232,10 +232,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
                     int position = getAdapterPosition();
-                    User user = new User(context);
-                    user.setName(smsList.get(position).getContact());
-                    user.setNumber(smsList.get(position).getNumber());
-                    user.setContactId(smsList.get(position).getContactId());
+                    User user = users.get(position);
                     intent.putExtra("user", user);
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
@@ -250,10 +247,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
                     int position = getAdapterPosition();
-                    User user = new User(context);
-                    user.setName(smsList.get(position).getContact());
-                    user.setNumber(smsList.get(position).getNumber());
-                    user.setContactId(smsList.get(position).getContactId());
+                    User user = users.get(position);
                     intent.putExtra("user", user);
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
