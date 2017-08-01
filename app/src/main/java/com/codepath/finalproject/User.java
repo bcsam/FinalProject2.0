@@ -28,6 +28,7 @@ public class User implements Parcelable{
     private String[] darkToneColors;
     private Context context;
     private ArrayList<SMS> conversation;
+    private String allTexts;
 
     private boolean other;
 
@@ -44,6 +45,7 @@ public class User implements Parcelable{
         profileImage = null;
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         conversation = new ArrayList<SMS>();
+        allTexts = "";
     }
 
     public User(Context context){
@@ -58,6 +60,7 @@ public class User implements Parcelable{
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         this.context = context;
         conversation = new ArrayList<SMS>();
+        allTexts = "";
     }
 
     public Context getContext() {
@@ -74,6 +77,14 @@ public class User implements Parcelable{
 
     public void setOther(boolean other) {
         this.other = other;
+    }
+
+    public String getAllTexts() {
+        return allTexts;
+    }
+
+    public void setAllTexts(String allTexts) {
+        this.allTexts = allTexts;
     }
 
     public void updateScores(SMS sms){
@@ -95,6 +106,7 @@ public class User implements Parcelable{
                 averageSocialLevels[i] = sms.getSocialLevel(i);
             }
         }
+
     }
 
     public InputStream openPhoto(long contactId) {
@@ -201,6 +213,7 @@ public class User implements Parcelable{
         dest.writeParcelable(this.profileImage, flags);
         dest.writeStringArray(this.darkToneColors);
         dest.writeTypedList(this.conversation);
+        dest.writeString(this.allTexts);
         dest.writeByte(this.other ? (byte) 1 : (byte) 0);
         dest.writeString(this.contactId);
     }
@@ -213,8 +226,9 @@ public class User implements Parcelable{
         this.name = in.readString();
         this.number = in.readString();
         this.profileImage = in.readParcelable(Uri.class.getClassLoader());
-        this.darkToneColors = in.createStringArray();
+        this.darkToneColors = in.createStringArray();;
         this.conversation = in.createTypedArrayList(SMS.CREATOR);
+        this.allTexts = in.readString();
         this.other = in.readByte() != 0;
         this.contactId = in.readString();
     }
