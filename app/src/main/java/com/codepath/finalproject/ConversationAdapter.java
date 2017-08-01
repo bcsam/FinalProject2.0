@@ -20,6 +20,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList) {
         context = mContext;
         smsList = mSmsList;
+        for(SMS s: smsList)
+            Log.i("messages", s.getBubbleColor());
         this.incomingList = incomingList;
         this.outgoingList = outgoingList;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -78,33 +81,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Drawable drawable = holder.tvBody.getBackground();
-        drawable.setColorFilter(Color.parseColor("#DFAD8E"), PorterDuff.Mode.SRC_ATOP);
-        AnalyzerClient client = new AnalyzerClient(context, drawable);
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
-        if(params[0].getBubbleColor().equals("")) {
+        drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        if(params[0].getBubbleColor().equals("#DFAD8E")) {
             setAnimation(holder.itemView, position);
             AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
             analyzerClient.execute(params);
         }
-        else
-            drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
-        final String name = smsList.get(position).getContact();
-        final String number = smsList.get(position).getNumber();
-        id = smsList.get(position).getContactId(); //might have to change -Brent
-        if(id == null){
-            id = "";
-        }
         String body = smsList.get(position).getBody();
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
-        params[0] = smsList.get(position);
-
-        if(params[0].getBubbleColor().equals("")) {
-            setAnimation(holder.itemView, position);
-            client.execute(params);
-        }
-        else
-            drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
 
         holder.tvBody.setText(body);
         holder.date.setText(date);
@@ -274,6 +260,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             cursor.close();
         }
         return null;
+    }
+
+    public ArrayList<SMS> getModifyList() {
+        return smsList;
     }
 
 

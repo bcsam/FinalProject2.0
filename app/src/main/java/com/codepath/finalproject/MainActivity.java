@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     String body;
     String date;
     String id;
+    String textID;
     Boolean SMS;
     int type;
     Uri uri;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList, incomingList, outgoingList));
+                rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList, incomingList, outgoingList, users));
                 return true;
             }
 
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                rvText.setAdapter(new ListAdapter(MainActivity.this, (ArrayList<com.codepath.finalproject.SMS>) onQuerySmsList, incomingList, outgoingList));
+                rvText.setAdapter(new ListAdapter(MainActivity.this, (ArrayList<com.codepath.finalproject.SMS>) onQuerySmsList, incomingList, outgoingList, users));
                 return true;
             }
         });
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                rvText.setAdapter(new ListAdapter(MainActivity.this, smsList, incomingList, outgoingList));
+                rvText.setAdapter(new ListAdapter(MainActivity.this, smsList, incomingList, outgoingList, users));
                 return true;
             }
         });
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public static MainActivity getInstace(){
+    public static MainActivity getInstance(){
         return ins;
     }
 
@@ -334,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
                     body = c.getString(c.getColumnIndexOrThrow("body")).toString();
                     date = c.getString(c.getColumnIndexOrThrow("date")).toString();
                     type = c.getInt(c.getColumnIndexOrThrow("type"));
-
+                    //textID = c.getString(c.getColumnIndexOrThrow("_id"));
                     id = getContactId(recipientNumber);
 
                     recipientName = getContactName(recipientNumber, this);
@@ -364,6 +365,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (!isAdded) {
+                        User user = new User(context);
+                        user.setNumber(recipientNumber);
+                        user.setName(recipientName);
+                        user.setContactId(id);
+                        users.add(user);
                         smsList.add(sms);
                     }
 
@@ -383,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
         // Set smsList in the ListAdapter
         layoutManager = new LinearLayoutManager(this);
         rvText.setLayoutManager(layoutManager);
-        adapter = new ListAdapter(this, smsList, incomingList, outgoingList);
+        adapter = new ListAdapter(this, smsList, incomingList, outgoingList, users);
         rvText.setAdapter(adapter);
     }
 
@@ -404,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
         applicationClass.setSmsList(smsList);
         applicationClass.setIncomingList(incomingList);
 
-        adapter = new ListAdapter(this, smsList, incomingList, outgoingList);
+        adapter = new ListAdapter(this, smsList, incomingList, outgoingList, users);
         rvText.setAdapter(adapter);
         layoutManager.scrollToPosition(0);
 
@@ -435,6 +441,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             ArrayList<SMS> newoutgoingList = data.getParcelableArrayListExtra("outgoingList");
             outgoingList = newoutgoingList;
+            users = data.getParcelableArrayListExtra("users");
         } catch (NullPointerException e) {
 
         }
