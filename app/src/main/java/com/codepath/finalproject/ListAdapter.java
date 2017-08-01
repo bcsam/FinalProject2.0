@@ -114,7 +114,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 return true;
             }
         });
-        setAnimation(holder.itemView, getItemViewType(position));
+        //setAnimation(holder.itemView, getItemViewType(position));
     }
 
     private void setAnimation(View viewToAnimate, int viewType){

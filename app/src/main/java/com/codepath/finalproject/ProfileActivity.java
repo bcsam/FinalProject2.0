@@ -57,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         User user = getIntent().getParcelableExtra("user");
 
-        if (!user.getName().equals("") && user.getName() != null) {
+        if (!user.getName().equals("") && user.getName() != null) { // TODO: 7/31/17 check on null pointer here 
             getSupportActionBar().setTitle(user.getName());
         } else {
             getSupportActionBar().setTitle("ToneTeller");

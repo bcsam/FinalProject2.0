@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +47,21 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        //graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        int color = ContextCompat.getColor(getActivity(), R.color.veryLightGray);
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(color);
+
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("# OF TEXTS");
+
+        color = ContextCompat.getColor(getActivity(), R.color.darkGray);
+
+        graph.getGridLabelRenderer().setVerticalLabelsColor(color);
+        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(color);
+        graph.getGridLabelRenderer().setGridColor(color);
         graph.getGridLabelRenderer().setVerticalAxisTitle("TONE SCORES");
+
         User user = getArguments().getParcelable("user");
+        graph.getGridLabelRenderer().setVerticalAxisTitleColor(color);
         client = new GraphAnalyzerClient(getContext(), user, graph);
         if(user.getName().equals("Me")) {
             //graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS SENT");
@@ -179,8 +192,8 @@ public class GraphFragment extends Fragment {
                     for(int j = 0; j < 5; j++)
                         params[i].setToneLevel(j, 0);
                 }
-                //else
-                    //getScores(params[i]);
+                else
+                    getScores(params[i]);
                 user.updateScores(params[i]);
             }
             ((Activity) context).runOnUiThread(new Runnable() {
@@ -194,7 +207,7 @@ public class GraphFragment extends Fragment {
                             dataPoints[j] = new DataPoint(j, params[j].getToneLevel(i));
                         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
                         series.setColor(Color.parseColor(params[0].getToneColor(i)));
-                        series.setDrawDataPoints(true);
+                        //series.setDrawDataPoints(true);
                         graph.addSeries(series);
                     }
                     graph.setVisibility(View.VISIBLE);
