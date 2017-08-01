@@ -7,15 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
-<<<<<<< HEAD
         <!--item name="android:windowSharedElementEnterTransition">@transition/expand</item>
-        <item name="android:windowSharedElementExitTransition">@transition/expand</item-->
-=======
-        <item name="android:windowSharedElementEnterTransition">@transition/expand</item>
         <item name="android:windowSharedElementExitTransition">@transition/expand</item>
 
-        <item name="android:windowEnterTransition">@transition/activity_transition</item>
->>>>>>> cc739a04c57079b5fec8199a0f297957f924d582
+        <item name="android:windowEnterTransition">@transition/activity_transition</item-->
     </style>
 
 </resources>
