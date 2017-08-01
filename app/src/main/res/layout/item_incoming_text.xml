@@ -96,20 +96,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="4dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="4dp"
                     tools:text="Time" />
 
                 <View
                     android:id="@+id/horizontalLine"
                     android:layout_width="fill_parent"
-                    android:layout_height="2dip"
+                    android:layout_height="1dp"
                     android:layout_below="@+id/ivProfileImage"
+                    android:layout_marginLeft="55dp"
+                    android:layout_marginRight="15dp"
                     android:layout_marginTop="5dp"
                     android:background="#D3D3D3"
                     android:ellipsize="end"
-                    android:maxLines="2"/>
+                    android:maxLines="2" />
 
         </RelativeLayout>
 

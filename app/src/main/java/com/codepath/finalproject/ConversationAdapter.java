@@ -54,13 +54,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     int lastPosition = 2147483647;
     String id;
 
-    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList) {
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, int lastAnimationPosition) {
         context = mContext;
         smsList = mSmsList;
         for(SMS s: smsList)
             Log.i("messages", s.getBubbleColor());
         this.incomingList = incomingList;
         this.outgoingList = outgoingList;
+        lastPosition = lastAnimationPosition;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -84,8 +85,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
         drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        setAnimation(holder.itemView, position);
         if(params[0].getBubbleColor().equals("#DFAD8E")) {
-            setAnimation(holder.itemView, position);
             AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
             analyzerClient.execute(params);
         }
@@ -133,14 +134,19 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     private void setAnimation(View viewToAnimate, int position){
-        if(getItemViewType(position)==0) {
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.right_left_slide);
-            viewToAnimate.startAnimation(animation);
-            //lastPosition = position;
-        }else{
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.left_right_slide);
-            viewToAnimate.startAnimation(animation);
-            //lastPosition = position;
+
+        if(position<lastPosition) {
+
+            if (getItemViewType(position) == 0) {
+                Animation animation = AnimationUtils.loadAnimation(context, R.anim.right_left_slide);
+                viewToAnimate.startAnimation(animation);
+                //lastPosition = position;
+            } else {
+                Animation animation = AnimationUtils.loadAnimation(context, R.anim.left_right_slide);
+                viewToAnimate.startAnimation(animation);
+                //lastPosition = position;
+            }
+            lastPosition = position;
         }
     }
 

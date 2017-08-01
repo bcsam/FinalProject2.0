@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,13 +89,15 @@ public class MessagingActivity extends AppCompatActivity {
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
             if(messages.size() == 0)
                 getMessages();
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
+            int lastVisible = layoutManager.findLastVisibleItemPosition();
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, lastVisible);
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
+            int numVisibleItems = rvText.getChildCount();
 
             checkedText.setType(2);
             sendText(checkedText);
@@ -113,7 +117,6 @@ public class MessagingActivity extends AppCompatActivity {
             } else {
                 getSupportActionBar().setTitle(recipientNumber);
             }
-
 
             TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
             myNumber = tMgr.getLine1Number();
@@ -146,11 +149,13 @@ public class MessagingActivity extends AppCompatActivity {
             if(messages.size() == 0)
                 getMessages();
             Log.i("messages", String.valueOf(messages.size()));
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
+            int lastVisible = layoutManager.findLastVisibleItemPosition();
+            int lastVis = rvText.getChildCount();
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, lastVisible);
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
         }
@@ -186,7 +191,7 @@ public class MessagingActivity extends AppCompatActivity {
                         }
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, 0));
                 return true;
             }
 
@@ -202,7 +207,7 @@ public class MessagingActivity extends AppCompatActivity {
                         postQuerySmsList.add(text);
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, 0));
                 return true;
             }
         });
@@ -217,7 +222,7 @@ public class MessagingActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, 0));
                 return true;
             }
         });
@@ -275,6 +280,36 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void setListeners() {
+        etBody.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(s.toString().equals("")) {
+                    btCheck.setVisibility(View.GONE);
+                }else{
+                    btCheck.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")) {
+                    btCheck.setVisibility(View.GONE);
+                }else{
+                    btCheck.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().equals("")){
+                    btCheck.setVisibility(View.GONE);
+                }else{
+                    btCheck.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

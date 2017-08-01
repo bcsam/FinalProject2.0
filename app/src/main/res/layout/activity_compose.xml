@@ -9,7 +9,7 @@
     <EditText
         android:id="@+id/etComp2Number"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -26,11 +26,9 @@
     <View
         android:id="@+id/horizontalLine"
         android:layout_width="match_parent"
-        android:layout_height="2dip"
+        android:layout_height="1dp"
         android:layout_below="@+id/etComp2Number"
-        android:background="#D3D3D3"
-        android:ellipsize="end"
-        android:maxLines="2"/>
+        android:background="#D3D3D3" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCompose"
@@ -46,12 +44,20 @@
         android:id="@+id/btComp2Check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:text="Check!"
+        android:layout_above="@+id/horizontalLine2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:background="@color/colorPrimaryDark"
+        android:text="Check!"
         android:textColor="@color/white"
-        android:layout_above="@+id/relativeLayout2"/>
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/horizontalLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/relativeLayout2"
+        android:background="#D3D3D3" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -82,13 +88,13 @@
             android:id="@+id/btComp2Send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_send_blue"
-            android:onClick="sendText"/>
+            android:layout_marginRight="7dp"
+            android:onClick="sendText"
+            app:srcCompat="@drawable/ic_send_blue" />
 
     </RelativeLayout>
 

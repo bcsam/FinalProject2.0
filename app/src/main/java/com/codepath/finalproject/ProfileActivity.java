@@ -45,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
     Cursor c1;
     Cursor c2;
     ProfileAnalyzerClient client;
+    User user;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -59,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        User user = getIntent().getParcelableExtra("user");
+        user = getIntent().getParcelableExtra("user");
 
         if (!user.getName().equals("") && user.getName() != null) { // TODO: 7/31/17 check on null pointer here 
             getSupportActionBar().setTitle(user.getName());
@@ -100,6 +101,16 @@ public class ProfileActivity extends AppCompatActivity {
             ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }*/
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem miProfile = menu.findItem(R.id.miProfile);
+
+        if(user.getName().equals("Me")) {
+            miProfile.setEnabled(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
