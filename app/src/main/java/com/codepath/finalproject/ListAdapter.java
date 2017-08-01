@@ -99,7 +99,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             }
         }
 
-        if(!name.equals("")) //NPE here
+        if(name != null && !name.equals("")) //NPE here
             holder.tvUserName.setText(name);
         else
             holder.tvUserName.setText(number);
@@ -232,7 +232,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
                     int position = getAdapterPosition();
-                    User user = users.get(position);
+                    User user = users.get(position); //ERROR HERE
                     intent.putExtra("user", user);
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
