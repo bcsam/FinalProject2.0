@@ -52,7 +52,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     ConversationAdapter conversationAdapter;
     ArrayList<SMS> smsList;
     ArrayList<User> users;
-
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         users = getIntent().getParcelableArrayListExtra("users");
-
+        position = getIntent().getIntExtra("position", -1);
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
         postQueryContacts = new ArrayList<>();
@@ -151,10 +151,14 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
                     //intent.putExtra("message", message);
                     //intent.putExtra("recipientName", recipientName);
-
+                    for(User u: users){
+                        if(u.getNumber().equals(recipientNumber))
+                            position = users.indexOf(u);
+                    }
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
-
+                    intent.putParcelableArrayListExtra("users", users);
+                    intent.putExtra("position", position);
                     SMS sms = new SMS();
                     sms.setBody(message);
                     client = new AnalyzerClient();
