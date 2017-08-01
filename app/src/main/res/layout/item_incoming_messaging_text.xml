@@ -75,7 +75,7 @@
             android:layout_toRightOf="@+id/ivProfileImage"
             android:autoLink="all"
             android:background="@drawable/turquoise"
-            android:backgroundTint="@color/lighterGray"
+            android:backgroundTint="@color/colorPrimaryLight"
             android:inputType="textMultiLine"
             android:linksClickable="true"
             android:maxWidth="175dp"

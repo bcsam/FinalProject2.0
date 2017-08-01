@@ -78,7 +78,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Drawable drawable = holder.tvBody.getBackground();
-        drawable.setColorFilter(Color.parseColor("#ffcc99"), PorterDuff.Mode.SRC_ATOP);
+        drawable.setColorFilter(Color.parseColor("#DFAD8E"), PorterDuff.Mode.SRC_ATOP);
         AnalyzerClient client = new AnalyzerClient(context, drawable);
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
