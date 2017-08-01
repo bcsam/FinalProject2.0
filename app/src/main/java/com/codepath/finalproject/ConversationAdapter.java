@@ -20,6 +20,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -290,9 +291,19 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     Intent intent = new Intent(context, ProfileActivity.class);
                     int position = getAdapterPosition();
                     User user = new User(context);
-                    user.setName(smsList.get(position).getContact());
-                    user.setNumber(smsList.get(position).getNumber());
-                    user.setContactId(smsList.get(position).getContactId());
+                    if(smsList.get(position).getType() == 2){
+                        user.setName("Me");
+                        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+                        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+                        if (!mPhoneNumber.equals("")) {
+                            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+                        }
+                    }
+                    else {
+                        user.setName(smsList.get(position).getContact());
+                        user.setNumber(smsList.get(position).getNumber());
+                        user.setContactId(smsList.get(position).getContactId());
+                    }
                     intent.putExtra("user", user);
 
                     String transitionName = context.getString(R.string.profileTransition);
@@ -307,9 +318,19 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     Intent intent = new Intent(context, ProfileActivity.class);
                     int position = getAdapterPosition();
                     User user = new User(context);
-                    user.setName(smsList.get(position).getContact());
-                    user.setNumber(smsList.get(position).getNumber());
-                    user.setContactId(smsList.get(position).getContactId());
+                    if(smsList.get(position).getType() == 2){
+                        user.setName("Me");
+                        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+                        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+                        if (!mPhoneNumber.equals("")) {
+                            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+                        }
+                    }
+                    else {
+                        user.setName(smsList.get(position).getContact());
+                        user.setNumber(smsList.get(position).getNumber());
+                        user.setContactId(smsList.get(position).getContactId());
+                    }
                     intent.putExtra("user", user);
 
                     String transitionName = context.getString(R.string.profileTransition);
