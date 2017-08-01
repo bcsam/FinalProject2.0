@@ -69,7 +69,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         SMS sms = smsList.get(position);
         final String name = smsList.get(position).getContact();
         final String number = smsList.get(position).getNumber();
-        String contactId = smsList.get(position).getContactId();
+        String contactId = "";
+        contactId = smsList.get(position).getContactId();
 
         if (contactId == null){
             contactId = "";
@@ -80,26 +81,32 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         String date = millisToDate(Long.parseLong(smsList.get(position).getDate()));
 
 
+        holder.ivProfileIcon.setVisibility(View.VISIBLE);
+        holder.ivProfileImage.setVisibility(View.INVISIBLE);
+        holder.textCircle.setVisibility(View.INVISIBLE);
 
         if (!contactId.equals("")) {
             long contactIdLong = Long.parseLong(contactId);
             image = BitmapFactory.decodeStream(smsList.get(position).openPhoto(contactIdLong));
+            contactIdLong = 0;
 
             if (image != null) {
                 holder.profileCircle.setVisibility(View.INVISIBLE);
+                holder.textCircle.setVisibility(View.INVISIBLE);
                 holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 100, 100, false)));
                 image = null;
             } else if (!name.equals("")) {
                 holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
+                holder.ivProfileIcon.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
         }
 
-        if(!name.equals("")) //NPE here
+        if(name != null && !name.equals("")) //NPE here
             holder.tvUserName.setText(name);
         else
             holder.tvUserName.setText(number);
@@ -231,14 +238,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("from", "main");
                     int position = getAdapterPosition();
                     User user = users.get(position);
+
                     intent.putExtra("user", user);
+
+                    intent.putExtra("position", position);
+                    intent.putExtra("users", users);
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
                     Pair<View, String> p1 = Pair.create((View) ivProfileImage, p1TransitionName);
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
-                    context.startActivity(intent, transition.toBundle());
+                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
                 }
             });
             ivProfileIcon = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
@@ -246,14 +258,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("from", "main");
                     int position = getAdapterPosition();
                     User user = users.get(position);
-                    intent.putExtra("user", user);
-
+                    intent.putExtra("position", position);
+                    intent.putExtra("users", users);
                     String p1TransitionName = context.getString(R.string.profileTransition);
                     Pair<View, String> p1 = Pair.create((View) ivProfileIcon, p1TransitionName);
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
-                    context.startActivity(intent, transition.toBundle());
+                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
                 }
             });
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);
@@ -266,10 +279,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            String name = smsList.get(position).getContact();
-            String number = smsList.get(position).getNumber();
-            String id = smsList.get(position).getContactId();
-            notifyDataSetChanged();
+            //notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("position", position);
             intent.putExtra("users", users);

@@ -69,6 +69,7 @@ public class MessagingActivity extends AppCompatActivity {
         inst = this;
 
         SMS checkedText = getIntent().getParcelableExtra("text");
+
         if (checkedText != null) { //if clicked send from post check // TODO: 7/28/17 put the sent message on the right side
             recipientName = checkedText.getContact();
             recipientNumber = checkedText.getNumber();

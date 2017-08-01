@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
+    ArrayList<User> users;
+    int position;
+    String from;
     Cursor c;
     Cursor c1;
     Cursor c2;
@@ -61,6 +65,16 @@ public class ProfileActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         user = getIntent().getParcelableExtra("user");
+        position = getIntent().getIntExtra("position", -1);
+        if(position == -1) {
+            Log.i("Profile", "-1");
+            user = getIntent().getParcelableExtra("user");
+        }
+        else{
+            Log.i("Profile", String.valueOf(position));
+            users = getIntent().getParcelableArrayListExtra("users");
+            user = users.get(position);
+        }
 
         if (!user.getName().equals("") && user.getName() != null) { // TODO: 7/31/17 check on null pointer here 
             getSupportActionBar().setTitle(user.getName());
@@ -72,6 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
         String id = getIntent().getStringExtra("id");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+        from = getIntent().getStringExtra("from");
         ViewPager viewPagerTop = (ViewPager) findViewById(R.id.upper_pager);
 
         // Set the ViewPagerAdapter into ViewPager
@@ -83,11 +98,31 @@ public class ProfileActivity extends AppCompatActivity {
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-        client = new ProfileAnalyzerClient(this, user);
-        if(user.getName().equals("Me"))
-            client.execute(getMyAverages(user));
-        else
-            client.execute(getAverages(user));
+        if(user.getAllTexts().equals("")) {
+            client = new ProfileAnalyzerClient(this, user);
+            if (user.getName().equals("Me"))
+                client.execute(getMyAverages(user));
+            else
+                client.execute(getAverages(user));
+            Log.i("Profile", user.getAllTexts());
+        }
+        else {
+            Log.i("Profile", user.getAllTexts());
+            pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
+            pbLoading.setVisibility(View.GONE);
+            ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+
+            // Set the ViewPagerAdapter into ViewPager
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+            adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
+            adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
+            adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
+
+            viewPager.setAdapter(adapter);
+
+            TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
+            mTabLayout.setupWithViewPager(viewPager);
+        }
 
 
         /*long contactIdLong = Long.parseLong(id);
@@ -192,6 +227,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         SMS sms = new SMS();
         sms.setBody(fullText);
+        user.setAllTexts(fullText);
         return sms;
     }
 
@@ -211,6 +247,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         SMS sms = new SMS();
         sms.setBody(fullText);
+        user.setAllTexts(fullText);
         return sms;
     }
 
@@ -226,9 +263,19 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPause(){
-        client.cancel(true);
-        super.onPause();
+    public void onBackPressed(){
+        Intent i;
+        if(from.equals("messaging"))
+            i =  new Intent(ProfileActivity.this, MessagingActivity.class);
+        else
+            i = new Intent(ProfileActivity.this, MainActivity.class);
+        users.set(position, user);
+        i.putParcelableArrayListExtra("incomingList", incomingList);
+        i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("users", users);
+        i.putExtra("position", position);
+        setResult(RESULT_OK, i);
+        finish();
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
