@@ -11,13 +11,16 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,9 +45,19 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvNumber = (TextView) v.findViewById(R.id.tvNumber);
-        ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfile);
-        ImageView ivProfileImageIcon = (ImageView) v.findViewById(R.id.ivProfileIcon);
+        final ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfile);
+        final ImageView ivProfileImageIcon = (ImageView) v.findViewById(R.id.ivProfileIcon);
         TextView textCircle = (TextView) v.findViewById(R.id.circleText);
+
+        ivProfileImageIcon.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean onPreDraw() {
+                ivProfileImageIcon.getViewTreeObserver().removeOnPreDrawListener(this);
+                getActivity().startPostponedEnterTransition();
+                return true;
+            }
+        });
 
 
         User user = getArguments().getParcelable("user");

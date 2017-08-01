@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,11 +46,13 @@ public class ProfileActivity extends AppCompatActivity {
     Cursor c2;
     ProfileAnalyzerClient client;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //sets up the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        postponeEnterTransition();
 
         ProgressBar pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
         pbLoading.setVisibility(View.VISIBLE);

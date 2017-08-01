@@ -9,6 +9,8 @@
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowSharedElementEnterTransition">@transition/expand</item>
         <item name="android:windowSharedElementExitTransition">@transition/expand</item>
+
+        <item name="android:windowEnterTransition">@transition/activity_transition</item>
     </style>
 
 </resources>
