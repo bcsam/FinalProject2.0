@@ -397,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateInbox(String message, String from, String date) {
-        /*FinalProject applicationClass = ((FinalProject)getApplicationContext());
+        FinalProject applicationClass = ((FinalProject)getApplicationContext());
         SMS sms = new SMS(this);
 
         sms.setBody(message);
@@ -407,11 +407,16 @@ public class MainActivity extends AppCompatActivity {
         sms.setContactId(getContactId(from));
         sms.setType(1);
 
+        //smsList.add(sms);
+        //incomingList.add(sms);
+
 
         boolean isAdded = false;
-        for (SMS text : smsList) {
-            if (matchNumber(sms, text)) {
+        for (int i = 0; i < smsList.size() ; i++) {
+            if (matchNumber(sms, smsList.get(i))) {
                 isAdded = true;
+                smsList.remove(i);
+                smsList.add(0, sms);
                 break;
             }
         }
@@ -422,19 +427,18 @@ public class MainActivity extends AppCompatActivity {
             user.setName(recipientName);
             user.setContactId(id);
             users.add(user);
-            smsList.add(sms);
-            incomingList.add(sms);
-
+            smsList.add(0, sms);
         }
 
 
+        incomingList.add(0, sms);
         applicationClass.setSmsList(smsList);
         applicationClass.setIncomingList(incomingList);
 
         adapter = new ListAdapter(this, smsList, incomingList, outgoingList, users);
         rvText.setAdapter(adapter);
-        layoutManager.scrollToPosition(0);*/
-        text();
+        layoutManager.scrollToPosition(0);
+        //text();
 
     }
 

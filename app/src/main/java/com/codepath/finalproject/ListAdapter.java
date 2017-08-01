@@ -99,7 +99,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             }
         }
 
-        if(!name.equals("")) //NPE here
+        if(name != null && !name.equals("")) //NPE here
             holder.tvUserName.setText(name);
         else
             holder.tvUserName.setText(number);
@@ -268,10 +268,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            String name = smsList.get(position).getContact();
-            String number = smsList.get(position).getNumber();
-            String id = smsList.get(position).getContactId();
-            notifyDataSetChanged();
+            //notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);
             intent.putExtra("position", position);
             intent.putExtra("users", users);
