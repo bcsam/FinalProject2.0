@@ -37,6 +37,8 @@ public class PostCheckActivity extends AppCompatActivity {
     Button btEdit;
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
+    ArrayList<User> users;
+    int position;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -55,6 +57,8 @@ public class PostCheckActivity extends AppCompatActivity {
         text = getIntent().getParcelableExtra("text");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+        users = getIntent().getParcelableArrayListExtra("users");
+        position = getIntent().getIntExtra("position", 0);
 
         //makes a Textbody with the user's message
 
@@ -111,6 +115,8 @@ public class PostCheckActivity extends AppCompatActivity {
                 intent.putExtra("number", text.getNumber());
                 intent.putParcelableArrayListExtra("incomingList", incomingList);
                 intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                intent.putParcelableArrayListExtra("users", users);
+                intent.putExtra("position", position);
                 PostCheckActivity.this.startActivity(intent);
             }
         });
@@ -123,6 +129,8 @@ public class PostCheckActivity extends AppCompatActivity {
                     intent.putExtra("text", text);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putParcelableArrayListExtra("users", users);
+                    intent.putExtra("position", position);
                 /*
                     intent.putExtra("name", recipientName);
                     intent.putExtra("number", recipientNumber);
