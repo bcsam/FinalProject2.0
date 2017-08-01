@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
         i.putParcelableArrayListExtra("users", users);
+        i.putExtra("from", "main");
         MainActivity.this.startActivity(i);
     }
 

@@ -289,6 +289,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("from", "messaging");
                     int position = getAdapterPosition();
                     User user = new User(context);
                     if(smsList.get(position).getType() == 2){
@@ -316,6 +317,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("from", "messaging");
                     int position = getAdapterPosition();
                     User user = new User(context);
                     if(smsList.get(position).getType() == 2){
