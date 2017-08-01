@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("user", user);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("users", users);
         MainActivity.this.startActivity(i);
     }
 
@@ -206,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("users", users);
         MainActivity.this.startActivityForResult(i, 1);
         overridePendingTransition(R.anim.expand, 0);
 
