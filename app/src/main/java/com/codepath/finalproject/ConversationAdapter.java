@@ -15,10 +15,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
@@ -270,7 +268,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvTime;
@@ -281,9 +279,24 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         public ViewHolder(View itemView){
             super(itemView);
-
+           final View iv = itemView;
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvBody.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    context = iv.getContext();
+                    int position = getAdapterPosition();
+                    Intent intent = new Intent(context, MessageDetailActivity.class);
+                    intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putExtra("sms", smsList.get(position));
+
+                    String transitionName = context.getString(R.string.messageDetailTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
+                    context.startActivity(intent, transition.toBundle());
+                }
+            });
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
@@ -348,23 +361,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
-
-            itemView.setOnClickListener(this);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public void onClick(View view) {
-            context = itemView.getContext();
-            int position = getAdapterPosition();
-            Intent intent = new Intent(context, MessageDetailActivity.class);
-            intent.putParcelableArrayListExtra("incomingList", incomingList);
-            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
-            intent.putExtra("sms", smsList.get(position));
-
-            String transitionName = context.getString(R.string.messageDetailTransition);
-            ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
-            context.startActivity(intent, transition.toBundle());
-        }
     }
 }
