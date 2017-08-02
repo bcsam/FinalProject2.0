@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -143,31 +145,34 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     private void setListeners() {
 
         etBody.addTextChangedListener(new TextWatcher() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if(s.toString().equals("")) {
-                    btCheck.setVisibility(View.GONE);
+                    btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setVisibility(View.VISIBLE);
+                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
                 }
 
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().equals("")) {
-                    btCheck.setVisibility(View.GONE);
+                    btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setVisibility(View.VISIBLE);
+                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
                 }
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().equals("")){
-                    btCheck.setVisibility(View.GONE);
+                    btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setVisibility(View.VISIBLE);
+                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
                 }
             }
         });
@@ -190,7 +195,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
                     //intent.putExtra("message", message);
                     //intent.putExtra("recipientName", recipientName);
-                    for(User u: users){
+                    for(User u: users){ // TODO: 8/1/17 threw a null pointer exception 
                         if(u.getNumber().equals(recipientNumber))
                             position = users.indexOf(u);
                     }
@@ -290,7 +295,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             }
         });
 
-        etNumber.addTextChangedListener(new TextWatcher() {
+        etNumber.addTextChangedListener(new TextWatcher() { // TODO: 8/1/17 gray out until ready to click it
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
