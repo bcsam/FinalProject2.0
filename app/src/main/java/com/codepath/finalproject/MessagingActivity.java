@@ -392,5 +392,6 @@ public class MessagingActivity extends AppCompatActivity {
         setResult(RESULT_OK, i);
         finish();
     }
+
 }
 

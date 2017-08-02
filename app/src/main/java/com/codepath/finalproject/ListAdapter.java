@@ -270,6 +270,23 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 }
             });
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);
+
+            textCircle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("from", "main");
+                    int position = getAdapterPosition();
+                    User user = users.get(position);
+                    intent.putExtra("position", position);
+                    intent.putExtra("users", users);
+                    String p1TransitionName = context.getString(R.string.profileTransition);
+                    Pair<View, String> p1 = Pair.create((View) textCircle, p1TransitionName);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
+                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                }
+            });
+
             profileCircle = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
 
             itemView.setOnClickListener(this);
