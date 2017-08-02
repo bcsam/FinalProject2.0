@@ -21,11 +21,19 @@
         android:id="@+id/btCheck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/relativeLayout2"
         android:background="@color/colorPrimaryDark"
         android:text="Check!"
         android:textColor="@color/white"
-        android:layout_above="@id/relativeLayout2"/>
+        android:visibility="gone" />
 
+
+    <View
+        android:id="@+id/horizontalLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/relativeLayout2"
+        android:background="#D3D3D3" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -58,11 +66,12 @@
             android:id="@+id/btSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_send_blue"
-            android:onClick="sendText"
-            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_centerVertical="true"
+            android:layout_marginRight="7dp"
+            android:onClick="sendText"
+            app:srcCompat="@drawable/ic_send_blue" />
     </RelativeLayout>
 
 </RelativeLayout>

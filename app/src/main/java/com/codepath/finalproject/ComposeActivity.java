@@ -126,6 +126,13 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem miCompose = menu.findItem(R.id.miCompose);
+        miCompose.setEnabled(false);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_unsearchable, menu);
@@ -135,6 +142,35 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
     private void setListeners() {
 
+        etBody.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(s.toString().equals("")) {
+                    btCheck.setVisibility(View.GONE);
+                }else{
+                    btCheck.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")) {
+                    btCheck.setVisibility(View.GONE);
+                }else{
+                    btCheck.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().equals("")){
+                    btCheck.setVisibility(View.GONE);
+                }else{
+                    btCheck.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,7 +436,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         rvCompose.setLayoutManager(layoutManager);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList);
+        int lastVisible = layoutManager.findLastVisibleItemPosition();
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users);
         etNumber.setText(contactName);
         //etNumber.setTypeface(null, Typeface.BOLD);
         int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
