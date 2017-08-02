@@ -43,13 +43,13 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
     ArrayList<User> users;
-    User user;
     int position;
     String from;
     Cursor c;
     Cursor c1;
     Cursor c2;
     ProfileAnalyzerClient client;
+    User user;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -63,6 +63,8 @@ public class ProfileActivity extends AppCompatActivity {
         pbLoading.setVisibility(View.VISIBLE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        user = getIntent().getParcelableExtra("user");
         position = getIntent().getIntExtra("position", -1);
         users = getIntent().getParcelableArrayListExtra("users");
         if(position == -1) {
@@ -133,6 +135,16 @@ public class ProfileActivity extends AppCompatActivity {
             ivProfileImage.setImageResource(R.drawable.ic_person_white);
         }*/
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem miProfile = menu.findItem(R.id.miProfile);
+
+        if(user.getName().equals("Me")) {
+            miProfile.setEnabled(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("ToneTeller");
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -208,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("smsList", smsList);
         i.putParcelableArrayListExtra("users", users);
         MainActivity.this.startActivityForResult(i, 1);
         //overridePendingTransition(R.anim.expand, 0);
@@ -317,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
     private void text(){ // TODO: 7/17/17 rename this method
         FinalProject applicationClass = ((FinalProject)getApplicationContext());
 
+        applicationClass.setSmsList(null);
         if (applicationClass.getSmsList() == null) {
 
             smsList = new ArrayList<SMS>();

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -56,7 +57,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     int lastPosition = 2147483647;
     String id;
 
-    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users) {
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users, int lastAnimationPosition) {
+
         context = mContext;
         smsList = mSmsList;
         for(SMS s: smsList)
@@ -64,6 +66,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         this.incomingList = incomingList;
         this.outgoingList = outgoingList;
         this.users = users;
+        lastPosition = lastAnimationPosition;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -87,8 +90,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
         drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
+        setAnimation(holder.itemView, position);
         if(params[0].getBubbleColor().equals("#DFAD8E")) {
-            setAnimation(holder.itemView, position);
             AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
             analyzerClient.execute(params);
         }
@@ -102,8 +105,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.ivProfileCircle.setVisibility(View.VISIBLE);
         holder.ivProfileImage.setVisibility(View.INVISIBLE);
 
+        final String id = smsList.get(position).getContactId();
+        final String name = smsList.get(position).getContact();
 
-        /*if (!id.equals("") && smsList.get(position).getType() == 1) {
+
+        if (id != null && !id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
             image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
@@ -112,38 +118,32 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 100, 100, false)));
                 image = null;
-            } else if (!name.equals("")) {
+            } else if (!smsList.get(position).getContact().equals("")) {
                 holder.textCircle.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setVisibility(View.INVISIBLE);
+                holder.ivProfileCircle.setVisibility(View.INVISIBLE);
                 holder.textCircle.setText("" + name.charAt(0));
             }
-        }*/
+        }
 
-            /*holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, ProfileActivity.class);
-                    User user = new User(context);
-                    user.setName(name);
-                    user.setNumber(number);
-                    user.setContactId(id);
-                    intent.putExtra("user", user);
-                    context.startActivity(intent);
-                }
-            });*/
     }
 
     private void setAnimation(View viewToAnimate, int position){
-        if(getItemViewType(position)==0) {
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.right_left_slide);
-            viewToAnimate.startAnimation(animation);
-            //lastPosition = position;
-        }else{
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.left_right_slide);
-            viewToAnimate.startAnimation(animation);
-            //lastPosition = position;
+
+        if(position<lastPosition) {
+
+            if (getItemViewType(position) == 0) {
+                Animation animation = AnimationUtils.loadAnimation(context, R.anim.right_left_slide);
+                viewToAnimate.startAnimation(animation);
+                //lastPosition = position;
+            } else {
+                Animation animation = AnimationUtils.loadAnimation(context, R.anim.left_right_slide);
+                viewToAnimate.startAnimation(animation);
+                //lastPosition = position;
+            }
+            lastPosition = position;
         }
     }
 

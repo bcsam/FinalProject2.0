@@ -174,7 +174,7 @@ class ComposeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 holder.textCircle.setVisibility(View.INVISIBLE);
                 holder.profileImage.setVisibility(View.VISIBLE);
                 holder.profileImage.setImageBitmap(null);
-                holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 45, 45, false)));
+                holder.profileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 100, 100, false)));
             } else if (!contact.getName().equals("")){
                 holder.textCircle.setVisibility(View.VISIBLE);
                 holder.profileImage.setVisibility(View.INVISIBLE);
