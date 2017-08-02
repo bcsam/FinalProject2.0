@@ -430,7 +430,9 @@ public class MessagingActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.i("Profile", "onActivityResult");
         users = data.getParcelableArrayListExtra("users");
+        adapter.setUserList(users);
     }
 }
 

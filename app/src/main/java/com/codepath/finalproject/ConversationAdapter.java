@@ -267,6 +267,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         return smsList;
     }
 
+    public void setUserList(ArrayList<User> newUsers){ users = newUsers; }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView tvUserName;
