@@ -62,7 +62,7 @@ public class GraphFragment extends Fragment {
 
         User user = getArguments().getParcelable("user");
         graph.getGridLabelRenderer().setVerticalAxisTitleColor(color);
-        /*client = new GraphAnalyzerClient(getContext(), user, graph);
+        client = new GraphAnalyzerClient(getContext(), user, graph);
         if(user.getName().equals("Me")) {
             //graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS SENT");
             client.execute(getMyGraph(user));
@@ -70,7 +70,7 @@ public class GraphFragment extends Fragment {
         else {
             //graph.getGridLabelRenderer().setHorizontalAxisTitle("TEXTS RECEIVED");
             client.execute(getGraph(user));
-        }*/
+        }
         return v;
     }
 

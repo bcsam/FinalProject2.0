@@ -38,7 +38,7 @@ import java.util.List;
  * Created by vf608 on 7/13/17.
  */
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able to message the profile owner, next to phone number?
 
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;

@@ -26,7 +26,7 @@ import java.util.List;
  * Created by bcsam on 7/11/17.
  */
 
-public class PostCheckActivity extends AppCompatActivity {
+public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit takes you to where you were before 
 
     TextView tvBody;
     SMS text;

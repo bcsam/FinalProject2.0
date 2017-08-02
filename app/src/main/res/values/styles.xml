@@ -12,7 +12,15 @@
         <item name="android:windowSharedElementEnterTransition">@transition/expand</item>
         <item name="android:windowSharedElementExitTransition">@transition/expand</item>
 
-        <item name="android:windowEnterTransition">@transition/activity_transition</item>
+        <item name="android:windowAnimationStyle">@style/defaultAnimation.Activity</item>
+
+    </style>
+
+    <style name="defaultAnimation.Activity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
     </style>
 
 </resources>

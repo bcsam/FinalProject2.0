@@ -29,8 +29,13 @@ import java.util.HashMap;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
+import static com.codepath.finalproject.R.id.miSearch;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recycler when search bar is empty
+    // TODO: 8/1/17 andrea work profile can't be entered, check on the letter
+    // TODO: 8/1/17 can't tap directly on the message but can click beside it
+    // TODO: 8/1/17 search button next to others
+
 
     RecyclerView rvText;
     ArrayList<User> users;
@@ -106,17 +111,22 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("ToneTeller");
     }
 
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem miMain = menu.findItem(R.id.miMain);
+        miMain.setEnabled(false);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.miSearch);
+        getMenuInflater().inflate(R.menu.menu_searchable, menu);
+        MenuItem searchItem = menu.findItem(miSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) { //this works
+            public boolean onQueryTextSubmit(String query) { // TODO: 8/1/17 show nothing when first expanded 
                 searchView.clearFocus();
 
                 //insert query here
@@ -143,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 onQuerySmsList.clear();
-                onQuerySmsList.clear();
                 for (SMS text : smsList) {
                     String number = text.getNumber();
                     String body = text.getBody();
@@ -158,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                rvText.setAdapter(new ListAdapter(MainActivity.this, (ArrayList<com.codepath.finalproject.SMS>) onQuerySmsList, incomingList, outgoingList, users));
+                rvText.setAdapter(new ListAdapter(MainActivity.this, onQuerySmsList, incomingList, outgoingList, users));
                 return true;
             }
         });
@@ -168,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                onQuerySmsList.clear();
+                rvText.setAdapter(new ListAdapter(MainActivity.this, onQuerySmsList, incomingList, outgoingList, users));
                 return true;
             }
 
@@ -184,6 +195,8 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity getInstance(){
         return ins;
     }
+
+    public void launchMainActivity(MenuItem item){}
 
     public void launchMyProfileActivity(MenuItem item) {
         //launches the profile view

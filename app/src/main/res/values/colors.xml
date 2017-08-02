@@ -24,7 +24,7 @@
     <color name="lighterGray">#e2e2e2</color>
     <color name="veryLightGray">#F5F5F5</color>
     <color name="darkGray">#58585B</color>
-    <color name = "darkOrange">#cc8254</color>
+    <color name ="darkOrange">#cc8254</color>
     <color name="veryDarkOrange">#985529</color>
     <color name="teal">#397e87</color>
 
@@ -39,6 +39,8 @@
     <color name="newLightRed">#FFF7ABA0</color>
     <color name="newLightGreen">#FFBDDF99</color>
     <color name="newLightPurple">#FFCBA5DF</color>
+
+    <color name="uncheckButton">@color/lightGray</color>
 
     <color name="checkButton">@color/googleGreen</color>
     <color name="sendButton">@color/twitterBlue</color>
