@@ -330,6 +330,7 @@ public class MessagingActivity extends AppCompatActivity {
                     text.setNumber(recipientNumber);
                     text.setContact(recipientName);
                     text.setBody(message);
+                    intent.putExtra("activity", "Messaging");
                     intent.putExtra("text", text);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);

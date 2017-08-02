@@ -30,6 +30,7 @@ public class PostCheckActivity extends AppCompatActivity {
 
     TextView tvBody;
     SMS text;
+    String activity;
     String message;
     String recipientName;
     String recipientNumber;
@@ -55,6 +56,7 @@ public class PostCheckActivity extends AppCompatActivity {
         */
         getSupportActionBar().setTitle("ToneTeller");
         text = getIntent().getParcelableExtra("text");
+        activity = getIntent().getStringExtra("activity");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         users = getIntent().getParcelableArrayListExtra("users");
@@ -109,7 +111,13 @@ public class PostCheckActivity extends AppCompatActivity {
         btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                Intent intent;
+                if (activity.equals("Messaging")) {
+                    intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                } else {
+                    intent = new Intent(PostCheckActivity.this, ComposeActivity.class);
+                }
+
                 intent.putExtra("message", text.getBody());
                 intent.putExtra("name", text.getContact());
                 intent.putExtra("number", text.getNumber());

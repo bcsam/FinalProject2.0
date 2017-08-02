@@ -186,6 +186,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     text.setBody(message);
                     text.setNumber(recipientNumber);
                     intent.putExtra("text", text);
+                    intent.putExtra("activity", "Compose");
 
                     //intent.putExtra("message", message);
                     //intent.putExtra("recipientName", recipientName);
