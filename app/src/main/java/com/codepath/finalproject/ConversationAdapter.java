@@ -15,10 +15,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
@@ -48,6 +46,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     Context context;
     // List values
     ArrayList<SMS> smsList;
+    ArrayList<User> users;
     View rowView;
     Bitmap image;
 
@@ -56,13 +55,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     int lastPosition = 2147483647;
     String id;
 
-    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, int lastAnimationPosition) {
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users, int lastAnimationPosition) {
+
         context = mContext;
         smsList = mSmsList;
         for(SMS s: smsList)
             Log.i("messages", s.getBubbleColor());
         this.incomingList = incomingList;
         this.outgoingList = outgoingList;
+        this.users = users;
         lastPosition = lastAnimationPosition;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -125,18 +126,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
         }
 
-            /*holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, ProfileActivity.class);
-                    User user = new User(context);
-                    user.setName(name);
-                    user.setNumber(number);
-                    user.setContactId(id);
-                    intent.putExtra("user", user);
-                    context.startActivity(intent);
-                }
-            });*/
     }
 
     private void setAnimation(View viewToAnimate, int position){
@@ -278,8 +267,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         return smsList;
     }
 
+    public void setUserList(ArrayList<User> newUsers){ users = newUsers; }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvTime;
@@ -290,9 +281,24 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         public ViewHolder(View itemView){
             super(itemView);
-
+           final View iv = itemView;
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvBody.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    context = iv.getContext();
+                    int position = getAdapterPosition();
+                    Intent intent = new Intent(context, MessageDetailActivity.class);
+                    intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putExtra("sms", smsList.get(position));
+
+                    String transitionName = context.getString(R.string.messageDetailTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
+                    context.startActivity(intent, transition.toBundle());
+                }
+            });
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
@@ -338,38 +344,26 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         if (!mPhoneNumber.equals("")) {
                             user.setNumber("+" + mPhoneNumber); //this is why the + shows up
                         }
+                        intent.putExtra("user", user);
+                        intent.putExtra("users", users);
                     }
                     else {
-                        user.setName(smsList.get(position).getContact());
-                        user.setNumber(smsList.get(position).getNumber());
-                        user.setContactId(smsList.get(position).getContactId());
+                        for(User u: users){
+                            if(u.getNumber().equals(smsList.get(position).getNumber()))
+                                position = users.indexOf(u);
+                        }
+                        intent.putExtra("users", users);
+                        intent.putExtra("position", position);
                     }
-                    intent.putExtra("user", user);
-
+                    intent.putExtra("incomingList", incomingList);
+                    intent.putExtra("outgoingList", outgoingList);
                     String transitionName = context.getString(R.string.profileTransition);
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
-                    context.startActivity(intent, transition.toBundle());
+                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
-
-            itemView.setOnClickListener(this);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public void onClick(View view) {
-            context = itemView.getContext();
-            int position = getAdapterPosition();
-            Intent intent = new Intent(context, MessageDetailActivity.class);
-            intent.putParcelableArrayListExtra("incomingList", incomingList);
-            intent.putParcelableArrayListExtra("outgoingList", outgoingList);
-            intent.putExtra("sms", smsList.get(position));
-
-            String transitionName = context.getString(R.string.messageDetailTransition);
-            ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
-            context.startActivity(intent, transition.toBundle());
-
-        }
     }
 }

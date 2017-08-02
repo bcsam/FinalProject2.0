@@ -22,8 +22,8 @@ import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
 public class AnalyzerClient extends AsyncTask <SMS, String, SMS>{
     //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
     public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-    public static final String USERNAME = "63e0a895-2d09-4809-9dfe-85ee36a3dcfc";
-    public static final String PASSWORD = "AxAOMozz8Dyh";
+    public static final String USERNAME = "44fbec46-4ae3-4a9a-9960-7d8481b7b977";
+    public static final String PASSWORD = "QKLMz478WFOx";
     ToneAnalyzer service;
     Context context;
     Drawable drawable;

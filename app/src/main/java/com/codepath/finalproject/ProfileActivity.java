@@ -66,13 +66,13 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
 
         user = getIntent().getParcelableExtra("user");
         position = getIntent().getIntExtra("position", -1);
+        users = getIntent().getParcelableArrayListExtra("users");
         if(position == -1) {
             Log.i("Profile", "-1");
             user = getIntent().getParcelableExtra("user");
         }
         else{
             Log.i("Profile", String.valueOf(position));
-            users = getIntent().getParcelableArrayListExtra("users");
             user = users.get(position);
         }
 
@@ -104,7 +104,6 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
                 client.execute(getMyAverages(user));
             else
                 client.execute(getAverages(user));
-            Log.i("Profile", user.getAllTexts());
         }
         else {
             Log.i("Profile", user.getAllTexts());
@@ -267,9 +266,11 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         Intent i;
         if(from.equals("messaging"))
             i =  new Intent(ProfileActivity.this, MessagingActivity.class);
-        else
+        else {
             i = new Intent(ProfileActivity.this, MainActivity.class);
-        users.set(position, user);
+        }
+        if(!user.getName().equals("Me"))
+            users.set(position, user);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
         i.putParcelableArrayListExtra("users", users);
@@ -314,8 +315,8 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
     public class ProfileAnalyzerClient extends AsyncTask<SMS, String, SMS> {
         //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
         public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-        public static final String USERNAME = "63e0a895-2d09-4809-9dfe-85ee36a3dcfc";
-        public static final String PASSWORD = "AxAOMozz8Dyh";
+        public static final String USERNAME = "44fbec46-4ae3-4a9a-9960-7d8481b7b977";
+        public static final String PASSWORD = "QKLMz478WFOx";
         ToneAnalyzer service;
         Context context;
         User user;

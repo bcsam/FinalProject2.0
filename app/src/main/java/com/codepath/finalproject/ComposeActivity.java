@@ -442,7 +442,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         int lastVisible = layoutManager.findLastVisibleItemPosition();
-        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, lastVisible);
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users, lastVisible);
         etNumber.setText(contactName);
         //etNumber.setTypeface(null, Typeface.BOLD);
         int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
