@@ -47,6 +47,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     Context context;
     // List values
     ArrayList<SMS> smsList;
+    ArrayList<User> users;
     View rowView;
     Bitmap image;
 
@@ -55,13 +56,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     int lastPosition = 2147483647;
     String id;
 
-    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList) {
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users) {
         context = mContext;
         smsList = mSmsList;
         for(SMS s: smsList)
             Log.i("messages", s.getBubbleColor());
         this.incomingList = incomingList;
         this.outgoingList = outgoingList;
+        this.users = users;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -327,17 +329,22 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         if (!mPhoneNumber.equals("")) {
                             user.setNumber("+" + mPhoneNumber); //this is why the + shows up
                         }
+                        intent.putExtra("user", user);
+                        intent.putExtra("users", users);
                     }
                     else {
-                        user.setName(smsList.get(position).getContact());
-                        user.setNumber(smsList.get(position).getNumber());
-                        user.setContactId(smsList.get(position).getContactId());
+                        for(User u: users){
+                            if(u.getNumber().equals(smsList.get(position).getNumber()))
+                                position = users.indexOf(u);
+                        }
+                        intent.putExtra("users", users);
+                        intent.putExtra("position", position);
                     }
-                    intent.putExtra("user", user);
-
+                    intent.putExtra("incomingList", incomingList);
+                    intent.putExtra("outgoingList", outgoingList);
                     String transitionName = context.getString(R.string.profileTransition);
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
-                    context.startActivity(intent, transition.toBundle());
+                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
@@ -358,7 +365,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             String transitionName = context.getString(R.string.messageDetailTransition);
             ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
             context.startActivity(intent, transition.toBundle());
-
         }
     }
 }

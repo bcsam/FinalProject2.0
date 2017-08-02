@@ -64,13 +64,13 @@ public class ProfileActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         position = getIntent().getIntExtra("position", -1);
+        users = getIntent().getParcelableArrayListExtra("users");
         if(position == -1) {
             Log.i("Profile", "-1");
             user = getIntent().getParcelableExtra("user");
         }
         else{
             Log.i("Profile", String.valueOf(position));
-            users = getIntent().getParcelableArrayListExtra("users");
             user = users.get(position);
         }
 
@@ -102,7 +102,6 @@ public class ProfileActivity extends AppCompatActivity {
                 client.execute(getMyAverages(user));
             else
                 client.execute(getAverages(user));
-            Log.i("Profile", user.getAllTexts());
         }
         else {
             Log.i("Profile", user.getAllTexts());
@@ -255,9 +254,11 @@ public class ProfileActivity extends AppCompatActivity {
         Intent i;
         if(from.equals("messaging"))
             i =  new Intent(ProfileActivity.this, MessagingActivity.class);
-        else
+        else {
             i = new Intent(ProfileActivity.this, MainActivity.class);
-        users.set(position, user);
+        }
+        if(!user.getName().equals("Me"))
+            users.set(position, user);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
         i.putParcelableArrayListExtra("users", users);

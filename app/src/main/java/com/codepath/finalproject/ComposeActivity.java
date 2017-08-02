@@ -399,7 +399,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         rvCompose.setLayoutManager(layoutManager);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList);
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users);
         etNumber.setText(contactName);
         //etNumber.setTypeface(null, Typeface.BOLD);
         int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
