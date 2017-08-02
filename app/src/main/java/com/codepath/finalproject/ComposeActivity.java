@@ -294,7 +294,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             }
         });
 
-        etNumber.addTextChangedListener(new TextWatcher() { // TODO: 8/1/17 gray out until ready to click it
+        etNumber.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
