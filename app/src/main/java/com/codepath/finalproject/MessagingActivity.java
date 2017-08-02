@@ -93,12 +93,15 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
             if(messages.size() == 0)
                 getMessages();
+
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
+
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
             int lastVisible = layoutManager.findLastVisibleItemPosition();
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users, lastVisible);
+
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
             int numVisibleItems = rvText.getChildCount();
@@ -152,14 +155,16 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
             if(messages.size() == 0)
                 getMessages();
-            Log.i("messages", String.valueOf(messages.size()));
+
+
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
+
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
             int lastVisible = layoutManager.findLastVisibleItemPosition();
             int lastVis = rvText.getChildCount();
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users, lastVisible);
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
         }
@@ -195,7 +200,8 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                         }
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users, 0));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+
                 return true;
             }
 
@@ -211,7 +217,9 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                         postQuerySmsList.add(text);
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users, 0));
+
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+
                 return true;
             }
         });
@@ -226,7 +234,8 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users, 0));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users));
+
                 return true;
             }
         });
@@ -327,6 +336,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                     text.setNumber(recipientNumber);
                     text.setContact(recipientName);
                     text.setBody(message);
+                    intent.putExtra("activity", "Messaging");
                     intent.putExtra("text", text);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
