@@ -43,6 +43,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
     Button btEdit;
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
+    ArrayList<SMS> smsList;
     ArrayList<User> users;
     HashMap<String, String> getContactIdMemo;
     int position;
@@ -65,6 +66,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         activity = getIntent().getStringExtra("activity");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+        smsList = getIntent().getParcelableArrayListExtra("smsList");
         users = getIntent().getParcelableArrayListExtra("users");
         position = getIntent().getIntExtra("position", -1);
 
@@ -141,6 +143,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
                 intent.putExtra("number", text.getNumber());
                 intent.putParcelableArrayListExtra("incomingList", incomingList);
                 intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                intent.putParcelableArrayListExtra("smsList", smsList);
                 intent.putParcelableArrayListExtra("users", users);
                 PostCheckActivity.this.startActivity(intent);
             }
@@ -154,6 +157,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
                     intent.putExtra("text", text);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putParcelableArrayListExtra("smsList", smsList);
                     intent.putParcelableArrayListExtra("users", users);
                     intent.putExtra("position", position);
                 /*
