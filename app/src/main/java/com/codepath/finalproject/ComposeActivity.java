@@ -92,17 +92,18 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         if (name != null && !name.equals("")) {
             etNumber.setText(name);
 
-        String name = getIntent().getStringExtra("name");
-        if(name != null) {
-            String number = "";
-            for(User u: users){
-                if(u.getName().equals(name))
-                    number = u.getNumber();
-            }
-            setValues(smsList, name, number);
+            String name = getIntent().getStringExtra("name");
+            if (name != null) {
+                String number = "";
+                for (User u : users) {
+                    if (u.getName().equals(name))
+                        number = u.getNumber();
+                }
+                setValues(smsList, name, number);
 
+            }
+            //unwrapIntent();
         }
-        //unwrapIntent();
     }
 
 
