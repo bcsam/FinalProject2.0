@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Fade;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,28 +42,34 @@ public class MessageDetailActivity extends AppCompatActivity{
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Toast.makeText(this, "in message detail", Toast.LENGTH_SHORT).show();
         //getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-        Fade fade = new Fade(Fade.IN);
-        fade.setDuration(1200);
+        //Fade fade = new Fade(Fade.IN);
+        //fade.setDuration(1200);
         //getWindow().setSharedElementsUseOverlay(false);
         //getWindow().setEnterTransition(fade);
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
+        supportPostponeEnterTransition();
 
-        sms = getIntent().getParcelableExtra("sms");
+        sms = getIntent().getParcelableExtra("smsItem");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+
+        tvMessage = (TextView) findViewById(R.id.tvMessage);
+        tvMessage.setText(sms.getBody());
+        tvMessage.setTextColor(Color.parseColor(sms.getTextColor()));
+        tvMessage.setTransitionName(getIntent().getStringExtra("sharedTextView"));
+
         if(sms.getBubbleColor().equals("")){
             AnalyzerClient client = new AnalyzerClient();
             client.getScores(sms);
         }
 
 
-        tvMessage = (TextView) findViewById(R.id.tvMessage);
-        tvMessage.setText(sms.getBody());
-        tvMessage.setTextColor(Color.parseColor(sms.getTextColor()));
+
 
         //Code for tabs below
 
@@ -188,5 +195,12 @@ public class MessageDetailActivity extends AppCompatActivity{
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("debug", "Resuming detail");
     }
 }

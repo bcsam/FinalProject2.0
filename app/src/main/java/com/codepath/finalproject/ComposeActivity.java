@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ import java.util.ArrayList;
  * Created by bcsam on 7/13/17.
  */
 
-public class ComposeActivity extends AppCompatActivity implements MainActivity.DataTransfer {
+public class ComposeActivity extends AppCompatActivity implements MainActivity.DataTransfer, SMSClickListener {
     Button btCheck;
     ImageView btSend;
     EditText etBody;
@@ -443,7 +445,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         int lastVisible = layoutManager.findLastVisibleItemPosition();
-        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users);
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users, ComposeActivity.this);
         etNumber.setText(contactName);
         //etNumber.setTypeface(null, Typeface.BOLD);
         int color = ContextCompat.getColor(this, R.color.contactNamePostSelection);
@@ -472,5 +474,22 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onSMSClick(int pos, SMS smsItem, TextView sharedTextView) {
+        Intent intent = new Intent(this, MessageDetailActivity.class);
+        intent.putExtra("smsItem", smsItem);
+        intent.putExtra("sharedTextView", ViewCompat.getTransitionName(sharedTextView));
+        intent.putParcelableArrayListExtra("incomingList", incomingList);
+        intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                sharedTextView,
+                ViewCompat.getTransitionName(sharedTextView));
+
+        startActivity(intent, options.toBundle());
+
     }
 }

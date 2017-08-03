@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -28,6 +29,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -49,13 +51,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     ArrayList<User> users;
     View rowView;
     Bitmap image;
+    private final SMSClickListener smsClickListener;
 
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
     int lastPosition = 2147483647;
     String id;
 
-    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users) {
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users, SMSClickListener smsClickListener) {
 
         context = mContext;
         smsList = mSmsList;
@@ -66,6 +69,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         this.users = users;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        this.smsClickListener = smsClickListener;
     }
 
 
@@ -82,7 +86,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Drawable drawable = holder.tvBody.getBackground();
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
@@ -105,6 +109,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         final String id = smsList.get(position).getContactId();
         final String name = smsList.get(position).getContact();
 
+        String transitionName = "text" + position;
+        ViewCompat.setTransitionName(holder.tvBody, transitionName);
 
         if (id != null && !id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
@@ -124,6 +130,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 holder.textCircle.setText("" + name.charAt(0));
             }
         }
+
+        final SMS sms = smsList.get(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                smsClickListener.onSMSClick(holder.getAdapterPosition(), sms, holder.tvBody);
+                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -287,6 +302,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 @Override
                 public void onClick(View view){
                     context = iv.getContext();
+                    /*
                     int position = getAdapterPosition();
                     Intent intent = new Intent(context, MessageDetailActivity.class);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
@@ -295,7 +311,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
                     String transitionName = context.getString(R.string.messageDetailTransition);
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
-                    context.startActivity(intent, transition.toBundle());
+                    context.startActivity(intent, transition.toBundle());*/
+
                 }
             });
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);

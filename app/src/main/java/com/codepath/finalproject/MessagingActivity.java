@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 
 //***when sending to message detail it should just send the name, number, and message
 //****textBody will be created in message detail
-public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messaging ->mod, don't chnge the bars on either side
+public class MessagingActivity extends AppCompatActivity implements SMSClickListener { //TODO: 8/1/17 messaging ->mod, don't chnge the bars on either side
     // TODO: 8/1/17 animation out
 
     ImageView btSend;
@@ -94,7 +96,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             if(messages.size() == 0)
                 getMessages();
 
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users, this);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
@@ -157,7 +159,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 getMessages();
 
 
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users, this);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
@@ -201,7 +203,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                         }
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users, MessagingActivity.this));
 
                 return true;
             }
@@ -219,7 +221,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                     }
                 }
 
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users, MessagingActivity.this));
 
                 return true;
             }
@@ -245,7 +247,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 theMenu.findItem(R.id.miMain).setVisible(true);
                 theMenu.findItem(R.id.miCompose).setVisible(true);
 
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users, MessagingActivity.this));
                 return true;
             }
         });
@@ -459,6 +461,31 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         Log.i("Profile", "onActivityResult");
         users = data.getParcelableArrayListExtra("users");
         adapter.setUserList(users);
+    }
+
+    @Override
+    public void onSMSClick(int pos, SMS smsItem, TextView sharedTextView){
+        Toast.makeText(this, "in override method", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MessageDetailActivity.class);
+        intent.putExtra("smsItem", smsItem);
+        intent.putExtra("sharedTextView", ViewCompat.getTransitionName(sharedTextView));
+        intent.putParcelableArrayListExtra("incomingList", incomingList);
+        intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                sharedTextView,
+                ViewCompat.getTransitionName(sharedTextView));
+
+        startActivity(intent, options.toBundle());
+
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("debug", "Resuming messaging");
     }
 }
 
