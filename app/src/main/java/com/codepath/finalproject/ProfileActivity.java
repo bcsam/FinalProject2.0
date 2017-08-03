@@ -270,8 +270,9 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         else {
             i = new Intent(ProfileActivity.this, MainActivity.class);
         }
-        if(!user.getName().equals("Me"))
+        if(users != null && user != null && !user.getName().equals("Me"))
             users.set(position, user);
+
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
         i.putParcelableArrayListExtra("users", users);
