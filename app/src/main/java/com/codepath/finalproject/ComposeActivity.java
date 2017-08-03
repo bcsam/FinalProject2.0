@@ -23,13 +23,9 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -56,6 +52,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     ArrayList<SMS> smsList;
     ArrayList<User> users;
     int position;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +67,9 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         smsList = getIntent().getParcelableArrayListExtra("smsList");
         users = getIntent().getParcelableArrayListExtra("users");
+
+        name = getIntent().getStringExtra("name");
+
         position = getIntent().getIntExtra("position", -1);
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
@@ -87,31 +87,27 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
 
         etBody.setText(getIntent().getStringExtra("message"));
-        String name = getIntent().getStringExtra("name");
-        if(name != null) {
-            String number = "";
-            for(User u: users){
-                if(u.getName().equals(name))
-                    number = u.getNumber();
+
+        etNumber.setText(getIntent().getStringExtra("recipient"));
+        if (name != null && !name.equals("")) {
+            etNumber.setText(name);
+
+            String name = getIntent().getStringExtra("name");
+            if (name != null) {
+                String number = "";
+                for (User u : users) {
+                    if (u.getName().equals(name))
+                        number = u.getNumber();
+                }
+                setValues(smsList, name, number);
+
             }
-            setValues(smsList, name, number);
+            //unwrapIntent();
         }
-        //unwrapIntent();
     }
 
-    public void animate(){
-        RelativeLayout dialog   = (RelativeLayout) findViewById(R.id.relativeLayoutComp);
-        dialog.setVisibility(LinearLayout.VISIBLE);
-        Animation animation   =    AnimationUtils.loadAnimation(this, R.anim.expand);
-        animation.setDuration(500);
-        dialog.setAnimation(animation);
-        dialog.animate();
-        animation.start();
-    }
 
     public void addContacts() {
-
-
         try {
             Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
             contacts = new ArrayList<>();

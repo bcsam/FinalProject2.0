@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
             user = users.get(position);
         }
 
-        if (!user.getName().equals("") && user.getName() != null) { // TODO: 7/31/17 check on null pointer here 
+        if (user.getName() != null && user.getName().equals("")) { // TODO: 7/31/17 check on null pointer here
             getSupportActionBar().setTitle(user.getName());
         } else {
             getSupportActionBar().setTitle("ToneTeller");
@@ -164,6 +164,7 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         //launches the profile view
         Intent i = new Intent(ProfileActivity.this, ComposeActivity.class);
         i.putExtra("incomingList", incomingList);
+        i.putExtra("users", users);
         i.putExtra("outgoingList", outgoingList);
         ProfileActivity.this.startActivity(i);
     }
@@ -268,7 +269,7 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
     @Override
     public void onBackPressed(){
         Intent i;
-        if(from.equals("messaging"))
+        if(from != null && from.equals("messaging"))
             i =  new Intent(ProfileActivity.this, MessagingActivity.class);
         else {
             i = new Intent(ProfileActivity.this, MainActivity.class);
