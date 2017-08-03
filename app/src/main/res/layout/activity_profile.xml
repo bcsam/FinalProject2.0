@@ -69,7 +69,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center"
             android:minHeight="60dp"
-            app:tabIndicatorColor="@color/colorPrimary" />
+            app:tabIndicatorColor="@color/tabIndicator" />
 
         <!--
         app:tabGravity="fill"

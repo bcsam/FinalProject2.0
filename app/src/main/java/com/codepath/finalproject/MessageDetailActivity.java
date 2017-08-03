@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -42,11 +41,12 @@ public class MessageDetailActivity extends AppCompatActivity{
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        //getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         Fade fade = new Fade(Fade.IN);
         fade.setDuration(1200);
-        getWindow().setSharedElementsUseOverlay(false);
-        getWindow().setEnterTransition(fade);
+        //getWindow().setSharedElementsUseOverlay(false);
+        //getWindow().setEnterTransition(fade);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
@@ -66,7 +66,8 @@ public class MessageDetailActivity extends AppCompatActivity{
 
         //Code for tabs below
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        //viewPager.setVisibility(View.INVISIBLE);
 
         // Set the ViewPagerAdapter into ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -77,9 +78,41 @@ public class MessageDetailActivity extends AppCompatActivity{
 
         viewPager.setAdapter(adapter);
 
-        TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
+        final TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
+        //mTabLayout.setVisibility(View.INVISIBLE);
+
         mTabLayout.setupWithViewPager(viewPager);
+
+        /*
+        Animation animationFade = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        animationFade.setDuration(2000);
+        RelativeLayout bottom_layout = (RelativeLayout) findViewById(R.id.bottom_layout);
+        bottom_layout.setAnimation(animationFade);
+        mTabLayout.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
+        animationFade.start();*/
         //animate();
+
+        /*
+        setEnterSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                super.onMapSharedElements(names, sharedElements);
+                Set set = sharedElements.keySet();
+                Collection collection = sharedElements.values();
+                View keySharedElementView = sharedElements.get("messageDetailTransition");
+                if(keySharedElementView != null){
+                    ViewCompat.animate(keySharedElementView).setListener(new ViewPropertyAnimatorListenerAdapter(){
+                        @Override
+                        public void onAnimationEnd(View view) {
+                            viewPager.setVisibility(View.VISIBLE);
+                           mTabLayout.setVisibility(View.VISIBLE);
+                            super.onAnimationEnd(view);
+                        }
+                    });
+                }
+            }
+        });*/
     }
 
     public void animate(){

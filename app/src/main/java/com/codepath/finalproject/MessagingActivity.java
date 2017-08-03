@@ -177,6 +177,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        final Menu theMenu = menu;
         getMenuInflater().inflate(R.menu.menu_searchable, menu);
         MenuItem searchItem = menu.findItem(R.id.miSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -228,14 +229,23 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                theMenu.findItem(R.id.miProfile).setVisible(false);
+                theMenu.findItem(R.id.miMain).setVisible(false);
+                theMenu.findItem(R.id.miCompose).setVisible(false);
                 //rvText.scrollToPosition(0); //this scrolls and then opens the soft input
+
+                postQuerySmsList.clear();
+                rvText.setAdapter(new ListAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users));
+                theMenu.findItem(R.id.miProfile).setVisible(true);
+                theMenu.findItem(R.id.miMain).setVisible(true);
+                theMenu.findItem(R.id.miCompose).setVisible(true);
 
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users));
                 return true;
             }
         });

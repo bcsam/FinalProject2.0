@@ -36,8 +36,8 @@
         <activity android:name=".ProfileActivity"/>
         <activity
             android:windowSoftInputMode="adjustResize"
-            android:name=".MessagingActivity"/>
-        <activity android:name=".MessageDetailActivity"/>
+            android:name=".MessagingActivity" />
+        <activity android:name=".MessageDetailActivity" />
         <receiver android:name=".SmsBroadcastReceiver" android:exported="true" >
             <intent-filter android:priority="999" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

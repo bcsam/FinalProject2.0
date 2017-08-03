@@ -29,7 +29,6 @@ import java.util.HashMap;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
-import static com.codepath.finalproject.R.id.miSearch;
 
 public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recycler when search bar is empty
     // TODO: 8/1/17 andrea work profile can't be entered, check on the letter
@@ -120,63 +119,80 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        final Menu theMenu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_searchable, menu);
-        MenuItem searchItem = menu.findItem(miSearch);
+        MenuItem searchItem = menu.findItem(R.id.miSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) { // TODO: 8/1/17 show nothing when first expanded 
-                searchView.clearFocus();
+                if(query.equals("")){
+                    onQuerySmsList.clear();
+                    rvText.setAdapter(new ListAdapter(MainActivity.this, onQuerySmsList, incomingList, outgoingList, users));
+                }else {
 
-                //insert query here
-                ArrayList<SMS> postQuerySmsList = new ArrayList<>();
-                for (SMS text : smsList) {
-                    String number = text.getNumber();
-                    String body = text.getBody();
-                    String contact = text.getContact();
+                    searchView.clearFocus();
 
-                    if (number.toLowerCase().contains(query.toLowerCase()) ||
-                            body.toLowerCase().contains(query.toLowerCase()) ||
-                            contact.toLowerCase().contains(query.toLowerCase())) {
+                    //insert query here
+                    ArrayList<SMS> postQuerySmsList = new ArrayList<>();
+                    for (SMS text : smsList) {
+                        String number = text.getNumber();
+                        String body = text.getBody();
+                        String contact = text.getContact();
 
-                        makeText(getApplicationContext(), query,
-                                LENGTH_LONG).show();
-                        postQuerySmsList.add(text);
+                        if (number.toLowerCase().contains(query.toLowerCase()) ||
+                                body.toLowerCase().contains(query.toLowerCase()) ||
+                                contact.toLowerCase().contains(query.toLowerCase())) {
+
+                            makeText(getApplicationContext(), query,
+                                    LENGTH_LONG).show();
+                            postQuerySmsList.add(text);
+                        }
                     }
-                }
 
-                rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+                    rvText.setAdapter(new ListAdapter(MainActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+                }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                onQuerySmsList.clear();
-                for (SMS text : smsList) {
-                    String number = text.getNumber();
-                    String body = text.getBody();
-                    String contact = text.getContact();
+                if(newText.equals("")){
+                    onQuerySmsList.clear();
+                    rvText.setAdapter(new ListAdapter(MainActivity.this, onQuerySmsList, incomingList, outgoingList, users));
+                }else{
 
-                    //Uri profileImage = text.getPhotoUri();
+                    onQuerySmsList.clear();
+                    for (SMS text : smsList) {
+                        String number = text.getNumber();
+                        String body = text.getBody();
+                        String contact = text.getContact();
 
-                    if (number.toLowerCase().contains(newText.toLowerCase()) ||
-                            body.toLowerCase().contains(newText.toLowerCase()) ||
-                            contact.toLowerCase().contains(newText.toLowerCase())) {
-                        onQuerySmsList.add(text);
+                        //Uri profileImage = text.getPhotoUri();
+
+                        if (number.toLowerCase().contains(newText.toLowerCase()) ||
+                                body.toLowerCase().contains(newText.toLowerCase()) ||
+                                contact.toLowerCase().contains(newText.toLowerCase())) {
+                            onQuerySmsList.add(text);
+                        }
                     }
-                }
 
-                rvText.setAdapter(new ListAdapter(MainActivity.this, onQuerySmsList, incomingList, outgoingList, users));
+                    rvText.setAdapter(new ListAdapter(MainActivity.this, onQuerySmsList, incomingList, outgoingList, users));
+
+                }
                 return true;
             }
         });
-
 
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener(){
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                theMenu.findItem(R.id.miProfile).setVisible(false);
+                theMenu.findItem(R.id.miMain).setVisible(false);
+                theMenu.findItem(R.id.miCompose).setVisible(false);
+
                 onQuerySmsList.clear();
                 rvText.setAdapter(new ListAdapter(MainActivity.this, onQuerySmsList, incomingList, outgoingList, users));
                 return true;
@@ -184,6 +200,10 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                theMenu.findItem(R.id.miProfile).setVisible(true);
+                theMenu.findItem(R.id.miMain).setVisible(true);
+                theMenu.findItem(R.id.miCompose).setVisible(true);
+
                 rvText.setAdapter(new ListAdapter(MainActivity.this, smsList, incomingList, outgoingList, users));
                 return true;
             }

@@ -151,7 +151,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
                 }
 
             }
@@ -162,7 +162,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
                 }
             }
 
@@ -172,7 +172,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if(s.toString().equals("")){
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
                 }
             }
         });
@@ -446,7 +446,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users);
         etNumber.setText(contactName);
         //etNumber.setTypeface(null, Typeface.BOLD);
-        int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        int color = ContextCompat.getColor(this, R.color.contactNamePostSelection);
         etNumber.setTextColor(color);
         etNumber.setSelection(etNumber.getText().length());
 
