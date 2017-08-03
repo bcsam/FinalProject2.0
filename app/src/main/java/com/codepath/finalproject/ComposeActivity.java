@@ -87,7 +87,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
 
         etBody.setText(getIntent().getStringExtra("message"));
-        etNumber.setText(getIntent().getStringExtra("recipient"));
+        etNumber.setText(getIntent().getStringExtra("name"));
         //unwrapIntent();
     }
 
