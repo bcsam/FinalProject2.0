@@ -79,6 +79,12 @@ public class GraphFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onPause(){
+        client.cancel(true);
+        super.onPause();
+    }
+
     public SMS[] getMyGraph(User user) {
         Uri uri = Uri.parse("content://sms/sent");
         Cursor c = getContext().getContentResolver().query(uri, null, null, null, null);
