@@ -55,7 +55,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     int lastPosition = 2147483647;
     String id;
 
-    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users, int lastAnimationPosition) {
+    public ConversationAdapter(Context mContext, ArrayList<SMS> mSmsList, ArrayList<SMS> incomingList, ArrayList<SMS> outgoingList, ArrayList<User> users) {
 
         context = mContext;
         smsList = mSmsList;
@@ -64,7 +64,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         this.incomingList = incomingList;
         this.outgoingList = outgoingList;
         this.users = users;
-        lastPosition = lastAnimationPosition;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }

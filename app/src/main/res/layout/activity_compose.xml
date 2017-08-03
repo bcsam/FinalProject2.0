@@ -44,13 +44,13 @@
         android:id="@+id/btComp2Check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/horizontalLine2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/uncheckButton"
         android:text="Check!"
         android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="visible"
+        android:layout_above="@+id/relativeLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <View
         android:id="@+id/horizontalLine2"
@@ -94,7 +94,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="7dp"
             android:onClick="sendText"
-            app:srcCompat="@drawable/ic_send_blue" />
+            app:srcCompat="@drawable/ic_send" />
 
     </RelativeLayout>
 

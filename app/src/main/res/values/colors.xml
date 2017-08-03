@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--current colors
     <color name="colorPrimary">#c66a30</color>
     <color name="colorPrimaryDark">#903d00</color>
     <color name="colorPrimaryLight">#DFAD8E</color>
     <color name="colorAccent">#903d00</color>
+    -->
+
+    <!--testing colors-->
+    <color name="colorPrimary">#00acc1</color>
+    <color name="colorPrimaryDark">#007c91</color>
+    <color name="colorPrimaryLight">#5ddef4</color>
+    <color name="colorAccent">#ffb74d</color>
+
     <color name="black">#000000</color>
     <color name="darkRed">#b30000</color>
     <color name="lightRed">#ff8080</color>
@@ -24,7 +33,7 @@
     <color name="lighterGray">#e2e2e2</color>
     <color name="veryLightGray">#F5F5F5</color>
     <color name="darkGray">#58585B</color>
-    <color name = "darkOrange">#cc8254</color>
+    <color name ="darkOrange">#cc8254</color>
     <color name="veryDarkOrange">#985529</color>
     <color name="teal">#397e87</color>
 
@@ -40,7 +49,15 @@
     <color name="newLightGreen">#FFBDDF99</color>
     <color name="newLightPurple">#FFCBA5DF</color>
 
-    <color name="checkButton">@color/googleGreen</color>
-    <color name="sendButton">@color/twitterBlue</color>
+    <color name="uncheckButton">@color/lightGray</color>
+    <color name="checkButton">@color/colorPrimaryDark</color>
     <color name="personIcon">@color/lightGray</color>
+    <color name="pcCheckAndSend">@color/colorPrimary</color>
+    <color name="sendButton">@color/colorAccent</color>
+    <color name="progressCircle">@color/colorAccent</color>
+    <color name="tabIndicator">@color/colorAccent</color>
+    <color name="contactPlusSign">@color/colorAccent</color>
+    <color name="contactNamePostSelection">@color/colorAccent</color>
+    <color name="defaultProgressBar">@color/colorPrimaryDark</color>
+    <color name="lineColors">@color/white</color>
 </resources>

@@ -31,10 +31,11 @@ import java.util.List;
  * Created by bcsam on 7/11/17.
  */
 
-public class PostCheckActivity extends AppCompatActivity {
+public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit takes you to where you were before 
 
     TextView tvBody;
     SMS text;
+    String activity;
     String message;
     String recipientName;
     String recipientNumber;
@@ -61,6 +62,7 @@ public class PostCheckActivity extends AppCompatActivity {
         */
         getSupportActionBar().setTitle("ToneTeller");
         text = getIntent().getParcelableExtra("text");
+        activity = getIntent().getStringExtra("activity");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         users = getIntent().getParcelableArrayListExtra("users");
@@ -115,7 +117,12 @@ public class PostCheckActivity extends AppCompatActivity {
         btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                Intent intent;
+                if (activity.equals("Messaging")) {
+                    intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                } else {
+                    intent = new Intent(PostCheckActivity.this, ComposeActivity.class);
+                }
                 for(User u: users){
                     if(u.getNumber().equals(text.getNumber()))
                         position = users.indexOf(u);

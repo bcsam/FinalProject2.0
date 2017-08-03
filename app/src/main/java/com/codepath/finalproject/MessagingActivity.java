@@ -3,8 +3,10 @@ package com.codepath.finalproject;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +34,8 @@ import java.util.ArrayList;
 
 //***when sending to message detail it should just send the name, number, and message
 //****textBody will be created in message detail
-public class MessagingActivity extends AppCompatActivity {
+public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messaging ->mod, don't chnge the bars on either side
+    // TODO: 8/1/17 animation out
 
     ImageView btSend;
     Button btCheck;
@@ -90,12 +93,15 @@ public class MessagingActivity extends AppCompatActivity {
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
             if(messages.size() == 0)
                 getMessages();
+
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
+
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
             int lastVisible = layoutManager.findLastVisibleItemPosition();
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users, lastVisible);
+
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
             int numVisibleItems = rvText.getChildCount();
@@ -149,14 +155,16 @@ public class MessagingActivity extends AppCompatActivity {
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
             if(messages.size() == 0)
                 getMessages();
-            Log.i("messages", String.valueOf(messages.size()));
+
+
+            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
+
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
             int lastVisible = layoutManager.findLastVisibleItemPosition();
             int lastVis = rvText.getChildCount();
-            adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users, lastVisible);
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
         }
@@ -169,7 +177,8 @@ public class MessagingActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        final Menu theMenu = menu;
+        getMenuInflater().inflate(R.menu.menu_searchable, menu);
         MenuItem searchItem = menu.findItem(R.id.miSearch);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -192,7 +201,8 @@ public class MessagingActivity extends AppCompatActivity {
                         }
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users, 0));
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+
                 return true;
             }
 
@@ -208,7 +218,9 @@ public class MessagingActivity extends AppCompatActivity {
                         postQuerySmsList.add(text);
                     }
                 }
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users, 0));
+
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+
                 return true;
             }
         });
@@ -217,13 +229,23 @@ public class MessagingActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                theMenu.findItem(R.id.miProfile).setVisible(false);
+                theMenu.findItem(R.id.miMain).setVisible(false);
+                theMenu.findItem(R.id.miCompose).setVisible(false);
                 //rvText.scrollToPosition(0); //this scrolls and then opens the soft input
+
+                postQuerySmsList.clear();
+                rvText.setAdapter(new ListAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users, 0));
+                theMenu.findItem(R.id.miProfile).setVisible(true);
+                theMenu.findItem(R.id.miMain).setVisible(true);
+                theMenu.findItem(R.id.miCompose).setVisible(true);
+
+                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users));
                 return true;
             }
         });
@@ -282,31 +304,34 @@ public class MessagingActivity extends AppCompatActivity {
 
     public void setListeners() {
         etBody.addTextChangedListener(new TextWatcher() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if(s.toString().equals("")) {
-                    btCheck.setVisibility(View.GONE);
+                    btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setVisibility(View.VISIBLE);
+                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
                 }
 
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().equals("")) {
-                    btCheck.setVisibility(View.GONE);
+                    btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setVisibility(View.VISIBLE);
+                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
                 }
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().equals("")){
-                    btCheck.setVisibility(View.GONE);
+                    btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setVisibility(View.VISIBLE);
+                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
                 }
             }
         });
@@ -321,6 +346,7 @@ public class MessagingActivity extends AppCompatActivity {
                     text.setNumber(recipientNumber);
                     text.setContact(recipientName);
                     text.setBody(message);
+                    intent.putExtra("activity", "Messaging");
                     intent.putExtra("text", text);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
