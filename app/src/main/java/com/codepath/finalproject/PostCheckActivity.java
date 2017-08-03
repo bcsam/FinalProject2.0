@@ -1,10 +1,14 @@
 package com.codepath.finalproject;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,6 +24,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,7 +43,9 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
     Button btEdit;
     ArrayList<SMS> incomingList = new ArrayList<>();
     ArrayList<SMS> outgoingList = new ArrayList<>();
+    ArrayList<SMS> smsList;
     ArrayList<User> users;
+    HashMap<String, String> getContactIdMemo;
     int position;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -59,8 +66,9 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         activity = getIntent().getStringExtra("activity");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+        smsList = getIntent().getParcelableArrayListExtra("smsList");
         users = getIntent().getParcelableArrayListExtra("users");
-        position = getIntent().getIntExtra("position", 0);
+        position = getIntent().getIntExtra("position", -1);
 
         //makes a Textbody with the user's message
 
@@ -117,14 +125,26 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
                 } else {
                     intent = new Intent(PostCheckActivity.this, ComposeActivity.class);
                 }
-
+                for(User u: users){
+                    if(u.getNumber().equals(text.getNumber()))
+                        position = users.indexOf(u);
+                }
+                if(position == -1){
+                    User newUser = new User();
+                    newUser.setNumber(text.getNumber());
+                    newUser.setName(text.getContact());
+                    newUser.setContactId(getContactId(text.getNumber()));
+                    users.add(users.size(), newUser);
+                    position = users.indexOf(newUser);
+                }
+                intent.putExtra("position", position);
                 intent.putExtra("message", text.getBody());
                 intent.putExtra("name", text.getContact());
                 intent.putExtra("number", text.getNumber());
                 intent.putParcelableArrayListExtra("incomingList", incomingList);
                 intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                intent.putParcelableArrayListExtra("smsList", smsList);
                 intent.putParcelableArrayListExtra("users", users);
-                intent.putExtra("position", position);
                 PostCheckActivity.this.startActivity(intent);
             }
         });
@@ -137,6 +157,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
                     intent.putExtra("text", text);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putParcelableArrayListExtra("smsList", smsList);
                     intent.putParcelableArrayListExtra("users", users);
                     intent.putExtra("position", position);
                 /*
@@ -192,6 +213,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         Intent i = new Intent(PostCheckActivity.this, ComposeActivity.class);
         i.putExtra("incomingList", incomingList);
         i.putExtra("outgoingList", outgoingList);
+        i.putExtra("users", users);
         PostCheckActivity.this.startActivity(i);
     }
 
@@ -223,6 +245,39 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         text.setNumber(recipientNumber);
         text.setBody(message);
         text.sendSMS();
+    }
+
+    private String getContactId(String recipientNumber) {
+        getContactIdMemo = new HashMap<String, String>();
+        String memoizedResult = getContactIdMemo.get(recipientNumber);
+        if (memoizedResult != null) {
+            return memoizedResult;
+        }
+
+        ContentResolver contentResolver = this.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(recipientNumber));
+
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        Cursor c2 = contentResolver.query(
+                uri,
+                projection,
+                null,
+                null,
+                null);
+
+        String id = null;
+        if(c2 != null && c2.moveToNext()) {
+            id = c2.getString(c2.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            c2.close();
+        }
+        if (id == null) {
+            id = "";
+        }
+        c2.close();
+        getContactIdMemo.put(recipientNumber, id);
+        return id;
     }
 }
 

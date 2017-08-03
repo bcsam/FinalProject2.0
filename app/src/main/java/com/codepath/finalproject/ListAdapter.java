@@ -277,7 +277,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     Intent intent = new Intent(context, ProfileActivity.class);
                     intent.putExtra("from", "main");
                     int position = getAdapterPosition();
-                    User user = users.get(position);
                     intent.putExtra("position", position);
                     intent.putExtra("users", users);
                     String p1TransitionName = context.getString(R.string.profileTransition);

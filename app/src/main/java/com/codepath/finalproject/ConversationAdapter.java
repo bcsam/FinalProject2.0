@@ -296,6 +296,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     int position = getAdapterPosition();
                     Intent intent = new Intent(context, MessageDetailActivity.class);
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putExtra("users", users);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
                     intent.putExtra("sms", smsList.get(position));
 

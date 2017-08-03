@@ -1,10 +1,13 @@
 package com.codepath.finalproject;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -44,9 +47,15 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
     ArrayList<User> users;
+    ArrayList<SMS> totalList;
     User user;
     Uri uri;
     int position;
+
+    LinearLayoutManager layoutManager;
+
+    Cursor c1;
+    Cursor c2;
 
     String recipientName = "";
     String recipientNumber;
@@ -70,6 +79,9 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         initializeViews();
         setListeners();
         inst = this;
+
+        FinalProject applicationClass = ((FinalProject)getApplicationContext());
+        totalList = applicationClass.getSmsList();
 
         SMS checkedText = getIntent().getParcelableExtra("text");
 
@@ -96,7 +108,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
 
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
@@ -159,7 +171,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
 
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
             layoutManager.setStackFromEnd(true);
@@ -267,6 +279,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         //launches the compose activity
         Intent i = new Intent(MessagingActivity.this, ComposeActivity.class);
         i.putExtra("incomingList", incomingList);
+        i.putExtra("users", users);
         i.putExtra("outgoingList", outgoingList);
         MessagingActivity.this.startActivity(i);
     }
@@ -291,6 +304,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         Intent i =  new Intent(MessagingActivity.this, MainActivity.class);
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
+        i.putParcelableArrayListExtra("users", users);
         setResult(RESULT_OK, i);
         finish();
     }
@@ -416,6 +430,105 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 messages.add(index, s);
             }
         }
+    }
+
+    public String getContactName(final String phoneNumber, Context context)  {
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));
+
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
+
+        String contactName = "";
+        c1 = context.getContentResolver().query(uri,projection,null,null,null);
+
+        if(c1.moveToFirst())
+        {
+
+            contactName=c1.getString(0);
+
+        }
+
+        return contactName;
+    }
+
+    private String getContactId(String recipientNumber) {
+
+        ContentResolver contentResolver = this.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(recipientNumber));
+
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        c2 = contentResolver.query(
+                uri,
+                projection,
+                null,
+                null,
+                null);
+
+        String id = null;
+        if(c2 != null && c2.moveToNext()) {
+            id = c2.getString(c2.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            c2.close();
+        }
+        if (id == null) {
+            id = "";
+        }
+
+        return id;
+    }
+
+    public boolean matchNumber(SMS sms, SMS text){
+        if(!sms.getNumber().equals(text.getNumber()) && !("+1" + sms.getNumber()).equals(text.getNumber()) && !("1" + sms.getNumber()).equals(text.getNumber())
+                && !("+" + sms.getNumber()).equals(text.getNumber())&& !(sms.getNumber()).equals("1" + text.getNumber()) &&
+                !(sms.getNumber()).equals("+1" + text.getNumber()) && !(sms.getNumber()).equals("+" + text.getNumber()))
+            return false;
+        return true;
+    }
+
+    public void updateInbox(String message, String from, String date) {
+        FinalProject applicationClass = ((FinalProject)getApplicationContext());
+        SMS sms = new SMS(this);
+        String name = getContactName(from, this);
+        String id = getContactId(from);
+
+        sms.setBody(message);
+        sms.setNumber(from);
+        sms.setContact(getContactName(from, this));
+        sms.setDate(date);
+        sms.setContactId(id);
+        sms.setType(1);
+
+        boolean isAdded = false;
+
+        for (User u : users) {
+            if (u.getName().equals(name)) {
+                isAdded = true;
+                break;
+            }
+        }
+
+        if (isAdded == false) {
+            User user = new User(this);
+            user.setNumber(from);
+            user.setName(name);
+            user.setContactId(id);
+            users.add(user);
+        }
+
+
+        messages.add(0, sms);
+        incomingList.add(0, sms);
+        totalList.add(0, sms);
+
+        applicationClass.setSmsList(totalList);
+        applicationClass.setIncomingList(incomingList);
+
+        adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
+
+        rvText.setAdapter(adapter);
+        layoutManager.scrollToPosition(0);
+
     }
 
     public void sendText(SMS text){
