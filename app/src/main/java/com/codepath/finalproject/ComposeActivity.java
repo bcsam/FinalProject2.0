@@ -71,6 +71,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         name = getIntent().getStringExtra("name");
 
         position = getIntent().getIntExtra("position", -1);
+
+
         rvCompose = (RecyclerView) findViewById(R.id.rvCompose);
         addContacts(); //populates contacts
         postQueryContacts = new ArrayList<>();
@@ -422,11 +424,16 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         if (!mPhoneNumber.equals("")) {
             user.setNumber("+" + mPhoneNumber); //this is why the + shows up
         }
-        user.setName("Me");
         Log.i("profile", user.getNumber()); //delete afterwards
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
-
+        smsList = conversationAdapter.getModifyList();
+        for(User u: users){
+            if(u.getNumber().equals(recipientNumber))
+                u.setConversation(smsList);
+        }
+        i.putParcelableArrayListExtra("users", users);
+        user.setName("Me");
         i.putExtra("user", user);
         i.putExtra("incomingList", incomingList);
         i.putExtra("outgoingList", outgoingList);
@@ -436,6 +443,12 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
     public void launchMainActivity(MenuItem item) {
         Intent i = new Intent(ComposeActivity.this, MainActivity.class);
+        smsList = conversationAdapter.getModifyList();
+        for(User u: users){
+            if(u.getNumber().equals(recipientNumber))
+                u.setConversation(smsList);
+        }
+        i.putParcelableArrayListExtra("users", users);
         ComposeActivity.this.startActivity(i);
     }
 
@@ -448,7 +461,6 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         int lastVisible = layoutManager.findLastVisibleItemPosition();
-        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users);
         etNumber.setText(contactName);
         //etNumber.setTypeface(null, Typeface.BOLD);
         int color = ContextCompat.getColor(this, R.color.contactNamePostSelection);
@@ -456,6 +468,12 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         etNumber.setSelection(etNumber.getText().length());
 
         recipientNumber = contactNumber;
+        for(User u: users)
+            if(u.getNumber().equals(recipientNumber))
+                position = users.indexOf(u);
+        if(position>-1 && users.get(position).getConversation().size() > 0)
+            smsList = users.get(position).getConversation();
+        conversationAdapter = new ConversationAdapter(ComposeActivity.this, smsList, incomingList, outgoingList, users);
         rvCompose.setAdapter(conversationAdapter);
         rvCompose.scrollToPosition(0);
 

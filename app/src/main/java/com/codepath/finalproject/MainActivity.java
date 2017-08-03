@@ -520,6 +520,14 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
         rvText.scrollToPosition(0);
     }
 
+    @Override
+    public void onResume(){
+        if (getIntent().getParcelableArrayListExtra("users") != null && !getIntent().getParcelableArrayListExtra("users").equals("")) {
+            users = getIntent().getParcelableArrayListExtra("users");
+        }
+        super.onResume();
+    }
+
     interface DataTransfer{
         public void setValues(ArrayList<SMS> smsList, String contactName, String contactNumber);
     }
