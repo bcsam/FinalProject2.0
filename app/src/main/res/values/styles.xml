@@ -7,13 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
-
-        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/expand</item>
+        <item name="android:windowSharedElementExitTransition">@transition/expand</item>
+        <item name="android:windowAnimationStyle">@style/defaultAnimation.Activity</item>
     </style>
 
     <style name="DefaultActivity" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowEnterTransition">@transition/fade</item>
-        <item name="android:windowExitTransition">@transition/fade</item>
+        <item name="android:windowExitTransition">@transition/fade_in</item>
+        <item name="android:windowEnterTransition">@transition/fade_in</item>
     </style>
 
     <style name="defaultAnimation.Activity" parent="@android:style/Animation.Activity">
