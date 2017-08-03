@@ -68,6 +68,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         StrictMode.setThreadPolicy(policy);
     }
 
+    @Override
+    public void onViewDetachedFromWindow(final ViewHolder holder){
+
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -143,6 +148,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             lastPosition = position;
         }
     }
+
 
     @Override
     public int getItemCount() {
