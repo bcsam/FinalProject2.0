@@ -295,7 +295,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
 
         user.setName("Me");
         Intent i = new Intent(MessagingActivity.this, ProfileActivity.class);
-
+        i.putExtra("users", users);
         i.putExtra("user", user);
         MessagingActivity.this.startActivity(i);
     }

@@ -48,12 +48,12 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
         //graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        int color = ContextCompat.getColor(getActivity(), R.color.veryLightGray);
+        int color = ContextCompat.getColor(getActivity(), R.color.darkGray);
         graph.getGridLabelRenderer().setHorizontalLabelsColor(color);
 
         graph.getGridLabelRenderer().setHorizontalAxisTitle("# OF TEXTS");
 
-        color = ContextCompat.getColor(getActivity(), R.color.darkGray);
+        //color = ContextCompat.getColor(getActivity(), R.color.darkGray);
 
         graph.getGridLabelRenderer().setVerticalLabelsColor(color);
         graph.getGridLabelRenderer().setHorizontalAxisTitleColor(color);
