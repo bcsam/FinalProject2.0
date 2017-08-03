@@ -8,6 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -89,6 +90,7 @@ public class User implements Parcelable{
 
     public void updateScores(SMS sms){
         messageCount++;
+        Log.i("Profile", String.valueOf(messageCount));
         if(messageCount>1) {
             for (int i = 0; i < 5; i++) {
                 if (i < 3)

@@ -193,7 +193,6 @@ public class GraphFragment extends Fragment {
                 }
                 else
                     getScores(params[i]);
-                user.updateScores(params[i]);
             }
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
@@ -214,6 +213,7 @@ public class GraphFragment extends Fragment {
             });
             return params[0];
         }
+
         public void getScores(SMS sms) {
             ToneOptions options = new ToneOptions.Builder()
                     .addTone(Tone.EMOTION)
