@@ -173,11 +173,11 @@ public class User implements Parcelable{
     public Uri getProfileImageUri(){ return profileImage; }
 
     public String getStyleColor(){
-        return "#c66a30";
+        return "#467F80";
     }
 
     public String getSocialColor(){
-        return "#c66a30";
+        return "#467F80";
     }
 
     public String getToneColor(int tone){
