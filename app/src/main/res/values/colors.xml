@@ -52,11 +52,12 @@
     <color name="uncheckButton">@color/lightGray</color>
     <color name="checkButton">@color/colorPrimaryDark</color>
     <color name="personIcon">@color/lightGray</color>
-    <color name="pcCheckAndSend">@color/colorAccent</color>
+    <color name="pcCheckAndSend">@color/colorPrimary</color>
     <color name="sendButton">@color/colorAccent</color>
     <color name="progressCircle">@color/colorAccent</color>
     <color name="tabIndicator">@color/colorAccent</color>
     <color name="contactPlusSign">@color/colorAccent</color>
     <color name="contactNamePostSelection">@color/colorAccent</color>
     <color name="defaultProgressBar">@color/colorPrimaryDark</color>
+    <color name="lineColors">@color/white</color>
 </resources>
