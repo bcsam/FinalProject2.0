@@ -463,6 +463,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
             Log.i("Profile", users.get(i).getName());
             if (matchNumber(sms, smsList.get(i))) {
                 isAdded = true;
+                User newUser = users.get(i);
+                users.remove(i);
+                users.add(newUser);
                 smsList.remove(i);
                 smsList.add(0, sms);
                 break;
