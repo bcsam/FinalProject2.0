@@ -87,7 +87,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
         drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
-        setAnimation(holder.itemView, position);
+        //setAnimation(holder.itemView, position);
         if(params[0].getBubbleColor().equals("#DFAD8E")) {
             AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
             analyzerClient.execute(params);

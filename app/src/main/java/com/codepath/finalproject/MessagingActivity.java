@@ -99,7 +99,9 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
             int position = getIntent().getIntExtra("position", 0);
             users = getIntent().getParcelableArrayListExtra("users");
-            user = users.get(position);
+            if (position != -1) {
+                user = users.get(position);
+            }
             messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
