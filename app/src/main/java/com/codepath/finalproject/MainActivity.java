@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -449,13 +450,17 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
         sms.setDate(date);
         sms.setContactId(getContactId(from));
         sms.setType(1);
-
+        User user = new User(context);
+        user.setNumber(recipientNumber);
+        user.setName(recipientName);
+        user.setContactId(id);
         //smsList.add(sms);
         //incomingList.add(sms);
 
 
         boolean isAdded = false;
         for (int i = 0; i < smsList.size() ; i++) {
+            Log.i("Profile", users.get(i).getName());
             if (matchNumber(sms, smsList.get(i))) {
                 isAdded = true;
                 smsList.remove(i);
@@ -465,10 +470,6 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
         }
 
         if (!isAdded) {
-            User user = new User(context);
-            user.setNumber(recipientNumber);
-            user.setName(recipientName);
-            user.setContactId(id);
             users.add(user);
             smsList.add(0, sms);
         }
@@ -517,6 +518,14 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
         text();
         adapter.notifyDataSetChanged();
         rvText.scrollToPosition(0);
+    }
+
+    @Override
+    public void onResume(){
+        if (getIntent().getParcelableArrayListExtra("users") != null && !getIntent().getParcelableArrayListExtra("users").equals("")) {
+            users = getIntent().getParcelableArrayListExtra("users");
+        }
+        super.onResume();
     }
 
     interface DataTransfer{

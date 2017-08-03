@@ -98,29 +98,35 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-        if(user.getAllTexts().equals("")) {
-            client = new ProfileAnalyzerClient(this, user);
-            if (user.getName().equals("Me"))
-                client.execute(getMyAverages(user));
-            else
-                client.execute(getAverages(user));
+        client = new ProfileAnalyzerClient(this, user);
+        if(user.getName().equals("Me")){
+            SMS myTexts = getMyAverages(user);
+            client.execute(myTexts);
         }
         else {
-            Log.i("Profile", user.getAllTexts());
-            pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
-            pbLoading.setVisibility(View.GONE);
-            ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+            SMS allTexts = getAverages(user);
+            if(user.getAllTexts().equals(allTexts.getBody()))
+            {
+                Log.i("Profile", user.getAllTexts());
+                pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
+                pbLoading.setVisibility(View.GONE);
+                ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
-            // Set the ViewPagerAdapter into ViewPager
-            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
-            adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
-            adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
+                // Set the ViewPagerAdapter into ViewPager
+                ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+                adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
+                adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
+                adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
 
-            viewPager.setAdapter(adapter);
+                viewPager.setAdapter(adapter);
 
-            TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
-            mTabLayout.setupWithViewPager(viewPager);
+                TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
+                mTabLayout.setupWithViewPager(viewPager);
+            }
+            else {
+                user.setAllTexts(allTexts.getBody());
+                client.execute(allTexts);
+            }
         }
 
 
@@ -227,7 +233,6 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         }
         SMS sms = new SMS();
         sms.setBody(fullText);
-        user.setAllTexts(fullText);
         return sms;
     }
 
@@ -247,7 +252,6 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         }
         SMS sms = new SMS();
         sms.setBody(fullText);
-        user.setAllTexts(fullText);
         return sms;
     }
 
