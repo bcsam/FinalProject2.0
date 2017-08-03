@@ -87,9 +87,20 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
 
         etBody.setText(getIntent().getStringExtra("message"));
+
         etNumber.setText(getIntent().getStringExtra("recipient"));
         if (name != null && !name.equals("")) {
             etNumber.setText(name);
+
+        String name = getIntent().getStringExtra("name");
+        if(name != null) {
+            String number = "";
+            for(User u: users){
+                if(u.getName().equals(name))
+                    number = u.getNumber();
+            }
+            setValues(smsList, name, number);
+
         }
         //unwrapIntent();
     }
@@ -193,6 +204,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     }
                     intent.putParcelableArrayListExtra("incomingList", incomingList);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putParcelableArrayListExtra("smsList", smsList);
                     intent.putParcelableArrayListExtra("users", users);
                     intent.putExtra("position", position);
                     SMS sms = new SMS();

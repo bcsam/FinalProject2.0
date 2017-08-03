@@ -79,6 +79,12 @@ public class GraphFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onPause(){
+        client.cancel(true);
+        super.onPause();
+    }
+
     public SMS[] getMyGraph(User user) {
         Uri uri = Uri.parse("content://sms/sent");
         Cursor c = getContext().getContentResolver().query(uri, null, null, null, null);
@@ -187,7 +193,6 @@ public class GraphFragment extends Fragment {
                 }
                 else
                     getScores(params[i]);
-                user.updateScores(params[i]);
             }
             ((Activity) context).runOnUiThread(new Runnable() {
                 @Override
@@ -208,6 +213,7 @@ public class GraphFragment extends Fragment {
             });
             return params[0];
         }
+
         public void getScores(SMS sms) {
             ToneOptions options = new ToneOptions.Builder()
                     .addTone(Tone.EMOTION)
