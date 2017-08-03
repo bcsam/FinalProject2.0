@@ -518,8 +518,10 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             users.add(user);
         }
 
+        if (sms.getContact().equals(recipientName)) {
+            messages.add(0, sms);
+        }
 
-        messages.add(0, sms);
         incomingList.add(0, sms);
         totalList.add(0, sms);
 
