@@ -192,6 +192,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         Intent i = new Intent(PostCheckActivity.this, ComposeActivity.class);
         i.putExtra("incomingList", incomingList);
         i.putExtra("outgoingList", outgoingList);
+        i.putExtra("users", users);
         PostCheckActivity.this.startActivity(i);
     }
 

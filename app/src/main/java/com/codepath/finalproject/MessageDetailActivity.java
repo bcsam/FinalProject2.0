@@ -36,6 +36,7 @@ public class MessageDetailActivity extends AppCompatActivity{
 
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
+    ArrayList<User> users;
 
     //needs author's name, message, analysis info
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -54,6 +55,7 @@ public class MessageDetailActivity extends AppCompatActivity{
         sms = getIntent().getParcelableExtra("sms");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
+        users = getIntent().getParcelableArrayListExtra("users");
         if(sms.getBubbleColor().equals("")){
             AnalyzerClient client = new AnalyzerClient();
             client.getScores(sms);
@@ -141,6 +143,7 @@ public class MessageDetailActivity extends AppCompatActivity{
         Intent i = new Intent(MessageDetailActivity.this, ComposeActivity.class);
         i.putExtra("incomingList", incomingList);
         i.putExtra("outgoingList", outgoingList);
+        i.putExtra("users", users);
         MessageDetailActivity.this.startActivity(i);
     }
 

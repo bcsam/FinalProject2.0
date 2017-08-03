@@ -74,7 +74,13 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
         super.onCreate(savedInstanceState);
         ins = this;
         setContentView(R.layout.activity_main);
-        users = new ArrayList<User>();
+        if (getIntent().getParcelableArrayListExtra("users") != null && !getIntent().getParcelableArrayListExtra("users").equals("")) {
+            users = getIntent().getParcelableArrayListExtra("users");
+        }
+        else{
+            users = new ArrayList<User>();
+        }
+
         rvText = (RecyclerView) findViewById(R.id.rvText);
         getPermissionToRead();
 
