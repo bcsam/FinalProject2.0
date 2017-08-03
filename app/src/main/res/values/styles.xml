@@ -7,14 +7,32 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/black</item>
-        <item name="android:windowSharedElementEnterTransition">@transition/expand</item>
-        <item name="android:windowSharedElementExitTransition">@transition/expand</item>
         <item name="android:windowAnimationStyle">@style/defaultAnimation.Activity</item>
     </style>
 
+    <!--<item name="android:windowSharedElementEnterTransition">@transition/expand</item>
+        <item name="android:windowSharedElementExitTransition">@transition/expand</item>-->
+
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowExitTransition">@transition/fade</item>
+        <item name="android:windowEnterTransition">@transition/fade</item>
+        <item name="android:windowAnimationStyle">@style/defaultAnimation.Activity</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
     <style name="DefaultActivity" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowExitTransition">@transition/fade_in</item>
-        <item name="android:windowEnterTransition">@transition/fade_in</item>
+
     </style>
 
     <style name="defaultAnimation.Activity" parent="@android:style/Animation.Activity">
@@ -24,4 +42,5 @@
         <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 </resources>

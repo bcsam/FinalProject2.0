@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +40,8 @@ public class MessageDetailActivity extends AppCompatActivity{
     ArrayList<User> users;
 
     //needs author's name, message, analysis info
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
@@ -47,7 +49,8 @@ public class MessageDetailActivity extends AppCompatActivity{
         fade.setDuration(1200);
         //getWindow().setSharedElementsUseOverlay(false);
         //getWindow().setEnterTransition(fade);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        toolbar.setTitleTextColor(getColor(R.color.white));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);

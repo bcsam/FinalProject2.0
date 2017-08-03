@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -43,6 +44,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     ImageView btSend;
     Button btCheck;
     EditText etBody;
+    Toolbar toolBar;
     ArrayList<SMS> messages;
     ArrayList<SMS> incomingList;
     ArrayList<SMS> outgoingList;
@@ -72,6 +74,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     String myNumber;
     String id;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +82,8 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         initializeViews();
         setListeners();
         inst = this;
+        setSupportActionBar(toolBar);
+        toolBar.setTitleTextColor(getColor(R.color.white));
 
         FinalProject applicationClass = ((FinalProject)getApplicationContext());
         totalList = applicationClass.getSmsList();
@@ -313,7 +318,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         btSend = (ImageView) findViewById(R.id.btSend);
         btCheck = (Button) findViewById(R.id.btCheck);
         etBody = (EditText) findViewById(R.id.etBody);
-
+        toolBar = (Toolbar) findViewById(R.id.toolBar);
     }
 
     public void setListeners() {

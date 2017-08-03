@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -51,13 +52,18 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
     ProfileAnalyzerClient client;
     User user;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //sets up the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         postponeEnterTransition();
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolBar);
+        toolBar.setTitleTextColor(getColor(R.color.white));
+
 
         ProgressBar pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
         pbLoading.setVisibility(View.VISIBLE);

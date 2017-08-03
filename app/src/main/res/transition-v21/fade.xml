@@ -1,0 +1,8 @@
+<fade xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1">
+    <targets>
+        <target android:targetId="@android:id/statusBarBackground" />
+        <target android:targetId="@android:id/navigationBarBackground" />
+        <target android:targetId="@id/appBar"/>
+    </targets>
+</fade>

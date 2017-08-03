@@ -3,8 +3,7 @@
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillEnabled="true"
     android:fillAfter="true"
-    android:duration="100">
-    android:interpo
+    android:duration="1">
     <changeBounds />
     <slide />
 

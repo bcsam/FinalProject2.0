@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-    <alpha
-        android:fromAlpha="0.0"
-        android:toAlpha="1.0"
-        android:duration="2000"
-        />
-</transitionSet>
+<fade xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1">
+    <targets>
+        <target android:excludeId="@android:id/statusBarBackground"/>
+
+    </targets>
+</fade>
