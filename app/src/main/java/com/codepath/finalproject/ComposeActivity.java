@@ -450,7 +450,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
     public void launchMainActivity(MenuItem item) {
         Intent i = new Intent(ComposeActivity.this, MainActivity.class);
-        smsList = conversationAdapter.getModifyList();
+        if (conversationAdapter != null) {
+            smsList = conversationAdapter.getModifyList();
+        }
+
         for(User u: users){
             if(u.getNumber().equals(recipientNumber))
                 u.setConversation(smsList);
