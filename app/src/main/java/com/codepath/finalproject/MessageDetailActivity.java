@@ -58,7 +58,7 @@ public class MessageDetailActivity extends AppCompatActivity{
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
         users = getIntent().getParcelableArrayListExtra("users");
-        if(sms.getBubbleColor().equals("")){
+        if(sms.getBubbleColor().equals("#CFE0E0")){
             AnalyzerClient client = new AnalyzerClient();
             client.getScores(sms);
         }
