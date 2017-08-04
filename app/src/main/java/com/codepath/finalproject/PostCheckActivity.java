@@ -56,8 +56,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         setContentView(R.layout.activity_main_post_check);
         tvBody = (TextView) findViewById(R.id.tvBody);
         tvBody.setVisibility(View.INVISIBLE);
-        tvBody.setText(text.getBody());
-        tvBody.setTextColor(Color.parseColor(text.getTextColor()));
+
         //stores info in intent for sending back to MainActivity
         /*
         message = getIntent().getStringExtra("message");
@@ -66,6 +65,10 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         */
         getSupportActionBar().setTitle("ToneTeller");
         text = getIntent().getParcelableExtra("text");
+
+        tvBody.setText(text.getBody());
+        tvBody.setTextColor(Color.parseColor(text.getTextColor()));
+
         activity = getIntent().getStringExtra("activity");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
