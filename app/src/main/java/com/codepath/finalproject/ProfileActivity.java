@@ -263,7 +263,7 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed(){ // TODO: 8/3/17 why does it go only to messaging and main
         Intent i;
         if(from != null && from.equals("messaging"))
             i =  new Intent(ProfileActivity.this, MessagingActivity.class);

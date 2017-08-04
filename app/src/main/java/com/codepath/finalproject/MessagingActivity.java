@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -120,6 +119,21 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
 
             checkedText.setType(2);
             sendText(checkedText);
+
+            rvText.addOnLayoutChangeListener(new View.OnLayoutChangeListener() { // TODO: 8/3/17 check if this code works
+
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    if(bottom < oldBottom){
+                        rvText.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                rvText.smoothScrollToPosition(0);
+                            }
+                        }, 100);
+                    }
+                }
+            });
         }else {
             //stores this info to know which messages to bring up
             position = getIntent().getIntExtra("position", 0);
@@ -372,9 +386,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                     intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
                     */
                     MessagingActivity.this.startActivity(intent);
-                    ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation(MessagingActivity.this, etBody, "message");
-                    startActivity(intent, options.toBundle());
+                    startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter a message!",
                             Toast.LENGTH_LONG).show();
