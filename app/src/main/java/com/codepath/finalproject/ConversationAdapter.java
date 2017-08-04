@@ -1,6 +1,5 @@
 package com.codepath.finalproject;
 
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -322,8 +320,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     intent.putExtra("user", user);
 
                     String transitionName = context.getString(R.string.profileTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
-                    context.startActivity(intent, transition.toBundle());
+                    //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
+                    context.startActivity(intent);
                 }
             });
             ivProfileCircle = (ImageView) itemView.findViewById(ivProfileIcon);
@@ -341,22 +339,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         if (!mPhoneNumber.equals("")) {
                             user.setNumber("+" + mPhoneNumber); //this is why the + shows up
                         }
-                        intent.putExtra("user", user);
-                        intent.putExtra("users", users);
                     }
                     else {
-                        for(User u: users){
-                            if(u.getNumber().equals(smsList.get(position).getNumber()))
-                                position = users.indexOf(u);
-                        }
-                        intent.putExtra("users", users);
-                        intent.putExtra("position", position);
+                        user.setName(smsList.get(position).getContact());
+                        user.setNumber(smsList.get(position).getNumber());
+                        user.setContactId(smsList.get(position).getContactId());
                     }
-                    intent.putExtra("incomingList", incomingList);
-                    intent.putExtra("outgoingList", outgoingList);
+                    intent.putExtra("user", user);
+
                     String transitionName = context.getString(R.string.profileTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
-                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
+                    context.startActivity(intent);
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
@@ -376,18 +369,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         }
                     }
                     else {
-                        for(User u: users){
-                            if(u.getNumber().equals(smsList.get(position).getNumber()))
-                                position = users.indexOf(u);
-                        }
-                        intent.putExtra("users", users);
-                        intent.putExtra("position", position);
+                        user.setName(smsList.get(position).getContact());
+                        user.setNumber(smsList.get(position).getNumber());
+                        user.setContactId(smsList.get(position).getContactId());
                     }
-                    intent.putExtra("incomingList", incomingList);
-                    intent.putExtra("outgoingList", outgoingList);
+                    intent.putExtra("user", user);
+
                     String transitionName = context.getString(R.string.profileTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
-                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
+                    context.startActivity(intent);
                 }
             });
         }
