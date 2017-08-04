@@ -49,10 +49,15 @@
     <color name="newLightGreen">#FFBDDF99</color>
     <color name="newLightPurple">#FFCBA5DF</color>
 
+
     <color name="uncheckButton">@color/lightGray</color>
     <color name="checkButton">@color/colorPrimaryDark</color>
+    <color name="pressCheck">@color/colorAccent</color>
+
     <color name="personIcon">@color/lightGray</color>
     <color name="pcCheckAndSend">@color/colorPrimary</color>
+    <color name="checkOrSend">@color/colorPrimaryDark</color>
+
     <color name="sendButton">@color/colorAccent</color>
     <color name="progressCircle">@color/colorAccent</color>
     <color name="tabIndicator">@color/colorAccent</color>
