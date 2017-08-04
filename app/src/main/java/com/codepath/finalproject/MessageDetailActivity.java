@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -51,7 +52,8 @@ public class MessageDetailActivity extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
-
+        tvMessage = (TextView) findViewById(R.id.tvMessage);
+        tvMessage.setVisibility(View.INVISIBLE);
         sms = getIntent().getParcelableExtra("sms");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
@@ -62,9 +64,7 @@ public class MessageDetailActivity extends AppCompatActivity{
         }
 
 
-        tvMessage = (TextView) findViewById(R.id.tvMessage);
-        tvMessage.setText(sms.getBody());
-        tvMessage.setTextColor(Color.parseColor(sms.getTextColor()));
+
 
         //Code for tabs below
 
@@ -115,6 +115,9 @@ public class MessageDetailActivity extends AppCompatActivity{
                 }
             }
         });*/
+        tvMessage.setText(sms.getBody());
+        tvMessage.setTextColor(Color.parseColor(sms.getTextColor()));
+        tvMessage.setVisibility(View.VISIBLE);
     }
 
     public void animate(){
