@@ -11,7 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.StrictMode;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +20,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -249,8 +248,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
 
                     String p1TransitionName = context.getString(R.string.profileTransition);
                     Pair<View, String> p1 = Pair.create((View) ivProfileImage, p1TransitionName);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
-                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
+                    //((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    ((Activity) context).startActivityForResult(intent, 0);
                 }
             });
             ivProfileIcon = (ImageView) itemView.findViewById(R.id.ivProfileIcon);
@@ -265,8 +265,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     intent.putExtra("users", users);
                     String p1TransitionName = context.getString(R.string.profileTransition);
                     Pair<View, String> p1 = Pair.create((View) ivProfileIcon, p1TransitionName);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
-                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
+                    //((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    ((Activity) context).startActivityForResult(intent, 0);
+
                 }
             });
             textCircle = (TextView)  itemView.findViewById(R.id.circleText);
@@ -281,8 +283,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                     intent.putExtra("users", users);
                     String p1TransitionName = context.getString(R.string.profileTransition);
                     Pair<View, String> p1 = Pair.create((View) textCircle, p1TransitionName);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
-                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1);
+                    //((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                    ((Activity) context).startActivityForResult(intent, 0);
                 }
             });
 

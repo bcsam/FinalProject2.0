@@ -87,11 +87,13 @@ public class ProfileFragment extends Fragment {
             }
         }
 
+        getActivity().setTitle(user.toStringNumber());
+
         if (user.getName() != null && !user.getName().equals("")) {
             tvName.setText(user.getName());
             getActivity().setTitle(user.getName());
+            //getActivity().setTitle(user.toStringNumber());
         }
-
         else {
             tvName.setVisibility(View.GONE);
             getActivity().setTitle(user.toStringNumber());
