@@ -67,16 +67,23 @@ public class ProfileFragment extends Fragment {
 
             Bitmap image = BitmapFactory.decodeStream(openDisplayPhoto(contactIdLong));
 
+            ivProfileImageIcon.setVisibility(View.INVISIBLE);
+            ivProfileImage.setVisibility(View.INVISIBLE);
+            textCircle.setVisibility(View.INVISIBLE);
+
             if (image != null) {
                 ivProfileImage.setVisibility(View.VISIBLE);
-                ivProfileImageIcon.setVisibility(View.INVISIBLE);
+                //ivProfileImageIcon.setVisibility(View.INVISIBLE);
                 ivProfileImage.setImageBitmap(null);
                 ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 140, 140, false)));
-            } else {
+            } else
+            if (user.getName() != null && !user.getName().equals("")){
                 ivProfileImage.setImageResource(R.drawable.ic_person_gray);
                 textCircle.setVisibility(View.VISIBLE);
-                ivProfileImage.setVisibility(View.INVISIBLE);
+                //ivProfileImage.setVisibility(View.INVISIBLE);
                 textCircle.setText("" + user.getName().charAt(0));
+            } else {
+                ivProfileImage.setVisibility(View.VISIBLE);
             }
         }
 

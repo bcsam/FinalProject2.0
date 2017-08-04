@@ -377,8 +377,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         if (!mPhoneNumber.equals("")) {
                             user.setNumber("+" + mPhoneNumber); //this is why the + shows up
                         }
-                        intent.putExtra("user", user);
-                        intent.putExtra("users", users);
                     }
                     else {
                         for(User u: users){
