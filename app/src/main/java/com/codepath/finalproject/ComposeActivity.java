@@ -91,8 +91,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
         etNumber.setText(getIntent().getStringExtra("recipient")); //what's sending this?
         if (name != null && !name.equals("")) {
-            etNumber.setText(name);
-
+            etBody.requestFocus();
             String name = getIntent().getStringExtra("name");
             if (name != null) {
                 String number = "";
