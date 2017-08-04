@@ -87,8 +87,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
         drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
-        //setAnimation(holder.itemView, position);
-        if(params[0].getBubbleColor().equals("#DFAD8E")) {
+        if(params[0].getBubbleColor().equals("#CFE0E0")) {
+            setAnimation(holder.itemView, position);
             AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
             analyzerClient.execute(params);
         }
@@ -379,15 +379,18 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         }
                     }
                     else {
-                        user.setName(smsList.get(position).getContact());
-                        user.setNumber(smsList.get(position).getNumber());
-                        user.setContactId(smsList.get(position).getContactId());
+                        for(User u: users){
+                            if(u.getNumber().equals(smsList.get(position).getNumber()))
+                                position = users.indexOf(u);
+                        }
+                        intent.putExtra("users", users);
+                        intent.putExtra("position", position);
                     }
-                    intent.putExtra("user", user);
-
+                    intent.putExtra("incomingList", incomingList);
+                    intent.putExtra("outgoingList", outgoingList);
                     String transitionName = context.getString(R.string.profileTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, textCircle, transitionName);
-                    context.startActivity(intent, transition.toBundle());
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
+                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
                 }
             });
         }
