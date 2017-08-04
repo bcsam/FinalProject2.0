@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.Tone;
@@ -76,10 +75,10 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
             user = users.get(position);
         }
 
-        if (user.getName() != null && user.getName().equals("")) { // TODO: 7/31/17 check on null pointer here
-            getSupportActionBar().setTitle(user.getName());
+        if (user != null && user.getName().equals("")) { // TODO: 7/31/17 check on null pointer here
+            //getSupportActionBar().setTitle(user.getName());
         } else {
-            getSupportActionBar().setTitle("ToneTeller");
+            //getSupportActionBar().setTitle("ToneTeller");
         }
 
 
@@ -174,7 +173,6 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         User user = new User(this);
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
-        Toast.makeText(this, mPhoneNumber, Toast.LENGTH_LONG).show();
         if (!mPhoneNumber.equals("")) {
             user.setNumber("+" + mPhoneNumber); //this is why the + shows up
         }

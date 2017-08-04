@@ -155,6 +155,7 @@ public class MessageDetailActivity extends AppCompatActivity{
         Intent i = new Intent(MessageDetailActivity.this, ProfileActivity.class);
         i.putExtra("incomingList", incomingList);
         i.putExtra("outgoingList", outgoingList);
+        i.putExtra("users", users);
         MessageDetailActivity.this.startActivity(i);
     }
 

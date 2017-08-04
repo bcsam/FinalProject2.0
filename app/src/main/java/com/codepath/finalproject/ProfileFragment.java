@@ -75,7 +75,7 @@ public class ProfileFragment extends Fragment {
                 ivProfileImage.setVisibility(View.VISIBLE);
                 //ivProfileImageIcon.setVisibility(View.INVISIBLE);
                 ivProfileImage.setImageBitmap(null);
-                ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 140, 140, false)));
+                ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 200, 200, false)));
             } else
             if (user.getName() != null && !user.getName().equals("")){
                 ivProfileImage.setImageResource(R.drawable.ic_person_gray);
@@ -87,10 +87,18 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        if(user.getName().equals(""))
-            tvName.setVisibility(View.GONE);
-        else
+        getActivity().setTitle(user.toStringNumber());
+
+        if (user.getName() != null && !user.getName().equals("")) {
             tvName.setText(user.getName());
+            getActivity().setTitle(user.getName());
+            //getActivity().setTitle(user.toStringNumber());
+        }
+        else {
+            tvName.setVisibility(View.GONE);
+            getActivity().setTitle(user.toStringNumber());
+        }
+
         tvNumber.setText(user.toStringNumber());
         return v;
     }
