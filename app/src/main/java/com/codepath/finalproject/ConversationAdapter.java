@@ -363,6 +363,33 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
+            textCircle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("from", "messaging");
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    if(smsList.get(position).getType() == 2){
+                        user.setName("Me");
+                        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+                        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+                        if (!mPhoneNumber.equals("")) {
+                            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+                        }
+                    }
+                    else {
+                        user.setName(smsList.get(position).getContact());
+                        user.setNumber(smsList.get(position).getNumber());
+                        user.setContactId(smsList.get(position).getContactId());
+                    }
+                    intent.putExtra("user", user);
+
+                    String transitionName = context.getString(R.string.profileTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, textCircle, transitionName);
+                    context.startActivity(intent, transition.toBundle());
+                }
+            });
         }
 
     }

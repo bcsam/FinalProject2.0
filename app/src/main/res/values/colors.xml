@@ -10,7 +10,7 @@
     <!--testing colors-->
     <color name="colorPrimary">#7DAAAB</color>
     <color name="colorPrimaryDark">#467F80</color>
-    <color name="colorPrimaryLight">#5ddef4</color>
+    <color name="colorPrimaryLight">#CFE0E0</color>
     <color name="colorAccent">#467F80</color>
 
     <color name="black">#000000</color>

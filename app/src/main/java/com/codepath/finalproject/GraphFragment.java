@@ -47,7 +47,7 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
-        //graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         int color = ContextCompat.getColor(getActivity(), R.color.darkGray);
         graph.getGridLabelRenderer().setHorizontalLabelsColor(color);
 
