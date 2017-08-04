@@ -21,6 +21,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -195,6 +196,12 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             int lastVis = rvText.getChildCount();
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
+        }
+
+        if (etBody.getText().toString().equals("")) {
+            btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+        }else {
+            btCheck.setBackgroundColor(getColor(R.color.checkButton));
         }
         setListeners();
     }
@@ -374,6 +381,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             }
         });
 
+        /*
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -394,7 +402,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                     intent.putExtra("message", message);
                     intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
                     intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
-                    */
+
                     MessagingActivity.this.startActivity(intent);
                     startActivity(intent);
                 } else {
@@ -402,8 +410,8 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                             Toast.LENGTH_LONG).show();
                 }
             }
-        });
-        /*
+        });*/
+
         btCheck.setOnTouchListener(new View.OnTouchListener(){
 
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -413,17 +421,44 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                     btCheck.setBackgroundColor(getColor(R.color.pressCheck));
                     return true;
                 }else if(event.getAction() == MotionEvent.ACTION_UP) {
-                    //if(checkable) {
+                    if(checkable) {
                         btCheck.setBackgroundColor(getColor(R.color.checkButton));
-                    //}else{
+                    }else{
                         btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
-                    //}
+                    }
+
+
+                    Intent intent = new Intent(MessagingActivity.this, PostCheckActivity.class);
+                    String message = etBody.getText().toString();
+                    if (!message.equals("")) {
+                        SMS text = new SMS();
+                        text.setNumber(recipientNumber);
+                        text.setContact(recipientName);
+                        text.setBody(message);
+                        intent.putExtra("activity", "Messaging");
+                        intent.putExtra("text", text);
+                        intent.putParcelableArrayListExtra("incomingList", incomingList);
+                        intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                        intent.putParcelableArrayListExtra("users", users);
+                        intent.putExtra("position", position);
+                    /*
+                    intent.putExtra("message", message);
+                    intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
+                    intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
+                    */
+                        MessagingActivity.this.startActivity(intent);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please enter a message!",
+                                Toast.LENGTH_LONG).show();
+                    }
+
                     return true;
                 }
                 return false;
             }
         });
-        */
+
 
         etBody.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
