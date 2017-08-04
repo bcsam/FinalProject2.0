@@ -75,7 +75,7 @@ public class ProfileFragment extends Fragment {
                 ivProfileImage.setVisibility(View.VISIBLE);
                 //ivProfileImageIcon.setVisibility(View.INVISIBLE);
                 ivProfileImage.setImageBitmap(null);
-                ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 140, 140, false)));
+                ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 200, 200, false)));
             } else
             if (user.getName() != null && !user.getName().equals("")){
                 ivProfileImage.setImageResource(R.drawable.ic_person_gray);

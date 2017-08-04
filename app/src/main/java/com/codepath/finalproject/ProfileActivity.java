@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
             user = users.get(position);
         }
 
-        if (user.getName() != null && user.getName().equals("")) { // TODO: 7/31/17 check on null pointer here
+        if (user != null && user.getName().equals("")) { // TODO: 7/31/17 check on null pointer here
             getSupportActionBar().setTitle(user.getName());
         } else {
             getSupportActionBar().setTitle("ToneTeller");
