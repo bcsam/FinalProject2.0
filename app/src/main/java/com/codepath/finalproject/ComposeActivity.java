@@ -102,7 +102,6 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                         number = u.getNumber();
                 }
                 setValues(smsList, name, number);
-
             }
             //unwrapIntent();
         }
