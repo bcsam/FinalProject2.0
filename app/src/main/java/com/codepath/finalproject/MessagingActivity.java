@@ -76,7 +76,6 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
         initializeViews();
-        setListeners();
         inst = this;
 
         FinalProject applicationClass = ((FinalProject)getApplicationContext());
@@ -196,6 +195,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
         }
+        setListeners();
     }
 
     public static MessagingActivity instance() {
@@ -257,13 +257,14 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                rvText.scrollToPosition(0);
                 theMenu.findItem(R.id.miProfile).setVisible(false);
                 theMenu.findItem(R.id.miMain).setVisible(false);
                 theMenu.findItem(R.id.miCompose).setVisible(false);
                 //rvText.scrollToPosition(0); //this scrolls and then opens the soft input
 
-                postQuerySmsList.clear();
-                rvText.setAdapter(new ListAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
+                //postQuerySmsList.clear();
+                //rvText.setAdapter(new ListAdapter(MessagingActivity.this, postQuerySmsList, incomingList, outgoingList, users));
                 return true;
             }
 
@@ -273,7 +274,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 theMenu.findItem(R.id.miMain).setVisible(true);
                 theMenu.findItem(R.id.miCompose).setVisible(true);
 
-                rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users));
+                //rvText.setAdapter(new ConversationAdapter(MessagingActivity.this, messages, incomingList, outgoingList, users));
                 return true;
             }
         });
@@ -340,7 +341,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
                 }
 
             }
@@ -351,7 +352,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
                 }
             }
 
@@ -361,7 +362,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 if(s.toString().equals("")){
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
                 }else{
-                    btCheck.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
                 }
             }
         });
@@ -401,6 +402,21 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
                     rvText.scrollToPosition(0);
+                }
+            }
+        });
+
+        rvText.addOnLayoutChangeListener(new View.OnLayoutChangeListener(){
+
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(bottom < oldBottom){
+                    rvText.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvText.smoothScrollToPosition(0);
+                        }
+                    }, 100);
                 }
             }
         });
