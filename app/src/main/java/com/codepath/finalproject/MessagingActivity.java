@@ -465,21 +465,23 @@ public class MessagingActivity extends AppCompatActivity implements SMSClickList
 
     @Override
     public void onSMSClick(int pos, SMS smsItem, TextView sharedTextView){
-        Toast.makeText(this, "in override method", Toast.LENGTH_SHORT).show();
+
         Intent intent = new Intent(this, MessageDetailActivity.class);
         intent.putExtra("smsItem", smsItem);
         intent.putExtra("sharedTextView", ViewCompat.getTransitionName(sharedTextView));
         intent.putParcelableArrayListExtra("incomingList", incomingList);
         intent.putParcelableArrayListExtra("outgoingList", outgoingList);
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this,
+        String transitionName = ViewCompat.getTransitionName(sharedTextView);
+
+        //THIS IS WHAT DOES NOT WORK
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MessagingActivity.this,
                 sharedTextView,
-                ViewCompat.getTransitionName(sharedTextView));
-
-        startActivity(intent, options.toBundle());
+                transitionName);
 
 
+        Toast.makeText(this, "in override method", Toast.LENGTH_SHORT).show();
+        MessagingActivity.this.startActivity(intent, options.toBundle());
     }
 
     @Override

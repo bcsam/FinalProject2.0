@@ -32,7 +32,7 @@ import java.util.List;
 public class MessageDetailActivity extends AppCompatActivity{
     String name;
     String number;
-    SMS sms;
+    SMS sms = new SMS();
     TextView tvMessage;
 
     ArrayList<SMS> incomingList;
@@ -42,7 +42,6 @@ public class MessageDetailActivity extends AppCompatActivity{
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Toast.makeText(this, "in message detail", Toast.LENGTH_SHORT).show();
         //getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         //Fade fade = new Fade(Fade.IN);
         //fade.setDuration(1200);
@@ -58,11 +57,14 @@ public class MessageDetailActivity extends AppCompatActivity{
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
         outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
 
+
         tvMessage = (TextView) findViewById(R.id.tvMessage);
         tvMessage.setText(sms.getBody());
         tvMessage.setTextColor(Color.parseColor(sms.getTextColor()));
         tvMessage.setTransitionName(getIntent().getStringExtra("sharedTextView"));
 
+
+        supportStartPostponedEnterTransition();
         if(sms.getBubbleColor().equals("")){
             AnalyzerClient client = new AnalyzerClient();
             client.getScores(sms);
@@ -120,6 +122,7 @@ public class MessageDetailActivity extends AppCompatActivity{
                 }
             }
         });*/
+        Toast.makeText(this, "in message detail", Toast.LENGTH_SHORT).show();
     }
 
     public void animate(){

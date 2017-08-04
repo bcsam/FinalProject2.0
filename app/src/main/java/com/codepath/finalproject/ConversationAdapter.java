@@ -1,26 +1,13 @@
 package com.codepath.finalproject;
 
-import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.StrictMode;
-import android.provider.ContactsContract;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 
+import static com.codepath.finalproject.ListAdapter.millisToDate;
 import static com.codepath.finalproject.R.id.ivProfileIcon;
 
 /**
@@ -114,14 +99,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         if (id != null && !id.equals("") && smsList.get(position).getType() == 1) {
             long contactIdLong = Long.parseLong(id);
-            image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
+            //image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
 
             if (image != null) {
                 holder.ivProfileCircle.setVisibility(View.INVISIBLE);
                 holder.ivProfileImage.setVisibility(View.VISIBLE);
                 holder.ivProfileImage.setImageBitmap(null);
                 //holder.ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-                holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 100, 100, false)));
+                //holder.ivProfileImage.setImageBitmap(getCroppedBitmap(Bitmap.createScaledBitmap(image, 100, 100, false)));
                 image = null;
             } else if (!smsList.get(position).getContact().equals("")) {
                 holder.textCircle.setVisibility(View.VISIBLE);
@@ -171,7 +156,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
         return 1;
     }
-
+    /*
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
@@ -276,7 +261,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
         return null;
     }
-
+        */
     public ArrayList<SMS> getModifyList() {
         return smsList;
     }
@@ -298,6 +283,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
            final View iv = itemView;
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            /*
             tvBody.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -311,13 +297,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
                     String transitionName = context.getString(R.string.messageDetailTransition);
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
-                    context.startActivity(intent, transition.toBundle());*/
+                    context.startActivity(intent, transition.toBundle());
 
                 }
-            });
+            });*/
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             date = (TextView) rowView.findViewById(R.id.tvTimeStamp);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            /*
             ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -344,8 +331,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
                     context.startActivity(intent, transition.toBundle());
                 }
-            });
+            });*/
             ivProfileCircle = (ImageView) itemView.findViewById(ivProfileIcon);
+            /*
             ivProfileCircle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -377,7 +365,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
                     ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
                 }
-            });
+            });*/
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
         }
 

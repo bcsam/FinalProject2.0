@@ -18,13 +18,14 @@
             android:id="@+id/tvMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".3"
-            android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight=".3"
             android:gravity="center_vertical|center_horizontal"
             android:text="TextView"
             android:textColor="@color/darkGray"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:visibility="visible" />
     </LinearLayout>
 
     <!--android:transitionName="@string/messageDetailTransition"-->
@@ -46,6 +47,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center"
             android:minHeight="60dp"
+            android:visibility="visible"
             app:tabIndicatorColor="@color/colorPrimary" />
 
         <!--
@@ -61,7 +63,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/pager_header">
+            android:layout_below="@+id/pager_header"
+            android:visibility="visible">
 
 
         </android.support.v4.view.ViewPager>
