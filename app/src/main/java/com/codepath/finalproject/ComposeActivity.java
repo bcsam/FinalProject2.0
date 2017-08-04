@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
@@ -79,12 +80,25 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         composeAdapter = new ComposeAdapter(ComposeActivity.this, postQueryContacts, incomingList, outgoingList, this);
         rvCompose.setLayoutManager(new LinearLayoutManager(this));
         rvCompose.setAdapter(composeAdapter);
-
-/*
+        rvCompose.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v,
+                                       int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    rvCompose.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvCompose.smoothScrollToPosition(0);
+                        }
+                    }, 100);
+                }
+            }
+        });
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-        }*/
+        }
 
 
         etBody.setText(getIntent().getStringExtra("message"));
