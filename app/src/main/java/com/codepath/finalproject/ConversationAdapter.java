@@ -293,10 +293,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     intent.putExtra("users", users);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
                     intent.putExtra("sms", smsList.get(position));
-
-                    String transitionName = context.getString(R.string.messageDetailTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
-                    context.startActivity(intent, transition.toBundle());
+                    context.startActivity(intent);
                 }
             });
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
