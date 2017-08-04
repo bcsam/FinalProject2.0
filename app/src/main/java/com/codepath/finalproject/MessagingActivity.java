@@ -50,6 +50,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     User user;
     Uri uri;
     int position;
+    Boolean checkable = false; //for button feedback
 
     LinearLayoutManager layoutManager;
 
@@ -340,8 +341,10 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkable = false;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkable = true;
                 }
 
             }
@@ -351,8 +354,10 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkable = false;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkable = true;
                 }
             }
 
@@ -361,8 +366,10 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             public void afterTextChanged(Editable s) {
                 if(s.toString().equals("")){
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkable = false;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkable = true;
                 }
             }
         });
@@ -396,6 +403,27 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                 }
             }
         });
+        /*
+        btCheck.setOnTouchListener(new View.OnTouchListener(){
+
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btCheck.setBackgroundColor(getColor(R.color.pressCheck));
+                    return true;
+                }else if(event.getAction() == MotionEvent.ACTION_UP) {
+                    //if(checkable) {
+                        btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    //}else{
+                        btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    //}
+                    return true;
+                }
+                return false;
+            }
+        });
+        */
 
         etBody.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override

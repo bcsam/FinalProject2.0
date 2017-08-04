@@ -10,6 +10,7 @@
         <item name="android:windowSharedElementEnterTransition">@transition/expand</item>
         <item name="android:windowSharedElementExitTransition">@transition/expand</item>
         <item name="android:windowAnimationStyle">@style/defaultAnimation.Activity</item>
+        <item name="android:colorControlHighlight">@color/colorAccent</item>
     </style>
 
     <style name="DefaultActivity" parent="Theme.AppCompat.Light.DarkActionBar">
