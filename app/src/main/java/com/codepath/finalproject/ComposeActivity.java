@@ -434,7 +434,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         Log.i("profile", user.getNumber()); //delete afterwards
         Log.i("profile", user.toStringNumber());
         Intent i = new Intent(ComposeActivity.this, ProfileActivity.class);
-        smsList = conversationAdapter.getModifyList();
+        if (conversationAdapter != null) {
+            smsList = conversationAdapter.getModifyList();
+        }
+
         for(User u: users){
             if(u.getNumber().equals(recipientNumber))
                 u.setConversation(smsList);
