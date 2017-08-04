@@ -98,29 +98,35 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
 
         TabLayout mTabLayoutTop = (TabLayout) findViewById(R.id.upper_pager_header);
         mTabLayoutTop.setupWithViewPager(viewPagerTop);
-        if(user.getAllTexts().equals("")) {
-            client = new ProfileAnalyzerClient(this, user);
-            if (user.getName().equals("Me"))
-                client.execute(getMyAverages(user));
-            else
-                client.execute(getAverages(user));
+        client = new ProfileAnalyzerClient(this, user);
+        if(user.getName().equals("Me")){
+            SMS myTexts = getMyAverages(user);
+            client.execute(myTexts);
         }
         else {
-            Log.i("Profile", user.getAllTexts());
-            pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
-            pbLoading.setVisibility(View.GONE);
-            ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+            SMS allTexts = getAverages(user);
+            if(user.getAllTexts().equals(allTexts.getBody()))
+            {
+                Log.i("Profile", user.getAllTexts());
+                pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
+                pbLoading.setVisibility(View.GONE);
+                ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
-            // Set the ViewPagerAdapter into ViewPager
-            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
-            adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
-            adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
+                // Set the ViewPagerAdapter into ViewPager
+                ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+                adapter.addFrag(new TonesFragment(), "Tones", user, "ProfileActivity");
+                adapter.addFrag(new StylesFragment(), "Styles", user, "ProfileActivity");
+                adapter.addFrag(new SocialFragment(), "Social", user, "ProfileActivity");
 
-            viewPager.setAdapter(adapter);
+                viewPager.setAdapter(adapter);
 
-            TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
-            mTabLayout.setupWithViewPager(viewPager);
+                TabLayout mTabLayout = (TabLayout) findViewById(R.id.pager_header);
+                mTabLayout.setupWithViewPager(viewPager);
+            }
+            else {
+                user.setAllTexts(allTexts.getBody());
+                client.execute(allTexts);
+            }
         }
 
 
@@ -227,7 +233,6 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         }
         SMS sms = new SMS();
         sms.setBody(fullText);
-        user.setAllTexts(fullText);
         return sms;
     }
 
@@ -247,7 +252,6 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         }
         SMS sms = new SMS();
         sms.setBody(fullText);
-        user.setAllTexts(fullText);
         return sms;
     }
 
@@ -270,8 +274,9 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         else {
             i = new Intent(ProfileActivity.this, MainActivity.class);
         }
-        if(!user.getName().equals("Me"))
+        if(users != null && user != null && !user.getName().equals("Me"))
             users.set(position, user);
+
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);
         i.putParcelableArrayListExtra("users", users);
@@ -316,8 +321,8 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
     public class ProfileAnalyzerClient extends AsyncTask<SMS, String, SMS> {
         //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
         public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-        public static final String USERNAME = "44fbec46-4ae3-4a9a-9960-7d8481b7b977";
-        public static final String PASSWORD = "QKLMz478WFOx";
+        public static final String USERNAME = "a90138db-2017-4c69-ab73-a263d204208b";
+        public static final String PASSWORD = "rTuDoZzHfyMA";
         ToneAnalyzer service;
         Context context;
         User user;

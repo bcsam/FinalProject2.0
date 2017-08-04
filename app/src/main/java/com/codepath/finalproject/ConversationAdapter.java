@@ -87,8 +87,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         SMS[] params = new SMS[1];
         params[0] = smsList.get(position);
         drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
-        setAnimation(holder.itemView, position);
-        if(params[0].getBubbleColor().equals("#DFAD8E")) {
+        if(params[0].getBubbleColor().equals("#CFE0E0")) {
+            setAnimation(holder.itemView, position);
             AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
             analyzerClient.execute(params);
         }
@@ -363,6 +363,36 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
+            textCircle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("from", "messaging");
+                    int position = getAdapterPosition();
+                    User user = new User(context);
+                    if(smsList.get(position).getType() == 2){
+                        user.setName("Me");
+                        TelephonyManager tMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+                        String mPhoneNumber = tMgr.getLine1Number(); // TODO: 7/14/17 this line does not set mPhoneNumber
+                        if (!mPhoneNumber.equals("")) {
+                            user.setNumber("+" + mPhoneNumber); //this is why the + shows up
+                        }
+                    }
+                    else {
+                        for(User u: users){
+                            if(u.getNumber().equals(smsList.get(position).getNumber()))
+                                position = users.indexOf(u);
+                        }
+                        intent.putExtra("users", users);
+                        intent.putExtra("position", position);
+                    }
+                    intent.putExtra("incomingList", incomingList);
+                    intent.putExtra("outgoingList", outgoingList);
+                    String transitionName = context.getString(R.string.profileTransition);
+                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileCircle, transitionName);
+                    ((Activity) context).startActivityForResult(intent, 0, transition.toBundle());
+                }
+            });
         }
 
     }

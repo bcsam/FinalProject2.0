@@ -295,9 +295,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
+            int userPosition = -1;
             //notifyDataSetChanged();
             Intent intent = new Intent(context, MessagingActivity.class);
-            intent.putExtra("position", position);
+            for(User u: users){
+                if(u.getNumber().equals(smsList.get(position).getNumber()))
+                    userPosition = users.indexOf(u);
+            }
+            intent.putExtra("position", userPosition);
             intent.putExtra("users", users);
             intent.putParcelableArrayListExtra("incomingList", incomingList);
             intent.putParcelableArrayListExtra("outgoingList", outgoingList);

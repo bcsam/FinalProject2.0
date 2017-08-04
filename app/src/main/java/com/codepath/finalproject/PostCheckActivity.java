@@ -54,7 +54,10 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         //sets up the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_post_check);
-
+        tvBody = (TextView) findViewById(R.id.tvBody);
+        tvBody.setVisibility(View.INVISIBLE);
+        tvBody.setText(text.getBody());
+        tvBody.setTextColor(Color.parseColor(text.getTextColor()));
         //stores info in intent for sending back to MainActivity
         /*
         message = getIntent().getStringExtra("message");
@@ -82,9 +85,8 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         client.getScores(text);
 
         //sets the message on the activity
-        tvBody = (TextView) findViewById(R.id.tvBody);
-        tvBody.setText(text.getBody());
-        tvBody.setTextColor(Color.parseColor(text.getTextColor()));
+
+
 
         //Code for tabs below
 
@@ -107,6 +109,10 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         setOnClickListeners();
     }
 
+    @Override
+    public void onEnterAnimationComplete(){
+        tvBody.setVisibility(View.VISIBLE);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
