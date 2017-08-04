@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -90,7 +89,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
 
         etBody.setText(getIntent().getStringExtra("message"));
 
-        etNumber.setText(getIntent().getStringExtra("recipient"));
+        etNumber.setText(getIntent().getStringExtra("recipient")); //what's sending this?
         if (name != null && !name.equals("")) {
             etNumber.setText(name);
 
@@ -215,11 +214,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     //client.getScores(sms);
 
                     ComposeActivity.this.startActivity(intent);
-
-                    String transitionName = ComposeActivity.this.getString(R.string.postCheckTransition);
-                    ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation(ComposeActivity.this, etBody, transitionName);
-                    startActivity(intent, options.toBundle());
+                    startActivity(intent);
 
                     //makes the user enter a message before submitting
                 } else if (message.equals("")) {

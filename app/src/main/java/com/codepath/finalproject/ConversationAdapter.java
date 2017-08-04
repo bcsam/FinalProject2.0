@@ -88,7 +88,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         params[0] = smsList.get(position);
         drawable.setColorFilter(Color.parseColor(params[0].getBubbleColor()), PorterDuff.Mode.SRC_ATOP);
         if(params[0].getBubbleColor().equals("#CFE0E0")) {
-            setAnimation(holder.itemView, position);
+            //setAnimation(holder.itemView, position);
             AnalyzerClient analyzerClient = new AnalyzerClient(context, drawable);
             analyzerClient.execute(params);
         }
@@ -293,10 +293,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     intent.putExtra("users", users);
                     intent.putParcelableArrayListExtra("outgoingList", outgoingList);
                     intent.putExtra("sms", smsList.get(position));
-
-                    String transitionName = context.getString(R.string.messageDetailTransition);
-                    ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvBody, transitionName);
-                    context.startActivity(intent, transition.toBundle());
+                    context.startActivity(intent);
                 }
             });
             tvTime = (TextView) itemView.findViewById(R.id.tvTimeStamp);
