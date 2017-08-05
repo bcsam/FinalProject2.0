@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,14 +50,17 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
     HashMap<String, String> getContactIdMemo;
     int position;
 
+    @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         //sets up the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_post_check);
         tvBody = (TextView) findViewById(R.id.tvBody);
         tvBody.setVisibility(View.INVISIBLE);
+
 
         //stores info in intent for sending back to MainActivity
         /*
@@ -125,7 +130,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
 
     public void setOnClickListeners(){
 
-        btEdit.setOnClickListener(new View.OnClickListener(){
+        /*btEdit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent;
@@ -173,15 +178,87 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
                     intent.putExtra("name", recipientName);
                     intent.putExtra("number", recipientNumber);
                     intent.putExtra("message", message);
-                    */
+
                     startActivity(intent);
+            }
+        });
+        */
+        btEdit.setOnTouchListener(new View.OnTouchListener(){
+
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btEdit.setBackgroundColor(getColor(R.color.colorAccent));
+                    return true;
+                }else if(event.getAction() == MotionEvent.ACTION_UP) {
+                    btEdit.setBackgroundColor(getColor(R.color.checkButton));
+
+                    Intent intent;
+                    if (activity.equals("Messaging")) {
+                        intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                    } else {
+                        intent = new Intent(PostCheckActivity.this, ComposeActivity.class);
+                    }
+                    for(User u: users){
+                        if(u.getNumber().equals(text.getNumber()))
+                            position = users.indexOf(u);
+                    }
+                    if(position == -1){
+                        User newUser = new User();
+                        newUser.setNumber(text.getNumber());
+                        newUser.setName(text.getContact());
+                        newUser.setContactId(getContactId(text.getNumber()));
+                        users.add(users.size(), newUser);
+                        position = users.indexOf(newUser);
+                    }
+                    intent.putExtra("position", position);
+                    intent.putExtra("message", text.getBody());
+                    intent.putExtra("name", text.getContact());
+                    intent.putExtra("number", text.getNumber());
+                    intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putParcelableArrayListExtra("smsList", smsList);
+                    intent.putParcelableArrayListExtra("users", users);
+                    PostCheckActivity.this.startActivity(intent);
+                }
+                return false;
+            }
+        });
+
+        btSend.setOnTouchListener(new View.OnTouchListener(){
+
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    btSend.setBackgroundColor(getColor(R.color.colorAccent));
+                    return true;
+                }else if(event.getAction() == MotionEvent.ACTION_UP) {
+                    btSend.setBackgroundColor(getColor(R.color.checkButton));
+
+                    Intent intent = new Intent(PostCheckActivity.this, MessagingActivity.class);
+                    text.setDate(String.valueOf(System.currentTimeMillis()));
+                    intent.putExtra("text", text);
+                    intent.putParcelableArrayListExtra("incomingList", incomingList);
+                    intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                    intent.putParcelableArrayListExtra("smsList", smsList);
+                    intent.putParcelableArrayListExtra("users", users);
+                    intent.putExtra("position", position);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
             }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void initializeViews(){
         btSend = (Button) findViewById(R.id.btSend);
         btEdit = (Button) findViewById(R.id.btEdit);
+        btEdit.setBackgroundColor(getColor(R.color.colorPrimary));
+        btSend.setBackgroundColor(getColor(R.color.colorPrimary));
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
