@@ -558,23 +558,6 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         sms.setContactId(id);
         sms.setType(1);
 
-        boolean isAdded = false;
-
-        for (User u : users) {
-            if (u.getName().equals(name)) {
-                isAdded = true;
-                break;
-            }
-        }
-
-        if (isAdded == false) {
-            User user = new User(this);
-            user.setNumber(from);
-            user.setName(name);
-            user.setContactId(id);
-            users.add(user);
-        }
-
         if (sms.getContact().equals(recipientName)) {
             messages.add(0, sms);
         }
