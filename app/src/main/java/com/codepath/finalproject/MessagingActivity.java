@@ -21,6 +21,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,6 +74,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     String myNumber;
     String id;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,8 +107,10 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-            if(messages.size() == 0)
+            if(user.isFirst()) {
                 getMessages();
+                user.setFirst(false);
+            }
 
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
 
@@ -141,53 +145,30 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             //stores this info to know which messages to bring up
             position = getIntent().getIntExtra("position", 0);
             users = getIntent().getParcelableArrayListExtra("users");
-            user = users.get(position); // TODO: 8/1/17 Check for IOB and Null Pointer errors!!!!!!!
+            if (position != -1) {
+                user = users.get(position);
+            }
+
             recipientName = user.getName();
             recipientNumber = user.getNumber();
             String message = getIntent().getStringExtra("message");
             etBody.setText(message);
-
-
             if (!recipientName.equals("")) {
                 getSupportActionBar().setTitle(recipientName);
             } else {
                 getSupportActionBar().setTitle(recipientNumber);
             }
-
             TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
             myNumber = tMgr.getLine1Number();
-
-        /*ContentResolver contentResolver = this.getContentResolver();
-
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(myNumber));
-
-        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
-
-        Cursor cursor =
-                contentResolver.query(
-                        uri,
-                        projection,
-                        null,
-                        null,
-                        null);
-
-        if(cursor != null) {
-            while(cursor.moveToNext()){
-                myId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-            }
-            cursor.close();
-        }*/
-
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
             messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-            if(messages.size() == 0)
+            if(user.isFirst()) {
                 getMessages();
-
-
+                user.setFirst(false);
+            }
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
-
             layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
@@ -196,6 +177,12 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             int lastVis = rvText.getChildCount();
             rvText.setAdapter(adapter);
             rvText.scrollToPosition(0);
+        }
+
+        if (etBody.getText().toString().equals("")) {
+            btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+        }else {
+            btCheck.setBackgroundColor(getColor(R.color.checkButton));
         }
         setListeners();
     }
@@ -375,6 +362,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             }
         });
 
+        /*
         btCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -395,7 +383,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                     intent.putExtra("message", message);
                     intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
                     intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
-                    */
+
                     MessagingActivity.this.startActivity(intent);
                     startActivity(intent);
                 } else {
@@ -403,8 +391,8 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                             Toast.LENGTH_LONG).show();
                 }
             }
-        });
-        /*
+        });*/
+
         btCheck.setOnTouchListener(new View.OnTouchListener(){
 
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -414,17 +402,44 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
                     btCheck.setBackgroundColor(getColor(R.color.pressCheck));
                     return true;
                 }else if(event.getAction() == MotionEvent.ACTION_UP) {
-                    //if(checkable) {
+                    if(checkable) {
                         btCheck.setBackgroundColor(getColor(R.color.checkButton));
-                    //}else{
+                    }else{
                         btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
-                    //}
+                    }
+
+
+                    Intent intent = new Intent(MessagingActivity.this, PostCheckActivity.class);
+                    String message = etBody.getText().toString();
+                    if (!message.equals("")) {
+                        SMS text = new SMS();
+                        text.setNumber(recipientNumber);
+                        text.setContact(recipientName);
+                        text.setBody(message);
+                        intent.putExtra("activity", "Messaging");
+                        intent.putExtra("text", text);
+                        intent.putParcelableArrayListExtra("incomingList", incomingList);
+                        intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                        intent.putParcelableArrayListExtra("users", users);
+                        intent.putExtra("position", position);
+                    /*
+                    intent.putExtra("message", message);
+                    intent.putExtra("recipientName", recipientName); // TODO: 7/14/17 insert recipient here based on who you're texting
+                    intent.putExtra("recipientNumber", recipientNumber); // TODO: 7/14/17 insert recipient number based on who you're texting
+                    */
+                        MessagingActivity.this.startActivity(intent);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please enter a message!",
+                                Toast.LENGTH_LONG).show();
+                    }
+
                     return true;
                 }
                 return false;
             }
         });
-        */
+
 
         etBody.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
@@ -559,6 +574,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         sms.setType(1);
 
         if (sms.getContact().equals(recipientName)) {
+            Log.i("receiver", "add message");
             messages.add(0, sms);
         }
 
@@ -598,6 +614,12 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     public void onPause(){
         messages = adapter.getModifyList();
         user.setConversation(messages);
+        int pos  = users.indexOf(user);
+        Log.i("messages", String.valueOf(pos));
+        for(User u: users){
+            Log.i("user", u.getName());
+        }
+        users.set(pos, user);
         super.onPause();
     }
 

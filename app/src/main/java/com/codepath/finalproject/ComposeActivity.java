@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +54,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     ArrayList<User> users;
     int position;
     String name;
+    Boolean checkableBody = false; //for button feedback
+    Boolean checkableNumber = false; //for button feedback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,11 +168,12 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(!s.toString().equals("") && !etNumber.getText().toString().equals("")) {
-                    Log.i("Compose", etNumber.getText().toString());
-                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
-                }else{
+                if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableBody = false;
+                }else{
+                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableBody = true;
                 }
 
             }
@@ -180,8 +184,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if(!s.toString().equals("") && !etNumber.getText().toString().equals("")) {
                     Log.i("Compose", etNumber.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableBody = true;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableBody = false;
                 }
             }
 
@@ -191,8 +197,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if(!s.toString().equals("") && !etNumber.getText().toString().equals("")) {
                     Log.i("Compose", etNumber.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableBody = true;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableBody = false;
                 }
             }
 
@@ -206,8 +214,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if (!s.toString().equals("") && !etBody.getText().toString().equals("")) {
                     Log.i("Compose", etBody.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableNumber = true;
                 } else {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableNumber = false;
                 }
 
             }
@@ -215,22 +225,26 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 if (!s.toString().equals("") && !etBody.getText().toString().equals("")) {
                     Log.i("Compose", etBody.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableNumber = true;
                 } else {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableNumber = false;
                 }
             }
-
-            @RequiresApi(api = Build.VERSION_CODES.M)
+                
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equals("") && !etBody.getText().toString().equals("")) {
                     Log.i("Compose", etBody.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableNumber = true;
                 } else {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableNumber = false;
                 }
             }
         });
@@ -283,6 +297,69 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 }
             }
         });
+
+        btCheck.setOnTouchListener(new View.OnTouchListener() {
+
+                                       @RequiresApi(api = Build.VERSION_CODES.M)
+                                       @Override
+                                       public boolean onTouch(View v, MotionEvent event) {
+                                           if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                               btCheck.setBackgroundColor(getColor(R.color.pressCheck)); // TODO: 8/7/17 check this 
+                                               return true;
+                                           } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                                               if (checkableBody && checkableNumber) {
+                                                   btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                                               } else {
+                                                   btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                                               }
+
+                                               String message = etBody.getText().toString();
+                                               String recipientName = etNumber.getText().toString();
+                                               //String subject = etSubject.getText().toString();
+
+                                               if (!message.equals("") && !recipientName.equals("")) {
+                                                   Intent intent = new Intent(ComposeActivity.this, PostCheckActivity.class);
+                                                   SMS text = new SMS();
+                                                   text.setContact(recipientName);
+                                                   text.setBody(message);
+                                                   text.setNumber(recipientNumber);
+                                                   intent.putExtra("text", text);
+                                                   intent.putExtra("activity", "Compose");
+
+                                                   //intent.putExtra("message", message);
+                                                   //intent.putExtra("recipientName", recipientName);
+                                                   for (User u : users) { // TODO: 8/1/17 threw a null pointer exception
+                                                       if (u.getNumber().equals(recipientNumber))
+                                                           position = users.indexOf(u);
+                                                   }
+                                                   intent.putParcelableArrayListExtra("incomingList", incomingList);
+                                                   intent.putParcelableArrayListExtra("outgoingList", outgoingList);
+                                                   intent.putParcelableArrayListExtra("smsList", smsList);
+                                                   intent.putParcelableArrayListExtra("users", users);
+                                                   intent.putExtra("position", position);
+                                                   SMS sms = new SMS();
+                                                   sms.setBody(message);
+                                                   client = new AnalyzerClient();
+                                                   //client.getScores(sms);
+
+                                                   ComposeActivity.this.startActivity(intent);
+                                                   startActivity(intent);
+
+                                                   //makes the user enter a message before submitting
+                                               } else if (message.equals("")) {
+                                                   Toast.makeText(getApplicationContext(), "Please enter a message!",
+                                                           Toast.LENGTH_LONG).show();
+
+                                                   //makes the user enter a recipient before submitting
+                                               } else {
+                                                   Toast.makeText(getApplicationContext(), "Please enter a recipient!",
+                                                           Toast.LENGTH_LONG).show();
+                                               }
+                                               return true;
+                                           }
+                                           return false;
+                                       }
+                                   });
 
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
