@@ -52,7 +52,7 @@
 
     <color name="uncheckButton">@color/lightGray</color>
     <color name="checkButton">@color/colorPrimaryDark</color>
-    <color name="pressCheck">@color/colorAccent</color>
+    <color name="pressCheck">@color/colorPrimaryLight</color>
 
     <color name="personIcon">@color/lightGray</color>
     <color name="pcCheckAndSend">@color/colorPrimary</color>
