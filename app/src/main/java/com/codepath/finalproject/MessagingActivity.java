@@ -52,6 +52,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     Uri uri;
     int position;
     Boolean checkable = false; //for button feedback
+    SearchView searchView;
 
     LinearLayoutManager layoutManager;
 
@@ -216,7 +217,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         final Menu theMenu = menu;
         getMenuInflater().inflate(R.menu.menu_searchable, menu);
         MenuItem searchItem = menu.findItem(R.id.miSearch);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -667,6 +668,13 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         Log.i("Profile", "onActivityResult");
         users = data.getParcelableArrayListExtra("users");
         adapter.setUserList(users);
+    }
+
+    @Override
+    public void onResume(){
+        if(searchView != null)
+            searchView.onActionViewCollapsed();
+        super.onResume();
     }
 }
 
