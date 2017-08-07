@@ -2,7 +2,10 @@ package com.codepath.finalproject;
 //adding Watson Developer Cloud SDK for Java:
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -14,6 +17,8 @@ import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneCategory;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneOptions;
 import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
+import com.ibm.watson.developer_cloud.util.GsonSingleton;
+
 
 /**
  * Created by vf608 on 7/11/17.
@@ -55,14 +60,42 @@ public class AnalyzerClient extends AsyncTask <SMS, String, SMS>{
         return sms;
     }
 
-
-    public void getScores(SMS sms){
+    private ToneAnalysis getToneAnalysis(SMS sms) {
         ToneOptions options = new ToneOptions.Builder()
                 .addTone(Tone.EMOTION)
                 .addTone(Tone.LANGUAGE)
                 .addTone(Tone.SOCIAL).build();
-        ToneAnalysis tone =
-                service.getTone(sms.getBody(), options).execute();
+        return service.getTone(sms.getBody(), options).execute();
+    }
+
+    private ToneAnalysis jsonToToneAnalysis(String json) {
+        return GsonSingleton.getGson().fromJson(json, ToneAnalysis.class);
+    }
+
+    private ToneAnalysis getToneAnalysisWithDB(SMS sms) {
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase("tones.db", null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS Tones(response TEXT, sms_id INTEGER PRIMARY KEY);");
+        Cursor cursor = db.rawQuery("SELECT response from Tones where sms_id = " + sms.getId() + " LIMIT 1", null);
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            String json = cursor.getString(0);
+            cursor.close();
+            return jsonToToneAnalysis(json);
+        }
+        cursor.close();
+        ToneAnalysis toneAnalysis = getToneAnalysis(sms);
+        String json = toneAnalysis.toString();
+        ContentValues values = new ContentValues();
+        values.put("response", json);
+        values.put("sms_id", sms.getId());
+        db.insert("Tones", null, values);
+        db.close();
+        return toneAnalysis;
+    }
+
+
+    public void getScores(SMS sms){
+        ToneAnalysis tone = getToneAnalysisWithDB(sms);
 
         for(ToneCategory tc : tone.getDocumentTone().getTones()){
             for(ToneScore ts : tc.getTones()){
