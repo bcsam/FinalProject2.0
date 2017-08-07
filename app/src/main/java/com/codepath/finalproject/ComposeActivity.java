@@ -54,7 +54,8 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
     ArrayList<User> users;
     int position;
     String name;
-    Boolean checkable = false; //for button feedback
+    Boolean checkableBody = false; //for button feedback
+    Boolean checkableNumber = false; //for button feedback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,10 +170,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if(s.toString().equals("")) {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
-                    checkable = false;
+                    checkableBody = false;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
-                    checkable = true;
+                    checkableBody = true;
                 }
 
             }
@@ -183,9 +184,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if(!s.toString().equals("") && !etNumber.getText().toString().equals("")) {
                     Log.i("Compose", etNumber.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableBody = true;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
-                    checkable = false;
+                    checkableBody = false;
                 }
             }
 
@@ -195,8 +197,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if(!s.toString().equals("") && !etNumber.getText().toString().equals("")) {
                     Log.i("Compose", etNumber.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableBody = true;
                 }else{
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableBody = false;
                 }
             }
 
@@ -210,9 +214,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 if (!s.toString().equals("") && !etBody.getText().toString().equals("")) {
                     Log.i("Compose", etBody.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
-                    checkable = true;
+                    checkableNumber = true;
                 } else {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableNumber = false;
                 }
 
             }
@@ -220,26 +225,26 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 if (!s.toString().equals("") && !etBody.getText().toString().equals("")) {
                     Log.i("Compose", etBody.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableNumber = true;
                 } else {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
-                    checkable = false;
-                }else{
-                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
-                    checkable = true;
+                    checkableNumber = false;
                 }
             }
-
-            @RequiresApi(api = Build.VERSION_CODES.M)
+                
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equals("") && !etBody.getText().toString().equals("")) {
                     Log.i("Compose", etBody.getText().toString());
                     btCheck.setBackgroundColor(getColor(R.color.checkButton));
+                    checkableNumber = true;
                 } else {
                     btCheck.setBackgroundColor(getColor(R.color.uncheckButton));
+                    checkableNumber = false;
                 }
             }
         });
@@ -299,10 +304,10 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                                        @Override
                                        public boolean onTouch(View v, MotionEvent event) {
                                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                                               btCheck.setBackgroundColor(getColor(R.color.pressCheck));
+                                               btCheck.setBackgroundColor(getColor(R.color.pressCheck)); // TODO: 8/7/17 check this 
                                                return true;
                                            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                                               if (checkable) {
+                                               if (checkableBody && checkableNumber) {
                                                    btCheck.setBackgroundColor(getColor(R.color.checkButton));
                                                } else {
                                                    btCheck.setBackgroundColor(getColor(R.color.uncheckButton));

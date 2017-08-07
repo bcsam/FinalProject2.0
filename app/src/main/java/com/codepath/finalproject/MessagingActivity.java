@@ -74,6 +74,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     String myNumber;
     String id;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
