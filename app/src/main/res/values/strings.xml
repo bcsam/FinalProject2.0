@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tone Teller</string>
+    <string name="app_name">Sherlock</string>
     <string name="intent_scheme">oauth</string>
     <string name="intent_host">cprest</string>
 
