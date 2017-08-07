@@ -319,8 +319,8 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
     public class ProfileAnalyzerClient extends AsyncTask<SMS, String, SMS> {
         //public static final String VERSION = "ToneAnalyzer.VERSION_DATE_2016_05_19";
         public static final String URL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-        public static final String USERNAME = "a90138db-2017-4c69-ab73-a263d204208b";
-        public static final String PASSWORD = "rTuDoZzHfyMA";
+        public static final String USERNAME = "c355995c-b4e9-44fc-a917-7f6aaddacfef";
+        public static final String PASSWORD = "wqD8xgkjPCi5";
         ToneAnalyzer service;
         Context context;
         User user;
