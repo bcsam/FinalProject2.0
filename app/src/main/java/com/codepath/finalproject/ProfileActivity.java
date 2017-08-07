@@ -106,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
             SMS allTexts = getAverages(user);
             if(user.getAllTexts().equals(allTexts.getBody()))
             {
-                Log.i("Profile", user.getAllTexts());
+                Log.i("Profile if", user.getAllTexts());
                 pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
                 pbLoading.setVisibility(View.GONE);
                 ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -123,22 +123,11 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
                 mTabLayout.setupWithViewPager(viewPager);
             }
             else {
+                Log.i("Profile else", user.getAllTexts());
                 user.setAllTexts(allTexts.getBody());
                 client.execute(allTexts);
             }
         }
-
-
-        /*long contactIdLong = Long.parseLong(id);
-
-        Bitmap image = BitmapFactory.decodeStream(openPhoto(contactIdLong));
-
-        if (image != null) {
-            ivProfileImage.setImageBitmap(null);
-            ivProfileImage.setImageBitmap(Bitmap.createScaledBitmap(image, 45, 45, false));
-        } else {
-            ivProfileImage.setImageResource(R.drawable.ic_person_white);
-        }*/
 
     }
 
@@ -178,28 +167,6 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         }
 
         user.setName("Me");
-
-        String id = null;
-        /*ContentResolver contentResolver = this.getContentResolver();
-
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(mPhoneNumber));
-
-        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
-
-        c =
-                contentResolver.query( // TODO: 7/25/17 This line crashes the app 
-                        uri,
-                        projection,
-                        null,
-                        null,
-                        null);
-
-        if(c != null) {
-            while(c.moveToNext()){
-                id = c.getString(c.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-            }
-        }
-        user.setContactId(id);*/
 
         Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
 
@@ -272,8 +239,14 @@ public class ProfileActivity extends AppCompatActivity { // TODO: 8/1/17 be able
         else {
             i = new Intent(ProfileActivity.this, MainActivity.class);
         }
-        if(users != null && user != null && !user.getName().equals("Me"))
+        if(user == null)
+            Log.i("profile", "user");
+        if(users == null)
+            Log.i("profile", "users");
+        if(users != null && user != null && !user.getName().equals("Me") && position != -1) {
+            Log.i("profile", "set user");
             users.set(position, user);
+        }
 
         i.putParcelableArrayListExtra("incomingList", incomingList);
         i.putParcelableArrayListExtra("outgoingList", outgoingList);

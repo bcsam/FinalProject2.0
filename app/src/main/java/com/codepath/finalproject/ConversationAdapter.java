@@ -1,5 +1,6 @@
 package com.codepath.finalproject;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -318,11 +319,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         user.setNumber(smsList.get(position).getNumber());
                         user.setContactId(smsList.get(position).getContactId());
                     }
+                    int pos = -1;
+                    for(User u: users){
+                        if(u.getName().equals(smsList.get(position).getContact()))
+                            pos = users.indexOf(u);
+                    }
+                    intent.putExtra("position", pos);
                     intent.putExtra("user", user);
-
+                    intent.putParcelableArrayListExtra("users", users);
                     String transitionName = context.getString(R.string.profileTransition);
                     //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
-                    context.startActivity(intent);
+                    ((Activity) context).startActivityForResult(intent, 0);
                 }
             });
             ivProfileCircle = (ImageView) itemView.findViewById(ivProfileIcon);
@@ -346,11 +353,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         user.setNumber(smsList.get(position).getNumber());
                         user.setContactId(smsList.get(position).getContactId());
                     }
+                    int pos = -1;
+                    for(User u: users){
+                        if(u.getName().equals(smsList.get(position).getContact()))
+                            pos = users.indexOf(u);
+                    }
+                    intent.putExtra("position", pos);
                     intent.putExtra("user", user);
-
+                    intent.putParcelableArrayListExtra("users", users);
                     String transitionName = context.getString(R.string.profileTransition);
                     //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
-                    context.startActivity(intent);
+                    ((Activity) context).startActivityForResult(intent, 0);
                 }
             });
             textCircle = (TextView) itemView.findViewById(R.id.circleText);
@@ -374,11 +387,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         user.setNumber(smsList.get(position).getNumber());
                         user.setContactId(smsList.get(position).getContactId());
                     }
+                    int pos = -1;
+                    for(User u: users){
+                        if(u.getName().equals(smsList.get(position).getContact()))
+                            pos = users.indexOf(u);
+                    }
+                    intent.putExtra("position", pos);
                     intent.putExtra("user", user);
-
+                    intent.putParcelableArrayListExtra("users", users);
                     String transitionName = context.getString(R.string.profileTransition);
                     //ActivityOptionsCompat transition = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, ivProfileImage, transitionName);
-                    context.startActivity(intent);
+                    ((Activity) context).startActivityForResult(intent, 0);
                 }
             });
         }
