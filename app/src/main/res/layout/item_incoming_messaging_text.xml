@@ -80,7 +80,7 @@
             android:backgroundTint="@color/colorPrimaryLight"
             android:inputType="textMultiLine"
             android:linksClickable="true"
-            android:maxWidth="160dp"
+            android:maxWidth="155dp"
             android:textSize="14dp"
             android:transitionName="@string/messageDetailTransition"
             tools:text="test test test test test test" />
