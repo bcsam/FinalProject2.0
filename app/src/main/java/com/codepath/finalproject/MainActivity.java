@@ -472,6 +472,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
             if (matchNumber(sms, smsList.get(i))) {
                 isAdded = true;
                 User newUser = users.get(i);
+                ArrayList<SMS> newConversation = newUser.getConversation();
+                newConversation.add(sms);
+                newUser.setConversation(newConversation);
                 users.remove(i);
                 users.add(newUser);
                 smsList.remove(i);

@@ -105,8 +105,10 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-            if(messages.size() == 0)
+            if(user.isFirst()) {
                 getMessages();
+                user.setFirst(false);
+            }
 
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
 
@@ -160,8 +162,10 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
-            if(messages.size() == 0)
+            if(user.isFirst()) {
                 getMessages();
+                user.setFirst(false);
+            }
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
             layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
@@ -533,24 +537,8 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         sms.setContactId(id);
         sms.setType(1);
 
-        boolean isAdded = false;
-
-        for (User u : users) {
-            if (u.getName().equals(name)) {
-                isAdded = true;
-                break;
-            }
-        }
-
-        if (isAdded == false) {
-            User user = new User(this);
-            user.setNumber(from);
-            user.setName(name);
-            user.setContactId(id);
-            users.add(user);
-        }
-
         if (sms.getContact().equals(recipientName)) {
+            Log.i("receiver", "add message");
             messages.add(0, sms);
         }
 
