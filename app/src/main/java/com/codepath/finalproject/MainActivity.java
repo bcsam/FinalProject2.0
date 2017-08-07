@@ -410,13 +410,21 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
                             break;
                         }
                     }
-
+                    boolean isUser = false;
                     if (!isAdded) {
-                        User user = new User(context);
-                        user.setNumber(recipientNumber);
-                        user.setName(recipientName);
-                        user.setContactId(id);
-                        users.add(user);
+                        for(User u: users){
+                            if(u.getName().equals(recipientName) || u.getNumber().equals(recipientNumber)){
+                                isUser = true;
+                            }
+
+                        }
+                        if(!isUser) {
+                            User user = new User(context);
+                            user.setNumber(recipientNumber);
+                            user.setName(recipientName);
+                            user.setContactId(id);
+                            users.add(user);
+                        }
                         smsList.add(sms);
                     }
 
@@ -464,6 +472,9 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
             if (matchNumber(sms, smsList.get(i))) {
                 isAdded = true;
                 User newUser = users.get(i);
+                ArrayList<SMS> newConversation = newUser.getConversation();
+                newConversation.add(sms);
+                newUser.setConversation(newConversation);
                 users.remove(i);
                 users.add(newUser);
                 smsList.remove(i);
@@ -515,6 +526,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
             ArrayList<SMS> newoutgoingList = data.getParcelableArrayListExtra("outgoingList");
             outgoingList = newoutgoingList;
             users = data.getParcelableArrayListExtra("users");
+            Log.i("messages", "get users main");
         } catch (NullPointerException e) {
 
         }

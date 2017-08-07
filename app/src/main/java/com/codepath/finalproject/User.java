@@ -32,6 +32,7 @@ public class User implements Parcelable{
     private String allTexts;
 
     private boolean other;
+    private boolean first;
 
     private String contactId;
 
@@ -47,6 +48,7 @@ public class User implements Parcelable{
         darkToneColors = new String[]{"#C3412F", "#73A939", "#8943AF", "#EFCF4F", "#277B9C"};
         conversation = new ArrayList<SMS>();
         allTexts = "";
+        first = true;
     }
 
     public User(Context context){
@@ -62,6 +64,7 @@ public class User implements Parcelable{
         this.context = context;
         conversation = new ArrayList<SMS>();
         allTexts = "";
+        first = true;
     }
 
     public Context getContext() {
@@ -88,9 +91,18 @@ public class User implements Parcelable{
         this.allTexts = allTexts;
     }
 
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
+    }
+
     public void updateScores(SMS sms){
         messageCount++;
         Log.i("Profile", String.valueOf(messageCount));
+
         if(messageCount>1) {
             for (int i = 0; i < 5; i++) {
                 if (i < 3)
@@ -217,6 +229,7 @@ public class User implements Parcelable{
         dest.writeTypedList(this.conversation);
         dest.writeString(this.allTexts);
         dest.writeByte(this.other ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.first ? (byte) 1 : (byte) 0);
         dest.writeString(this.contactId);
     }
 
@@ -228,10 +241,11 @@ public class User implements Parcelable{
         this.name = in.readString();
         this.number = in.readString();
         this.profileImage = in.readParcelable(Uri.class.getClassLoader());
-        this.darkToneColors = in.createStringArray();;
+        this.darkToneColors = in.createStringArray();
         this.conversation = in.createTypedArrayList(SMS.CREATOR);
         this.allTexts = in.readString();
         this.other = in.readByte() != 0;
+        this.first = in.readByte() != 0;
         this.contactId = in.readString();
     }
 
