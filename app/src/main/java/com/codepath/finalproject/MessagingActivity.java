@@ -141,53 +141,28 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
             //stores this info to know which messages to bring up
             position = getIntent().getIntExtra("position", 0);
             users = getIntent().getParcelableArrayListExtra("users");
-            user = users.get(position); // TODO: 8/1/17 Check for IOB and Null Pointer errors!!!!!!!
+            if (position != -1) {
+                user = users.get(position);
+            }
+
             recipientName = user.getName();
             recipientNumber = user.getNumber();
             String message = getIntent().getStringExtra("message");
             etBody.setText(message);
-
-
             if (!recipientName.equals("")) {
                 getSupportActionBar().setTitle(recipientName);
             } else {
                 getSupportActionBar().setTitle(recipientNumber);
             }
-
             TelephonyManager tMgr = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
             myNumber = tMgr.getLine1Number();
-
-        /*ContentResolver contentResolver = this.getContentResolver();
-
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(myNumber));
-
-        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
-
-        Cursor cursor =
-                contentResolver.query(
-                        uri,
-                        projection,
-                        null,
-                        null,
-                        null);
-
-        if(cursor != null) {
-            while(cursor.moveToNext()){
-                myId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-            }
-            cursor.close();
-        }*/
-
             rvText = (RecyclerView) findViewById(R.id.rvMessaging);
             messages = user.getConversation();
             incomingList = getIntent().getParcelableArrayListExtra("incomingList");
             outgoingList = getIntent().getParcelableArrayListExtra("outgoingList");
             if(messages.size() == 0)
                 getMessages();
-
-
             adapter = new ConversationAdapter(this, messages, incomingList, outgoingList, users);
-
             layoutManager = new LinearLayoutManager(this);
             rvText.setLayoutManager(layoutManager);
             layoutManager.setReverseLayout(true);
@@ -615,6 +590,12 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     public void onPause(){
         messages = adapter.getModifyList();
         user.setConversation(messages);
+        int pos  = users.indexOf(user);
+        Log.i("messages", String.valueOf(pos));
+        for(User u: users){
+            Log.i("user", u.getName());
+        }
+        users.set(pos, user);
         super.onPause();
     }
 

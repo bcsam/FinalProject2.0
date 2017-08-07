@@ -261,6 +261,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     public ArrayList<SMS> getModifyList() {
+        Log.i("messages", "getModifyList");
         return smsList;
     }
 
