@@ -68,7 +68,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         recipientName = getIntent().getStringExtra("recipientName");
         recipientNumber = getIntent().getStringExtra("recipientNumber");
         */
-        getSupportActionBar().setTitle("ToneTeller");
+        getSupportActionBar().setTitle("Sherlock");
         text = getIntent().getParcelableExtra("text");
         tvBody.setText(text.getBody());
 

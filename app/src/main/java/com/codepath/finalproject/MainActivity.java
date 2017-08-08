@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity { // TODO: 8/1/17 clear recy
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //getSupportActionBar().setIcon(R.drawable.white_icon);
-        getSupportActionBar().setTitle("ToneTeller");
+        getSupportActionBar().setTitle("Sherlock");
     }
 
     @Override

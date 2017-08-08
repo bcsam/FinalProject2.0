@@ -62,7 +62,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         //animate();
-        getSupportActionBar().setTitle("ToneTeller");
+        getSupportActionBar().setTitle("Sherlock");
         InitializeViews();
         setListeners();
 
