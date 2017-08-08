@@ -89,7 +89,7 @@
             android:background="@drawable/turquoise"
             android:backgroundTint="@color/lighterGray"
             android:linksClickable="true"
-            android:maxWidth="160dp"
+            android:maxWidth="155dp"
             android:text="test test test test tes test"
             android:textSize="14dp"
             android:transitionName="@string/messageDetailTransition" />

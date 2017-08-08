@@ -614,12 +614,6 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
     public void onPause(){
         messages = adapter.getModifyList();
         user.setConversation(messages);
-        int pos  = users.indexOf(user);
-        Log.i("messages", String.valueOf(pos));
-        for(User u: users){
-            Log.i("user", u.getName());
-        }
-        users.set(pos, user);
         super.onPause();
     }
 
@@ -638,6 +632,7 @@ public class MessagingActivity extends AppCompatActivity { //TODO: 8/1/17 messag
         Log.i("Profile", "onActivityResult");
         users = data.getParcelableArrayListExtra("users");
         adapter.setUserList(users);
+        rvText.scrollToPosition(0);
     }
 
     @Override

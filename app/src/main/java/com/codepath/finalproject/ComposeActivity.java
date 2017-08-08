@@ -236,6 +236,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                 }
             }
                 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equals("") && !etBody.getText().toString().equals("")) {
@@ -386,7 +387,7 @@ public class ComposeActivity extends AppCompatActivity implements MainActivity.D
                     applicationClass.setOutgoingList(outgoingList);
                     //applicationClass.setSmsList(smsList);
 
-                    conversationAdapter.notifyDataSetChanged();
+                    conversationAdapter.notifyItemInserted(0);
                     rvCompose.scrollToPosition(0);
 
                     //toasts and resets

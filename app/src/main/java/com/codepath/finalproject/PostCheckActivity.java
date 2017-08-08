@@ -70,9 +70,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         */
         getSupportActionBar().setTitle("ToneTeller");
         text = getIntent().getParcelableExtra("text");
-
         tvBody.setText(text.getBody());
-        tvBody.setTextColor(Color.parseColor(text.getTextColor()));
 
         activity = getIntent().getStringExtra("activity");
         incomingList = getIntent().getParcelableArrayListExtra("incomingList");
@@ -91,7 +89,7 @@ public class PostCheckActivity extends AppCompatActivity { // TODO: 8/1/17 edit 
         //gets the textbody's score and puts them in textBody
         AnalyzerClient client = new AnalyzerClient();
         client.getScores(text);
-
+        tvBody.setTextColor(Color.parseColor(text.getTextColor()));
         //sets the message on the activity
 
 
